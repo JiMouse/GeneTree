@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>JUnit XML Reporter Spec</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../js/undo_redo_refresh.js"></script>
+    <script type="text/javascript" src="../js/widgets.js"></script>
+    <script type="text/javascript" src="../js/pedigree.js"></script>
+    <script type="text/javascript" src="../js/io.js"></script>
+
+    <link rel="stylesheet" href="../jasmine-core/jasmine.css" type="text/css" />
+    <script type="text/javascript" src="../jasmine-core/jasmine.js"></script>
+    <script type="text/javascript" src="../jasmine-core/jasmine-html.js"></script>
+    <script type="text/javascript" src="../src/junit_reporter.js"></script>
+    <script type="text/javascript" src="../jasmine-core/boot.js"></script>
+
+    <script>
+        jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+            savePath: '..',
+            consolidateAll: false
+        }));
+    </script>
+</head>
+<body>
+
+    <script type="text/javascript" src="../pedigree_spec/javascripts/pedigree_spec.js" defer></script>
+
+</body>
+</html>
