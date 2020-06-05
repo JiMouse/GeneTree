@@ -264,8 +264,14 @@ function NewName(){
 }
 
 function createParents() {
-    createNewInd('0', '0', 'M', true)
-    createNewInd('0', '0', 'F', true)
+    // only if parents don't already exists
+    var indexArr = hot.getSelectedLast(); //get selected row's index
+    var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+
+    if (indexData.FathID === '0' && indexData.MothID === '0') {
+        createNewInd('0', '0', 'M', true)
+        createNewInd('0', '0', 'F', true)
+    }
 }
 
 function createBrother() {
@@ -278,4 +284,11 @@ function createSister() {
     var indexArr = hot.getSelectedLast(); //get selected row's index
     var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
     createNewInd(indexData.FathID, indexData.MothID, 'F')
+}
+
+function ExportBOADICE4() {
+    /*
+    BOADICEA import pedigree file format 4.0
+    FamID	Name	Target	IndivID	FathID	MothID	Sex	MZTwin	Dead	Age	Yob	1stBrCa	2ndBrCa	OvCa	ProCa	PanCa	Ashkn	BRCA1t	BRCA1r	BRCA2t	BRCA2r	PALB2t	PALB2r	ATMt	ATMr	CHEK2t	CHEK2r	ER	PR	HER2	CK14	CK56
+    */
 }
