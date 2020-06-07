@@ -158,32 +158,32 @@ function FormatToPedigreeJS(JSONData) {
             };
 
             //Update diseases
-            //UpdateDiseases(o,i)
+            UpdateDiseases(o,i)
         }
     }
 
-    for (var i = 0; i < new_key.length ; i++) { UpdateKey(obj, old_key[i], new_key[i]) }
+    for (var i = 0; i < new_key.length ; i++) { UpdateKey(obj, old_key[i], new_key[i]) };
     UpdateFields(obj)    
 
     return obj
 }
 
 function UpdateDiseases(o,i){
-    let colDiseases = ["Disease1","Disease2", "Disease3"]
-    let colAges = ["Age1","Age2", "Age3"]
+    var colDiseases = ["Disease1","Disease2", "Disease3"]
+    var colAges = ["Age1","Age2", "Age3"]
 
     for (var j = 0; j < colDiseases.length; j++) {
         col = colDiseases[j]
         age = colAges[j]
-        let content = o[i][ col ]
+        var content = o[i][ col ]
         
         if (content != "" && content != null){
             var new_col = o[i][ col ]
             o[i][new_col+"_diagnosis_age"] = o[i][ age ];
         }
         // delete column disease and age either way
-        delete o[i][ col ];
-        delete o[i][ age ];
+        //delete o[i][ col ];
+        //delete o[i][ age ];
     };
 }
 
@@ -244,7 +244,6 @@ function GetPartner(o,i) {
     };
 };
 }
-
 
 function getFormattedTime() {
     var today = new Date();
