@@ -104,19 +104,14 @@ function JSONToPEDConvertor(JSONData, toKeep) {
     
 }
 
-function FormatToPedigreeJS(JSONData, new_key, old_key) {
+function FormatToPedigreeJS(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
     
     // Update key and format JSON for pedigreeJS
-    function UpdateKey(o, old_key, new_key) {
-        // JSON object
-        for (var i = 0; i < o.length; i++) {
-            o[i][ new_key ] = o[i][ old_key ]; //change key
-            delete o[i][ old_key ];
-        };
-    }
+    var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age']
+    var old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age']
 
-    function UpdateParents(o) {
+    function UpdateFields(o) {
         for (var i = 0; i < o.length; i++) {
             // remove father/mother keys if empty, then add top_level : 'true'
             if (o[i][ 'father' ] == '0') {
@@ -156,45 +151,45 @@ function FormatToPedigreeJS(JSONData, new_key, old_key) {
                     }                    
                 }
             };
+
+            // remove proband if null
+            if (o[i][ 'proband' ] == null) {
+                delete o[i][ 'proband' ];
+            };
+
+            //Update diseases
+            UpdateDiseases(o,i)
         }
     }
 
-    function GetChild(o,i) {
-        var j
-        for (var j = 0; j < o.length; j++) {
-            if (o[j]['father']==o[i]['name'] | o[j]['mother']==o[i]['name']) {
-                var result = [{'index':j,
-                                'name':o[j]['name']
-                            }]
-                return result;
-                break;
-            };
-        };
-    }
-
-    function GetPartner(o,i) {
-        var child = GetChild(o,i)[0].index
-        var parent = (o[child]['father']==o[i]['name'] ? 'mother' : 'father' );
-        var j
-        for (var j = 0; j < o.length; j++) {
-            if (o[j]['name']==o[child][parent]) {
-                var result = [{'index':j,
-                                'name':o[child][parent]
-                            }]
-                return result;
-            };
-        };
-    }
-
     for (var i = 0; i < new_key.length ; i++) { UpdateKey(obj, old_key[i], new_key[i]) }
-    UpdateParents(obj)
+    UpdateFields(obj)    
 
     return obj
 }
 
-function ExportJSON(JSONData, new_key, old_key) {
+function UpdateDiseases(o,i){
+    let colDiseases = ["Disease1","Disease2", "Disease3"]
+    let colAges = ["Age1","Age2", "Age3"]
+
+    for (var j = 0; j < colDiseases.length; j++) {
+        col = colDiseases[j]
+        age = colAges[j]
+        let content = o[i][ col ]
+        
+        if (content != "" && content != null){
+            var new_col = o[i][ col ]
+            o[i][new_col+"_diagnosis_age"] = o[i][ age ];
+        }
+        // delete column disease and age either way
+        delete o[i][ col ];
+        delete o[i][ age ];
+    };
+}
+
+function ExportJSON(JSONData) {
     //Format to PedigreeJS format
-    var obj = FormatToPedigreeJS(JSONData, new_key, old_key)
+    var obj = FormatToPedigreeJS(JSONData)
         
     // Downloading.
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
@@ -208,6 +203,48 @@ function ExportJSON(JSONData, new_key, old_key) {
     a.click();
     document.body.removeChild(a);
 }
+
+function UpdateKey(o, old_key, new_key) {
+    // JSON object
+    for (var i = 0; i < o.length; i++) {
+        o[i][ new_key ] = o[i][ old_key ]; //change key
+        delete o[i][ old_key ];
+    };
+}
+
+function GetChild(o,i) {
+    var j
+    for (var j = 0; j < o.length; j++) {
+        if (o[j]['father']==o[i]['name'] | o[j]['mother']==o[i]['name']) {
+            var result = [{'index':j,
+                            'name':o[j]['name']
+                        }]
+            return result;
+            break;
+        };
+    };
+}
+
+function GetPartner(o,i) {
+    var childfull = GetChild(o,i)
+    if (typeof childfull === 'undefined') {
+        return result
+    }else{
+    var child = GetChild(o,i)[0].index
+    var parent = (o[child]['father']==o[i]['name'] ? 'mother' : 'father' );
+    var j
+    
+    for (var j = 0; j < o.length; j++) {
+        if (o[j]['name']==o[child][parent]) {
+            var result = [{'index':j,
+                            'name':o[child][parent]
+                        }]
+            return result;
+        };
+    };
+};
+}
+
 
 function getFormattedTime() {
     var today = new Date();
@@ -257,7 +294,7 @@ function createNewInd(fathID, mothID, sex, newParentID){
 }
 
 function NewName(){
-    var IdIndex = 2 // define IndivID index
+    var IdIndex = 2 // define IndivID index column
     var col = hot.getDataAtCol(IdIndex)
     var max = Math.max.apply(null, col)+1
     return max.toString()
@@ -286,9 +323,38 @@ function createSister() {
     createNewInd(indexData.FathID, indexData.MothID, 'F')
 }
 
+function createChild(sex) {
+    let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
+    var obj = FormatToPedigreeJS(JSON.parse(myDeepClone)) // import table
+    var indexArr = hot.getSelectedLast()[0]; //get selected row's index
+    let indexData = obj[indexArr]
+    let partner = GetPartner(obj,indexArr)
+
+    // if partner exists, use it as mother/father
+    if (typeof partner != 'undefined') {
+        var partnerIndex = partner[0].index
+        var partnerName = obj[partnerIndex]["name"]
+    }else{
+        // if not, create it
+        let partnerSex = (indexData["sex"]=='M' ? 'F' : 'M' );
+        var partnerName = NewName()
+        createNewInd('0', '0', partnerSex)
+    }
+    if (indexData["sex"]=='M') {
+        FathID = indexData["name"]
+        MothID = partnerName
+    } else {
+        FathID = partnerName
+        MothID = indexData["name"]
+    }
+    createNewInd(FathID, MothID, sex)
+}
+
 function ExportBOADICE4() {
     /*
     BOADICEA import pedigree file format 4.0
     FamID	Name	Target	IndivID	FathID	MothID	Sex	MZTwin	Dead	Age	Yob	1stBrCa	2ndBrCa	OvCa	ProCa	PanCa	Ashkn	BRCA1t	BRCA1r	BRCA2t	BRCA2r	PALB2t	PALB2r	ATMt	ATMr	CHEK2t	CHEK2r	ER	PR	HER2	CK14	CK56
     */
+
+    //based on JSONtoPED()
 }

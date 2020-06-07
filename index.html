@@ -11,34 +11,11 @@
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
 	<link rel="stylesheet" href="dist/css/pedigreejs.min.css" />
 
-	<style>
-		a[href^="http://"][target=_blank]:after, 
-		a[href^="https://"][target=_blank]:after, 
-		a[href^="ftp://"][target=_blank]:after {
-		  content: "\f08e";
-		  font-family: FontAwesome;
-		  font-weight: normal;
-		  font-style: normal;
-		  display: inline-block;
-		  text-decoration: none;
-		  padding: 0px 2px;
-		  display:inline;
-		}
-
-		.fa-rotate-45 {
-			-webkit-transform:rotate(45deg); 
-			-moz-transform:rotate(45deg); 
-			-ms-transform:rotate(45deg); 
-			-o-transform:rotate(45deg);
-			transform:rotate(45deg);
-		}
-	</style>
-
 	<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script> 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/d3@4.13.0/build/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-	<!-- <script src="dist/js/pedigreejs.min.js"></script> -->
+
     <script src="js/io.js"></script>
     <script src="js/pedigree_form.js"></script>
     <script src="js/pedigree.js"></script>
@@ -67,18 +44,15 @@
 	];
 
 	$( document ).ready(function() {
+		// build tree
 		var DEBUG = (pedigree_util.urlParam('debug') === null ? false : true);
 
-		////////////////////
 		var dataset = [
-			{"name": "m11", "sex": "M", "top_level": true},
-			{"name": "f11", "display_name": "Jane",  "sex": "F", "status": 1, "top_level": true, "breast_cancer_diagnosis_age":67, "ovarian_cancer_diagnosis_age":63},
-			{"name": "m12", "sex": "M", "top_level": true},
-			{"name": "f12", "sex": "F", "top_level": true, "breast_cancer_diagnosis_age":55},
-			{"name": "m21", "sex": "M", "mother": "f11", "father": "m11", "age": 56},
-			{"name": "f21", "sex": "F", "mother": "f12", "father": "m12", "breast_cancer_diagnosis_age":55, "breast_cancer2_diagnosis_age": 60, "ovarian_cancer_diagnosis_age":58, "age": 63},
-			{"name": "ch1", "display_name": "Ana", "sex": "F", "mother": "f21", "father": "m21", "proband": true, "age": 25}
+			{"famid":"1","display_name":"","name":"1","father":"2","mother":"3","sex":"M", "proband":true},
+			{"famid":"1","display_name":"","name":"2","sex":"M","top_level":"true"},
+			{"famid":"1","display_name":"","name":"3","sex":"F","top_level":"true"}
 		];
+
 		$( "#pedigrees" ).append( $( "<div id='pedigree_history'></div>" ) );
 		$( "#pedigrees" ).append( $( "<div id='pedigree'></div>" ) );
 
@@ -251,10 +225,8 @@
 		// Update dataset from handsontable
 		function loadFromHot() {
 			let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-			var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status'];
-			var old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased'];
 			
-			var obj = FormatToPedigreeJS(hot.getSourceData(), new_key, old_key);
+			var obj = FormatToPedigreeJS(hot.getSourceData());
 			opts.dataset = obj
 
 			$('<div id="msgDialog">Resetting the pedigree may result in loss of some data.</div>').dialog({
@@ -292,92 +264,234 @@
 </head>
 
 <body>	
-	<div style="margin:0 auto;text-align:center">
+	<div style="text-align:center">
 		<h3>GeneTree</h3>
 		
+		<!--  buttons edit familly-->
+		<div id="dropdownFam" class="dropdown" style="display:inline;">
+			<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Add new familly&nbsp;<span class="caret"></span></button>
+			<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
+				<li>
+					<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Initial family structure:</strong>
+						<form>
+							<div id="famStructure" class="row" >
+								<div class="col-md-4">
+									<label class="radio-inline" data-toggle="popover">
+										<input type="radio" name="default_fam" value="nuclear" checked="">Nuclear
+									</label>
+								</div>
+								<div class="col-md-4" style="padding:0 5px;">
+									<label class="radio-inline" data-toggle="popover">
+										<input type="radio" name="default_fam" value="extended1">1<sup>st</sup> degree
+									</label>
+								</div>
+								<div class="col-md-4" style="padding:0 5px;">
+									<label class="radio-inline" data-toggle="popover">
+										<input type="radio" name="default_fam" value="extended2">2<sup>nd</sup> degree
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-8 text-right">
+									<button id="submitDefautFam" class="intext-btn">Build</button>
+								</div>
+							</div>
+						</form>
+
+						<script>
+							var buttonSubmit = document.getElementById('submitDefautFam');
+							var form = document.querySelector("form") //
+
+							buttonSubmit.addEventListener('click', function() {
+								var data = new FormData(form);
+								var output = "";
+								for (const entry of data) {
+									output = entry[1];
+								};
+								if (output == "nuclear") {
+									hot.loadData(JSON.parse(myDataSafe));
+									hot.loadData(JSON.parse(myDataSafe));
+								} else if (output == "extended1") {
+									hot.loadData(JSON.parse(myDataExtended1Safe));
+									hot.loadData(JSON.parse(myDataExtended1Safe));
+								} else if (output == "extended2") {
+									hot.loadData(JSON.parse(myDataExtended2Safe));
+									hot.loadData(JSON.parse(myDataExtended2Safe));
+								}
+								event.preventDefault();
+								document.getElementById('dropdownFam').classList.remove('open')
+						  	});
+						</script>
+					</div>
+				</li>
+				<li>
+					<div class="alert alert-info" style="padding:5px;margin-bottom:5px">
+						<strong>Number of:</strong>
+						<div class="builder">
+
+							<div class="row">
+								<div class="col-md-8 text-right"><label>brothers</label></div>
+								<div class="col-md-4"><input type="number" id="brother" min="0" max="20"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-8 text-right"><label>sisters</label></div>
+								<div class="col-md-4"><input type="number" id="sister" min="0" max="20"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-8 text-right"><label>sons</label></div>
+								<div class="col-md-4"><input type="number" id="son" min="0" max="20"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-8 text-right"><label>daughters</label></div>
+								<div class="col-md-4"><input type="number" id="daughter" min="0" max="20"></div>
+							</div>
+
+							<!-- submit button -->
+							<div class="row">
+								<div class="col-md-8 text-right">
+									<button id="submitCustomFam" class="intext-btn">Build</button>
+								</div>
+							</div>
+						</div>
+						<script>
+							var buttonSubmit = document.getElementById('submitCustomFam');
+							var brotherInput = document.querySelector('#brother')
+							var sisterInput = document.querySelector('#sister')
+							var sonInput = document.querySelector('#son')
+							var daughterInput = document.querySelector('#daughter')
+
+							buttonSubmit.addEventListener('click', function() {
+								//reset pedigree
+								hot.loadData(JSON.parse(myDataSafe));
+								//select index
+								hot.selectCell(0, 1);
+
+								if( brotherInput.value > 0){
+									for (let step = 0; step < brotherInput.value; step++) {
+										createBrother()
+									}
+								}
+								if( sisterInput.value > 0){
+									for (let step = 0; step < sisterInput.value; step++) {
+										createSister()
+									}
+								}
+								if( sonInput.value > 0){
+									for (let step = 0; step < sisterInput.value; step++) {
+										createChild('M')
+									}
+								}
+								if( daughterInput.value > 0){
+									for (let step = 0; step < sisterInput.value; step++) {
+										createChild('F')
+									}
+								}
+								//event.preventDefault();
+								document.getElementById('dropdownFam').classList.remove('open')
+						  	});
+						</script>
+					</div>
+				</li>
+			</div>
+		</div>
+
 		<!-- create buttons -->
 		<button id="reset" class="intext-btn">Reset</button>
 		<script> var buttonParents = document.getElementById('reset');
 			Handsontable.dom.addEvent(buttonParents, 'click', function() {
-
-				$('<div id="msgDialog2">Resetting the pedigree may result in loss of some data.</div>').dialog({
-					title: 'Confirm Reset',
-					resizable: false,
-					height: "auto",
-					width: 400,
-					modal: true,
-					buttons: {
-						Continue: function() {
-					    	hot.loadData(JSON.parse(myDataSafe))
-					    	$(this).dialog( "close" );
-						},
-						Cancel: function() {
-							$(this).dialog( "close" );
-							return;
-					    }
-					}
-				});
-
+				hot.loadData(JSON.parse(myDataSafe))
 			});
 		</script>
+
 		&nbsp &nbsp &nbsp
 
 		<button id="add-parents" class="intext-btn">Add parents</button>
 		<script> var buttonParents = document.getElementById('add-parents');
 			Handsontable.dom.addEvent(buttonParents, 'click', function() {
-				createParents()
+				createParents();
 			});
 		</script>
+
 		<button id="add-brother" class="intext-btn">Add brother</button>
 		<script> var buttonParents = document.getElementById('add-brother');
 			Handsontable.dom.addEvent(buttonParents, 'click', function() {
-				createBrother()
+				createBrother();
 			});
 		</script>
+
 		<button id="add-sister" class="intext-btn">Add sister</button>
 		<script> var buttonParents = document.getElementById('add-sister');
 			Handsontable.dom.addEvent(buttonParents, 'click', function() {
-				createSister()
+				createSister();
 			});
 		</script>
+
+		<button id="add-son" class="intext-btn">Add son</button>
+		<script> var buttonSon = document.getElementById('add-son');
+			Handsontable.dom.addEvent(buttonSon, 'click', function() {
+				createChild("M");
+			});
+		</script>
+
+		<button id="add-daughter" class="intext-btn">Add daughter</button>
+		<script> var buttonDaughter = document.getElementById('add-daughter');
+			Handsontable.dom.addEvent(buttonDaughter, 'click', function() {
+				createChild("F");
+			});
+		</script>
+
 		<div></div>
 		</br>
 
 		<!-- create handsontable table -->
-		<div id="example" style="width:100%;margin-left:30%;"></div>
+		<div id="example" style="display:inline-block;"></div>
+		</br>
 		<script>
-			var myData = [{
-			"FamID": "1",
-			"Name": "",
-			"IndivID": "1",
-			"FathID": "2",
-			"MothID": "3",
-			"Sex": "M",
-			"Affected":"1",
-			"Deceased":"0",
-			"proband": true,
-		},{
-			"FamID": "1",
-			"Name": "",
-			"IndivID": "2",
-			"FathID": "0",
-			"MothID": "0",
-			"Sex": "M",
-			"Affected":"1",
-			"Deceased":"0",
-		},{
-			"FamID": "1",
-			"Name": "",
-			"IndivID": "3",
-			"FathID": "0",
-			"MothID": "0",
-			"Sex": "F",
-			"Affected":"1",
-			"Deceased":"0",
-		}]
+			//Defaut datasets
+			var myData = [
+				{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+				{"FamID": "1","Name": "","IndivID": "2","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "3","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+			]
 			var myDataSafe = JSON.stringify(myData) //save 
-			var container = document.getElementById('example');
-		
+			
+			var myDataExtended1 = [
+				{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+				{"FamID": "1","Name": "","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+			]
+			var myDataExtended1Safe = JSON.stringify(myDataExtended1) //save
+
+			var myDataExtended2 = [
+				{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+				{"FamID": "1","Name": "","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "5","FathID": "10","MothID": "11","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "6","FathID": "12","MothID": "13","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "7","FathID": "14","MothID": "15","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "8","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "9","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "10","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "11","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "12","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "13","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "14","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+				{"FamID": "1","Name": "","IndivID": "15","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+			]
+			var myDataExtended2Safe = JSON.stringify(myDataExtended2) //save
+
+		//define diseases
+		var diseasesDefaut = ['breast_cancer', 'breast_cancer2','ovarian_cancer','pancreatic_cancer','prostate_cancer']
+		var diseases = diseasesDefaut
+
 		// define column to display
 		var cols = [{
 			data: 'FamID'
@@ -395,21 +509,44 @@
 			data: 'Affected'
 			}, {
 			data: 'Deceased'
+			}, {
+			data: 'Age',
+			type: 'numeric'
+			}, {
+			data: 'Yob',
+			type: 'numeric'
+			}, {
+			data: 'Disease1',
+			type: 'dropdown',
+      		source: diseases
+			}, {
+			data: 'Age1',
+			type: 'numeric'
+			}, {
+			data: 'Disease2',
+			type: 'dropdown',
+      		source: diseases
+			}, {
+			data: 'Age2',
+			type: 'numeric'
+			}, {
+			data: 'Disease3',
+			type: 'dropdown',
+      		source: diseases
+			}, {
+			data: 'Age3',
+			type: 'numeric'
 			}];
 
-
-			//age, yob, twin
-			// remove FamID
-			// disease
-
-
-		// define column header //['FamID','Name','IndivID','FathID','MothID','Sex']
+		// define column header
 		var cols_header = []
 		cols.forEach(function(element) { cols_header.push(element.data); })
-
+		
+		// create handsonetable
+		var container = document.getElementById('example');
 		var hot = new Handsontable(container, {
 			data: myData,
-			rowHeaders: true,
+			rowHeaders: false, //true,
 			colHeaders: cols_header, 
 			columns: cols,
 			filters: true,
@@ -417,6 +554,10 @@
 			className: "htCenter",
 			contextMenu: true,
 			outsideClickDeselects: false,
+			hiddenColumns: {
+				columns: [0],
+				indicators: false
+			},
 			licenseKey: 'non-commercial-and-evaluation'
 			});
 		</script>
@@ -458,10 +599,7 @@
 		Handsontable.dom.addEvent(exportJson, 'click', function() {
 			let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
 
-			var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status']
-			var old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased']
-			ExportJSON(hot.getSourceData(), new_key, old_key)
-
+			ExportJSON(hot.getSourceData())
 			hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 		});
 		</script>
