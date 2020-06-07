@@ -158,7 +158,7 @@ function FormatToPedigreeJS(JSONData) {
             };
 
             //Update diseases
-            UpdateDiseases(o,i)
+            //UpdateDiseases(o,i)
         }
     }
 
