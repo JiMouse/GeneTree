@@ -504,9 +504,9 @@
 			}, {
 			data: 'MothID'
 			}, {
-			data: 'Sex',
-			type: 'dropdown',
-      		source: ['M','F','NA',' ']
+			data: 'Sex'//,
+			//type: 'dropdown',
+      		//source: ['M','F','NA',' ']
 			}, {
 			data: 'Affected',
 			type: 'checkbox',
@@ -571,26 +571,28 @@
 
 		var setter = false;
 		hot.addHook('afterChange', function(changes, source) {
-			col = changes[0][1];
-			var deceasedIndex = 7
-			row = changes[0][0];
-			dead = this.getSourceDataAtCell(row, deceasedIndex)
-			if((source == 'edit') && (col == 'Age' || col == 'Yob') && (dead != 1)) {
-				newValue = changes[0][3];
-				var today = new Date();
-				var y = today.getFullYear();
-				if (!setter) {
-						setter = true;
-					if(col == 'Age'){
-						let value = y-newValue
-						this.setDataAtRowProp(row, 'Yob', value)
+			if(changes != null) {
+				col = changes[0][1];
+				var deceasedIndex = 7
+				row = changes[0][0];
+				dead = this.getSourceDataAtCell(row, deceasedIndex)
+				if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
+					newValue = changes[0][3];
+					var today = new Date();
+					var y = today.getFullYear();
+					if (!setter) {
+							setter = true;
+						if(col == 'Age'){
+							let value = y-newValue
+							this.setDataAtRowProp(row, 'Yob', value)
 
-					}else {
-						let value = y-newValue
-						this.setDataAtRowProp(row, 'Age', value)
+						}else {
+							let value = y-newValue
+							this.setDataAtRowProp(row, 'Age', value)
+						}
+					} else {
+						setter = false;
 					}
-				} else {
-					setter = false;
 				}
 			}
 		},)

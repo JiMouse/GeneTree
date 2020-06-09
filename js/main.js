@@ -180,6 +180,8 @@ function UpdateDiseases(o,i){
         if (content != "" && content != null){
             var new_col = o[i][ col ]
             o[i][new_col+"_diagnosis_age"] = o[i][ age ];
+            delete o[i][ col ];
+            delete o[i][ age ];
         }
         // delete column disease and age either way
         //delete o[i][ col ];
@@ -259,7 +261,7 @@ function getFormattedTime() {
 
 function createNewInd(fathID, mothID, sex, newParentID){
     var indexArr = hot.getSelectedLast(); //get selected row's index
-    //var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+
     var indivID = NewName()
     var rawData = {
                 "FamID": "1",
@@ -286,17 +288,18 @@ function createNewInd(fathID, mothID, sex, newParentID){
     var fathIDindex = 3
     var mothIDindex = 4
     
-    if(newParentID==true) {
+    if(newParentID == true) {
         var parentIndex = (sex == 'M' ? fathIDindex : mothIDindex);
         hot.setDataAtCell(indexArr[0], parentIndex, indivID);
     }
+
 }
 
 function NewName(){
     var IdIndex = 2 // define IndivID index column
     var col = hot.getDataAtCol(IdIndex)
     var max = Math.max.apply(null, col)+1
-    return max.toString()
+    return max
 }
 
 function createParents() {
@@ -304,7 +307,7 @@ function createParents() {
     var indexArr = hot.getSelectedLast(); //get selected row's index
     var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
 
-    if (indexData.FathID === '0' && indexData.MothID === '0') {
+    if (indexData.FathID == '0' && indexData.MothID == '0') {
         createNewInd('0', '0', 'M', true)
         createNewInd('0', '0', 'F', true)
     }
