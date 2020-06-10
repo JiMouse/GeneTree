@@ -154,6 +154,14 @@
 			io.save(opts);
 		});
 
+		//New
+		$('#boadicea_download').click(function(e) {
+			var content = JSON.stringify(pedcache.current(opts));
+			ExportBOADICEv4(content)
+			//io.save_file(opts, obj);
+		});
+		// End New
+
 		$('#save_canrisk').click(function(e) {
 			var meta = io.get_surgical_ops();
 			try {

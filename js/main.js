@@ -1,56 +1,3 @@
-function JSONToCSVConvertor(JSONData, colHeaders) {
-    var 
-        arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
-        CSV = '',   
-        row = "",
-        fileName = "handsontable.csv";
-
-    // Put the header (based on the colHeaders of my table in my example)
-    for (var index in colHeaders) {
-        row += colHeaders[index] + ';';
-    }
-    row = row.slice(0, -1);
-    CSV += row + '\r\n';
-
-    // Adding each rows of the table
-    for (var i = 0; i < arrData.length; i++) {
-        var row = "";
-        for (var index in arrData[i]) {
-            row += arrData[i][index] + ';';
-        }
-        row = row.slice(0, -1);
-        CSV += row + '\r\n';
-    }
-
-    if (CSV == '') {
-        alert("Invalid data");
-        return;
-    }        
-
-    // Downloading the new generated csv.
-    // For IE >= 9
-    if(window.navigator.msSaveOrOpenBlob) {
-        var fileData = [CSV];
-        blobObject = new Blob(fileData);
-        window.navigator.msSaveOrOpenBlob(blobObject, fileName);
-    } else { 
-    // For Chome/Firefox/Opera
-        var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-
-        var link = document.createElement("a");    
-        link.href = uri;
-
-        link.style = "visibility:hidden";
-        link.download = fileName;
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    
-    }
-    
-}
-
 function JSONToPEDConvertor(JSONData, toKeep) {
     var 
         arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
@@ -352,11 +299,74 @@ function createChild(sex) {
     createNewInd(FathID, MothID, sex)
 }
 
-function ExportBOADICE4() {
-    /*
-    BOADICEA import pedigree file format 4.0
-    FamID	Name	Target	IndivID	FathID	MothID	Sex	MZTwin	Dead	Age	Yob	1stBrCa	2ndBrCa	OvCa	ProCa	PanCa	Ashkn	BRCA1t	BRCA1r	BRCA2t	BRCA2r	PALB2t	PALB2r	ATMt	ATMr	CHEK2t	CHEK2r	ER	PR	HER2	CK14	CK56
-    */
+function ExportBOADICEv4(JSONData) {
+    var 
+        arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+        CSV = '',   
+        row = "BOADICEA import pedigree file format 4.0",
+        mainHeader = ["FamID","Name","Target","IndivID","FathID","MothID","Sex","MZTwin","Dead","Age","Yob","1stBrCa","2ndBrCa","OvCa","ProCa","PanCa"].join('\t')
+        otherHeader = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"].join('\t')
+        fileName = 'Boadicea_'+ getFormattedTime() +'.txt';
 
-    //based on JSONtoPED()
+    // Put the header
+    header = mainHeader + ' \t' + otherHeader
+    row += '\r\n' + header
+    CSV += row + '\r\n';
+
+    // Adding each rows of the table
+    for (var i = 0; i < arrData.length; i++) {
+        var std = '0'+ '\t'
+        function KeyStatus(i,key,output) {
+            let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
+            return result
+        }
+        let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
+        let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
+
+        var row = [
+            '1', //arrData[i]['famid'],
+            arrData[i]['name'], //arrData[i]['display_name'], provisoire
+            KeyStatus(i,'proband','1'),
+            arrData[i]['name'],
+            father,
+            mother,
+            arrData[i]['sex'],
+            KeyStatus(i,'MZTwin','1'),
+            KeyStatus(i,'status','1'),
+            arrData[i]['age'],
+            arrData[i]['yob'],
+            KeyStatus(i,'breast_cancer_diagnosis_age',arrData[i][ 'breast_cancer_diagnosis_age' ]),
+            KeyStatus(i,'breast_cancer2_diagnosis_age',arrData[i][ 'breast_cancer2_diagnosis_age' ]),
+            KeyStatus(i,'ovarian_cancer_diagnosis_age',arrData[i][ 'ovarian_cancer_diagnosis_age' ]),
+            KeyStatus(i,'pancreatic_cancer_diagnosis_age',arrData[i][ 'pancreatic_cancer_diagnosis_age' ]),
+            KeyStatus(i,'prostate_cancer_diagnosis_age',arrData[i][ 'prostate_cancer_diagnosis_age' ])
+        ].join('\t')
+
+        row += '\t' + std.repeat(16) //otherHeader
+        row = row.slice(0, -1);
+        CSV += row + '\r\n';
+    }
+
+    // Downloading the new generated csv.
+    // For IE >= 9
+    if(window.navigator.msSaveOrOpenBlob) {
+    var fileData = [CSV];
+    blobObject = new Blob(fileData);
+    window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+    } else { 
+    // For Chome/Firefox/Opera
+    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+    var link = document.createElement("a");    
+    link.href = uri;
+
+    link.style = "visibility:hidden";
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    }
+
 }

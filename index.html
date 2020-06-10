@@ -364,7 +364,7 @@
 									<!-- submit button -->
 									<div class="row">
 										<div class="col-md-8 text-right">
-											<button id="submitCustomFam" class="intext-btn">Build</button>
+											<button id="submitCustomFam" class="intext-btn ">Build</button>
 										</div>
 									</div>
 								</div>
@@ -411,7 +411,7 @@
 				</div>
 
 				<!-- create buttons -->
-				<button id="reset" class="intext-btn">Reset</button>
+				<button id="reset" class="intext-btn ">Reset</button>
 				<script>
 					var buttonParents = document.getElementById('reset');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -619,7 +619,7 @@
 				</br>		
 
 				<!-- create export to TSV button -->
-				<button id="export-file" class="intext-btn">Download TSV</button>
+				<button id="export-file" class="intext-btn">TSV <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					var button1 = document.getElementById('export-file');
 					var exportPlugin1 = hot.getPlugin('exportFile');
@@ -641,7 +641,7 @@
 				</script>
 
 				<!-- create export to PED button -->		
-				<button id="savePed" class="intext-btn">Download as PED</button>
+				<button id="savePed" class="intext-btn">PED <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(savePed, 'click', function() {
 						var toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected']
@@ -650,12 +650,22 @@
 				</script>
 
 				<!-- create export to JSON button -->
-				<button id="exportJson" class="intext-btn">Download as JSON</button>
+				<button id="exportJson" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(exportJson, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-
 						ExportJSON(hot.getSourceData())
+						hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
+					});
+				</script>
+
+				<!-- create export to BOADICEA button -->
+				<button id="exportBOADICEA" class="intext-btn">BOADICEA <i class="fa fa-download"></i></button>
+				<script>
+					Handsontable.dom.addEvent(exportBOADICEA, 'click', function() {
+						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
+						var Tdata = FormatToPedigreeJS(hot.getSourceData())
+						ExportBOADICEv4(Tdata)
 						hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 					});
 				</script>
@@ -667,23 +677,29 @@
 			<h3>Pedigree</h3>
 			<div class="text-center">
 				<label class="btn btn-default btn-file">
-					<input id="loadFromHot" type="button" style="display: none;"/>Load from table
+					<input id="loadFromHot" type="button" style="display: none;"/>Load from table <i class="fa fa-refresh"></i>
 				</label>
 				<label class="btn btn-default btn-file">
-						<input id="load" type="file" style="display: none;"/>Load
-				</label>	
+						<input id="load" type="file" style="display: none;"/><i class="fa fa-folder-open-o"></i>
+				</label>
+				&emsp;
 				<label class="btn btn-default btn-file">
-						<input id="save" type="button" style="display: none;"/>Save
+						<input id="save" type="button" style="display: none;"/><i class="fa fa-download"></i>
 				</label>
 				<label class="btn btn-default btn-file">
-						<input id="svg_download" type="button" style="display: none;"/>SVG
+						<input id="svg_download" type="button" style="display: none;"/>SVG <i class="fa fa-download"></i>
 				</label>
 				<label class="btn btn-default btn-file">
-						<input id="png_download" type="button" style="display: none;"/>PNG
+						<input id="png_download" type="button" style="display: none;"/><i class="fa fa-file-image-o"></i>
 				</label>
+				<label class="btn btn-default btn-file">
+					<input id="boadicea_download" type="button" style="display: none;"/>BOADICEA <i class="fa fa-download"></i>
+				</label>
+				&emsp;
 				<label class="btn btn-default btn-file">
 					<input id="fh_edit_settings" type="button" style="display: none;"><i class="fa fa-cog" aria-hidden="true"></i>
 				</label>
+				<br></br>
 
 				<!-- create pedigree -->
 				<div id="pedigrees"></div>
