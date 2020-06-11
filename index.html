@@ -411,11 +411,27 @@
 				</div>
 
 				<!-- create buttons -->
-				<button id="reset" class="intext-btn ">Reset</button>
+				<button id="reset" class="intext-btn "><i class="fa fa-eraser" aria-hidden="true"></i></button>
 				<script>
-					var buttonParents = document.getElementById('reset');
-					Handsontable.dom.addEvent(buttonParents, 'click', function() {
+					var buttonReset = document.getElementById('reset');
+					Handsontable.dom.addEvent(buttonReset, 'click', function() {
 						hot.loadData(JSON.parse(myDataSafe))
+					});
+				</script>
+
+				<button id="undo" class="intext-btn "><i class="fa fa-undo" aria-hidden="true"></i></button>
+				<script>
+					var buttonUndo = document.getElementById('undo');
+					Handsontable.dom.addEvent(buttonUndo, 'click', function() {
+						hot.undo()
+					});
+				</script>
+
+				<button id="redo" class="intext-btn "><i class="fa fa-repeat" aria-hidden="true"></i></button>
+				<script>
+					var buttonRedo = document.getElementById('redo');
+					Handsontable.dom.addEvent(buttonRedo, 'click', function() {
+						hot.redo()
 					});
 				</script>
 
@@ -581,6 +597,7 @@
 						className: "htCenter",
 						contextMenu: true,
 						outsideClickDeselects: false,
+						undo: true,
 						hiddenColumns: {
 							columns: [0],
 							indicators: false
