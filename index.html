@@ -478,6 +478,17 @@
 						createChild("F");
 					});
 				</script>
+
+				&nbsp &nbsp &nbsp
+
+				<button id="add-name" class="intext-btn">Add names</button>
+				<script>
+					var buttonName = document.getElementById('add-name');
+					Handsontable.dom.addEvent(buttonName, 'click', function() {
+						displayName(1, hot.getSourceData())
+					});
+				</script>
+
 			</div>
 		</div>
 		</br>

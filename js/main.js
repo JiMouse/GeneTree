@@ -368,13 +368,72 @@ function ExportBOADICEv4(JSONData) {
     document.body.removeChild(link);
 
     }
-
 }
 
 function displayName(i, JSONData) {
-    var o = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    var index = 1
-    var father = o[index]['father']
-    var mother = o[index]['mother']
+    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    var names = []
+    var indexID = 1
+    
+    function getRow(id) {
+        let j
+        for (j = 0; j < obj.length; j++) {
+            if (obj[j].IndivID == id) {
+                return j;
+                break;
+            };
+        }
+    }
 
+    function isFather(i, index) {
+        return(obj[i].IndivID == obj[getRow(index)].FathID);
+    }
+    
+    function isMother(i, index) {
+        return(obj[i].IndivID == obj[getRow(index)].MothID);
+    }
+    
+    function isBrother(i, index) {
+        return(
+            obj[i].FathID != '0' 
+            && obj[i].MothID != '0'
+            && obj[i].MothID == obj[getRow(index)].MothID
+            && obj[i].FathID == obj[getRow(index)].FathID
+            && obj[i].Sex == 'M'
+    );
+    }
+    
+    function isSister(i, index) {
+        return(
+            obj[i].FathID != '0' 
+            && obj[i].MothID != '0'
+            && obj[i].MothID == obj[getRow(index)].MothID
+            && obj[i].FathID == obj[getRow(index)].FathID
+            && obj[i].Sex == 'F'
+    );
+    }
+    
+    for (var i = 0; i < obj.length; i++) {
+        if(i == getRow(indexID)) result='index';
+        else if (isBrother(i, indexID)){result = 'brother'; brother = obj[i].IndivID}
+        else if (isSister(i, indexID)){result = 'sister'; sister = obj[i].IndivID}
+
+        else if(isFather(i, indexID)){result = 'father'; father = obj[i].IndivID}
+        else if (isMother(i, indexID)){result = 'mother'; mother = obj[i].IndivID}
+
+        else if (isBrother(i, father)){result = 'uncle pat.'; brother = obj[i].IndivID}
+        else if (isSister(i, father)){result = 'aunt pat.'; sister = obj[i].IndivID}
+        else if (isBrother(i, mother)){result = 'uncle mat.'; brother = obj[i].IndivID}
+        else if (isSister(i, mother)){result = 'aunt mat.'; sister = obj[i].IndivID}
+        
+        else if(isFather(i, father)){result = 'Grd father pat.'; gfpat = obj[i].IndivID}
+        else if(isMother(i, father)){result = 'Grd Mother pat.'; gmpat = obj[i].IndivID}
+        else if(isFather(i, mother)){ result = 'Grd father mat.'; gfmat = obj[i].IndivID}
+        else if(isMother(i, mother)){result = 'Grd Mother mat.'; gmmat = obj[i].IndivID}
+        
+        else result =""
+        
+        names.push([result])
+    }
+    hot.populateFromArray(0, 1, names)
 }
