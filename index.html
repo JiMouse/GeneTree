@@ -230,8 +230,9 @@
 			let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
 			
 			var obj = FormatToPedigreeJS(hot.getSourceData());
-			opts.dataset = obj
-
+			opts.dataset = obj	
+			ptree.rebuild(opts)
+			/*
 			$('<div id="msgDialog">Resetting the pedigree may result in loss of some data.</div>').dialog({
 					title: 'Confirm Reset',
 					resizable: false,
@@ -249,6 +250,7 @@
 					    }
 					}
 				});
+			*/
 			
 			hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 		}

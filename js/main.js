@@ -370,3 +370,11 @@ function ExportBOADICEv4(JSONData) {
     }
 
 }
+
+function displayName(i, JSONData) {
+    var o = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    var index = 1
+    var father = o[index]['father']
+    var mother = o[index]['mother']
+
+}
