@@ -68,18 +68,18 @@
 				$("#"+opts.targetDiv).empty();
 				ptree.build(opts);
 			} else if ($(e.target).hasClass('fa-refresh')) {
-				$('<div id="msgDialog">Resetting the pedigree may result in loss of some data.</div>').dialog({
-					title: 'Confirm Reset',
+				$('<div id="msgDialog">Réinitialiser entraînera une perte de données.</div>').dialog({
+					title: 'Confirmez la réinitialisation',
 					resizable: false,
 					height: "auto",
 					width: 400,
 					modal: true,
 					buttons: {
-						Continue: function() {
+						Continuer: function() {
 					    	pbuttons.reset(opts, opts.keep_proband_on_reset);
 					    	$(this).dialog( "close" );
 						},
-						Cancel: function() {
+						Annuler: function() {
 							$(this).dialog( "close" );
 							return;
 					    }

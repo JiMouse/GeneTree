@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 	<title>GeneTree</title>
 	<meta charset="UTF-8">
@@ -38,6 +38,8 @@
 	function capitaliseFirstLetter(string) {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	}
+	//['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
+	/*
 	var DEFAULT_DISEASES = [
 		 {'type': 'breast_cancer', 'colour': '#F68F35'},
 		 {'type': 'breast_cancer2', 'colour': 'pink'},
@@ -45,15 +47,23 @@
 		 {'type': 'pancreatic_cancer', 'colour': '#4289BA'},
 		 {'type': 'prostate_cancer', 'colour': '#D5494A'}
 	];
+	*/
+	var DEFAULT_DISEASES = [
+		 {'type': 'cancer_sein', 'colour': '#F68F35'},
+		 {'type': 'cancer_sein2', 'colour': 'pink'},
+		 {'type': 'cancer_ovaire', 'colour': '#4DAA4D'},
+		 {'type': 'cancer_pancréas', 'colour': '#4289BA'},
+		 {'type': 'cancer_prostate', 'colour': '#D5494A'}
+	];
 
 	$( document ).ready(function() {
 		// build tree
 		var DEBUG = (pedigree_util.urlParam('debug') === null ? false : true);
 
 		var dataset = [
-			{"famid":"1","display_name":"","name":"1","father":"2","mother":"3","sex":"M", "proband":true},
-			{"famid":"1","display_name":"","name":"2","sex":"M","top_level":"true"},
-			{"famid":"1","display_name":"","name":"3","sex":"F","top_level":"true"}
+			{"famid":"1","display_name":"index","name":"1","father":"2","mother":"3","sex":"M", "proband":true},
+			{"famid":"1","display_name":"Père","name":"2","sex":"M","top_level":"true"},
+			{"famid":"1","display_name":"Mère","name":"3","sex":"F","top_level":"true"}
 		];
 
 		$( "#pedigrees" ).append( $( "<div id='pedigree_history'></div>" ) );
@@ -86,15 +96,16 @@
 		$('#fh_edit_settings').on( "click", function() {
 			$('#fh_settings').dialog({
 			    autoOpen: false,
-			    title: "Disease Configuration",
+			    title: "Configuration des pathologies",
 			    buttons: [
 			        {
-			        	text: "RESET",
+			        	text: "Réinitialiser",
 			          	click: function() {
 			          		$("#reset_dialog").dialog({
+								title: 'Confirmez la réinitialisation',
 			          	        modal: true,
 			          	        buttons: {
-			          	          Yes: function() {
+			          	          Oui: function() {
 							      	newdataset = ptree.copy_dataset(pedcache.current(opts));
 							        opts.dataset = newdataset;
 							        opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
@@ -103,7 +114,7 @@
 							        localStorage.setItem('diseases', JSON.stringify(opts.diseases));
 							        $(this).dialog("close");
 			          	          },
-			          	          No: function() {
+			          	          Non: function() {
 			          	          	$(this).dialog("close");
 			          	          }
 			          	        }
@@ -125,7 +136,7 @@
 			var html_dis =
 				'<br><div class="row">'+
 					'<div class="col-md-4 text-right">'+
-				  		'<label for="dis_name">Add Disease:</label>' +
+				  		'<label for="dis_name">Ajouter une maladie:</label>' +
 					'</div>' +
 					'<div class="col-md-6">'+
 			  			'<input type="text" class="form-control" id="dis_name">' +
@@ -156,7 +167,7 @@
 
 			function update_diseases() {
 				var tab = "<table class='table table-condensed table-striped table-bordered'>" +
-							"<thead><tr><th>Disease</th><th>Colour</th><th></th></tr></thead>";
+							"<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
 				$.each(opts.diseases, function(k, v) {
 					var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
 					tab += "<tr>" +
@@ -194,7 +205,7 @@
 						var this_colour = $(this).val();
 						// test if valid colour string or hex
 						if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour)){
-							console.error('Invalid colour!', this_colour);
+							console.error('Couleur invalide !', this_colour);
 							return;
 						}
 						var new_diseases = $.extend(true, [], opts.diseases);
@@ -271,43 +282,43 @@
 <body>
 	<div class="jumbotron" style="background-color: #d9e7f7">
 		<div class="container">
-				  <a class="btn btn-primary btn-lg pull-right" role="button" href="https://github.com/JiMouse/GeneTree/">View on GitHub</a>
-				  <h1 style="color: #002e5d">GeneTree</h1>
-				  <h2>A one-in-three web tool for building pedigrees, boadicea-file and clinical history.</h2>
+				  <a class="btn btn-primary btn-lg pull-right" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
+				  <h1 style="color: #002e5d"><i>GeneTree</i></h1>
+				  <h2>Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.</h2>
 		</div>
 	</div>
 
 	<div class="container">
 		<div class = "row">
-		<h3>Pedigree table</h3>
+		<h3>Tableau</h3>
 			<div class="text-center">
 				<!--  buttons edit familly-->
 				<div id="dropdownFam" class="dropdown" style="display:inline;">
-					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Add new familly&nbsp;<span class="caret"></span></button>
+					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
 					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
 						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Initial family structure:</strong>
+							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Structure :</strong>
 								<form>
 									<div id="famStructure" class="row" >
 										<div class="col-md-4">
 											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="nuclear" checked="">Nuclear
+												<input type="radio" name="default_fam" value="nuclear" checked="">Noyau
 											</label>
 										</div>
 										<div class="col-md-4" style="padding:0 5px;">
 											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="extended1">1<sup>st</sup> degree
+												<input type="radio" name="default_fam" value="extended1">1<sup>er</sup> degré
 											</label>
 										</div>
 										<div class="col-md-4" style="padding:0 5px;">
 											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="extended2">2<sup>nd</sup> degree
+												<input type="radio" name="default_fam" value="extended2">2<sup>ième</sup> degré
 											</label>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-8 text-right">
-											<button id="submitDefautFam" class="intext-btn">Build</button>
+											<button id="submitDefautFam" class="intext-btn">Créer</button>
 										</div>
 									</div>
 								</form>
@@ -340,33 +351,33 @@
 						</li>
 						<li>
 							<div class="alert alert-info" style="padding:5px;margin-bottom:5px">
-								<strong>Number of:</strong>
+								<strong>Nombre de :</strong>
 								<div class="builder">
 
 									<div class="row">
-										<div class="col-md-8 text-right"><label>brothers</label></div>
+										<div class="col-md-8 text-right"><label>frères</label></div>
 										<div class="col-md-4"><input type="number" id="brother" min="0" max="20"></div>
 									</div>
 
 									<div class="row">
-										<div class="col-md-8 text-right"><label>sisters</label></div>
+										<div class="col-md-8 text-right"><label>sœurs</label></div>
 										<div class="col-md-4"><input type="number" id="sister" min="0" max="20"></div>
 									</div>
 
 									<div class="row">
-										<div class="col-md-8 text-right"><label>sons</label></div>
+										<div class="col-md-8 text-right"><label>fils</label></div>
 										<div class="col-md-4"><input type="number" id="son" min="0" max="20"></div>
 									</div>
 
 									<div class="row">
-										<div class="col-md-8 text-right"><label>daughters</label></div>
+										<div class="col-md-8 text-right"><label>filles</label></div>
 										<div class="col-md-4"><input type="number" id="daughter" min="0" max="20"></div>
 									</div>
 
 									<!-- submit button -->
 									<div class="row">
 										<div class="col-md-8 text-right">
-											<button id="submitCustomFam" class="intext-btn ">Build</button>
+											<button id="submitCustomFam" class="intext-btn ">Créer</button>
 										</div>
 									</div>
 								</div>
@@ -439,7 +450,7 @@
 
 				&nbsp &nbsp &nbsp
 
-				<button id="add-parents" class="intext-btn">Add parents</button>
+				<button id="add-parents" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
 				<script>
 					var buttonParents = document.getElementById('add-parents');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -447,7 +458,7 @@
 					});
 				</script>
 
-				<button id="add-brother" class="intext-btn">Add brother</button>
+				<button id="add-brother" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
 				<script>
 					var buttonParents = document.getElementById('add-brother');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -455,7 +466,7 @@
 					});
 				</script>
 
-				<button id="add-sister" class="intext-btn">Add sister</button>
+				<button id="add-sister" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
 				<script>
 					var buttonParents = document.getElementById('add-sister');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -463,7 +474,7 @@
 					});
 				</script>
 
-				<button id="add-son" class="intext-btn">Add son</button>
+				<button id="add-son" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
 				<script>
 					var buttonSon = document.getElementById('add-son');
 					Handsontable.dom.addEvent(buttonSon, 'click', function() {
@@ -471,7 +482,7 @@
 					});
 				</script>
 
-				<button id="add-daughter" class="intext-btn">Add daughter</button>
+				<button id="add-daughter" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
 				<script>
 					var buttonDaughter = document.getElementById('add-daughter');
 					Handsontable.dom.addEvent(buttonDaughter, 'click', function() {
@@ -481,11 +492,11 @@
 
 				&nbsp &nbsp &nbsp
 
-				<button id="add-name" class="intext-btn">Add names</button>
+				<button id="add-name" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> noms</button>
 				<script>
 					var buttonName = document.getElementById('add-name');
 					Handsontable.dom.addEvent(buttonName, 'click', function() {
-						displayName(1, hot.getSourceData())
+						displayName(hot.getSourceData())
 					});
 				</script>
 
@@ -500,31 +511,31 @@
 				<script>
 					//Defaut datasets
 					var myData = [
-						{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "","IndivID": "2","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "3","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
 					]
 					var myDataSafe = JSON.stringify(myData) //save 
 					
 					var myDataExtended1 = [
-						{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+						{"FamID": "1","Name": "index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Père pat.","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Mère pat.","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Père mat.","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Mère mat.","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
 					]
 					var myDataExtended1Safe = JSON.stringify(myDataExtended1) //save
 
 					var myDataExtended2 = [
-						{"FamID": "1","Name": "","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "5","FathID": "10","MothID": "11","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "6","FathID": "12","MothID": "13","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "7","FathID": "14","MothID": "15","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Père pat.","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Mère pat.","IndivID": "5","FathID": "10","MothID": "11","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Père mat.","IndivID": "6","FathID": "12","MothID": "13","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+						{"FamID": "1","Name": "Grand-Mère mat.","IndivID": "7","FathID": "14","MothID": "15","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "","IndivID": "8","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "","IndivID": "9","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "","IndivID": "10","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
@@ -537,7 +548,8 @@
 					var myDataExtended2Safe = JSON.stringify(myDataExtended2) //save
 
 					//define diseases
-					var diseasesDefaut = ['breast_cancer', 'breast_cancer2','ovarian_cancer','pancreatic_cancer','prostate_cancer']
+					//var diseasesDefaut = ['breast_cancer', 'breast_cancer2','ovarian_cancer','pancreatic_cancer','prostate_cancer']
+					var diseasesDefaut = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
 					var diseases = diseasesDefaut
 
 					// define column to display
@@ -595,8 +607,9 @@
 						}];
 
 					// define column header
-					var cols_header = []
-					cols.forEach(function(element) { cols_header.push(element.data); })
+					//var cols_header = [];
+					//cols.forEach(function(element) { cols_header.push(element.data); });
+					cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint', 'Décés', 'Âge', 'Ddn', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3']
 					
 					// create handsonetable
 					var container = document.getElementById('example');
@@ -612,7 +625,7 @@
 						outsideClickDeselects: false,
 						undo: true,
 						hiddenColumns: {
-							columns: [0],
+							columns: [0,6], //hide famID and affected
 							indicators: false
 						},
 						licenseKey: 'non-commercial-and-evaluation'
@@ -704,10 +717,10 @@
 
 		<!-- create pedigree buttons -->
 		<div class='row'>
-			<h3>Pedigree</h3>
+			<h3>Arbre généalogique</h3>
 			<div class="text-center">
 				<label class="btn btn-default btn-file">
-					<input id="loadFromHot" type="button" style="display: none;"/>Load from table <i class="fa fa-refresh"></i>
+					<input id="loadFromHot" type="button" style="display: none;"/>Charger le tableau <i class="fa fa-refresh"></i>
 				</label>
 				<label class="btn btn-default btn-file">
 						<input id="load" type="file" style="display: none;"/><i class="fa fa-folder-open-o"></i>
@@ -742,7 +755,7 @@
 		</div>
 
 		<div class='row'>
-			<h3>Pedigree history</h3>
+			<h3>Histoire clinique</h3>
 			<div class="text-center">
 				<textarea id="story" name="story" rows="5" cols="33"></textarea>
 				<script>
@@ -757,7 +770,7 @@
 						"Deceased":"0"
 						}
 
-					var result = "in progress" //"il s'agit d'un " + rawData.Sex + "de x ans, né(e) en y."
+					var result = "En cours." //"il s'agit d'un " + rawData.Sex + "de x ans, né(e) en y."
 
 					document.getElementById('story').value = result
 				</script>

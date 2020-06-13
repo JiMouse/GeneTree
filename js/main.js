@@ -316,16 +316,18 @@ function ExportBOADICEv4(JSONData) {
     // Adding each rows of the table
     for (var i = 0; i < arrData.length; i++) {
         var std = '0'+ '\t'
+
         function KeyStatus(i,key,output) {
             let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
             return result
         }
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
+        let name = (arrData[i]['display_name'] != null ? arrData[i]['display_name'] : arrData[i]['name'])
 
         var row = [
             '1', //arrData[i]['famid'],
-            arrData[i]['name'], //arrData[i]['display_name'], provisoire
+            name,
             KeyStatus(i,'proband','1'),
             arrData[i]['name'],
             father,
@@ -335,11 +337,11 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'status','1'),
             arrData[i]['age'],
             arrData[i]['yob'],
-            KeyStatus(i,'breast_cancer_diagnosis_age',arrData[i][ 'breast_cancer_diagnosis_age' ]),
-            KeyStatus(i,'breast_cancer2_diagnosis_age',arrData[i][ 'breast_cancer2_diagnosis_age' ]),
-            KeyStatus(i,'ovarian_cancer_diagnosis_age',arrData[i][ 'ovarian_cancer_diagnosis_age' ]),
-            KeyStatus(i,'pancreatic_cancer_diagnosis_age',arrData[i][ 'pancreatic_cancer_diagnosis_age' ]),
-            KeyStatus(i,'prostate_cancer_diagnosis_age',arrData[i][ 'prostate_cancer_diagnosis_age' ])
+            KeyStatus(i,'cancer_sein_diagnosis_age',arrData[i][ 'cancer_sein_diagnosis_age' ]),
+            KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]),
+            KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]),
+            KeyStatus(i,'cancer_pancréas_diagnosis_age',arrData[i][ 'cancer_pancréas_diagnosis_age' ]),
+            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ])
         ].join('\t')
 
         row += '\t' + std.repeat(16) //otherHeader
@@ -370,9 +372,8 @@ function ExportBOADICEv4(JSONData) {
     }
 }
 
-function displayName(i, JSONData) {
+function getName(i, JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    var names = []
     var indexID = 1
     
     function getRow(id) {
@@ -413,26 +414,34 @@ function displayName(i, JSONData) {
     );
     }
     
+    if(i == getRow(indexID)) result='Index';
+    else if (isBrother(i, indexID)){result = 'Frère'; brother = obj[i].IndivID}
+    else if (isSister(i, indexID)){result = 'Soeur'; sister = obj[i].IndivID}
+
+    else if(isFather(i, indexID)){result = 'Père'; father = obj[i].IndivID}
+    else if (isMother(i, indexID)){result = 'Mère'; mother = obj[i].IndivID}
+
+    else if (isBrother(i, father)){result = 'Oncle pat.'; brother = obj[i].IndivID}
+    else if (isSister(i, father)){result = 'Tante pat.'; sister = obj[i].IndivID}
+    else if (isBrother(i, mother)){result = 'Oncle mat.'; brother = obj[i].IndivID}
+    else if (isSister(i, mother)){result = 'Tante mat.'; sister = obj[i].IndivID}
+    
+    else if(isFather(i, father)){result = 'Grand-Père pat.'; gfpat = obj[i].IndivID}
+    else if(isMother(i, father)){result = 'Grand-Mère pat.'; gmpat = obj[i].IndivID}
+    else if(isFather(i, mother)){ result = 'Grand-Père mat.'; gfmat = obj[i].IndivID}
+    else if(isMother(i, mother)){result = 'Grand-Mère mat.'; gmmat = obj[i].IndivID}
+    
+    else result =""
+
+    return result
+}
+
+
+function displayName(JSONData) {
+    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+        names = [];
     for (var i = 0; i < obj.length; i++) {
-        if(i == getRow(indexID)) result='index';
-        else if (isBrother(i, indexID)){result = 'brother'; brother = obj[i].IndivID}
-        else if (isSister(i, indexID)){result = 'sister'; sister = obj[i].IndivID}
-
-        else if(isFather(i, indexID)){result = 'father'; father = obj[i].IndivID}
-        else if (isMother(i, indexID)){result = 'mother'; mother = obj[i].IndivID}
-
-        else if (isBrother(i, father)){result = 'uncle pat.'; brother = obj[i].IndivID}
-        else if (isSister(i, father)){result = 'aunt pat.'; sister = obj[i].IndivID}
-        else if (isBrother(i, mother)){result = 'uncle mat.'; brother = obj[i].IndivID}
-        else if (isSister(i, mother)){result = 'aunt mat.'; sister = obj[i].IndivID}
-        
-        else if(isFather(i, father)){result = 'Grd father pat.'; gfpat = obj[i].IndivID}
-        else if(isMother(i, father)){result = 'Grd Mother pat.'; gmpat = obj[i].IndivID}
-        else if(isFather(i, mother)){ result = 'Grd father mat.'; gfmat = obj[i].IndivID}
-        else if(isMother(i, mother)){result = 'Grd Mother mat.'; gmmat = obj[i].IndivID}
-        
-        else result =""
-        
+        result = getName(i, obj)
         names.push([result])
     }
     hot.populateFromArray(0, 1, names)
