@@ -207,10 +207,9 @@ function getFormattedTime() {
 }
 
 function createNewInd(fathID, mothID, sex, newParentID){
-    var indexArr = hot.getSelectedLast(); //get selected row's index
-
-    var indivID = NewName()
-    var rawData = {
+    var indexArr = hot.getSelectedLast(), //get selected row's index
+        indivID = NewName(),
+        rawData = {
                 "FamID": "1",
                 "Name": "",
                 "IndivID": indivID,
@@ -219,7 +218,7 @@ function createNewInd(fathID, mothID, sex, newParentID){
                 "Sex": sex,
                 "Affected":"1",
                 "Deceased":"0"
-                }
+                };
 
     //convert json data to array
     var result = [];
@@ -232,14 +231,17 @@ function createNewInd(fathID, mothID, sex, newParentID){
 
     //update index
     //define col index
-    var fathIDindex = 3
-    var mothIDindex = 4
+    var fathIDindex = 3,
+        mothIDindex = 4;
     
     if(newParentID == true) {
         var parentIndex = (sex == 'M' ? fathIDindex : mothIDindex);
         hot.setDataAtCell(indexArr[0], parentIndex, indivID);
-    }
+    };
 
+    //add names
+    var nameInd = getName(indexArr[0]+1, hot.getSourceData());
+    hot.setDataAtCell(indexArr[0]+1, 1, nameInd);
 }
 
 function NewName(){
@@ -263,13 +265,17 @@ function createParents() {
 function createBrother() {
     var indexArr = hot.getSelectedLast(); //get selected row's index
     var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-    createNewInd(indexData.FathID, indexData.MothID, 'M')
+    if(indexData.FathID != 0 && indexData.MothID != 0) {
+        createNewInd(indexData.FathID, indexData.MothID, 'M')
+    }else{alert('Parents non créés')}
 }
 
 function createSister() {
     var indexArr = hot.getSelectedLast(); //get selected row's index
     var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-    createNewInd(indexData.FathID, indexData.MothID, 'F')
+    if(indexData.FathID != 0 && indexData.MothID != 0) {
+        createNewInd(indexData.FathID, indexData.MothID, 'F')
+    }else{alert('Parents non créés')}
 }
 
 function createChild(sex) {
@@ -278,6 +284,7 @@ function createChild(sex) {
     var indexArr = hot.getSelectedLast()[0]; //get selected row's index
     let indexData = obj[indexArr]
     let partner = GetPartner(obj,indexArr)
+    var pre = (sex == 'M' ? 'Fils' : 'Fille')
 
     // if partner exists, use it as mother/father
     if (typeof partner != 'undefined') {
@@ -290,13 +297,32 @@ function createChild(sex) {
         createNewInd('0', '0', partnerSex)
     }
     if (indexData["sex"]=='M') {
-        FathID = indexData["name"]
-        MothID = partnerName
+        FathID = indexData["name"];
+        MothID = partnerName;
     } else {
-        FathID = partnerName
-        MothID = indexData["name"]
+        FathID = partnerName;
+        MothID = indexData["name"];
     }
-    createNewInd(FathID, MothID, sex)
+
+    createNewInd(FathID, MothID, sex);
+
+    //add name
+    // check if already exist
+    colnames = []
+    for (var j = 0; j < obj.length; j++) {
+        if (obj[j].hasOwnProperty('father') && obj[j].hasOwnProperty('mother')) {
+            if (obj[j].father == FathID && obj[j].mother == MothID) colnames += ","+ obj[j].display_name;
+        }
+    } 
+    
+    if (colnames != "") {
+        var re = new RegExp(pre, 'g');
+        var count = (colnames.match(re) || []).length;
+        pre = (count==0 ? pre : pre+parseFloat(count+1))
+    }
+
+    // update result accordingly
+    hot.setDataAtCell(indexArr+1, 1, pre+" "+indexData.display_name); //add name
 }
 
 function ExportBOADICEv4(JSONData) {
@@ -374,7 +400,9 @@ function ExportBOADICEv4(JSONData) {
 
 function getName(i, JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    var indexID = 1
+    var indexID = 1,
+        father = obj[getRow(indexID)].FathID,
+        mother = obj[getRow(indexID)].MothID;
     
     function getRow(id) {
         let j
@@ -415,23 +443,37 @@ function getName(i, JSONData) {
     }
     
     if(i == getRow(indexID)) result='Index';
-    else if (isBrother(i, indexID)){result = 'Frère'; brother = obj[i].IndivID}
-    else if (isSister(i, indexID)){result = 'Soeur'; sister = obj[i].IndivID}
 
-    else if(isFather(i, indexID)){result = 'Père'; father = obj[i].IndivID}
-    else if (isMother(i, indexID)){result = 'Mère'; mother = obj[i].IndivID}
+    else if (isBrother(i, indexID)){result = 'Frère'}
+    else if (isSister(i, indexID)){result = 'Soeur'}
 
-    else if (isBrother(i, father)){result = 'Oncle pat.'; brother = obj[i].IndivID}
-    else if (isSister(i, father)){result = 'Tante pat.'; sister = obj[i].IndivID}
-    else if (isBrother(i, mother)){result = 'Oncle mat.'; brother = obj[i].IndivID}
-    else if (isSister(i, mother)){result = 'Tante mat.'; sister = obj[i].IndivID}
+    else if(isFather(i, indexID)){result = 'Père'}
+    else if (isMother(i, indexID)){result = 'Mère'}
+
+    else if (isBrother(i, father)){result = 'Oncle pat.'}
+    else if (isSister(i, father)){result = 'Tante pat.'}
+    else if (isBrother(i, mother)){result = 'Oncle mat.'}
+    else if (isSister(i, mother)){result = 'Tante mat.'}
     
-    else if(isFather(i, father)){result = 'Grand-Père pat.'; gfpat = obj[i].IndivID}
-    else if(isMother(i, father)){result = 'Grand-Mère pat.'; gmpat = obj[i].IndivID}
-    else if(isFather(i, mother)){ result = 'Grand-Père mat.'; gfmat = obj[i].IndivID}
-    else if(isMother(i, mother)){result = 'Grand-Mère mat.'; gmmat = obj[i].IndivID}
+    else if(isFather(i, father)){result = 'Grand-Père pat.'}
+    else if(isMother(i, father)){result = 'Grand-Mère pat.'}
+    else if(isFather(i, mother)){result = 'Grand-Père mat.'}
+    else if(isMother(i, mother)){result = 'Grand-Mère mat.'}
     
     else result =""
+
+    if (result != "") {
+        // check if already exist
+        colnames = []
+        for (var j = 0; j < obj.length; j++) {
+            colnames += ","+ obj[j].Name
+        } 
+        var re = new RegExp(result, 'g');
+        var count = (colnames.match(re) || []).length;
+
+        // update result accordingly
+        result = (count==0 ? result : result+parseFloat(count+1))
+    }
 
     return result
 }
