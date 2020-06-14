@@ -238,32 +238,11 @@
 
 		// Update dataset from handsontable
 		function loadFromHot() {
-			let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
+			let myDeepClone = JSON.stringify(hot.getSourceData())
+			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
 			
-			var obj = FormatToPedigreeJS(hot.getSourceData());
-			opts.dataset = obj	
+			opts.dataset = obj
 			ptree.rebuild(opts)
-			/*
-			$('<div id="msgDialog">Resetting the pedigree may result in loss of some data.</div>').dialog({
-					title: 'Confirm Reset',
-					resizable: false,
-					height: "auto",
-					width: 400,
-					modal: true,
-					buttons: {
-						Continue: function() {
-					    	ptree.rebuild(opts)
-					    	$(this).dialog( "close" );
-						},
-						Cancel: function() {
-							$(this).dialog( "close" );
-							return;
-					    }
-					}
-				});
-			*/
-			
-			hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 		}
 
 		$('#loadFromHot').click(function() {

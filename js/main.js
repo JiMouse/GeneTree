@@ -296,6 +296,7 @@ function createChild(sex) {
         var partnerName = NewName()
         createNewInd('0', '0', partnerSex)
     }
+
     if (indexData["sex"]=='M') {
         FathID = indexData["name"];
         MothID = partnerName;
@@ -307,7 +308,7 @@ function createChild(sex) {
     createNewInd(FathID, MothID, sex);
 
     //add name
-    // check if already exist
+    //check if already exist
     colnames = []
     for (var j = 0; j < obj.length; j++) {
         if (obj[j].hasOwnProperty('father') && obj[j].hasOwnProperty('mother')) {
@@ -322,7 +323,7 @@ function createChild(sex) {
     }
 
     // update result accordingly
-    hot.setDataAtCell(indexArr+1, 1, pre+" "+indexData.display_name); //add name
+    hot.setDataAtCell(indexArr+1, 1, pre+"-"+indexData.display_name); //add name
 }
 
 function ExportBOADICEv4(JSONData) {
@@ -350,6 +351,10 @@ function ExportBOADICEv4(JSONData) {
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
         let name = (arrData[i]['display_name'] != null ? arrData[i]['display_name'] : arrData[i]['name'])
+        if (name.length >8) {
+            var matches = name.match(/[A-Z]/g);
+            alert(matches); // <=
+        }
 
         var row = [
             '1', //arrData[i]['famid'],
