@@ -469,16 +469,6 @@
 					});
 				</script>
 
-				&nbsp &nbsp &nbsp
-
-				<button id="add-name" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> noms</button>
-				<script>
-					var buttonName = document.getElementById('add-name');
-					Handsontable.dom.addEvent(buttonName, 'click', function() {
-						displayName(hot.getSourceData())
-					});
-				</script>
-
 			</div>
 		</div>
 		</br>
@@ -497,7 +487,7 @@
 					var myDataSafe = JSON.stringify(myData) //save 
 					
 					var myDataExtended1 = [
-						{"FamID": "1","Name": "index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
 						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "Grand-Père pat.","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
@@ -508,7 +498,7 @@
 					var myDataExtended1Safe = JSON.stringify(myDataExtended1) //save
 
 					var myDataExtended2 = [
-						{"FamID": "1","Name": "index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
 						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
 						{"FamID": "1","Name": "Grand-Père pat.","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},

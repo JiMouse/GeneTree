@@ -307,23 +307,25 @@ function createChild(sex) {
 
     createNewInd(FathID, MothID, sex);
 
-    //add name
-    //check if already exist
-    colnames = []
-    for (var j = 0; j < obj.length; j++) {
-        if (obj[j].hasOwnProperty('father') && obj[j].hasOwnProperty('mother')) {
-            if (obj[j].father == FathID && obj[j].mother == MothID) colnames += ","+ obj[j].display_name;
+    //add name if empty  
+    if (hot.getDataAtCell(indexArr+1, 1)=="") {
+        //check if already exist
+        colnames = []
+        for (var j = 0; j < obj.length; j++) {
+            if (obj[j].hasOwnProperty('father') && obj[j].hasOwnProperty('mother')) {
+                if (obj[j].father == FathID && obj[j].mother == MothID) colnames += ","+ obj[j].display_name;
+            }
+        } 
+        
+        if (colnames != "") {
+            var re = new RegExp(pre, 'g');
+            var count = (colnames.match(re) || []).length;
+            pre = (count==0 ? pre : pre+parseFloat(count+1))
         }
-    } 
-    
-    if (colnames != "") {
-        var re = new RegExp(pre, 'g');
-        var count = (colnames.match(re) || []).length;
-        pre = (count==0 ? pre : pre+parseFloat(count+1))
-    }
 
-    // update result accordingly
-    hot.setDataAtCell(indexArr+1, 1, pre+"-"+indexData.display_name); //add name
+        // update result accordingly
+        hot.setDataAtCell(indexArr+1, 1, pre+"-"+indexData.display_name); //add name
+    }
 }
 
 function ExportBOADICEv4(JSONData) {
@@ -350,10 +352,17 @@ function ExportBOADICEv4(JSONData) {
         }
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
-        let name = (arrData[i]['display_name'] != null ? arrData[i]['display_name'] : arrData[i]['name'])
-        if (name.length >8) {
-            var matches = name.match(/[A-Z]/g);
-            alert(matches); // <=
+        let name
+
+        // shorter long name : get uppercase + last word if exists
+        if(arrData[i]['display_name'] != null) {
+            name = arrData[i]['display_name']
+            if (name.length >8) {
+                var result = name.match(/[A-Z]/g).join(''),
+                suf = name.split(' ')[1]
+                if(name.split(' ').length > 1) result += suf
+                name = result
+            }else{ name = arrData[i]['name']}
         }
 
         var row = [
