@@ -358,12 +358,12 @@ function ExportBOADICEv4(JSONData) {
         if(arrData[i]['display_name'] != null) {
             name = arrData[i]['display_name']
             if (name.length >8) {
-                var result = name.match(/[A-Z]/g).join(''),
+                var result = name.match(/[A-Z]|[0-9]/g).join(''),
                 suf = name.split(' ')[1]
                 if(name.split(' ').length > 1) result += suf
                 name = result
-            }else{ name = arrData[i]['name']}
-        }
+            };
+        }else{ name = arrData[i]['name']};
 
         var row = [
             '1', //arrData[i]['famid'],
