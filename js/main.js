@@ -352,10 +352,13 @@ function ExportBOADICEv4(JSONData) {
         }
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
+        let age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0');
+        let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '2000');
         let name
 
         // shorter long name : get uppercase + last word if exists
-        if(arrData[i]['display_name'] != null) {
+        
+        if(arrData[i]['display_name'] != '') {
             name = arrData[i]['display_name']
             if (name.length >8) {
                 var result = name.match(/[A-Z]|[0-9]/g).join(''),
@@ -375,8 +378,8 @@ function ExportBOADICEv4(JSONData) {
             arrData[i]['sex'],
             KeyStatus(i,'MZTwin','1'),
             KeyStatus(i,'status','1'),
-            arrData[i]['age'],
-            arrData[i]['yob'],
+            age,
+            yob,
             KeyStatus(i,'cancer_sein_diagnosis_age',arrData[i][ 'cancer_sein_diagnosis_age' ]),
             KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]),
             KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]),
@@ -464,15 +467,15 @@ function getName(i, JSONData) {
     else if(isFather(i, indexID)){result = 'Père'}
     else if (isMother(i, indexID)){result = 'Mère'}
 
-    else if (isBrother(i, father)){result = 'Oncle pat.'}
-    else if (isSister(i, father)){result = 'Tante pat.'}
-    else if (isBrother(i, mother)){result = 'Oncle mat.'}
-    else if (isSister(i, mother)){result = 'Tante mat.'}
+    else if (isBrother(i, father)){result = 'Oncle pat'}
+    else if (isSister(i, father)){result = 'Tante pat'}
+    else if (isBrother(i, mother)){result = 'Oncle mat'}
+    else if (isSister(i, mother)){result = 'Tante mat'}
     
-    else if(isFather(i, father)){result = 'Grand-Père pat.'}
-    else if(isMother(i, father)){result = 'Grand-Mère pat.'}
-    else if(isFather(i, mother)){result = 'Grand-Père mat.'}
-    else if(isMother(i, mother)){result = 'Grand-Mère mat.'}
+    else if(isFather(i, father)){result = 'Grand-Père pat'}
+    else if(isMother(i, father)){result = 'Grand-Mère pat'}
+    else if(isFather(i, mother)){result = 'Grand-Père mat'}
+    else if(isMother(i, mother)){result = 'Grand-Mère mat'}
     
     else result =""
 
