@@ -106,6 +106,9 @@ function FormatToPedigreeJS(JSONData) {
 
             //Update diseases
             UpdateDiseases(o,i)
+
+            //Update options
+            UpdateOptions(o,i)
         }
     }
 
@@ -134,6 +137,25 @@ function UpdateDiseases(o,i){
         //delete o[i][ col ];
         //delete o[i][ age ];
     };
+}
+
+function UpdateOptions(o,i) {
+    var content = o[i][ "Option" ]
+    var options1 = ['FCS', 'IMG', 'Adopté']
+    var output1 = ['miscarriage', 'termination', 'adopted_in']
+
+    if (content != "" && content != null){
+        for (var j = 0; j < options1.length; j++) {
+            if (o[i][ "Option" ] == options1[j  ]) {
+                o[i][output1[j]] = true;
+                if (o[i][ "Option" ]=='IMG') o[i][ "status" ]= "1"
+                delete o[i][ "Option" ];
+            }
+        if (o[i][ "Option" ]=='JumMZ') {o[i][ "mztwin" ]= "1" ; delete o[i][ "Option" ] }
+        else if (o[i][ "Option" ]=='JumDZ') {o[i][ "dztwin" ]= "1" ; delete o[i][ "Option" ] }
+        else if (o[i][ "Option" ]=='Grossesse') {o[i][ "sex" ]= "U" ; delete o[i][ "Option" ] }
+        };
+    }
 }
 
 function ExportJSON(JSONData) {
