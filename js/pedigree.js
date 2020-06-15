@@ -781,7 +781,7 @@
 							}
 							return alleles;
 						} else if(label === 'age') {
-							return d.data[label] +'y';
+							return d.data[label] +' ans'; // switch 'y' to ' ans'
 						} else if(label === 'stillbirth') {
 							return "SB";
 						}

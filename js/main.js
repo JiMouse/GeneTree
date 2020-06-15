@@ -134,8 +134,8 @@ function UpdateDiseases(o,i){
             delete o[i][ age ];
         }
         // delete column disease and age either way
-        //delete o[i][ col ];
-        //delete o[i][ age ];
+        if(o[i].hasOwnProperty(col)) delete o[i][ col ];
+        if(o[i].hasOwnProperty(age)) delete o[i][ age ];
     };
 }
 
@@ -376,6 +376,7 @@ function ExportBOADICEv4(JSONData) {
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
         let age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0');
         let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '2000');
+
         let name
 
         // shorter long name : get uppercase + last word if exists
@@ -398,7 +399,7 @@ function ExportBOADICEv4(JSONData) {
             father,
             mother,
             arrData[i]['sex'],
-            KeyStatus(i,'MZTwin','1'),
+            KeyStatus(i,'mztwin','1'),
             KeyStatus(i,'status','1'),
             age,
             yob,

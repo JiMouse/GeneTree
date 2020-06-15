@@ -27,6 +27,7 @@
 	
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/css" media="all" src="css/main.css"></script>
 	<script src="package/lodash.js"></script>
 	
 	<script type="text/javascript">
@@ -475,7 +476,7 @@
 		<div class="row">
 			<div class="text-center">
 				<!-- create handsontable table -->
-				<div id="example" style="display:inline-block;"></div>
+				<div id="dataTable" style="display:inline-block;z-index: 0;"></div>
 				</br>
 				<script>
 					//Defaut datasets
@@ -585,7 +586,7 @@
 					cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3']
 					
 					// create handsonetable
-					var container = document.getElementById('example');
+					var container = document.getElementById('dataTable');
 					var hot = new Handsontable(container, {
 						data: myData,
 						rowHeaders: false, //true,
@@ -686,7 +687,7 @@
 					});
 				</script>
 				&nbsp;
-				<a href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
+				<a target="_blank" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 			</div>
 		</div>
 
