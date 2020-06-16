@@ -602,36 +602,70 @@
 							columns: [0,6], //hide famID and affected
 							indicators: false
 						},
-						licenseKey: 'non-commercial-and-evaluation'
+						licenseKey: 'non-commercial-and-evaluation',
+						/*cells : function (row, col, prop) {
+							if (col == 11) { // | 13 | 15
+							this.type = 'dropdown';
+							var val = this.instance.getValue();
+							//alert(this.source)
+							if(typeof val != 'undefined' & val != '' & !this.source.includes(val)) {
+								this.source.push(val); // to add to the beginning do this.source.unshift(val) instead
+							}
+							}
+						}*/
 						});
 
 					var setter = false;
-					hot.addHook('afterChange', function(changes, source) {
-						if(changes != null) {
-							col = changes[0][1];
-							var deceasedIndex = 7
-							row = changes[0][0];
-							dead = this.getSourceDataAtCell(row, deceasedIndex)
-							if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
-								newValue = changes[0][3];
-								var today = new Date();
-								var y = today.getFullYear();
-								if (!setter) {
-										setter = true;
-									if(col == 'Age'){
-										let value = y-newValue
-										this.setDataAtRowProp(row, 'Yob', value)
+					hot.addHook('afterChange', 
+					[
+						function(changes, source) {
+							if(changes != null) {
+								col = changes[0][1];
+								var deceasedIndex = 7
+								row = changes[0][0];
+								dead = this.getSourceDataAtCell(row, deceasedIndex)
+								if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
+									newValue = changes[0][3];
+									var today = new Date();
+									var y = today.getFullYear();
+									if (!setter) {
+											setter = true;
+										if(col == 'Age'){
+											let value = y-newValue
+											this.setDataAtRowProp(row, 'Yob', value)
 
-									}else {
-										let value = y-newValue
-										this.setDataAtRowProp(row, 'Age', value)
+										}else {
+											let value = y-newValue
+											this.setDataAtRowProp(row, 'Age', value)
+										}
+									} else {
+										setter = false;
 									}
-								} else {
-									setter = false;
 								}
 							}
+						},
+						function updateSource(changes, source) {
+							if (changes[0][1] == 'Disease1' | changes[0][1] == 'Disease2' | changes[0][1] == 'Disease3') {
+								hot.updateSettings({
+									cells: function (row, col, prop) {
+										if (col == 11 | col == 13 | col == 15) {
+											var val = this.instance.getValue();
+											if(typeof val != 'undefined' & val != '' & !this.source.includes(val)) {
+												this.source.push(val); // to add to the beginning do this.source.unshift(val) instead
+												//return this.source
+												alert(this.source)
+											}
+										}
+									}
+								}
+								//select cell
+								);
+							}
 						}
-					},)
+					]
+					);
+				
+					
 				</script>
 				</br>		
 
