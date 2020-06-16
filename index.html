@@ -651,9 +651,7 @@
 										if (col == 11 | col == 13 | col == 15) {
 											var val = this.instance.getValue();
 											if(typeof val != 'undefined' & val != '' & !this.source.includes(val)) {
-												this.source.push(val); // to add to the beginning do this.source.unshift(val) instead
-												//return this.source
-												alert(this.source)
+												this.source.push(val);
 											}
 										}
 									}
