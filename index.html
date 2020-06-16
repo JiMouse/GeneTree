@@ -603,15 +603,17 @@
 							indicators: false
 						},
 						licenseKey: 'non-commercial-and-evaluation',
-						/*cells : function (row, col, prop) {
-							if (col == 11) { // | 13 | 15
-							this.type = 'dropdown';
-							var val = this.instance.getValue();
-							//alert(this.source)
-							if(typeof val != 'undefined' & val != '' & !this.source.includes(val)) {
-								this.source.push(val); // to add to the beginning do this.source.unshift(val) instead
+						/*cells: function (row, col, prop) {
+							var cellProperties = this;
+							if (col == 11 | col == 13 | col == 15) {
+								cellProperties.type = 'dropdown';
+								var val = cellProperties.instance.getValue();
+								if(typeof val != 'undefined' & val != '' & !cellProperties.source.includes(val)) {
+									cellProperties.source.push(val);
+								}
 							}
-							}
+							return cellProperties
+							alert(cellProperties.source)
 						}*/
 						});
 
@@ -644,14 +646,19 @@
 								}
 							}
 						},
-						function updateSource(changes, source) {
-							if (changes[0][1] == 'Disease1' | changes[0][1] == 'Disease2' | changes[0][1] == 'Disease3') {
+						function(changes, source) {
+							if ((source == 'edit') && (changes.length == 1) && (changes[0][1] == 'Disease1' | changes[0][1] == 'Disease2' | changes[0][1] == 'Disease3')) {
 								hot.updateSettings({
 									cells: function (row, col, prop) {
+										var cellProperties = this;
 										if (col == 11 | col == 13 | col == 15) {
-											var val = this.instance.getValue();
-											if(typeof val != 'undefined' & val != '' & !this.source.includes(val)) {
-												this.source.push(val);
+											cellProperties.type = 'dropdown';
+											var val = cellProperties.instance.getValue();
+											
+											if(typeof val != 'undefined' & val != '' & !cellProperties.source.includes(val)) {
+												alert(val)
+												cellProperties.source.push(val);
+												return cellProperties
 											}
 										}
 									}
@@ -659,7 +666,7 @@
 								//select cell
 								);
 							}
-						}
+						}	
 					]
 					);
 				
