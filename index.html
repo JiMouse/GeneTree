@@ -470,6 +470,23 @@
 					});
 				</script>
 
+				&nbsp &nbsp &nbsp
+
+				<input type="checkbox" id="myCheck" onclick="displayOnco()" checked>
+				<label for="myCheck">Ajouter les pathologies oncologiques</label> 
+
+				<script>
+					function displayOnco() {
+						var checkBox = document.getElementById("myCheck");
+
+						if (checkBox.checked == true){
+							//alert('test')
+						} else {
+							//
+						}
+						}
+				</script>
+
 			</div>
 		</div>
 		</br>
@@ -560,7 +577,8 @@
 						}, {
 						data: 'Disease1',
 						type: 'dropdown',
-						source: diseases
+						source: diseases,
+						renderer: autRenderer,
 						}, {
 						data: 'Age1',
 						type: 'numeric'
@@ -579,6 +597,15 @@
 						data: 'Age3',
 						type: 'numeric'
 						}];
+
+
+						function autRenderer(instance, td, row, col, prop, value, cellProperties) {
+							//cellProperties.source //= instance.getDataAtRowProp(row, 'colors').split(',');
+							var val = cellProperties.instance.getValue();
+							cellProperties.source.push(val);
+							Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+						};
+					
 
 					// define column header
 					//var cols_header = [];
@@ -603,18 +630,6 @@
 							indicators: false
 						},
 						licenseKey: 'non-commercial-and-evaluation',
-						/*cells: function (row, col, prop) {
-							var cellProperties = this;
-							if (col == 11 | col == 13 | col == 15) {
-								cellProperties.type = 'dropdown';
-								var val = cellProperties.instance.getValue();
-								if(typeof val != 'undefined' & val != '' & !cellProperties.source.includes(val)) {
-									cellProperties.source.push(val);
-								}
-							}
-							return cellProperties
-							alert(cellProperties.source)
-						}*/
 						});
 
 					var setter = false;
@@ -669,7 +684,6 @@
 						}	
 					]
 					);
-				
 					
 				</script>
 				</br>		

@@ -105,7 +105,7 @@
 			pedcache.clear_pedigree_data(opts)
 		} else {
 			var proband = {
-				"name":"ch1","sex":"F","mother":"f21","father":"m21","proband":true,"status":"0","display_name":"me"
+				"name":"ch1","sex":"F","mother":"f21","father":"m21","proband":true,"status":"0","display_name":"index"
 			};
 			pedcache.clear(opts); // clear all storage data
 		}
@@ -134,19 +134,19 @@
         		{"name":"xIw","display_name":"maternal uncle","sex":"M","mother":"dOH","father":"zwB","status":"0"}];
 		} else if(selected.length > 0 && selected.val() == 'extended1') {    // primary relatives
 			opts.dataset = [
-				{"name":"m21","sex":"M","mother":null,"father":null,"status":"0","display_name":"father","noparents":true},
-				{"name":"f21","sex":"F","mother":null,"father":null,"status":"0","display_name":"mother","noparents":true},
-				{"name":"aOH","sex":"F","mother":"f21","father":"m21","status":"0","display_name":"sister"},
-				{"name":"Vha","sex":"M","mother":"f21","father":"m21","status":"0","display_name":"brother"},
-				{"name":"Spj","sex":"M","mother":"f21","father":"m21","noparents":true,"status":"0","display_name":"partner"},
+				{"name":"m21","sex":"M","mother":null,"father":null,"status":"0","display_name":"père","noparents":true},
+				{"name":"f21","sex":"F","mother":null,"father":null,"status":"0","display_name":"mère","noparents":true},
+				{"name":"aOH","sex":"F","mother":"f21","father":"m21","status":"0","display_name":"soeur"},
+				{"name":"Vha","sex":"M","mother":"f21","father":"m21","status":"0","display_name":"frère"},
+				{"name":"Spj","sex":"M","mother":"f21","father":"m21","noparents":true,"status":"0","display_name":"conjoint"},
 				proband,
 				//{"name":"ch1","sex":"F","mother":"f21","father":"m21","proband":true,"status":"0","display_name":"me"},
-				{"name":"zhk","sex":"F","mother":"ch1","father":"Spj","status":"0","display_name":"daughter"},
-				{"name":"Knx","display_name":"son","sex":"M","mother":"ch1","father":"Spj","status":"0"}];
+				{"name":"zhk","sex":"F","mother":"ch1","father":"Spj","status":"0","display_name":"fille"},
+				{"name":"Knx","display_name":"fils","sex":"M","mother":"ch1","father":"Spj","status":"0"}];
 		} else {
 			opts.dataset = [
-				{"name": "m21", "display_name": "father", "sex": "M", "top_level": true},
-    		    {"name": "f21", "display_name": "mother", "sex": "F", "top_level": true},
+				{"name": "m21", "display_name": "père", "sex": "M", "top_level": true},
+    		    {"name": "f21", "display_name": "mère", "sex": "F", "top_level": true},
     		    proband];
     			//{"name": "ch1", "display_name": "me", "sex": "F", "mother": "f21", "father": "m21", "proband": true}];
 		}

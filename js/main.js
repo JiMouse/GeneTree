@@ -375,7 +375,7 @@ function ExportBOADICEv4(JSONData) {
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
         let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
         let age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0');
-        let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '2000');
+        let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '0');
 
         let name
 

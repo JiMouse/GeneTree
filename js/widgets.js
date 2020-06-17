@@ -169,16 +169,16 @@
 		var fy = opts.symbol_size -2;
 		var off = 0;
 		var widgets = {
-			'addchild':   {'text': '\uf063', 'title': 'add child',   'fx': fx, 'fy': fy},
-			'addsibling': {'text': '\uf234', 'title': 'add sibling', 'fx': fx, 'fy': fy},
-			'addpartner': {'text': '\uf0c1', 'title': 'add partner', 'fx': fx, 'fy': fy},
+			'addchild':   {'text': '\uf063', 'title': 'Ajouter enfant',   'fx': fx, 'fy': fy},
+			'addsibling': {'text': '\uf234', 'title': 'Ajouter frère/sœur', 'fx': fx, 'fy': fy},
+			'addpartner': {'text': '\uf0c1', 'title': 'Ajouter conjoint', 'fx': fx, 'fy': fy},
 			'addparents': {
-				'text': '\uf062', 'title': 'add parents',
+				'text': '\uf062', 'title': 'Ajouter parents',
 				'fx': - 0.75*opts.symbol_size,
 				'fy': - opts.symbol_size + 11
 			},
 			'delete': {
-				'text': 'X', 'title': 'delete',
+				'text': 'X', 'title': 'Supprimer',
 				'fx': opts.symbol_size/2 - 1,
 				'fy': - opts.symbol_size + 12,
 				'styles': {"font-weight": "bold", "fill": "darkred", "font-family": "monospace"}
@@ -186,7 +186,7 @@
 		};
 
 		if(opts.edit) {
-			widgets.settings = {'text': '\uf013', 'title': 'settings', 'fx': -font_size/2+2, 'fy': -opts.symbol_size + 11};
+			widgets.settings = {'text': '\uf013', 'title': 'Paramètres', 'fx': -font_size/2+2, 'fy': -opts.symbol_size + 11};
 		}
 
 		for(var key in widgets) {
@@ -339,7 +339,7 @@
 	                .on("start", dragstart)
 	                .on("drag", drag)
 	                .on("end", dragstop));
-		dline.append("svg:title").text("drag to create consanguineous partners");
+		dline.append("svg:title").text("étendre pour créer un conjoint consanguin");
 
 		setLineDragPosition(0, 0, 0, 0);
 
@@ -404,35 +404,37 @@
 		    width: ($(window).width() > 400 ? 450 : $(window).width()- 30)
 		});
 
-		var table = "<table id='person_details' class='table'>";
+		var table = "<table id='Fiche personnelle' class='table'>";
 
-		table += "<tr><td style='text-align:right'>Unique ID</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
+		table += "<tr><td style='text-align:right'>Identifiant</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
 		(d.data.name ? d.data.name : "")+"></td></tr>";
-		table += "<tr><td style='text-align:right'>Name</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
+		table += "<tr><td style='text-align:right'>Nom</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
 				(d.data.display_name ? d.data.display_name : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>Age</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
+		table += "<tr><td style='text-align:right'>Âge</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
 				(d.data.age ? d.data.age : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>Year Of Birth</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
+		table += "<tr><td style='text-align:right'>Année de naissance</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
 			(d.data.yob ? d.data.yob : "")+"></td></tr>";
 
 		table += '<tr><td colspan="2" id="id_sex">' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="M" '+(d.data.sex === 'M' ? "checked" : "")+'>Male</label>' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="F" '+(d.data.sex === 'F' ? "checked" : "")+'>Female</label>' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="U">Unknown</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="M" '+(d.data.sex === 'M' ? "checked" : "")+'>Homme</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="F" '+(d.data.sex === 'F' ? "checked" : "")+'>Femme</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="U">Inconnu</label>' +
 				 '</td></tr>';
 
 		// alive status = 0; dead status = 1
 		table += '<tr><td colspan="2" id="id_status">' +
-				 '<label class="checkbox-inline"><input type="radio" name="status" value="0" '+(d.data.status === 0 ? "checked" : "")+'>&thinsp;Alive</label>' +
-				 '<label class="checkbox-inline"><input type="radio" name="status" value="1" '+(d.data.status === 1 ? "checked" : "")+'>&thinsp;Deceased</label>' +
+				 '<label class="checkbox-inline"><input type="radio" name="status" value="0" '+(d.data.status === 0 ? "checked" : "")+'>&thinsp;en vie</label>' +
+				 '<label class="checkbox-inline"><input type="radio" name="status" value="1" '+(d.data.status === 1 ? "checked" : "")+'>&thinsp;décédé</label>' +
 				 '</td></tr>';
 		$("#id_status input[value='"+d.data.status+"']").prop('checked', true);
 
 		// switches
 		var switches = ["adopted_in", "adopted_out", "miscarriage", "stillbirth", "termination"];
-		table += '<tr><td colspan="2"><strong>Reproduction:</strong></td></tr>';
+		var switches_fr = ["Adopté (dans)", "Adopté (hors)", "Fausse-couche", "Mort-né", "IMG"];
+
+		table += '<tr><td colspan="2"><strong>Grossesse :</strong></td></tr>';
 		table += '<tr><td colspan="2">';
 		for(var iswitch=0; iswitch<switches.length; iswitch++){
 			var attr = switches[iswitch];
@@ -441,16 +443,16 @@
 			table +=
 			 '<label class="checkbox-inline"><input type="checkbox" id="id_'+attr +
 			    '" name="'+attr+'" value="0" '+(d.data[attr] ? "checked" : "")+'>&thinsp;' +
-			    capitaliseFirstLetter(attr.replace('_', ' '))+'</label>'
+			    switches_fr[iswitch] +'</label>'
 		}
 		table += '</td></tr>';
 
 		//
 		var exclude = ["children", "name", "parent_node", "top_level", "id", "noparents",
 			           "level", "age", "sex", "status", "display_name", "mother", "father",
-			           "yob", "mztwin", "dztwin"];
+			           "yob", "mztwin", "dztwin", "famid"];
 		$.merge(exclude, switches);
-		table += '<tr><td colspan="2"><strong>Age of Diagnosis:</strong></td></tr>';
+		table += '<tr><td colspan="2"><strong>Âge au diagnostic :</strong></td></tr>';
 		$.each(opts.diseases, function(k, v) {
 			exclude.push(v.type+"_diagnosis_age");
 
