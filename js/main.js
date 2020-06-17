@@ -1,3 +1,190 @@
+//Build Handsontable
+
+document.addEventListener("DOMContentLoaded", function() {
+    //Defaut datasets
+    var myData = [
+        {"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+        {"FamID": "1","Name": "Père","IndivID": "2","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Mère","IndivID": "3","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+    ]
+    var myDataSafe = JSON.stringify(myData) //save 
+    
+    var myDataExtended1 = [
+        {"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+        {"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Père pat","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Mère pat","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Père mat","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Mère mat","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+    ]
+    var myDataExtended1Safe = JSON.stringify(myDataExtended1) //save
+
+    var myDataExtended2 = [
+        {"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
+        {"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Père pat","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Mère pat","IndivID": "5","FathID": "10","MothID": "11","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Père mat","IndivID": "6","FathID": "12","MothID": "13","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "Grand-Mère mat","IndivID": "7","FathID": "14","MothID": "15","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "8","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "9","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "10","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "11","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "12","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "13","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "14","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
+        {"FamID": "1","Name": "","IndivID": "15","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
+    ]
+    var myDataExtended2Safe = JSON.stringify(myDataExtended2) //save
+   
+    // define column to display
+    var cols = [{
+        data: 'FamID'
+        }, {
+        data: 'Name'
+        }, {
+        data: 'IndivID'
+        }, {
+        data: 'FathID'
+        }, {
+        data: 'MothID'
+        }, {
+        data: 'Sex'//,
+        //type: 'dropdown',
+        //source: ['M','F','NA']
+        }, {
+        data: 'Affected',
+        type: 'checkbox',
+        checkedTemplate: '2',
+        uncheckedTemplate: '1'
+        }, {
+        data: 'Deceased',
+        type: 'checkbox',
+        checkedTemplate: '1',
+        uncheckedTemplate: '0'
+        }, {
+        data: 'Age',
+        type: 'numeric'
+        }, {
+        data: 'Yob',
+        type: 'numeric'
+        }, {
+        data: 'Option',
+        type: 'dropdown',
+        source: ['FCS', 'IMG', 'Grossesse','JumMZ', 'JumDZ', 'Adopté']
+        }, {
+        data: 'Disease1',
+        type: 'autocomplete',
+        source: [],
+        strict: false,
+        filter: false,
+        renderer: autRenderer
+        }, {
+        data: 'Age1',
+        type: 'numeric'
+        }, {
+        data: 'Disease2',
+        type: 'autocomplete',
+        source: [],
+        strict: false,
+        filter: false,
+        renderer: autRenderer
+        }, {
+        data: 'Age2',
+        type: 'numeric'
+        }, {
+        data: 'Disease3',
+        type: 'autocomplete',
+        source: [],
+        strict: false,
+        filter: false,
+        renderer: autRenderer
+        }, {
+        data: 'Age3',
+        type: 'numeric'
+        }];
+
+    //var diseasesDefaut = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
+    //var diseases = diseasesDefaut
+
+    /*function addOnco() {
+        var checkBox = document.getElementById("myCheck");
+
+        if (checkBox.checked == true){
+           // diseases = diseasesDefaut;
+           alert('test')
+        } else {
+            //diseases = [];
+        }
+    }*/
+
+    function autRenderer(instance, td, row, col, prop, value, cellProperties) {
+        var val = value
+        if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
+            diseases.push(val);
+        }
+        cellProperties.source = diseases
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+    };
+    
+    // define column header
+    cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3']
+    
+    // create handsonetable
+    var container = document.getElementById('dataTable');
+    var hot = new Handsontable(container, {
+        data: myData,
+        rowHeaders: false, //true,
+        colHeaders: cols_header, 
+        columns: cols,
+        filters: true,
+        dropdownMenu: true,
+        className: "htCenter",
+        contextMenu: true,
+        outsideClickDeselects: false,
+        undo: true,
+        hiddenColumns: {
+            columns: [0,6], //hide famID and affected
+            indicators: false
+        },
+        licenseKey: 'non-commercial-and-evaluation',
+        });
+
+    var setter = false;
+    hot.addHook('afterChange', 
+    //[
+        function(changes, source) {
+            if(changes != null) {
+                col = changes[0][1];
+                var deceasedIndex = 7
+                row = changes[0][0];
+                dead = this.getSourceDataAtCell(row, deceasedIndex)
+                if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
+                    newValue = changes[0][3];
+                    var today = new Date();
+                    var y = today.getFullYear();
+                    if (!setter) {
+                            setter = true;
+                        if(col == 'Age'){
+                            let value = y-newValue
+                            this.setDataAtRowProp(row, 'Yob', value)
+
+                        }else {
+                            let value = y-newValue
+                            this.setDataAtRowProp(row, 'Age', value)
+                        }
+                    } else {
+                        setter = false;
+                    }
+                }
+            }
+        }
+    );
+
+});
+
 function JSONToPEDConvertor(JSONData, toKeep) {
     var 
         arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
