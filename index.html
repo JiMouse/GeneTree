@@ -234,17 +234,19 @@
 			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
 			var fDiseases = formatDisease(diseases)
 
-			/*opts.dataset = obj
-			opts.diseases = fDiseases
-			update_diseases();
-			localStorage.setItem('diseases', JSON.stringify(opts.diseases)); // new
-			ptree.rebuild(opts)*/
-			
 			opts.dataset = obj;
+			ptree.rebuild(opts);
+			
+			/*opts.dataset = newdataset;
 			opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
 			ptree.rebuild(opts);
 			update_diseases();
-			localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+			localStorage.setItem('diseases', JSON.stringify(opts.diseases));*/
+			
+			//opts.diseases = fDiseases //opts.diseases = $.extend(true, [], fDiseases);
+			//localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+			//update_diseases();
+			
 			
 		}
 
