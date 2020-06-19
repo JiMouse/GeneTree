@@ -235,9 +235,10 @@
 			var fDiseases = formatDisease(diseases)
 
 			opts.dataset = obj
-			opts.diseases = fDiseases
+			opts.diseases = $.extend(true, [], fDiseases); //new
 			ptree.rebuild(opts)
 			update_diseases();
+			localStorage.setItem('diseases', JSON.stringify(opts.diseases)); // new
 		}
 
 		$('#loadFromHot').click(function() {
