@@ -19,10 +19,10 @@
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
 	<!-- load pedigreejs -->
-    <script src="js/io.js"></script>
-    <script src="js/pedigree_form.js"></script>
-    <script src="js/pedigree.js"></script>
-    <script src="js/undo_redo_refresh.js"></script>
+    	<script src="js/io.js"></script>
+    	<script src="js/pedigree_form.js"></script>
+    	<script src="js/pedigree.js"></script>
+    	<script src="js/undo_redo_refresh.js"></script>
 	<script src="js/widgets.js"></script>
 	
 	<!-- main script -->
@@ -232,13 +232,22 @@
 		function loadFromHot() {
 			let myDeepClone = JSON.stringify(hot.getSourceData())
 			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
-			let formattedDiseases = ArrToJSON(diseases)
+			var fDiseases = formatDisease(diseases)
 
 			opts.dataset = obj;
+			ptree.rebuild(opts);
+			
+			/*opts.dataset = newdataset;
 			opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
 			ptree.rebuild(opts);
 			update_diseases();
+			localStorage.setItem('diseases', JSON.stringify(opts.diseases));*/
+			
+			opts.diseases = fDiseases //opts.diseases = $.extend(true, [], fDiseases);
 			localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+			update_diseases();
+			
+			
 		}
 
 		$('#loadFromHot').click(function() {
@@ -267,45 +276,10 @@
 		<div class = "row">
 		<h3>Tableau</h3>
 			<div class="text-center">
-				<!--  buttons edit familly -->
+				<!--  buttons edit familly-->
 				<div id="dropdownFam" class="dropdown" style="display:inline;">
 					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
 					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
-						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier JSON :</strong>
-									<div class="row">
-										<div class="col-md-8 text-right">
-											<!--  <label class="btn btn-default btn-file">
-												<input id="submitLoad" type="file" style="display: none;"/><i class="fa fa-folder-open-o"></i>
-											</label>  -->
-
-											<input type="file" id="submitLoad">
-											<script>
-												const fileSelector = document.getElementById('submitLoad');
-												fileSelector.addEventListener('change', (event) => {
-													var file = event.target.files[0];
-													
-													if(file) {
-														var reader = new FileReader();
-														reader.onload = function(event) {
-															data = JSON.parse(event.target.result);
-															hot.loadData(data)
-														};
-														reader.readAsText(file);
-													} else {
-														console.error("File could not be read!");
-													}
-													$("#submitLoad")[0].value = ''; // reset value
-
-													// close tab
-													document.getElementById('dropdownFam').classList.remove('open')
-												});
-											</script>
-
-										</div>
-									</div>
-							</div>
-						</li>
 						<li>
 							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Structure :</strong>
 								<form>
@@ -504,6 +478,22 @@
 
 				<input type="checkbox" id="myCheck" onclick="addOnco()" checked> 
 				<label for="myCheck">Ajouter les pathologies oncologiques</label>
+
+				<script>
+					/*var diseasesDefaut = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
+					var diseases = diseasesDefaut
+	
+					function addOnco() {
+						var checkBox = document.getElementById("myCheck");
+
+						if (checkBox.checked == true){
+							diseases = diseasesDefaut;
+						} else {
+							diseases = [];
+						}
+						//alert(diseases)
+					}*/
+				</script>
 			</div>
 		</div>
 		</br>
@@ -734,26 +724,13 @@
 					});
 				</script>
 
-				<!-- create export to PedigreJS JSON button -->
-				<button id="exportPedigreJS" class="intext-btn">PedigreJS <i class="fa fa-download"></i></button> &emsp;
-				<script>
-					Handsontable.dom.addEvent(exportPedigreJS, 'click', function() {
-						let myDeepClone = JSON.stringify(hot.getSourceData())
-						var obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-						ExportJSON(obj)
-					});
-				</script>
-
 				<!-- create export to JSON button -->
 				<button id="exportJson" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(exportJson, 'click', function() {
-
-						let myDeepClone = JSON.stringify(hot.getSourceData())
-						//var obj0 = FormatToPedigreeJS(JSON.parse(myDeepClone))
-						//var obj = FormatToTable(obj0)
-						ExportJSON(JSON.parse(myDeepClone))
-
+						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
+						ExportJSON(hot.getSourceData())
+						hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 					});
 				</script>
 
