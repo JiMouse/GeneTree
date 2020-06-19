@@ -19,10 +19,10 @@
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
 	<!-- load pedigreejs -->
-    <script src="js/io.js"></script>
-    <script src="js/pedigree_form.js"></script>
-    <script src="js/pedigree.js"></script>
-    <script src="js/undo_redo_refresh.js"></script>
+    	<script src="js/io.js"></script>
+    	<script src="js/pedigree_form.js"></script>
+    	<script src="js/pedigree.js"></script>
+    	<script src="js/undo_redo_refresh.js"></script>
 	<script src="js/widgets.js"></script>
 	
 	<!-- main script -->
@@ -234,11 +234,17 @@
 			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
 			var fDiseases = formatDisease(diseases)
 
-			opts.dataset = obj
+			/*opts.dataset = obj
 			opts.diseases = fDiseases
-			//update_diseases();
-			//localStorage.setItem('diseases', JSON.stringify(opts.diseases)); // new
-			ptree.rebuild(opts)
+			update_diseases();
+			localStorage.setItem('diseases', JSON.stringify(opts.diseases)); // new
+			ptree.rebuild(opts)*/
+			
+			opts.dataset = obj;
+			opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+			ptree.rebuild(opts);
+			update_diseases();
+			localStorage.setItem('diseases', JSON.stringify(opts.diseases));
 			
 		}
 
