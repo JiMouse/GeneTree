@@ -39,22 +39,13 @@
 	function capitaliseFirstLetter(string) {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	}
-	//['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
-	/*
+
 	var DEFAULT_DISEASES = [
-		 {'type': 'breast_cancer', 'colour': '#F68F35'},
-		 {'type': 'breast_cancer2', 'colour': 'pink'},
-		 {'type': 'ovarian_cancer', 'colour': '#4DAA4D'},
-		 {'type': 'pancreatic_cancer', 'colour': '#4289BA'},
-		 {'type': 'prostate_cancer', 'colour': '#D5494A'}
-	];
-	*/
-	var DEFAULT_DISEASES = [
-		 {'type': 'cancer_sein', 'colour': '#F68F35'},
-		 {'type': 'cancer_sein2', 'colour': 'pink'},
+		 {'type': 'cancer_sein', 'colour': '#FFC0CB'},
+		 {'type': 'cancer_sein2', 'colour': '#f00c93'},
 		 {'type': 'cancer_ovaire', 'colour': '#4DAA4D'},
-		 {'type': 'cancer_pancréas', 'colour': '#4289BA'},
-		 {'type': 'cancer_prostate', 'colour': '#D5494A'}
+		 {'type': 'cancer_pancréas', 'colour': '#D5494A'},
+		 {'type': 'cancer_prostate', 'colour': '#4289BA'}
 	];
 
 	$( document ).ready(function() {
@@ -83,7 +74,7 @@
 				'font_size': '0.75em',
 				'edit': true,
 				'diseases': $.extend(true, [], DEFAULT_DISEASES),
-				'DEBUG': (pedigree_util.urlParam('debug') === null ? false : true)};
+				'DEBUG': DEBUG};
 				
 		var local_dataset = pedcache.current(opts);
 		if (local_dataset !== undefined && local_dataset !== null) {
@@ -241,9 +232,12 @@
 		function loadFromHot() {
 			let myDeepClone = JSON.stringify(hot.getSourceData())
 			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
-			
+			var fDiseases = formatDisease(diseases)
+
 			opts.dataset = obj
+			opts.diseases = fDiseases
 			ptree.rebuild(opts)
+			update_diseases();
 		}
 
 		$('#loadFromHot').click(function() {
@@ -596,8 +590,8 @@
 						type: 'autocomplete',
 						source: [],
 						strict: false,
-						filter: false//,
-						//renderer: autRenderer
+						filter: false,
+						renderer: autRenderer
 						}, {
 						data: 'Age3',
 						type: 'numeric'
@@ -619,7 +613,6 @@
 							} else if (!checkBox.checked) { // remove onco disease
 								set = !set
 								var index;
-									//onco = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
 								for (var i = 0; i < onco.length; i++) {
 									index = diseases.indexOf(onco[i]);
 									if (index > -1) {

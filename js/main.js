@@ -1,3 +1,29 @@
+function formatDisease(diseases) {
+    var obj = DEFAULT_DISEASES
+
+    // generate random colour
+    const setBg = () => {
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        return "#" + randomColor.toUpperCase();
+    }
+
+    //get all values of obj
+    var values = []
+    for (var j = 0; j < obj.length; j++) {
+        values[j] = obj[j].type
+    }
+
+    // add new elements
+    for (var i = 0; i < diseases.length; i++) {
+        if (!values.includes(diseases[i])) { // change onco to list of value of type
+            var pos = obj.length
+            obj[pos] = {'type': diseases[i], 'colour': setBg()}
+        }   
+    }
+    
+    return obj
+}
+
 function JSONToPEDConvertor(JSONData, toKeep) {
     var 
         arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
