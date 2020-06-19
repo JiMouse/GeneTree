@@ -1,5 +1,5 @@
-function formatDisease(diseases) {
-    var obj = DEFAULT_DISEASES
+function ArrToJSON(d) {
+    let obj = DEFAULT_DISEASES
 
     // generate random colour
     const setBg = () => {
@@ -8,16 +8,16 @@ function formatDisease(diseases) {
     }
 
     //get all values of obj
-    var values = []
+    let values = []
     for (var j = 0; j < obj.length; j++) {
         values[j] = obj[j].type
     }
 
     // add new elements
-    for (var i = 0; i < diseases.length; i++) {
-        if (!values.includes(diseases[i])) { // change onco to list of value of type
+    for (var i = 0; i < d.length; i++) {
+        if (!values.includes(d[i])) { // change onco to list of value of type
             var pos = obj.length
-            obj[pos] = {'type': diseases[i], 'colour': setBg()}
+            if(d[i] != null) obj[pos] = {'type': d[i], 'colour': setBg()}
         }   
     }
     
@@ -184,11 +184,13 @@ function UpdateOptions(o,i) {
     }
 }
 
-function ExportJSON(JSONData) {
-    //Format to PedigreeJS format
-    var obj = FormatToPedigreeJS(JSONData)
-        
-    // Downloading.
+function FormatToTable(JSONData) {
+    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
+
+    return obj
+}
+
+function ExportJSON(obj) {
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
     var a = document.createElement("a");    
     a.href = 'data:' + data;
