@@ -328,7 +328,7 @@ function createSister() {
     }else{alert('Parents non créés')}
 }
 
-function createChild(sex) {
+function createChild(sex, New) {
     let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
     var obj = FormatToPedigreeJS(JSON.parse(myDeepClone)) // import table
     var indexArr = hot.getSelectedLast()[0]; //get selected row's index
@@ -337,14 +337,13 @@ function createChild(sex) {
     var pre = (sex == 'M' ? 'Fils' : 'Fille')
 
     // if partner exists, use it as mother/father
-    if (typeof partner != 'undefined') {
-        var partnerIndex = partner[0].index
-        var partnerName = obj[partnerIndex]["name"]
-    }else{
-        // if not, create it
+    if (typeof partner == 'undefined' || New) {
         let partnerSex = (indexData["sex"]=='M' ? 'F' : 'M' );
         var partnerName = NewName()
         createNewInd('0', '0', partnerSex)
+    } else {
+        var partnerIndex = partner[0].index
+        var partnerName = obj[partnerIndex]["name"]
     }
 
     if (indexData["sex"]=='M') {

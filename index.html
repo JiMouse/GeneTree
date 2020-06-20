@@ -500,6 +500,14 @@
 					});
 				</script>
 
+				<button id="add-partner" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
+				<script>
+					var buttonPartner = document.getElementById('add-partner');
+					Handsontable.dom.addEvent(buttonPartner, 'click', function() {
+						createChild("F", true);
+					});
+				</script>
+
 				&nbsp &nbsp &nbsp
 
 				<input type="checkbox" id="myCheck" onclick="addOnco()" checked> 
