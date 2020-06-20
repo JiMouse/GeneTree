@@ -187,6 +187,55 @@ function UpdateOptions(o,i) {
 function FormatToTable(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
 
+    for (var i = 0; i < obj.length; i++) {
+
+        //Options
+        const options = () => {
+            var opt = ''
+            if(obj[i].hasOwnProperty('miscarriage')) opt = 'FCS'
+            if(obj[i].hasOwnProperty('termination')) opt =  'IMG'
+            if(obj[i].hasOwnProperty('adopted_in')) opt =  'Adopté'
+            if(obj[i].hasOwnProperty('mztwin')) opt =  'JumMZ'
+            if(obj[i].hasOwnProperty('dztwin')) opt =  'JumDZ'
+            if(obj[i].sex == 'U') opt =  'Grossesse'
+            return opt
+        }
+
+        //diseases & age
+        var patho = []
+        var age = []
+        var keys = Object.keys(obj[i])
+        
+        for (var j = 0; j < keys.length; j++) {
+            if (keys[j].indexOf("_diagnosis_age") !== -1) {
+                var out = keys[j].substring(0, keys[j].length - 14)
+                patho.push(out);
+                age.push(obj[i][keys[j]]);
+            }
+        }
+
+        obj[i] = {
+            "FamID": "1",
+            "Name": obj[i].display_name,
+            "IndivID": obj[i].name,
+            "FathID": obj[i].hasOwnProperty('father') ? obj[i].father : '0',
+            "MothID": obj[i].hasOwnProperty('mother') ? obj[i].mother : '0',
+            "Sex": obj[i].sex,
+            "Affected": obj[i].hasOwnProperty('affected') ? obj[i].affected : '1',
+            "Deceased": obj[i].hasOwnProperty('status') ? obj[i].status : '0',
+            "Age": obj[i].age,
+            "Yob": obj[i].yob,
+            "Option" : options(),
+            "Disease1":patho[0],
+            "Age1":age[0],
+            "Disease2":"",
+            "Age2":"",
+            "Disease3":"",
+            "Age3":"",
+            "proband": obj[i].proband
+        }
+    }
+
     return obj
 }
 

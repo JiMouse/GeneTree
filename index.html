@@ -272,12 +272,9 @@
 					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
 					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
 						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier JSON :</strong>
+							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier (JSON/Boadicea) :</strong>
 									<div class="row">
 										<div class="col-md-8 text-right">
-											<!--  <label class="btn btn-default btn-file">
-												<input id="submitLoad" type="file" style="display: none;"/><i class="fa fa-folder-open-o"></i>
-											</label>  -->
 
 											<input type="file" id="submitLoad">
 											<script>
@@ -288,7 +285,29 @@
 													if(file) {
 														var reader = new FileReader();
 														reader.onload = function(event) {
-															data = JSON.parse(event.target.result);
+
+															if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
+																data = io.readBoadiceaV4(event.target.result, 4);
+																data = FormatToTable(data)
+																
+																//replace �
+																for (var i = 0; i < data.length; i++) {
+																	data[i].Name = data[i].Name.replace("�","è")
+																	data[i].Name = data[i].Name.replace("%uFFFD","è")
+																}
+
+																//sort
+																data.sort(function(a, b){
+																	return a.FamID - b.FamID;
+																});
+												
+
+															} else {
+																data = JSON.parse(event.target.result);
+																if (!data[0].hasOwnProperty('FathID')) {
+																	data = FormatToTable(data)
+																}
+															}
 															hot.loadData(data)
 														};
 														reader.readAsText(file);
@@ -572,7 +591,7 @@
 						}, {
 						data: 'Sex'//,
 						//type: 'dropdown',
-						//source: ['M','F','NA']
+						//source: ['M','F','U']
 						}, {
 						data: 'Affected',
 						type: 'checkbox',
