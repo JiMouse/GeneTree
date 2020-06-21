@@ -239,6 +239,65 @@ function FormatToTable(JSONData) {
     return obj
 }
 
+function Formatboadicea(boadicea_lines) {
+    var lines = boadicea_lines.trim().split('\n');
+    var ped = [];
+    var onco = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
+
+    // assumes two line header
+    for(var i = 2;i < lines.length;i++){
+        var attr = $.map(lines[i].trim().split(/\s+/), function(val, i){return val.trim();});
+            if(attr.length > 1) {
+                var indi = {
+                    'FamID': attr[0],
+                    'Name': attr[1], // bug special caractere
+                    'IndivID':	attr[3],
+                    'FathID': attr[4],
+                    'MothID': attr[5],
+                    'Sex': attr[6],
+                    'Affected': '1',
+                    'Deceased': attr[8]
+                };
+                
+                if(attr[9] !== "0") indi.Age = attr[9];
+                if(attr[10] !== "0") indi.Yob = attr[10];
+                
+                // add diseases
+                var patho = []
+                var age = []               
+
+                var idx = 11;
+                for (var o = 0; o < onco.length; o++) {
+					// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
+					if(attr[idx] !== "0") {
+                        patho.push(onco[o]);
+                        var out = attr[idx] != 'AU' ? attr[idx] : '';
+                        age.push(out);
+					}
+					idx++;
+                };
+                
+                indi.Disease1 = patho[0];
+                indi.Age1 = age[0];
+                indi.Disease2 = patho[1];
+                indi.Age2 = age[1];
+                indi.Disease3 = patho[2];
+                indi.Age3 = age[2];
+                
+                // bug encodage UTF-8 / ISO : replace �
+                indi.Name = indi.Name.replace("�","è")
+                indi.Name = indi.Name.replace("%uFFFD","è")
+
+                if(attr[2] == 1) indi.proband = true;
+
+                ped.push(indi);  
+            }
+        }
+
+        return ped
+}
+
+
 function ExportJSON(obj) {
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
     var a = document.createElement("a");    
@@ -479,11 +538,11 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'status','1'),
             age,
             yob,
-            KeyStatus(i,'cancer_sein_diagnosis_age',arrData[i][ 'cancer_sein_diagnosis_age' ]),
-            KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]),
-            KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]),
-            KeyStatus(i,'cancer_pancréas_diagnosis_age',arrData[i][ 'cancer_pancréas_diagnosis_age' ]),
-            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ])
+            KeyStatus(i,'cancer_sein_diagnosis_age',arrData[i][ 'cancer_sein_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_sein_diagnosis_age' ] : 'AU'),
+            KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_sein2_diagnosis_age' ] : 'AU'),
+            KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_ovaire_diagnosis_age' ] : 'AU'),
+            KeyStatus(i,'cancer_pancréas_diagnosis_age',arrData[i][ 'cancer_pancréas_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_pancréas_diagnosis_age' ] : 'AU'),
+            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_prostate_diagnosis_age' ] : 'AU')
         ].join('\t')
 
         row += '\t' + std.repeat(16) //otherHeader

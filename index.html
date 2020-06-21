@@ -3,9 +3,10 @@
 <head>
 	<title>GeneTree</title>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
 	<meta name="viewport" content="width=device-width,maximum-scale=2">
 	<meta name="author" content="Jean-Marie Ravel">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<!-- load dependencies -->
 	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
@@ -287,20 +288,7 @@
 														reader.onload = function(event) {
 
 															if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
-																data = io.readBoadiceaV4(event.target.result, 4);
-																data = FormatToTable(data)
-																
-																//replace �
-																for (var i = 0; i < data.length; i++) {
-																	data[i].Name = data[i].Name.replace("�","è")
-																	data[i].Name = data[i].Name.replace("%uFFFD","è")
-																}
-
-																//sort
-																data.sort(function(a, b){
-																	return a.FamID - b.FamID;
-																});
-												
+																data = Formatboadicea(event.target.result)
 
 															} else {
 																data = JSON.parse(event.target.result);
