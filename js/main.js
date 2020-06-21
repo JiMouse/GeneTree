@@ -228,10 +228,10 @@ function FormatToTable(JSONData) {
             "Option" : options(),
             "Disease1":patho[0],
             "Age1":age[0],
-            "Disease2":"",
-            "Age2":"",
-            "Disease3":"",
-            "Age3":"",
+            "Disease2":patho[1],
+            "Age2":age[1],
+            "Disease3":patho[2],
+            "Age3":age[2],
             "proband": obj[i].proband
         }
     }
