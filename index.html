@@ -28,7 +28,7 @@
 	
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/css" media="all" src="css/main.css"></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script src="package/lodash.js"></script>
 	
 	<script type="text/javascript">
@@ -256,10 +256,10 @@
 </head>
 
 <body>
-	<div class="jumbotron" style="background-color: #d9e7f7">
+	<div class="jumbotron">
 		<div class="container">
 				  <a class="btn btn-primary btn-lg pull-right" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
-				  <h1 style="color: #002e5d"><i>GeneTree</i></h1>
+				  <h1><i>GeneTree</i></h1>
 				  <h2>Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.</h2>
 		</div>
 	</div>
@@ -273,7 +273,7 @@
 					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
 					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
 						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier (JSON/Boadicea) :</strong>
+							<div class="droprow" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier (JSON/Boadicea) :</strong>
 									<div class="row">
 										<div class="col-md-8 text-right">
 
@@ -314,7 +314,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px"><strong>Structure :</strong>
+							<div class="droprow" style="padding:5px;margin-bottom:5px"><strong>Structure :</strong>
 								<form>
 									<div id="famStructure" class="row" >
 										<div class="col-md-4">
@@ -367,7 +367,7 @@
 							</div>
 						</li>
 						<li>
-							<div class="alert alert-info" style="padding:5px;margin-bottom:5px">
+							<div class="droprow" style="padding:5px;margin-bottom:5px">
 								<strong>Nombre de :</strong>
 								<div class="builder">
 
