@@ -224,9 +224,25 @@
 
 	    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(svgStr))); // convert SVG string to data URL
     	var canvas = document.createElement("canvas");
-    	var context = canvas.getContext("2d");
+		var context = canvas.getContext("2d");
+		
+		// SVG is resolution independent. Canvas is not. We need to make our canvas 
+		// High Resolution.
+
+		// lets get the resolution of our device.
+		var pixelRatio = 5;
+
+		// set canvas size
 	    canvas.width = svg.width();
-	    canvas.height = svg.height();
+		canvas.height = svg.height();
+		
+		canvas.width *= pixelRatio; 
+		canvas.height *= pixelRatio;
+
+		// Now that its high res we need to compensate so our images can be drawn as 
+		//normal, by scaling everything up by the pixelRatio.
+		context.setTransform(pixelRatio,0,0,pixelRatio,0,0);
+
 	    var img = document.createElement("img");
 	    img.onload = function() {
 	        if(utils.isIE() || iscanvg) {
