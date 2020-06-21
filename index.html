@@ -441,6 +441,14 @@
 				</div>
 
 				<!-- create buttons -->
+				<button id="reload" class="intext-btn "><i class="fa fa-refresh"></i></button>
+				<script>
+					var buttonReload = document.getElementById('reload');
+					Handsontable.dom.addEvent(buttonReload, 'click', function() {
+						hot.loadData(JSON.parse(sessionStorage['data']))
+					});
+				</script>
+
 				<button id="reset" class="intext-btn "><i class="fa fa-eraser" aria-hidden="true"></i></button>
 				<script>
 					var buttonReset = document.getElementById('reset');
@@ -668,6 +676,7 @@
 					var container = document.getElementById('dataTable');
 					var hot = new Handsontable(container, {
 						data: myData,
+						//startRows: 8,
 						rowHeaders: false,
 						colHeaders: cols_header, 
 						columns: cols,
@@ -676,12 +685,20 @@
 						className: "htCenter",
 						contextMenu: true,
 						outsideClickDeselects: false,
+						persistentState: true,
 						undo: true,
 						hiddenColumns: {
 							columns: [0,6], //hide famID and affected
 							indicators: false
 						},
 						licenseKey: 'non-commercial-and-evaluation',
+						afterChange: function (change, source) {
+							// save all data to local storge if the edit happends
+							if (source !== "loadData") {								
+								sessionStorage['data'] = JSON.stringify(this.getSourceData());
+								return
+							}
+						}
 						});
 
 					var setter = false;
@@ -763,12 +780,8 @@
 				<button id="exportJson" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(exportJson, 'click', function() {
-
 						let myDeepClone = JSON.stringify(hot.getSourceData())
-						//var obj0 = FormatToPedigreeJS(JSON.parse(myDeepClone))
-						//var obj = FormatToTable(obj0)
 						ExportJSON(JSON.parse(myDeepClone))
-
 					});
 				</script>
 
@@ -777,9 +790,8 @@
 				<script>
 					Handsontable.dom.addEvent(exportBOADICEA, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-						var Tdata = FormatToPedigreeJS(hot.getSourceData())
+						var Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone))
 						ExportBOADICEv4(Tdata)
-						hot.loadData(JSON.parse(myDeepClone)) //reload hot. Otherwise hot is cleared. Bug ?
 					});
 				</script>
 				&nbsp;
@@ -805,7 +817,7 @@
 						<input id="svg_download" type="button" style="display: none;"/>SVG <i class="fa fa-download"></i>
 				</label>
 				<label class="btn btn-default btn-file">
-						<input id="png_download" type="button" style="display: none;"/><i class="fa fa-file-image-o"></i>
+						<input id="png_download" type="button" style="display: none;"/><i class="fa fa-file-image-o"></i> <i class="fa fa-download"></i>
 				</label>
 				<label class="btn btn-default btn-file">
 					<input id="boadicea_download" type="button" style="display: none;"/>BOADICEA <i class="fa fa-download"></i>
@@ -828,8 +840,9 @@
 
 		<div class='row'>
 			<h3>Histoire clinique</h3>
-			<div class="text-center">
-				<textarea id="story" name="story" rows="5" cols="33"></textarea>
+			<div>
+				<div id="story"></div>
+
 				<script>
 					var rawData = {
 						"FamID": "1",
@@ -842,9 +855,9 @@
 						"Deceased":"0"
 						}
 
-					var result = "En cours." //"il s'agit d'un " + rawData.Sex + "de x ans, né(e) en y."
+					var result = "Fonctionnalité non implémentée." //"il s'agit d'un " + rawData.Sex + "de x ans, né(e) en y."
 
-					document.getElementById('story').value = result
+					document.getElementById('story').innerHTML = result
 				</script>
 			</div>
 		</div>
