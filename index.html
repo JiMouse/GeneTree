@@ -270,7 +270,7 @@
 			<div class="text-center">
 				<!--  buttons edit familly -->
 				<div id="dropdownFam" class="dropdown" style="display:inline;">
-					<button id="editFamily" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
+					<button id="editFamily" title="Ajouter une nouvelle famille" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
 					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
 						<li>
 							<div class="droprow" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier (JSON/Boadicea) :</strong>
@@ -441,7 +441,7 @@
 				</div>
 
 				<!-- create buttons -->
-				<button id="reload" class="intext-btn "><i class="fa fa-refresh"></i></button>
+				<button id="reload" title="Charger le tableau depuis la sauvegarde locale" class="intext-btn "><i class="fa fa-refresh"></i></button>
 				<script>
 					var buttonReload = document.getElementById('reload');
 					Handsontable.dom.addEvent(buttonReload, 'click', function() {
@@ -449,7 +449,7 @@
 					});
 				</script>
 
-				<button id="reset" class="intext-btn "><i class="fa fa-eraser" aria-hidden="true"></i></button>
+				<button id="reset" title="Réinitialiser" class="intext-btn "><i class="fa fa-eraser" aria-hidden="true"></i></button>
 				<script>
 					var buttonReset = document.getElementById('reset');
 					Handsontable.dom.addEvent(buttonReset, 'click', function() {
@@ -457,7 +457,7 @@
 					});
 				</script>
 
-				<button id="undo" class="intext-btn "><i class="fa fa-undo" aria-hidden="true"></i></button>
+				<button id="undo" title="Défaire" class="intext-btn "><i class="fa fa-undo" aria-hidden="true"></i></button>
 				<script>
 					var buttonUndo = document.getElementById('undo');
 					Handsontable.dom.addEvent(buttonUndo, 'click', function() {
@@ -465,7 +465,7 @@
 					});
 				</script>
 
-				<button id="redo" class="intext-btn "><i class="fa fa-repeat" aria-hidden="true"></i></button>
+				<button id="redo" title="Refaire" class="intext-btn "><i class="fa fa-repeat" aria-hidden="true"></i></button>
 				<script>
 					var buttonRedo = document.getElementById('redo');
 					Handsontable.dom.addEvent(buttonRedo, 'click', function() {
@@ -475,7 +475,7 @@
 
 				&nbsp &nbsp &nbsp
 
-				<button id="add-parents" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
+				<button id="add-parents" title="Ajouter des parents" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
 				<script>
 					var buttonParents = document.getElementById('add-parents');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -483,7 +483,7 @@
 					});
 				</script>
 
-				<button id="add-brother" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
+				<button id="add-brother" title="Ajouter un frère" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
 				<script>
 					var buttonParents = document.getElementById('add-brother');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -491,7 +491,7 @@
 					});
 				</script>
 
-				<button id="add-sister" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
+				<button id="add-sister" title="Ajouter une sœur" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
 				<script>
 					var buttonParents = document.getElementById('add-sister');
 					Handsontable.dom.addEvent(buttonParents, 'click', function() {
@@ -499,7 +499,7 @@
 					});
 				</script>
 
-				<button id="add-son" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
+				<button id="add-son" title="Ajouter un fils" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
 				<script>
 					var buttonSon = document.getElementById('add-son');
 					Handsontable.dom.addEvent(buttonSon, 'click', function() {
@@ -507,7 +507,7 @@
 					});
 				</script>
 
-				<button id="add-daughter" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
+				<button id="add-daughter" title="Ajouter une fille" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
 				<script>
 					var buttonDaughter = document.getElementById('add-daughter');
 					Handsontable.dom.addEvent(buttonDaughter, 'click', function() {
@@ -515,7 +515,7 @@
 					});
 				</script>
 
-				<button id="add-partner" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
+				<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
 				<script>
 					var buttonPartner = document.getElementById('add-partner');
 					Handsontable.dom.addEvent(buttonPartner, 'click', function() {
@@ -736,7 +736,7 @@
 				</br>		
 
 				<!-- create export to TSV button -->
-				<button id="export-file" class="intext-btn">TSV <i class="fa fa-download"></i></button> &emsp;
+				<button id="export-file" title="Télécharger le tableau" class="intext-btn">TSV <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					var button1 = document.getElementById('export-file');
 					var exportPlugin1 = hot.getPlugin('exportFile');
@@ -758,7 +758,7 @@
 				</script>
 
 				<!-- create export to PED button -->		
-				<button id="savePed" class="intext-btn">PED <i class="fa fa-download"></i></button> &emsp;
+				<button id="savePed" title="Fichier Plink" class="intext-btn">PED <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(savePed, 'click', function() {
 						var toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected']
@@ -766,8 +766,8 @@
 					});
 				</script>
 
-				<!-- create export to PedigreJS JSON button -->
-				<button id="exportPedigreJS" class="intext-btn">PedigreJS <i class="fa fa-download"></i></button> &emsp;
+				<!-- create export to PedigreeJS JSON button -->
+				<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="intext-btn">Pedigreejs <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(exportPedigreJS, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData())
@@ -777,7 +777,7 @@
 				</script>
 
 				<!-- create export to JSON button -->
-				<button id="exportJson" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
+				<button id="exportJson" title="Données brutes" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
 				<script>
 					Handsontable.dom.addEvent(exportJson, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData())
@@ -786,7 +786,7 @@
 				</script>
 
 				<!-- create export to BOADICEA button -->
-				<button id="exportBOADICEA" class="intext-btn">BOADICEA <i class="fa fa-download"></i></button>
+				<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="intext-btn">BOADICEA <i class="fa fa-download"></i></button>
 				<script>
 					Handsontable.dom.addEvent(exportBOADICEA, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
@@ -795,7 +795,7 @@
 					});
 				</script>
 				&nbsp;
-				<a target="_blank" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
+				<a target="_blank" title="Lien vers BOADICEA v4.0" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 			</div>
 		</div>
 

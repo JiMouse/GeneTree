@@ -8,11 +8,11 @@
 			btn_target: 'pedigree_history'
         }, options );
 
-		var btns = [{"fa": "fa-undo", "title": "undo"},
-					{"fa": "fa-repeat", "title": "redo"},
-					{"fa": "fa-refresh", "title": "reset"},
-					{"fa": "fa-arrows", "title": "center"},
-					{"fa": "fa-arrows-alt", "title": "fullscreen"}];
+		var btns = [{"fa": "fa-undo", "title": "Défaire"},
+					{"fa": "fa-repeat", "title": "Refaire"},
+					{"fa": "fa-refresh", "title": "Réinitialiser"},
+					{"fa": "fa-arrows", "title": "Centrer l'arbre"},
+					{"fa": "fa-arrows-alt", "title": "Plein écran"}];
 		var lis = "";
 		for(var i=0; i<btns.length; i++) {
 			lis += '<li">';
@@ -87,15 +87,6 @@
 					}
 				});
 			} else if ($(e.target).hasClass('fa-arrows')) {
-				//object dimention
-				/*
-				var bbox = d3.select("#"+opts.targetDiv).select('g').node().getBBox();
-				var Bounding = d3.select("#"+opts.targetDiv).node().getBoundingClientRect();
-				var x =0;
-				var y = 0;
-				d3.select("#"+opts.targetDiv).select('g').attr('transform', 'translate('+ x +','+ y +')');
-				*/
-
 				var xtransform = opts.symbol_size/2;
 				var ytransform = (-opts.symbol_size*2.5);
 				var zoom = 1;
