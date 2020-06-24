@@ -442,7 +442,7 @@
 				</div>
 
 				<!-- create buttons -->
-				<button id="reload" title="Charger le tableau depuis la sauvegarde locale" class="intext-btn "><i class="fa fa-refresh"></i></button>
+				<button id="reload" title="Charger depuis la sauvegarde locale" class="intext-btn "><i class="fa fa-refresh"></i></button>
 				<script>
 					var buttonReload = document.getElementById('reload');
 					Handsontable.dom.addEvent(buttonReload, 'click', function() {
@@ -770,7 +770,7 @@
 				<!-- create export to PedigreeJS JSON button -->
 				<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="intext-btn">Pedigreejs <i class="fa fa-download"></i></button> &emsp;
 				<script>
-					Handsontable.dom.addEvent(exportPedigreJS, 'click', function() {
+					Handsontable.dom.addEvent(exportPedigreejs, 'click', function() {
 						let myDeepClone = JSON.stringify(hot.getSourceData())
 						var obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
 						ExportJSON(obj)
@@ -840,7 +840,7 @@
 
 				<!-- create disease settings -->
 				<div id="fh_settings"></div>
-				<div id="reset_dialog" title="Confirmation Disease Reset"></div>
+				<div id="reset_dialog" title="Confirmation de la réinitialisation des maladies"></div>
 			</div>
 		</div>
 
@@ -855,8 +855,8 @@
 					let myDeepClone = JSON.stringify(hot.getSourceData())
 					let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
 					
-					result = histoire(obj)
-					document.getElementById('story').innerHTML = result
+					result = histoire(obj) // non dynamique ?
+					document.getElementById('story').innerHTML = histoire(obj)
 				</script>
 				<br>
 				<button onclick="copyToClipboard('story')">Copier</button>

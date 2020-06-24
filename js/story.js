@@ -36,6 +36,29 @@ var dico = {
     },
 }
 
+function getPatho(obj, i) {
+  var patho = []
+  var age = []
+  var keys = Object.keys(obj[i])
+  
+  for (var j = 0; j < keys.length; j++) {
+      if (keys[j].indexOf("_diagnosis_age") !== -1) {
+          var out = keys[j].substring(0, keys[j].length - 14)
+          patho.push(out);
+          age.push(obj[i][keys[j]]);
+      }
+  }
+  result = {
+    "Disease1":patho[0],
+    "Age1":age[0],
+    "Disease2":patho[1],
+    "Age2":age[1],
+    "Disease3":patho[2],
+    "Age3":age[2]
+  }
+  return result
+}
+
 function histoire(obj) {
     // index
     var text
@@ -48,19 +71,26 @@ function histoire(obj) {
             //fratrie
         }
     }
-    return 'Fonctionnalité non implémentée.' //text
+    return 'Fonctionnalité non implémentée.' // text //
 }
 
 function textIndex(obj, i){ //pour le cas index
     // Deux élements : motif de consultation et enfant & conjoint
     let result = {'index':'', 'couple':''}
-    let indexData = obj[i]
+    let indexData = obj[i],
+    sex = indexData.sex;
+    status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie')
+    
+    // check disease
+    d1 = getPatho(obj, i).Disease1
+    
 
     //{"proband":true,"famid":"1","display_name":"Index","name":"1","father":"2","mother":"3","sex":"M","yob":"","age":""}
-    result.index = "Madame , née en , se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale."
+    result.index = dico.civil[sex] + ' ' + dico.etre[status]  + ' ' + dico.naissance[sex] + ' ' + indexData.yob +' ('+indexData.age+'ans).'
+    //result.index += "Madame , née en , se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale."
     result.index += 'Elle ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
 
-    return result.index
+    return  result.index
 }
 
 function textline(obj, i){ //pour les autres individus (fratrie, parents)
