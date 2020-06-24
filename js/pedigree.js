@@ -543,7 +543,7 @@
 			font_size: '.75em',
 			font_family: 'Helvetica',
 			font_weight: 700,
-			background: "#EEE",
+			background: '#FFF', //"#EEE", 
 			node_background: '#fdfdfd',
 			validate: true,
         	DEBUG: false}, options );

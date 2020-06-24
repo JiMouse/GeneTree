@@ -404,7 +404,7 @@
 		    width: ($(window).width() > 400 ? 450 : $(window).width()- 30)
 		});
 
-		var table = "<table id='Fiche personnelle' class='table'>";
+		var table = "<table id='person_details' class='table'>";
 
 		table += "<tr><td style='text-align:right'>Identifiant</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
 		(d.data.name ? d.data.name : "")+"></td></tr>";
