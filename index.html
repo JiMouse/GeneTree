@@ -28,6 +28,7 @@
 	
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/story.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script src="package/lodash.js"></script>
 	
@@ -844,26 +845,21 @@
 		</div>
 
 		<div class='row'>
-			<h3>Histoire clinique</h3>
+			<h3>Histoire clinique</h3> 
 			<div>
 				<div id="story"></div>
+				
 
 				<script>
-					var rawData = {
-						"FamID": "1",
-						"Name": "",
-						"IndivID": "1",
-						"FathID": "2",
-						"MothID": "3",
-						"Sex": "F",
-						"Affected":"1",
-						"Deceased":"0"
-						}
-
-					var result = "Fonctionnalité non implémentée." //"il s'agit d'un " + rawData.Sex + "de x ans, né(e) en y."
-
+					// Load data (in pedigreeJS format)
+					let myDeepClone = JSON.stringify(hot.getSourceData())
+					let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
+					
+					result = histoire(obj)
 					document.getElementById('story').innerHTML = result
 				</script>
+				<br>
+				<button onclick="copyToClipboard('story')">Copier</button>
 			</div>
 		</div>
 		<div class='row'>
