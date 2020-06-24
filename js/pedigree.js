@@ -529,7 +529,8 @@
         			   {"name": "ch1", "display_name": "me", "sex": "F", "mother": "f21", "father": "m21", "proband": true}],
         	width: 600,
         	height: 400,
-        	symbol_size: 35,
+			symbol_size: 35,
+			store_type: 'session',
         	zoomIn: 1.0,
         	zoomOut: 1.0,
         	diseases: [	{'type': 'breast_cancer', 'colour': '#F68F35'},
@@ -549,8 +550,8 @@
 
         if ( $( "#fullscreen" ).length === 0 ) {
         	// add undo, redo, fullscreen buttons and event listeners once
-			pbuttons.add(opts);
-			io.add(opts);
+			pbuttons.add(opts); //add undo, redo, fullscreen buttons 
+			io.add(opts); //event listeners
         }
 
         if(pedcache.nstore(opts) == -1)

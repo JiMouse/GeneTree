@@ -11,12 +11,13 @@
 		var btns = [{"fa": "fa-undo", "title": "undo"},
 					{"fa": "fa-repeat", "title": "redo"},
 					{"fa": "fa-refresh", "title": "reset"},
+					{"fa": "fa-arrows", "title": "center"},
 					{"fa": "fa-arrows-alt", "title": "fullscreen"}];
 		var lis = "";
 		for(var i=0; i<btns.length; i++) {
 			lis += '<li">';
 			lis += '&nbsp;<i class="fa fa-lg ' + btns[i].fa + '" ' +
-			               (btns[i].fa == "fa-arrows-alt" ? 'id="fullscreen" ' : '') +
+			               (btns[i].fa == "fa-arrows-alt" ? 'id="fullscreen" ' : (btns[i].fa == "fa-arrows" ? 'id="center" ' : '')) + // update
 			               ' aria-hidden="true" title="'+ btns[i].title +'"></i>';
 			lis += '</li>';
 		}
@@ -53,7 +54,7 @@
 			}
 		});
 
-		// undo/redo/reset
+		// undo/redo/reset 												
 		$( "#"+opts.btn_target ).on( "click", function(e) {
 			e.stopPropagation();
 			if($(e.target).hasClass("disabled"))
@@ -85,6 +86,23 @@
 					    }
 					}
 				});
+			} else if ($(e.target).hasClass('fa-arrows')) {
+				//object dimention
+				/*
+				var bbox = d3.select("#"+opts.targetDiv).select('g').node().getBBox();
+				var Bounding = d3.select("#"+opts.targetDiv).node().getBoundingClientRect();
+				var x =0;
+				var y = 0;
+				d3.select("#"+opts.targetDiv).select('g').attr('transform', 'translate('+ x +','+ y +')');
+				*/
+
+				var xtransform = opts.symbol_size/2;
+				var ytransform = (-opts.symbol_size*2.5);
+				var zoom = 1;
+				d3.select("#"+opts.targetDiv).select('g').attr("transform", "translate("+xtransform+"," + ytransform + ") scale("+zoom+")");
+
+				//set cached position
+				pedcache.setposition(opts, xtransform, ytransform);
 			}
 			// trigger fhChange event
 			$(document).trigger('fhChange', [opts]);

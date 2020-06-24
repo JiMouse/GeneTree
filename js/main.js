@@ -215,7 +215,7 @@ function FormatToTable(JSONData) {
         }
 
         obj[i] = {
-            "FamID": "1",
+            "FamID": obj[i].famid,
             "Name": obj[i].display_name,
             "IndivID": obj[i].name,
             "FathID": obj[i].hasOwnProperty('father') ? obj[i].father : '0',
@@ -368,7 +368,7 @@ function createNewInd(fathID, mothID, sex, newParentID){
     var indexArr = hot.getSelectedLast(), //get selected row's index
         indivID = NewName(),
         rawData = {
-                "FamID": "1",
+                "FamID": hot.getDataAtCell(indexArr[0], 0),
                 "Name": "",
                 "IndivID": indivID,
                 "FathID": fathID,
@@ -527,7 +527,7 @@ function ExportBOADICEv4(JSONData) {
         }else{ name = arrData[i]['name']};
 
         var row = [
-            '1', //arrData[i]['famid'],
+            arrData[i]['famid'],
             name,
             KeyStatus(i,'proband','1'),
             arrData[i]['name'],
@@ -663,3 +663,5 @@ function displayName(JSONData) {
     }
     hot.populateFromArray(0, 1, names)
 }
+
+//.on("mouseover", function() {
