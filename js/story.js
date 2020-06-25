@@ -37,25 +37,33 @@ var dico = {
 }
 
 function getPatho(obj, i) {
-  var patho = []
-  var age = []
-  var keys = Object.keys(obj[i])
+  var patho = [];
+  var age = [];
+  var keys = Object.keys(obj[i]);
+  var k = 0
   
   for (var j = 0; j < keys.length; j++) {
-      if (keys[j].indexOf("_diagnosis_age") !== -1) {
+      if (keys[j].indexOf("_diagnosis_age") !== -1) {patho
           var out = keys[j].substring(0, keys[j].length - 14)
           patho.push(out);
           age.push(obj[i][keys[j]]);
+          k += 1
+
       }
   }
+
+  if (patho == "") return patho
+  
   result = {
     "Disease1":patho[0],
     "Age1":age[0],
     "Disease2":patho[1],
     "Age2":age[1],
     "Disease3":patho[2],
-    "Age3":age[2]
+    "Age3":age[2],
+    "keys" : k
   }
+
   return result
 }
 
@@ -71,24 +79,26 @@ function histoire(obj) {
             //fratrie
         }
     }
-    return 'Fonctionnalité non implémentée.' // text //
+    return 'Fonctionnalité non implémentée.' //text //  
 }
 
 function textIndex(obj, i){ //pour le cas index
     // Deux élements : motif de consultation et enfant & conjoint
     let result = {'index':'', 'couple':''}
     let indexData = obj[i],
+    //{"proband":true,"famid":"1","display_name":"Index","name":"1","father":"2","mother":"3","sex":"M","yob":"","age":""}
+
     sex = indexData.sex;
     status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie')
     
-    // check disease
-    d1 = getPatho(obj, i).Disease1
+    result.index = dico.civil[sex] + ' ' + dico.etre[status]  + ' ' + dico.naissance[sex] + ' ' + indexData.yob +' ('+indexData.age+'ans)'
+    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale."
     
-
-    //{"proband":true,"famid":"1","display_name":"Index","name":"1","father":"2","mother":"3","sex":"M","yob":"","age":""}
-    result.index = dico.civil[sex] + ' ' + dico.etre[status]  + ' ' + dico.naissance[sex] + ' ' + indexData.yob +' ('+indexData.age+'ans).'
-    //result.index += "Madame , née en , se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale."
-    result.index += 'Elle ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
+    if(getPatho(obj, i)=="") {
+      result.index += ' ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
+    } else {
+      alert(getPatho(obj, i).keys) //nombre de maladies
+    }
 
     return  result.index
 }

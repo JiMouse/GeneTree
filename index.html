@@ -442,6 +442,8 @@
 				</div>
 
 				<!-- create buttons -->
+				<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique'" class="intext-btn ">Charger l'arbre <i class="fa fa-refresh"></i></button>
+				&nbsp &nbsp
 				<button id="reload" title="Charger depuis la sauvegarde locale" class="intext-btn "><i class="fa fa-refresh"></i></button>
 				<script>
 					var buttonReload = document.getElementById('reload');
@@ -474,7 +476,7 @@
 					});
 				</script>
 
-				&nbsp &nbsp &nbsp
+				&nbsp &nbsp
 
 				<button id="add-parents" title="Ajouter des parents" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
 				<script>
@@ -847,21 +849,24 @@
 		<div class='row'>
 			<h3>Histoire clinique</h3> 
 			<div>
-				<div id="story"></div>
-				
-
-				<script>
-					// Load data (in pedigreeJS format)
-					let myDeepClone = JSON.stringify(hot.getSourceData())
-					let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-					
-					result = histoire(obj) // non dynamique ?
-					document.getElementById('story').innerHTML = histoire(obj)
-				</script>
-				<br>
+				<button id="loadStory" title ='Màj texte'><i class="fa fa-refresh"></i></button>
 				<button onclick="copyToClipboard('story')">Copier</button>
+				
+				<p><div id="story"></div></p>
+				
+				<script>
+					Handsontable.dom.addEvent(loadStory, 'click', function() {
+						// Load data (in pedigreeJS format)
+						let myDeepClone = JSON.stringify(hot.getSourceData())
+						let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
+					
+						//alert(histoire(obj))
+						document.getElementById('story').innerHTML = histoire(obj)
+					});
+				</script>
 			</div>
 		</div>
+
 		<div class='row'>
 			<h3>Références</h3>
 			<div>
