@@ -39,6 +39,7 @@ var dico = {
 function getPatho(obj, i) {
   var patho = [];
   var age = [];
+  var year = [];
   var keys = Object.keys(obj[i]);
   var k = 0
   
@@ -47,8 +48,8 @@ function getPatho(obj, i) {
           var out = keys[j].substring(0, keys[j].length - 14)
           patho.push(out);
           age.push(obj[i][keys[j]]);
+          year.push(obj[i].yob)
           k += 1
-
       }
   }
 
@@ -57,10 +58,13 @@ function getPatho(obj, i) {
   result = {
     "Disease1":patho[0],
     "Age1":age[0],
+    "Yob1":year[0],
     "Disease2":patho[1],
     "Age2":age[1],
+    "Yob2":year[1],
     "Disease3":patho[2],
     "Age3":age[2],
+    "Yob3":year[2],
     "keys" : k
   }
 
@@ -92,12 +96,26 @@ function textIndex(obj, i){ //pour le cas index
     status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie')
     
     result.index = dico.civil[sex] + ' ' + dico.etre[status]  + ' ' + dico.naissance[sex] + ' ' + indexData.yob +' ('+indexData.age+'ans)'
-    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale."
+    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale"
     
     if(getPatho(obj, i)=="") {
-      result.index += ' ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
+      result.index += '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
     } else {
-      alert(getPatho(obj, i).keys) //nombre de maladies
+      //alert(getPatho(obj, i).keys) //nombre de maladies
+      result.index += " dans le cadre d'un "
+      
+      d = function(obj, i, k) {
+        k += 1
+        let dis = getPatho(obj, i)['Disease'+k]
+        let a = getPatho(obj, i)['Age'+k]
+        let y = getPatho(obj, i)['Yob'+k] // faux
+        return dis + " diagnostiqué en " + y + " à l'âge de " + a + " ans"
+      }
+
+      result.index += d(obj, 0,0) // sep = et
+      
+      result.index +="."
+      
     }
 
     return  result.index
