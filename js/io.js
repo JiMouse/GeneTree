@@ -201,7 +201,7 @@
 		        } else {
 					var a      = document.createElement('a');
 					a.href     = obj.img;
-					a.download = 'plot.png';
+					a.download = 'GeneTree_arbre_'+ getFormattedTime() +'.jpg'; //'plot.png';
 					a.target   = '_blank';
 					document.body.appendChild(a); a.click(); document.body.removeChild(a);
 		        }
@@ -265,7 +265,9 @@
     			context.clearRect (0, 0, svg.width(), svg.height());
         		context.drawImage(img, 0, 0, svg.width(), svg.height());
     		}
-	        deferred.resolve({'name': deferred_name, 'img':canvas.toDataURL("image/png"), 'w':svg.width(), 'h':svg.height()});
+			//deferred.resolve({'name': deferred_name, 'img':canvas.toDataURL("image/png"), 'w':svg.width(), 'h':svg.height()});
+			deferred.resolve({'name': deferred_name, 'img':canvas.toDataURL("image/jpeg"), 'w':svg.width(), 'h':svg.height()});
+
     	};
     	img.src = imgsrc;
     	return deferred.promise();
