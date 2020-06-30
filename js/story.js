@@ -17,10 +17,10 @@ var dico = {
         'Mmes':'Mesdames'
     },
     'naissance':{
-        'M':'né en',
-        'F':'née en',
-        'MM':'nés en',
-        'Mmes':'nées en'
+        'M':'né',
+        'F':'née',
+        'MM':'nés',
+        'Mmes':'nées'
     },
     'décés':{
         'M':'décédé',
@@ -36,39 +36,25 @@ var dico = {
     },
 }
 
-function getPatho(obj, i) {
-  var patho = [];
-  var age = [];
-  var year = [];
-  var keys = Object.keys(obj[i]);
-  var k = 0
+function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles pathologies
+  let keys = Object.keys(obj[i]),
+      tag = '_diagnosis_age';
   
-  for (var j = 0; j < keys.length; j++) {
-      if (keys[j].indexOf("_diagnosis_age") !== -1) {patho
-          var out = keys[j].substring(0, keys[j].length - 14)
-          patho.push(out);
-          age.push(obj[i][keys[j]]);
-          year.push(obj[i].yob)
-          k += 1
-      }
-  }
+  if (!keys.join().includes(tag)) return text_neg // si pas de pathos
+  let result = ''
 
-  if (patho == "") return patho
-  
-  result = {
-    "Disease1":patho[0],
-    "Age1":age[0],
-    "Yob1":year[0],
-    "Disease2":patho[1],
-    "Age2":age[1],
-    "Yob2":year[1],
-    "Disease3":patho[2],
-    "Age3":age[2],
-    "Yob3":year[2],
-    "keys" : k
-  }
-
-  return result
+  for (var j = 0; j < keys.length; j++) {  
+    if (keys[j].indexOf(tag) !== -1) {
+      let out = keys[j].substring(0, keys[j].length - tag.length), //14 // disease
+          a = obj[i][keys[j]], //âge comme valeur de la pathologie
+          y = obj[i].yob + a;
+      result = (result != '' ? `${result} et ` : text_pos);
+      result += out;
+      result += " diagnostiqué en " + y;
+      result += " à l'âge de " + a + " ans";
+    };
+    
+  }; return result
 }
 
 function histoire(obj) {
@@ -83,40 +69,24 @@ function histoire(obj) {
             //fratrie
         }
     }
-    return 'Fonctionnalité non implémentée.' //text //  
+    return 'Fonctionnalité non implémentée.' //text 
 }
 
 function textIndex(obj, i){ //pour le cas index
     // Deux élements : motif de consultation et enfant & conjoint
     let result = {'index':'', 'couple':''}
     let indexData = obj[i],
-    //{"proband":true,"famid":"1","display_name":"Index","name":"1","father":"2","mother":"3","sex":"M","yob":"","age":""}
 
     sex = indexData.sex;
-    status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie')
+    status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie');
     
-    result.index = dico.civil[sex] + ' ' + dico.etre[status]  + ' ' + dico.naissance[sex] + ' ' + indexData.yob +' ('+indexData.age+'ans)'
-    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale"
+    result.index = `${dico.civil[sex]} ${dico.etre[status]} ${dico.naissance[sex]} en ${indexData.yob} (${indexData.age}ans)`;
+    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
     
-    if(getPatho(obj, i)=="") {
-      result.index += '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.'
-    } else {
-      //alert(getPatho(obj, i).keys) //nombre de maladies
-      result.index += " dans le cadre d'un "
-      
-      d = function(obj, i, k) {
-        k += 1
-        let dis = getPatho(obj, i)['Disease'+k]
-        let a = getPatho(obj, i)['Age'+k]
-        let y = getPatho(obj, i)['Yob'+k] // faux
-        return dis + " diagnostiqué en " + y + " à l'âge de " + a + " ans"
-      }
+    let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.',
+        text_pos = " dans le cadre d'un ";
 
-      result.index += d(obj, 0,0) // sep = et
-      
-      result.index +="."
-      
-    }
+    result.index += getPatho(obj, i,text_neg, text_pos)+'.';
 
     return  result.index
 }
@@ -124,6 +94,8 @@ function textIndex(obj, i){ //pour le cas index
 function textline(obj, i){ //pour les autres individus (fratrie, parents)
     //
 }
+
+
 
 /*
 //Expected output
