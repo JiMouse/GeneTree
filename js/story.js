@@ -34,26 +34,32 @@ var dico = {
         'M':'issu',
         'F':'issue'
     },
+    'enfant':{
+      'M':'un fils',
+      'F':'une fille'
+  },
 }
 
 function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles pathologies
   let keys = Object.keys(obj[i]),
-      tag = '_diagnosis_age';
+      tag = '_diagnosis_age',
+      result = '';
   
   if (!keys.join().includes(tag)) return text_neg // si pas de pathos
-  let result = ''
 
   for (var j = 0; j < keys.length; j++) {  
     if (keys[j].indexOf(tag) !== -1) {
-      let out = keys[j].substring(0, keys[j].length - tag.length), //14 // disease
-          a = obj[i][keys[j]], //âge comme valeur de la pathologie
+      let out = keys[j].substring(0, keys[j].length - tag.length),
+          a = obj[i][keys[j]],
           y = obj[i].yob + a;
       result = (result != '' ? `${result} et ` : text_pos);
       result += out;
-      result += " diagnostiqué en " + y;
-      result += " à l'âge de " + a + " ans";
+      if(a != "") {
+        result += " diagnostiqué";
+        if(obj[i].yob != "") result += " en " + y;
+        result += " à l'âge de " + a + " ans";
+      }
     };
-    
   }; return result
 }
 
@@ -66,35 +72,103 @@ function histoire(obj) {
             text = textIndex(obj, i)
 
         } else {
-            //fratrie
+            //fratrie text += ...
         }
     }
-    return 'Fonctionnalité non implémentée.' //text 
+    return 'Fonctionnalité non implémentée.'  //text  //
 }
 
 function textIndex(obj, i){ //pour le cas index
-    // Deux élements : motif de consultation et enfant & conjoint
-    let result = {'index':'', 'couple':''}
-    let indexData = obj[i],
-
-    sex = indexData.sex;
-    status = (indexData.hasOwnProperty('status') ? 'décés' : 'vie');
+    // motif de consultation
+    let result = {'index':'', 'child':'', 'couple':''},
+        sex = obj[i].sex;
     
-    result.index = `${dico.civil[sex]} ${dico.etre[status]} ${dico.naissance[sex]} en ${indexData.yob} (${indexData.age}ans)`;
-    result.index += " et se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
+    result.index = textCivil(obj,i)
+    result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
     
-    let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse.',
+    let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
         text_pos = " dans le cadre d'un ";
 
     result.index += getPatho(obj, i,text_neg, text_pos)+'.';
 
-    return  result.index
+    //enfant & conjoint
+    let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
+    result.child = getChildList(obj,i,text_child_neg);
+
+    return result.index + '<br>' + result.child
 }
 
 function textline(obj, i){ //pour les autres individus (fratrie, parents)
     //
 }
 
+function textCivil(obj,i){
+  let sex = obj[i].sex,
+      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
+
+  let out = (obj[i].proband == true ? dico.civil[sex] + ' ' 
+            + (obj[i].yob != '' ? dico.etre[status] + ' ':'')
+            : '');
+  out += (obj[i].yob != '' && obj[i].yob != null  ? ' ' + dico.naissance[sex] + ' en ' + obj[i].yob : '');
+  out += (obj[i].age != '' && obj[i].age != null ? ' (' + obj[i].age +' ans)':'');
+  if(obj[i].proband == true && obj[i].yob != '') out += ' et '
+  
+  return out
+}
+
+function getChildList(obj,i,text_child_neg) { //index, name, father and mother
+  let child,
+      child1 = [], //index des enfants : 1ere union
+      child2 = [], //index des enfants : 2ieme union
+      fath,
+      moth,
+      sex = obj[i].sex; 
+
+  for (var k = 0; k < obj.length; k++) {
+    if (obj[k]['father'] == obj[i]['name'] || obj[k]['mother'] == obj[i]['name']) {
+      if (typeof fath === 'undefined') {
+        fath = obj[k]['father']
+        moth = obj[k]['mother']
+        child1.push(k)
+      } else if(fath != obj[k]['father'] || moth != obj[k]['mother']) { //si 2ième union
+          child2.push(k)
+      } else child1.push(k)
+    };
+  };
+
+  if(child1=='') return text_child_neg
+
+  function childText(child) {
+    let result = [];
+    for (var c = 0; c < child.length; c++) {
+      let k = child[c]
+      result = (result == '' ? result : result + ', ') + dico.enfant[obj[k].sex]
+      result += textCivil(obj, k)
+    }
+    return result
+  }
+
+  // x enfants d'une première union : 1 fils etc.,  ; y enfants d'une seconde union : ...
+  if(child2!="") {
+    // x enfants d'une première union : 1 fils etc.,  ; y enfants d'une seconde union : ...
+    child = child1.length + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : "
+    child += childText(child1) // x enfants
+    child += ' ; ' + child2.length + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : "
+    child += childText(child2) // x enfants
+    child += '.'
+  } else {
+    child = child1.length + (child1.length>1 ? ' enfants' : ' enfant') + ' : '
+    child += childText(child1) // x enfants
+    child += '.'
+  }
+  if(obj[i].proband == true) child = dico.pronom[sex]+ " a " + child
+
+  // conjoint pour le cas index
+  if (obj[i].proband == true && child != ".") {
+    // conjoint 1 & 2
+  }
+  return child;
+}
 
 
 /*

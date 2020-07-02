@@ -327,7 +327,6 @@ function GetChild(o,i) {
                             'name':o[j]['name']
                         }]
             return result;
-            break;
         };
     };
 }
