@@ -38,6 +38,10 @@ var dico = {
       'M':'un fils',
       'F':'une fille'
   },
+  'fratrie':{
+    'M':'un frère',
+    'F':'une soeur'
+}
 }
 
 function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles pathologies
@@ -68,20 +72,38 @@ function histoire(obj) {
     var text
     for (var i = 0; i < obj.length; i++) {
         if (obj[i].proband == true) {
-
             text = textIndex(obj, i)
 
         } else {
-            //fratrie text += ...
+          
+          // define id 
+          let p =1,
+              m=2,
+              gpp=0,
+              gmp=0,
+              gpm=0,
+              gmm=0;
+
+          switch(i) {
+            case p:
+              text += '<br>' + "Son père" + textline(obj, i);
+              break;
+            case m:
+              text += '<br>' + "Sa mère" + textline(obj, i);
+              break;
+            default:
+              break
+          }
         }
     }
-    return 'Fonctionnalité non implémentée.'  //text  //
+    return 'Fonctionnalité non implémentée.'  //text  //'Fonctionnalité non implémentée.'  //
 }
 
 function textIndex(obj, i){ //pour le cas index
     // motif de consultation
-    let result = {'index':'', 'child':'', 'couple':''},
-        sex = obj[i].sex;
+    let result = {'index':'', 'child':'', 'fratrie':''},
+        sex = obj[i].sex,
+        status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
     
     result.index = textCivil(obj,i)
     result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
@@ -95,11 +117,42 @@ function textIndex(obj, i){ //pour le cas index
     let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
     result.child = getChildList(obj,i,text_child_neg);
 
-    return result.index + '<br>' + result.child
+    //fratrie
+    let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
+    result.fratrie = getFratList(obj,i,text_frat_neg);
+
+    //final
+    return result.index  + '<br>' + result.fratrie + '<br>' + result.child
 }
 
-function textline(obj, i){ //pour les autres individus (fratrie, parents)
-    //
+function textline(obj, i, tag){ //pour les autres individus (parents et GP)
+  let result = {'civil':'', 'patho':'', 'child':'', 'fratrie':''},
+      sex = obj[i].sex,
+      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
+
+  //civil
+  result.civil = textCivil(obj,i)
+
+  //patho
+  let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
+      text_pos = " dans le cadre d'un ";
+  result.patho += getPatho(obj, i,text_neg, text_pos)+'.';
+
+  //fratrie
+  let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
+  result.fratrie = getFratList(obj,i,text_frat_neg);
+
+  //final
+  return result.civil + ' ' + result.patho  + ' ' + result.fratrie
+
+  /*
+  Son père est né en NA, toujours en vie. Il est enfant unique.
+  Sa mère est née en NA, toujours en vie. Elle est enfant unique.
+  Son grand-père paternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
+  Sa grand-mère paternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?.
+  Son grand-père maternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
+  Sa grand-mère maternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?
+  */
 }
 
 function textCivil(obj,i){
@@ -116,13 +169,13 @@ function textCivil(obj,i){
   return out
 }
 
-function getChildList(obj,i,text_child_neg) { //index, name, father and mother
+function getChildList(obj,i,text_child_neg) {
   let child,
       child1 = [], //index des enfants : 1ere union
       child2 = [], //index des enfants : 2ieme union
       fath,
       moth,
-      sex = obj[i].sex; 
+      sex = obj[i].sex;
 
   for (var k = 0; k < obj.length; k++) {
     if (obj[k]['father'] == obj[i]['name'] || obj[k]['mother'] == obj[i]['name']) {
@@ -148,7 +201,7 @@ function getChildList(obj,i,text_child_neg) { //index, name, father and mother
     return result
   }
 
-  // x enfants d'une première union : 1 fils etc.,  ; y enfants d'une seconde union : ...
+  // texte
   if(child2!="") {
     // x enfants d'une première union : 1 fils etc.,  ; y enfants d'une seconde union : ...
     child = child1.length + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : "
@@ -170,6 +223,68 @@ function getChildList(obj,i,text_child_neg) { //index, name, father and mother
   return child;
 }
 
+function getFratList(obj,i,text_frat_neg) {
+  let frat, //fratrie
+      fratpm = [], //fratrie issue du père et de la mère
+      fratm = [], //fratrie issue du père
+      fratp = [], //fratrie issue de la mère
+      fath = obj[i]['father'],
+      moth = obj[i]['mother'],
+      sex = obj[i].sex,
+      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie'); 
+
+  //si pas de parents définis
+  if (typeof(fath) === 'undefined') return ''
+  
+  //select siblings
+  for (var k = 0; k < obj.length; k++) {
+    if (obj[k]['father'] == fath && obj[k]['mother'] == moth && k != i) {
+      fratpm.push(k)
+    }
+    if (obj[k]['father'] == fath && obj[k]['mother'] != moth && k != i) {
+      fratp.push(k)
+    }
+    if (obj[k]['father'] != fath && obj[k]['mother'] == moth && k != i) {
+      fratm.push(k)
+    }
+  };
+
+  //si pas de fratrie
+  if(fratpm == '' && fratp == '' && fratm == '') return text_frat_neg
+
+  function fratText(frat, suf) {
+    let result = [];
+    for (var f = 0; f < frat.length; f++) {
+      let k = frat[f]
+      result = (result == '' ? result : result + ', ') + dico.fratrie[obj[k].sex]
+      if(typeof(suf) !== 'undefined') result += suf
+      result += textCivil(obj, k)
+    }
+    return result
+  }
+  
+  //texte
+  frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : '
+  frat += fratText(fratpm)
+  frat += '.'
+
+  if(fratp != ''){
+    frat += ' ' + dico.pronom[sex] + " a "
+    frat += fratText(fratp, ' de père')
+    frat += '.'
+  }
+
+  if(fratm != ''){
+    frat += ' ' + dico.pronom[sex] + " a "
+    frat += fratText(fratm, ' de mère')
+    frat += '.'
+  }
+
+  //if(obj[i].proband == true) frat = dico.pronom[sex]+ " a " + frat
+  
+  return frat;
+  
+}
 
 /*
 //Expected output

@@ -572,18 +572,17 @@ function ExportBOADICEv4(JSONData) {
     }
 }
 
-function getName(i, JSONData) {
+function getName(i, JSONData) { //JSONData en format Table
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
     var indexID = 1,
         father = obj[getRow(indexID)].FathID,
         mother = obj[getRow(indexID)].MothID;
-    
+
     function getRow(id) {
         let j
         for (j = 0; j < obj.length; j++) {
             if (obj[j].IndivID == id) {
                 return j;
-                break;
             };
         }
     }
