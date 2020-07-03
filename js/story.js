@@ -68,35 +68,22 @@ function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles patholog
 }
 
 function histoire(obj) {
-    // index
-    var text
+    var text,
+        indexID = 1,
+        father = getRowPedigreeJS(obj,obj[getRowPedigreeJS(obj, indexID)].father), //father ID
+        mother = getRowPedigreeJS(obj,obj[getRowPedigreeJS(obj, indexID)].mother); //mother ID
+
     for (var i = 0; i < obj.length; i++) {
-        if (obj[i].proband == true) {
-            text = textIndex(obj, i)
-
-        } else {
-          
-          // define id 
-          let p =1,
-              m=2,
-              gpp=0,
-              gmp=0,
-              gpm=0,
-              gmm=0;
-
-          switch(i) {
-            case p:
-              text += '<br>' + "Son père" + textline(obj, i);
-              break;
-            case m:
-              text += '<br>' + "Sa mère" + textline(obj, i);
-              break;
-            default:
-              break
-          }
-        }
-    }
-    return 'Fonctionnalité non implémentée.'  //text  //'Fonctionnalité non implémentée.'  //
+      if (obj[i].proband == true) {text = textIndex(obj, i)
+      } else if (i == father) {text += '<br>' + "Son père" + textline(obj, i)
+      } else if (i == mother) {text += '<br>' + "Sa mère" + textline(obj, i)
+      } else if (isFatherPedigreeJS(obj, i, father)) {text += '<br>' + "Son grand-père paternel" + textline(obj, i)
+      } else if (isMotherPedigreeJS(obj, i, father)) {text += '<br>' + "Sa grand-mère paternelle" + textline(obj, i)
+      } else if (isFatherPedigreeJS(obj, i, mother)) {text += '<br>' + "Son grand-père maternel" + textline(obj, i)
+      } else if (isMotherPedigreeJS(obj, i, mother)) {text += '<br>' + "Sa grand-mère maternelle" + textline(obj, i)
+      }
+    };
+    return 'Fonctionnalité non implémentée.'  //text  //
 }
 
 function textIndex(obj, i){ //pour le cas index
@@ -110,7 +97,6 @@ function textIndex(obj, i){ //pour le cas index
     
     let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
         text_pos = " dans le cadre d'un ";
-
     result.index += getPatho(obj, i,text_neg, text_pos)+'.';
 
     //enfant & conjoint
@@ -131,28 +117,19 @@ function textline(obj, i, tag){ //pour les autres individus (parents et GP)
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
   //civil
-  result.civil = textCivil(obj,i)
+  result.civil = ' ' + dico.etre[status] + ' ' + textCivil(obj,i)
 
   //patho
-  let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
-      text_pos = " dans le cadre d'un ";
-  result.patho += getPatho(obj, i,text_neg, text_pos)+'.';
+  let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas de pathologie cancéreuse',
+      text_pos = " suivi pour un ";
+  result.patho = getPatho(obj, i,text_neg, text_pos)+'.';
 
   //fratrie
   let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
   result.fratrie = getFratList(obj,i,text_frat_neg);
 
   //final
-  return result.civil + ' ' + result.patho  + ' ' + result.fratrie
-
-  /*
-  Son père est né en NA, toujours en vie. Il est enfant unique.
-  Sa mère est née en NA, toujours en vie. Elle est enfant unique.
-  Son grand-père paternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
-  Sa grand-mère paternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?.
-  Son grand-père maternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
-  Sa grand-mère maternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?
-  */
+  return result.civil + result.patho  + ' ' + result.fratrie
 }
 
 function textCivil(obj,i){
@@ -232,10 +209,12 @@ function getFratList(obj,i,text_frat_neg) {
       moth = obj[i]['mother'],
       sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie'); 
-
+      
   //si pas de parents définis
   if (typeof(fath) === 'undefined') return ''
   
+  //!obj[k].hasOwnProperty('top_level') && 
+
   //select siblings
   for (var k = 0; k < obj.length; k++) {
     if (obj[k]['father'] == fath && obj[k]['mother'] == moth && k != i) {
@@ -251,7 +230,7 @@ function getFratList(obj,i,text_frat_neg) {
 
   //si pas de fratrie
   if(fratpm == '' && fratp == '' && fratm == '') return text_frat_neg
-
+  
   function fratText(frat, suf) {
     let result = [];
     for (var f = 0; f < frat.length; f++) {
@@ -284,6 +263,22 @@ function getFratList(obj,i,text_frat_neg) {
   
   return frat;
   
+}
+
+function getRowPedigreeJS(obj, id) {
+  for (var j = 0; j < obj.length; j++) {
+      if (obj[j].name == id) {
+          return j;
+      };
+  };
+}
+
+function isFatherPedigreeJS(obj, i, index) {
+  return(obj[i].name == obj[getRowPedigreeJS(obj, index)].father);
+}
+
+function isMotherPedigreeJS(obj, i, index) {
+  return(obj[i].name == obj[getRowPedigreeJS(obj, index)].mother);
 }
 
 /*

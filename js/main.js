@@ -572,35 +572,34 @@ function ExportBOADICEv4(JSONData) {
     }
 }
 
+function getRow(obj, id) {
+    for (var j = 0; j < obj.length; j++) {
+        if (obj[j].IndivID == id) {
+            return j;
+        };
+    };
+}
+
+function isFather(obj, i, index) {
+    return(obj[i].IndivID == obj[getRow(obj, index)].FathID);
+}
+
+function isMother(obj, i, index) {
+    return(obj[i].IndivID == obj[getRow(obj, index)].MothID);
+}
+
 function getName(i, JSONData) { //JSONData en format Table
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
     var indexID = 1,
-        father = obj[getRow(indexID)].FathID,
-        mother = obj[getRow(indexID)].MothID;
+        father = obj[getRow(obj, indexID)].FathID,
+        mother = obj[getRow(obj, indexID)].MothID;
 
-    function getRow(id) {
-        let j
-        for (j = 0; j < obj.length; j++) {
-            if (obj[j].IndivID == id) {
-                return j;
-            };
-        }
-    }
-
-    function isFather(i, index) {
-        return(obj[i].IndivID == obj[getRow(index)].FathID);
-    }
-    
-    function isMother(i, index) {
-        return(obj[i].IndivID == obj[getRow(index)].MothID);
-    }
-    
     function isBrother(i, index) {
         return(
             obj[i].FathID != '0' 
             && obj[i].MothID != '0'
-            && obj[i].MothID == obj[getRow(index)].MothID
-            && obj[i].FathID == obj[getRow(index)].FathID
+            && obj[i].MothID == obj[getRow(obj, index)].MothID
+            && obj[i].FathID == obj[getRow(obj, index)].FathID
             && obj[i].Sex == 'M'
     );
     }
@@ -609,29 +608,29 @@ function getName(i, JSONData) { //JSONData en format Table
         return(
             obj[i].FathID != '0' 
             && obj[i].MothID != '0'
-            && obj[i].MothID == obj[getRow(index)].MothID
-            && obj[i].FathID == obj[getRow(index)].FathID
+            && obj[i].MothID == obj[getRow(obj, index)].MothID
+            && obj[i].FathID == obj[getRow(obj, index)].FathID
             && obj[i].Sex == 'F'
     );
     }
     
-    if(i == getRow(indexID)) result='Index';
+    if(i == getRow(obj, indexID)) result='Index';
 
     else if (isBrother(i, indexID)){result = 'Frère'}
     else if (isSister(i, indexID)){result = 'Soeur'}
 
-    else if(isFather(i, indexID)){result = 'Père'}
-    else if (isMother(i, indexID)){result = 'Mère'}
+    else if(isFather(obj, i, indexID)){result = 'Père'}
+    else if (isMother(obj, i, indexID)){result = 'Mère'}
 
     else if (isBrother(i, father)){result = 'Oncle pat'}
     else if (isSister(i, father)){result = 'Tante pat'}
     else if (isBrother(i, mother)){result = 'Oncle mat'}
     else if (isSister(i, mother)){result = 'Tante mat'}
     
-    else if(isFather(i, father)){result = 'Grand-Père pat'}
-    else if(isMother(i, father)){result = 'Grand-Mère pat'}
-    else if(isFather(i, mother)){result = 'Grand-Père mat'}
-    else if(isMother(i, mother)){result = 'Grand-Mère mat'}
+    else if(isFather(obj, i, father)){result = 'Grand-Père pat'}
+    else if(isMother(obj, i, father)){result = 'Grand-Mère pat'}
+    else if(isFather(obj, i, mother)){result = 'Grand-Père mat'}
+    else if(isMother(obj, i, mother)){result = 'Grand-Mère mat'}
     
     else result =""
 
