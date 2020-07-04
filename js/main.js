@@ -410,9 +410,8 @@ function NewName(){
 
 function createParents() {
     // only if parents don't already exists
-    var indexArr = hot.getSelectedLast(); //get selected row's index
-    var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-
+    let indexArr = hot.getSelectedLast(), //get selected row's index
+        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
     if (indexData.FathID == '0' && indexData.MothID == '0') {
         createNewInd('0', '0', 'M', true)
         createNewInd('0', '0', 'F', true)
@@ -420,11 +419,15 @@ function createParents() {
 }
 
 function createBrother() {
-    var indexArr = hot.getSelectedLast(); //get selected row's index
-    var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+    let indexArr = hot.getSelectedLast(), //get selected row's index
+        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
     if(indexData.FathID != 0 && indexData.MothID != 0) {
         createNewInd(indexData.FathID, indexData.MothID, 'M')
-    }else{alert('Parents non créés')}
+    } else {
+        alert('Parents non créés')
+        createParents() //bug
+        //createNewInd(indexData.FathID, indexData.MothID, 'M')
+    } 
 }
 
 function createSister() {
@@ -432,7 +435,11 @@ function createSister() {
     var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
     if(indexData.FathID != 0 && indexData.MothID != 0) {
         createNewInd(indexData.FathID, indexData.MothID, 'F')
-    }else{alert('Parents non créés')}
+    }else{
+        alert('Parents non créés')
+        //createParents()
+        //createNewInd(indexData.FathID, indexData.MothID, 'F')
+}
 }
 
 function createChild(sex, New) {
