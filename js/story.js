@@ -56,11 +56,12 @@ function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles patholog
       let out = keys[j].substring(0, keys[j].length - tag.length),
           a = obj[i][keys[j]],
           y = obj[i].yob + a;
-      result = (result != '' ? `${result} et ` : text_pos);
+      result = (result != '' ? result + ' et ' : text_pos);
+      
       result += out;
-      if(a != "") {
+      if(a != "" && a != null) {
         result += " diagnostiqué";
-        if(obj[i].yob != "") result += " en " + y;
+        if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y;
         result += " à l'âge de " + a + " ans";
       }
     };
@@ -70,18 +71,13 @@ function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles patholog
 function histoire(obj) {
   let text,
       indexID = getRowPedigreeJS(obj,1), //obj[i].proband == True
-      father = getRowPedigreeJS(obj,obj[indexID].father),
-      mother = getRowPedigreeJS(obj,obj[indexID].mother);
-
-  //determine GP/M ID
-  for (var i = 0; i < obj.length; i++) {
-    if (isFatherPedigreeJS(obj, i, father)) {gpp = getRowPedigreeJS(obj,i)
-    } else if (isMotherPedigreeJS(obj, i, father)) {gmp = getRowPedigreeJS(obj,i)
-    } else if (isFatherPedigreeJS(obj, i, mother)) {gpm = getRowPedigreeJS(obj,i)
-    } else if (isMotherPedigreeJS(obj, i, mother)) {gmm = getRowPedigreeJS(obj,i)
-    }
-  };
-
+      father = getRowPedigreeJS(obj, obj[indexID].father),
+      mother = getRowPedigreeJS(obj, obj[indexID].mother),
+      gpp = getRowPedigreeJS(obj, obj[father].father),
+      gmp = getRowPedigreeJS(obj, obj[father].mother);
+      gpm = getRowPedigreeJS(obj, obj[mother].father),
+      gmm = getRowPedigreeJS(obj, obj[mother].mother);
+  
   text = textIndex(obj, 0) + '<br>';
   text += '<br>' + "Son père" + textline(obj, father);
   text += '<br>' + "Sa mère" + textline(obj, mother);
@@ -91,7 +87,7 @@ function histoire(obj) {
   if(typeof(gpm) !== 'undefined') text += '<br>' + "Son grand-père maternel" + textline(obj, gpm);
   if(typeof(gmm) !== 'undefined') text += '<br>' + "Sa grand-mère maternelle" + textline(obj, gmm);
   
-  return 'Fonctionnalité non implémentée.'  //text  //
+  return 'Fonctionnalité non implémentée.'  //text //
 }
 
 function textIndex(obj, i){ //pour le cas index
@@ -119,7 +115,7 @@ function textIndex(obj, i){ //pour le cas index
     return result.index + '<br>' + result.fratrie + '<br>' + result.child
 }
 
-function textline(obj, i, tag){ //pour les autres individus (parents et GP)
+function textline(obj, i, tag){ //pour les autres individus
   let result = {'civil':'', 'patho':'', 'child':'', 'fratrie':''},
       sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
@@ -130,7 +126,7 @@ function textline(obj, i, tag){ //pour les autres individus (parents et GP)
 
   //patho
   let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ne présente pas de pathologie cancéreuse',
-      text_pos = " et suivi pour un ";
+      text_pos = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ' + dico.etre[status] + " suivi pour un "; //" et" + 
   result.patho = getPatho(obj, i,text_neg, text_pos)+'.';
 
   //fratrie
@@ -183,6 +179,11 @@ function getChildList(obj,i,text_child_neg) {
       let k = child[c]
       result = (result == '' ? result : result + ', ') + dico.enfant[obj[k].sex]
       result += textCivil(obj, k)
+
+      //patho
+      let text_neg = '',
+          text_pos = " suivi pour un ";
+      result += getPatho(obj, k,text_neg, text_pos);
     }
     return result
   }
@@ -245,6 +246,11 @@ function getFratList(obj,i,text_frat_neg) {
       result = (result == '' ? result : result + ', ') + dico.fratrie[obj[k].sex]
       if(typeof(suf) !== 'undefined') result += suf
       result += textCivil(obj, k)
+
+      //patho
+      let text_neg = '',
+          text_pos = " suivi pour un ";
+      result += getPatho(obj, k,text_neg, text_pos);
     }
     return result
   }
@@ -287,19 +293,3 @@ function isFatherPedigreeJS(obj, i, index) {
 function isMotherPedigreeJS(obj, i, index) {
   return(obj[i].name == obj[index].mother);
 }
-
-/*
-//Expected output
-Madame , née en , se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale. Elle ne présente pas, au jour de la consultation, de pathologie cancéreuse.
-
-Elle est née en NA, toujours en vie. Elle est enfant unique.
-Son père est né en NA, toujours en vie. Il est enfant unique.
-Sa mère est née en NA, toujours en vie. Elle est enfant unique.
-Son grand-père paternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
-Sa grand-mère paternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?.
-Son grand-père maternel est né en NA, toujours en vie. Il est issu d'une fratrie de ?.
-Sa grand-mère maternelle est née en NA, toujours en vie. Elle est issue d'une fratrie de ?
-
-Elle n'a pas d'enfant.
-Elle n'a pas de conjoint.
-*/

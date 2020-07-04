@@ -668,13 +668,15 @@ function displayName(JSONData) {
     hot.populateFromArray(0, 1, names)
 }
 
-function copyToClipboard(elementId) {
+function copyToClipboard(elementId) { 
 
     // Create an auxiliary hidden input
     var aux = document.createElement("input");
   
     // Get the text from the element passed into the input
-    aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+    let data = document.getElementById(elementId).innerHTML
+    data = data.replace(/<br ?\/?>/g, "\r\n") //replace '<br>' by '\t'
+    aux.setAttribute("value", data);
   
     // Append the aux input to the body
     document.body.appendChild(aux);
