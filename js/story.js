@@ -72,11 +72,11 @@ function histoire(obj) {
   let text,
       indexID = getRowPedigreeJS(obj,1), //obj[i].proband == True
       father = getRowPedigreeJS(obj, obj[indexID].father),
-      mother = getRowPedigreeJS(obj, obj[indexID].mother),
-      gpp = getRowPedigreeJS(obj, obj[father].father),
-      gmp = getRowPedigreeJS(obj, obj[father].mother);
-      gpm = getRowPedigreeJS(obj, obj[mother].father),
-      gmm = getRowPedigreeJS(obj, obj[mother].mother);
+      mother = getRowPedigreeJS(obj, obj[indexID].mother);
+  if(!obj[father].hasOwnProperty('noparents')) var gpp = getRowPedigreeJS(obj, obj[father].father);
+  if(!obj[father].hasOwnProperty('noparents')) var gmp = getRowPedigreeJS(obj, obj[father].mother);
+  if(!obj[mother].hasOwnProperty('noparents')) var gpm = getRowPedigreeJS(obj, obj[mother].father);
+  if(!obj[mother].hasOwnProperty('noparents')) var gmm = getRowPedigreeJS(obj, obj[mother].mother);
   
   text = textIndex(obj, 0) + '<br>';
   text += '<br>' + "Son père" + textline(obj, father);
@@ -87,10 +87,10 @@ function histoire(obj) {
   if(typeof(gpm) !== 'undefined') text += '<br>' + "Son grand-père maternel" + textline(obj, gpm);
   if(typeof(gmm) !== 'undefined') text += '<br>' + "Sa grand-mère maternelle" + textline(obj, gmm);
   
-  return 'Fonctionnalité non implémentée.'  //text  //'Fonctionnalité non implémentée.'  //
+  return text //'Fonctionnalité non implémentée.'  //
 }
 
-function textIndex(obj, i){ //pour le cas index
+function textIndex(obj, i){
     // motif de consultation
     let result = {'index':'', 'child':'', 'fratrie':''},
         sex = obj[i].sex,
@@ -115,7 +115,7 @@ function textIndex(obj, i){ //pour le cas index
     return result.index + '<br>' + result.fratrie + '<br>' + result.child
 }
 
-function textline(obj, i, tag){ //pour les autres individus
+function textline(obj, i){
   let result = {'civil':'', 'patho':'', 'child':'', 'fratrie':''},
       sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
@@ -151,30 +151,36 @@ function textCivil(obj,i){
   return out
 }
 
-function getChildList(obj,i,text_child_neg) {//grossesse et IMG
+function getChildList(obj,i,text_child_neg) {
   let child,
-      child1 = [], //index des enfants : 1ere union
-      child2 = [], //index des enfants : 2ieme union
+      child1 = [],
+      child2 = [],
       fath,
       moth,
       sex = obj[i].sex;
-  var fcs1=0,
-      fcs2=0;
+  var fcs1=0, fcs2=0; //miscarriage
+  var img1=0, img2=0; //termination
+  //grossesse : obj[k].sex == "U"
 
   for (var k = 0; k < obj.length; k++) {
+    if (obj[k].sex == "U") continue
     if (obj[k]['father'] == obj[i]['name'] || obj[k]['mother'] == obj[i]['name']) {
       if (typeof fath === 'undefined') {
         fath = obj[k]['father']
         moth = obj[k]['mother']
-        if (checkOption(obj,k,'miscarriage')) {fcs1+=1}else{child1.push(k)}
+        if (checkOption(obj,k,'miscarriage')) {fcs1+=1
+        } else if (checkOption(obj,k,'termination')) {img1+=1
+        }else{child1.push(k)}
       } else if(fath != obj[k]['father'] || moth != obj[k]['mother']) { //si 2ième union
-        if (checkOption(obj,k,'miscarriage')) {fcs2+=1}else{child2.push(k)}
+        if (checkOption(obj,k,'miscarriage')) {fcs2+=1
+        }else if (checkOption(obj,k,'termination')) {img2+=1
+        }else{child1.push(k)}
       } else child1.push(k)
     };
   };
 
   //if no child and/or no miscariage
-  if(child1=='' && fcs1 ==0) return text_child_neg
+  if(child1 =='' && fcs1 == 0 && img1 == 0) return text_child_neg
 
   function childText(child) {
     let result = [];
@@ -193,18 +199,21 @@ function getChildList(obj,i,text_child_neg) {//grossesse et IMG
   
   // texte
   if(child2!="") {
-    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : "
-    child += childText(child1)
-    child += textOption(fcs1,'fausses-couches','fausse-couche')
-    child += ' ; ' + (child2.length>0 ? child2.length:'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : "
-    child += childText(child2)
-    child += '.'
-    child += textOption(fcs2,'fausses-couches','fausse-couche') + '.'
+    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : ";
+    child += childText(child1);
+    child += textOption(fcs1,'fausses-couches','fausse-couche');
+    child += ' ' + textOption(img1,'IMG','IMG');
+    child += ' ; ' + (child2.length>0 ? child2.length:'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : ";
+    child += childText(child2);
+    child += '.';
+    child += textOption(fcs2,'fausses-couches','fausse-couche');
+    child +=' ' +  textOption(img2,'IMG','IMG') + '.';
   } else {
-    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : '
-    child += childText(child1)
-    child += '.'
-    child += textOption(fcs1,'fausses-couches','fausse-couche') + '.'
+    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : ';
+    child += childText(child1);
+    child += '.';
+    child += textOption(fcs1,'fausses-couches','fausse-couche');
+    child += ' ' + textOption(img1,'IMG','IMG') + '.';
   }
   if(obj[i].proband == true) child = dico.pronom[sex]+ " a " + child
 
@@ -217,38 +226,45 @@ function getChildList(obj,i,text_child_neg) {//grossesse et IMG
 
 function getFratList(obj,i,text_frat_neg) {
   let frat, //fratrie
-      fratpm = [], //fratrie issue du père et de la mère
-      fratm = [], //fratrie issue du père
-      fratp = [], //fratrie issue de la mère
+      fratpm = [],
+      fratm = [],
+      fratp = [],
       fath = obj[i]['father'],
       moth = obj[i]['mother'],
       sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
-  var fcs1=0,
-      fcs2=0,
-      fcs3=0;
+  var fcs1=0,fcs2=0,fcs3=0;
+  var img1=0, img2=0,img3=0;
       
   //si pas de parents définis
   if (typeof(fath) === 'undefined' || obj[i].hasOwnProperty('noparents')) return ''
   
   //select siblings
   for (var k = 0; k < obj.length; k++) {
+    if (obj[k].sex == "U") continue
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] == fath && obj[k]['mother'] == moth && k != i) {
-      if (checkOption(obj,k,'miscarriage')) {fcs1+=1}else{fratpm.push(k)}
+      if (checkOption(obj,k,'miscarriage')) {fcs1+=1
+      }else if (checkOption(obj,k,'termination')) {img1+=1
+      }else{fratpm.push(k)}
     }
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] == fath && obj[k]['mother'] != moth && k != i) {
-      if (checkOption(obj,k,'miscarriage')) {fcs2+=1}else{fratp.push(k)}
+      if (checkOption(obj,k,'miscarriage')) {fcs1+=1
+      }else if (checkOption(obj,k,'termination')) {img1+=1
+      }else{fratp.push(k)}
     }
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] != fath && obj[k]['mother'] == moth && k != i) {
-      if (checkOption(obj,k,'miscarriage')) {fcs3+=1}else{fratm.push(k)}
+      if (checkOption(obj,k,'miscarriage')) {fcs1+=1
+      }else if (checkOption(obj,k,'termination')) {img1+=1
+      }else{fratm.push(k)}
     }
   };
 
   fcs = Number(fcs1)+Number(fcs2)+Number(fcs3)
+  img = Number(img1)+Number(img2)+Number(img3)
 
   //if no siblings and no miscarriage
-  if(fratpm == '' && fratp == '' && fratm == '' && fcs == 0) return text_frat_neg
+  if(fratpm == '' && fratp == '' && fratm == '' && fcs == 0 && img == 0) return text_frat_neg
   
   function fratText(frat, suf) {
     let result = [];
@@ -267,23 +283,27 @@ function getFratList(obj,i,text_frat_neg) {
   }
   
   //text
-  frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : '
-  frat += fratText(fratpm)
-  frat += '.'
-  frat += textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
+  frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : ';
+  frat += fratText(fratpm);
+  frat += '.';
+  if(fratpm == '') frat = text_frat_neg
+  frat += ' ' + textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.';
+  frat += ' ' + textOption(img1,'IMG','IMG','Ses parents ont fait ') + '.';
 
   if(fratp != ''){
-    frat += ' ' + dico.pronom[sex] + " a "
-    frat += fratText(fratp, ' de père')
-    frat += '.'
-    frat += textOption(fcs2,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
+    frat += ' ' + dico.pronom[sex] + " a ";
+    frat += fratText(fratp, ' de père');
+    frat += '.';
+    frat += ' ' + textOption(fcs2,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.';
+    frat += ' ' + textOption(img2,'IMG','IMG','Ses parents ont fait ') + '.';
   }
 
   if(fratm != ''){
-    frat += ' ' + dico.pronom[sex] + " a "
-    frat += fratText(fratm, ' de mère')
-    frat += '.'
-    frat += textOption(fcs3,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
+    frat += ' ' + dico.pronom[sex] + " a ";
+    frat += fratText(fratm, ' de mère');
+    frat += '.';
+    frat += textOption(fcs3,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.';
+    frat += ' ' + textOption(img3,'IMG','IMG','Ses parents ont fait ') + '.';
   }
   
   return frat;

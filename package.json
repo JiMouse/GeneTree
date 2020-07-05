@@ -1,5 +1,5 @@
 {
-  "name": "pedigreejs",
+  "name": "genetree",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/CCGE-BOADICEA/pedigreejs.git"
+    "url": "git://https://github.com/JiMouse/GeneTree.git"
   },
   "license": "GPL-3.0",
   "dependencies": {
