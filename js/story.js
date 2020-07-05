@@ -37,14 +37,14 @@ var dico = {
     'enfant':{
       'M':'un fils',
       'F':'une fille'
-  },
-  'fratrie':{
-    'M':'un frère',
-    'F':'une soeur'
-}
-}
+    },
+    'fratrie':{
+      'M':'un frère',
+      'F':'une soeur'
+    }
+  }
 
-function getPatho(obj, i,text_neg, text_pos) { // text des éventuelles pathologies
+function getPatho(obj, i,text_neg, text_pos) { // texte des éventuelles pathologies
   let keys = Object.keys(obj[i]),
       tag = '_diagnosis_age',
       result = '';
@@ -87,7 +87,7 @@ function histoire(obj) {
   if(typeof(gpm) !== 'undefined') text += '<br>' + "Son grand-père maternel" + textline(obj, gpm);
   if(typeof(gmm) !== 'undefined') text += '<br>' + "Sa grand-mère maternelle" + textline(obj, gmm);
   
-  return 'Fonctionnalité non implémentée.'  //text //
+  return 'Fonctionnalité non implémentée.'  //text  //'Fonctionnalité non implémentée.'  //
 }
 
 function textIndex(obj, i){ //pour le cas index
@@ -151,27 +151,30 @@ function textCivil(obj,i){
   return out
 }
 
-function getChildList(obj,i,text_child_neg) {
+function getChildList(obj,i,text_child_neg) {//grossesse et IMG
   let child,
       child1 = [], //index des enfants : 1ere union
       child2 = [], //index des enfants : 2ieme union
       fath,
       moth,
       sex = obj[i].sex;
+  var fcs1=0,
+      fcs2=0;
 
   for (var k = 0; k < obj.length; k++) {
     if (obj[k]['father'] == obj[i]['name'] || obj[k]['mother'] == obj[i]['name']) {
       if (typeof fath === 'undefined') {
         fath = obj[k]['father']
         moth = obj[k]['mother']
-        child1.push(k)
+        if (checkOption(obj,k,'miscarriage')) {fcs1+=1}else{child1.push(k)}
       } else if(fath != obj[k]['father'] || moth != obj[k]['mother']) { //si 2ième union
-          child2.push(k)
+        if (checkOption(obj,k,'miscarriage')) {fcs2+=1}else{child2.push(k)}
       } else child1.push(k)
     };
   };
 
-  if(child1=='') return text_child_neg
+  //if no child and/or no miscariage
+  if(child1=='' && fcs1 ==0) return text_child_neg
 
   function childText(child) {
     let result = [];
@@ -187,19 +190,21 @@ function getChildList(obj,i,text_child_neg) {
     }
     return result
   }
-
+  
   // texte
   if(child2!="") {
-    // x enfants d'une première union : 1 fils etc.,  ; y enfants d'une seconde union : ...
-    child = child1.length + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : "
-    child += childText(child1) // x enfants
-    child += ' ; ' + child2.length + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : "
-    child += childText(child2) // x enfants
+    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : "
+    child += childText(child1)
+    child += textOption(fcs1,'fausses-couches','fausse-couche')
+    child += ' ; ' + (child2.length>0 ? child2.length:'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : "
+    child += childText(child2)
     child += '.'
+    child += textOption(fcs2,'fausses-couches','fausse-couche') + '.'
   } else {
-    child = child1.length + (child1.length>1 ? ' enfants' : ' enfant') + ' : '
-    child += childText(child1) // x enfants
+    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : '
+    child += childText(child1)
     child += '.'
+    child += textOption(fcs1,'fausses-couches','fausse-couche') + '.'
   }
   if(obj[i].proband == true) child = dico.pronom[sex]+ " a " + child
 
@@ -218,7 +223,11 @@ function getFratList(obj,i,text_frat_neg) {
       fath = obj[i]['father'],
       moth = obj[i]['mother'],
       sex = obj[i].sex,
-      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie'); 
+      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
+
+  var fcs1=0,
+      fcs2=0,
+      fcs3=0;
       
   //si pas de parents définis
   if (typeof(fath) === 'undefined' || obj[i].hasOwnProperty('noparents')) return ''
@@ -226,18 +235,20 @@ function getFratList(obj,i,text_frat_neg) {
   //select siblings
   for (var k = 0; k < obj.length; k++) {
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] == fath && obj[k]['mother'] == moth && k != i) {
-      fratpm.push(k)
+      if (checkOption(obj,k,'miscarriage')) {fcs1+=1}else{fratpm.push(k)}
     }
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] == fath && obj[k]['mother'] != moth && k != i) {
-      fratp.push(k)
+      if (checkOption(obj,k,'miscarriage')) {fcs2+=1}else{fratp.push(k)}
     }
     if (!obj[k].hasOwnProperty('noparents') && obj[k]['father'] != fath && obj[k]['mother'] == moth && k != i) {
-      fratm.push(k)
+      if (checkOption(obj,k,'miscarriage')) {fcs3+=1}else{fratm.push(k)}
     }
   };
 
-  //si pas de fratrie
-  if(fratpm == '' && fratp == '' && fratm == '') return text_frat_neg
+  fcs = Number(fcs1)+Number(fcs2)+Number(fcs3)
+
+  //if no siblings and no miscarriage
+  if(fratpm == '' && fratp == '' && fratm == '' && fcs == 0) return text_frat_neg
   
   function fratText(frat, suf) {
     let result = [];
@@ -255,27 +266,36 @@ function getFratList(obj,i,text_frat_neg) {
     return result
   }
   
-  //texte
+  //text
   frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : '
   frat += fratText(fratpm)
   frat += '.'
+  frat += textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
 
   if(fratp != ''){
     frat += ' ' + dico.pronom[sex] + " a "
     frat += fratText(fratp, ' de père')
     frat += '.'
+    frat += textOption(fcs2,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
   }
 
   if(fratm != ''){
     frat += ' ' + dico.pronom[sex] + " a "
     frat += fratText(fratm, ' de mère')
     frat += '.'
+    frat += textOption(fcs3,'fausses-couches','fausse-couche','Ses parents ont eu ') + '.'
   }
-
-  //if(obj[i].proband == true) frat = dico.pronom[sex]+ " a " + frat
   
   return frat;
   
+}
+
+function checkOption(obj,k,key) {
+  return obj[k][key] == true
+}
+
+function textOption(opt,textOption1, textOption2,prefixe) {
+  if(opt>0) return (typeof(prefixe)!='undefined' ? prefixe : '') + opt + ' ' + (opt>1 ? textOption1 : textOption2)
 }
 
 function getRowPedigreeJS(obj, id) {
