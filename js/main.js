@@ -421,25 +421,24 @@ function createParents() {
 function createBrother() {
     let indexArr = hot.getSelectedLast(), //get selected row's index
         indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-    if(indexData.FathID != 0 && indexData.MothID != 0) {
-        createNewInd(indexData.FathID, indexData.MothID, 'M')
-    } else {
-        alert('Parents non créés')
-        createParents() //bug
-        //createNewInd(indexData.FathID, indexData.MothID, 'M')
-    } 
+    if(indexData.FathID == 0 && indexData.MothID == 0) {
+        //create parents
+        createNewInd('0', '0', 'M',true)
+        createNewInd('0', '0', 'F', true)
+        
+    }
+    createNewInd(indexData.FathID, indexData.MothID, 'M')
 }
 
 function createSister() {
-    var indexArr = hot.getSelectedLast(); //get selected row's index
-    var indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-    if(indexData.FathID != 0 && indexData.MothID != 0) {
-        createNewInd(indexData.FathID, indexData.MothID, 'F')
-    }else{
-        alert('Parents non créés')
-        //createParents()
-        //createNewInd(indexData.FathID, indexData.MothID, 'F')
-}
+    let indexArr = hot.getSelectedLast(), //get selected row's index
+        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+    if(indexData.FathID == 0 && indexData.MothID == 0) {
+        //create parents
+        createNewInd('0', '0', 'M',true)
+        createNewInd('0', '0', 'F', true)
+    }
+    createNewInd(indexData.FathID, indexData.MothID, 'F')
 }
 
 function createChild(sex, New) {
@@ -565,17 +564,13 @@ function ExportBOADICEv4(JSONData) {
     } else { 
     // For Chome/Firefox/Opera
     var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-
     var link = document.createElement("a");    
     link.href = uri;
-
     link.style = "visibility:hidden";
     link.download = fileName;
-
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
     }
 }
 
@@ -653,10 +648,8 @@ function getName(i, JSONData) { //JSONData en format Table
         // update result accordingly
         result = (count==0 ? result : result+parseFloat(count+1))
     }
-
     return result
 }
-
 
 function displayName(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
