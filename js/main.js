@@ -62,19 +62,14 @@ function JSONToPEDConvertor(JSONData, toKeep) {
     } else { 
     // For Chome/Firefox/Opera
         var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-
         var link = document.createElement("a");    
         link.href = uri;
-
         link.style = "visibility:hidden";
         link.download = fileName;
-
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    
-    }
-    
+    }   
 }
 
 function FormatToPedigreeJS(JSONData) {
@@ -366,21 +361,16 @@ function getFormattedTime() {
 function createNewInd(fathID, mothID, sex, newParentID){
     var indexArr = hot.getSelectedLast(), //get selected row's index
         indivID = NewName(),
-        rawData = {
-                "FamID": hot.getDataAtCell(indexArr[0], 0),
-                "Name": "",
-                "IndivID": indivID,
-                "FathID": fathID,
-                "MothID": mothID,
-                "Sex": sex,
-                "Affected":"1",
-                "Deceased":"0"
-                };
-
-    //convert json data to array
-    var result = [];
-    for(var i in rawData)
-        result.push(rawData [i]);
+        result=[
+            hot.getDataAtCell(indexArr[0], 0),
+            '',
+            indivID,
+            fathID,
+            mothID,
+            sex,
+            '1',
+            '0'
+        ];
 
     // insert and populate row
     hot.alter('insert_row', indexArr[0]+1, 1); // insert row below
@@ -409,9 +399,8 @@ function NewName(){
 }
 
 function createParents() {
-    // only if parents don't already exists
-    let indexArr = hot.getSelectedLast(), //get selected row's index
-        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+    let indexArr = hot.getSelectedLast(),
+        indexData = hot.getSourceDataAtRow(indexArr[0]);
     if (indexData.FathID == '0' && indexData.MothID == '0') {
         createNewInd('0', '0', 'M', true)
         createNewInd('0', '0', 'F', true)
@@ -419,24 +408,19 @@ function createParents() {
 }
 
 function createBrother() {
-    let indexArr = hot.getSelectedLast(), //get selected row's index
-        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
+    let indexArr = hot.getSelectedLast(),
+        indexData = hot.getSourceDataAtRow(indexArr[0]);
     if(indexData.FathID == 0 && indexData.MothID == 0) {
-        //create parents
-        createNewInd('0', '0', 'M',true)
-        createNewInd('0', '0', 'F', true)
-        
+        createParents();
     }
-    createNewInd(indexData.FathID, indexData.MothID, 'M')
+    createNewInd(indexData.FathID, indexData.MothID, 'M');
 }
 
 function createSister() {
     let indexArr = hot.getSelectedLast(), //get selected row's index
         indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
     if(indexData.FathID == 0 && indexData.MothID == 0) {
-        //create parents
-        createNewInd('0', '0', 'M',true)
-        createNewInd('0', '0', 'F', true)
+        createParents()
     }
     createNewInd(indexData.FathID, indexData.MothID, 'F')
 }
@@ -547,11 +531,25 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_sein2_diagnosis_age' ] : 'AU'),
             KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_ovaire_diagnosis_age' ] : 'AU'),
             KeyStatus(i,'cancer_pancréas_diagnosis_age',arrData[i][ 'cancer_pancréas_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_pancréas_diagnosis_age' ] : 'AU'),
-            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_prostate_diagnosis_age' ] : 'AU')
+            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_prostate_diagnosis_age' ] : 'AU'),
+            KeyStatus(i,'Ashkn',arrData[i]['Ashkn']), 
+            KeyStatus(i,'BRCA1t',arrData[i]['BRCA1t']),
+            KeyStatus(i,'BRCA1r',arrData[i]['BRCA1r']),
+            KeyStatus(i,'BRCA2t',arrData[i]['BRCA2t']),
+            KeyStatus(i,'BRCA2r',arrData[i]['BRCA2r']),
+            KeyStatus(i,'PALB2t',arrData[i]['PALB2t']),
+            KeyStatus(i,'PALB2r',arrData[i]['PALB2r']),
+            KeyStatus(i,'ATMt',arrData[i]['ATMt']),
+            KeyStatus(i,'ATMr',arrData[i]['ATMr']),
+            KeyStatus(i,'CHEK2t',arrData[i]['CHEK2t']),
+            KeyStatus(i,'CHEK2r',arrData[i]['CHEK2r']),
+            KeyStatus(i,'ER',arrData[i]['ER']),
+            KeyStatus(i,'PR',arrData[i]['PR']),
+            KeyStatus(i,'HER2',arrData[i]['HER2']),
+            KeyStatus(i,'CK14',arrData[i]['CK14']),
+            KeyStatus(i,'CK56',arrData[i]['CK56'])
         ].join('\t')
 
-        row += '\t' + std.repeat(16) //otherHeader
-        row = row.slice(0, -1);
         CSV += row + '\r\n';
     }
 
@@ -666,4 +664,25 @@ function displayName(JSONData) {
     element = $('<textarea>').appendTo('body').val(text).select()
     document.execCommand('copy')
     element.remove()
+  }
+
+  function createFamily(hot, famObj){ //to do
+    //get selected row's index
+    let indexArr = hot.getSelectedLast();
+
+    //load hot data once
+    let myDeepClone = JSON.stringify(hot.getSourceData()),
+        obj = JSON.parse(myDeepClone);
+
+    //create array based on famObj
+    /*
+    famObj = [
+        {"son":2},
+        {"oncleP":"1"}
+    }]
+    */
+
+    // insert and populate rows
+    hot.alter('insert_row', indexArr[0]+1, 1); // insert rows below
+    hot.populateFromArray(indexArr[0]+1, 0,[result]);
   }

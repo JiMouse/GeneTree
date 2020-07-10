@@ -1,3 +1,13 @@
+$(document).ready(function() {
+  $( "#loadStory" ).click(function() {
+    // Load data (in pedigreeJS format)
+    let myDeepClone = JSON.stringify(hot.getSourceData())
+    let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
+
+    document.getElementById('story').innerHTML = histoire(obj)
+  });
+});
+
 //Create JSON dictionnary
 var dico = {
     'pronom':{
@@ -49,7 +59,8 @@ function getPatho(obj, i,text_neg, text_pos) {
       tag = '_diagnosis_age',
       result = '';
   
-  if (!keys.join().includes(tag)) return text_neg
+  let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '')
+  if (!keys.join().includes(tag)) return text_neg + comment
 
   for (var j = 0; j < keys.length; j++) {  
     if (keys[j].indexOf(tag) !== -1) {
@@ -64,14 +75,15 @@ function getPatho(obj, i,text_neg, text_pos) {
         result += " à l'âge de " + a + " ans";
       }
     };
-  }; return result
+  }; return result + comment
 }
 
 function histoire(obj) {
   let text,
-      indexID = getRowPedigreeJS(obj,1), //obj[i].proband == True
+      indexID = getRowPedigreeJS(obj,1),
       father = getRowPedigreeJS(obj, obj[indexID].father),
       mother = getRowPedigreeJS(obj, obj[indexID].mother);
+
   if(!obj[father].hasOwnProperty('noparents')) var gpp = getRowPedigreeJS(obj, obj[father].father);
   if(!obj[father].hasOwnProperty('noparents')) var gmp = getRowPedigreeJS(obj, obj[father].mother);
   if(!obj[mother].hasOwnProperty('noparents')) var gpm = getRowPedigreeJS(obj, obj[mother].father);

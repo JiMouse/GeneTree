@@ -3,21 +3,25 @@
 <head>
 	<title>GeneTree</title>
 	<meta charset="UTF-8">
-	<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
 	<meta name="viewport" content="width=device-width,maximum-scale=2">
 	<meta name="author" content="Jean-Marie Ravel">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<!-- load dependencies -->
+	<!-- load bootstrap dependencies -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+	<!-- load pedigreejs dependencies : jquery, bootstrap, font-awesome, d3 -->
 	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" href="dist/css/pedigreejs.min.css" />
 
 	<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script> 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/d3@4.13.0/build/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	
+	<script src="package/lodash.js"></script>
 
 	<!-- load pedigreejs -->
     <script src="js/io.js"></script>
@@ -29,9 +33,11 @@
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/story.js"></script>
+	<script type="text/javascript" src="data/diseases.js"></script>
+	<script type="text/javascript" src="js/table.js"></script>
+	<script type="text/javascript" src="js/HPO.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<script src="package/lodash.js"></script>
-	<script type="text/javascript" src="js/diseases.js"></script>
 	
 	<!-- load handsontable module --> 
 	<script src="https://cdn.jsdelivr.net/npm/handsontable@7.4.2/dist/handsontable.full.min.js"></script>
@@ -73,13 +79,14 @@
 				'btn_target': 'pedigree_history',
 				//'nodeclick': pedigree_form.nodeclick,
 				'width': ($(window).width() > 450 ? 900 : $(window).width()- 30),
-				'height': 600,
+				'height': 500,
 				'symbol_size': 30,
 				'edit': true,
 				'zoomIn': .8,
 				'zoomOut': 3.,
 				'font_size': '0.75em',
 				'edit': true,
+				'labels': ['stillbirth', 'age', 'yob', 'alleles', 'comment'],
 				'diseases': $.extend(true, [], DEFAULT_DISEASES),
 				'DEBUG': (pedigree_util.urlParam('debug') === null ? false : true)};
 				
@@ -130,7 +137,7 @@
 			          }
 			        }
 			      ],
-			    width: ($(window).width() > 400 ? 450 : $(window).width()- 30)
+			    width: ($(window).width() > 400 ? 500 : $(window).width()- 30)
 			});
 			var html_dis =
 				'<br><div class="row">'+
@@ -270,422 +277,205 @@
 
 	<div class="container">
 		<div class = "row">
-		<h3>Tableau</h3>
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Tableau</h3></div>
+			</div>
 			<div class="text-center">
 				<!--  buttons edit familly -->
-				<div id="dropdownFam" class="dropdown" style="display:inline;">
-					<button id="editFamily" title="Ajouter une nouvelle famille" data-toggle="dropdown" class="dropbtn" aria-haspopup="true" aria-expanded="false">Nouvelle famille&nbsp;<span class="caret"></span></button>
-					<div class="dropdown-menu" role="menu" aria-labelledby="editFamily" style="padding:10px;min-width:320px" onclick="event.stopPropagation()">
+				<div class="dropdown" id="dropdownFam" style="display:inline;">
+					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Nouvelle famille&nbsp;
+					<span class="caret"></span></button>
+					<ul class="dropdown-menu" style="padding:10px;min-width:300px">
+						<li><div class="text-center">
+							<label class="btn btn-primary btn-block">
+								<i class="fa fa-folder-open-o"><abbr title="Format JSON ou Boadicea"> Charger un fichier </abbr></i><input id="submitLoad" type="file" hidden>
+							</label>
+						</div></li>
+						<li class="divider"></li>
+						<li><div class="text-center">
+							<label class="radio-inline"><input type="radio" name="optradio" id="nuclear">Noyau</label>
+							<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup>er</sup> degré</label>
+							<label class="radio-inline"><input type="radio" name="optradio" id="extended2">2<sup>ième</sup> degré</label>
+						</div></li>
+						<li class="divider"></li>
 						<li>
-							<div class="droprow" style="padding:5px;margin-bottom:5px"><strong>Charger un fichier (JSON/Boadicea) :</strong>
-									<div class="row">
-										<div class="col-md-8 text-right">
-
-											<input type="file" id="submitLoad">
-											<script>
-												const fileSelector = document.getElementById('submitLoad');
-												fileSelector.addEventListener('change', (event) => {
-													var file = event.target.files[0];
-													
-													if(file) {
-														var reader = new FileReader();
-														reader.onload = function(event) {
-
-															if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
-																data = Formatboadicea(event.target.result)
-
-															} else {
-																data = JSON.parse(event.target.result);
-																if (!data[0].hasOwnProperty('FathID')) {
-																	data = FormatToTable(data)
-																}
-															}
-															hot.loadData(data)
-														};
-														reader.readAsText(file);
-													} else {
-														console.error("File could not be read!");
-													}
-													$("#submitLoad")[0].value = ''; // reset value
-
-													// close tab
-													document.getElementById('dropdownFam').classList.remove('open')
-												});
-											</script>
-
-										</div>
-									</div>
+							<div class="row text-center">
+								<b>Créer un arbre</b>
 							</div>
-						</li>
-						<li>
-							<div class="droprow" style="padding:5px;margin-bottom:5px"><strong>Structure :</strong>
-								<form>
-									<div id="famStructure" class="row" >
-										<div class="col-md-4">
-											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="nuclear" checked="">Noyau
-											</label>
-										</div>
-										<div class="col-md-4" style="padding:0 5px;">
-											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="extended1">1<sup>er</sup> degré
-											</label>
-										</div>
-										<div class="col-md-4" style="padding:0 5px;">
-											<label class="radio-inline" data-toggle="popover">
-												<input type="radio" name="default_fam" value="extended2">2<sup>ième</sup> degré
-											</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-8 text-right">
-											<button id="submitDefautFam" class="intext-btn">Créer</button>
-										</div>
-									</div>
-								</form>
+							<p>
 
-								<script>
-									var buttonSubmit = document.getElementById('submitDefautFam');
-									var form = document.querySelector("form") //
+								<div class="row" style='padding-bottom: 5px;'>
+									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>frères</label></div>
+									<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
 
-									buttonSubmit.addEventListener('click', function() {
-										var data = new FormData(form);
-										var output = "";
-										for (const entry of data) {
-											output = entry[1];
-										};
-										if (output == "nuclear") {
-											hot.loadData(JSON.parse(myDataSafe));
-											hot.loadData(JSON.parse(myDataSafe));
-										} else if (output == "extended1") {
-											hot.loadData(JSON.parse(myDataExtended1Safe));
-											hot.loadData(JSON.parse(myDataExtended1Safe));
-										} else if (output == "extended2") {
-											hot.loadData(JSON.parse(myDataExtended2Safe));
-											hot.loadData(JSON.parse(myDataExtended2Safe));
-										}
-										event.preventDefault();
-										document.getElementById('dropdownFam').classList.remove('open')
-									});
-								</script>
-							</div>
-						</li>
-						<li>
-							<div class="droprow" style="padding:5px;margin-bottom:5px">
-								<strong>Nombre de :</strong>
-								<div class="builder">
-
-									<div class="row">
-										<div class="col-md-8 text-right"><label>frères</label></div>
-										<div class="col-md-4"><input type="number" id="brother" min="0" max="20"></div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-8 text-right"><label>sœurs</label></div>
-										<div class="col-md-4"><input type="number" id="sister" min="0" max="20"></div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-8 text-right"><label>fils</label></div>
-										<div class="col-md-4"><input type="number" id="son" min="0" max="20"></div>
-									</div>
-
-									<div class="row">
-										<div class="col-md-8 text-right"><label>filles</label></div>
-										<div class="col-md-4"><input type="number" id="daughter" min="0" max="20"></div>
-									</div>
-
-									<!-- submit button -->
-									<div class="row">
-										<div class="col-md-8 text-right">
-											<button id="submitCustomFam" class="intext-btn ">Créer</button>
-										</div>
-									</div>
+									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>sœurs</label></div>
+									<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
 								</div>
-								<script>
-									var buttonSubmit = document.getElementById('submitCustomFam');
-									var brotherInput = document.querySelector('#brother')
-									var sisterInput = document.querySelector('#sister')
-									var sonInput = document.querySelector('#son')
-									var daughterInput = document.querySelector('#daughter')
+								
+								<div class="row">
+									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>fils</label></div>
+									<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
 
-									buttonSubmit.addEventListener('click', function() {
-										//reset pedigree
-										hot.loadData(JSON.parse(myDataSafe));
-										//select index
-										hot.selectCell(0, 1);
+									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>filles</label></div>
+									<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
+								</div>
+								<p>
+									<div class="row text-center" style='padding-bottom: 5px;'><i>Branche paternelle</i></div>
+									<div class="row">
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+										<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
 
-										if( brotherInput.value > 0){
-											for (let step = 0; step < brotherInput.value; step++) {
-												createBrother()
-											}
-										}
-										if( sisterInput.value > 0){
-											for (let step = 0; step < sisterInput.value; step++) {
-												createSister()
-											}
-										}
-										if( sonInput.value > 0){
-											for (let step = 0; step < sonInput.value; step++) {
-												createChild('M')
-											}
-										}
-										if( daughterInput.value > 0){
-											for (let step = 0; step < daughterInput.value; step++) {
-												createChild('F')
-											}
-										}
-										//event.preventDefault();
-										document.getElementById('dropdownFam').classList.remove('open')
-									});
-								</script>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+										<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
+									</div>
+								</p>
+								<p>
+									<div class="row text-center" style='padding-bottom: 5px;'><i>Branche maternelle</i></div>
+									<div class="row">
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+										<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
+										
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+										<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
+									</div>
+								</p>
+
+							</p>
+							<div class="row">
+								<div class="text-center"> 
+									<button id="submitCustomFam" class="btn btn-primary">Créer</button>
+								</div>
 							</div>
 						</li>
-					</div>
+					</ul>
 				</div>
+				<script>
+					var buttonSubmit = document.getElementById('submitCustomFam'),
+						brotherInput = document.querySelector('#brother'),
+						sisterInput = document.querySelector('#sister'),
+						sonInput = document.querySelector('#son'),
+						daughterInput = document.querySelector('#daughter'),
+						unclePInput = document.querySelector('#uncleP'),
+						auntPInput = document.querySelector('#auntP');
+						uncleMInput = document.querySelector('#uncleM'),
+						auntMInput = document.querySelector('#auntM');
+
+					buttonSubmit.addEventListener('click', function() {
+						let obj = JSON.parse(myDataSafe),
+							indexID = getRow(obj, 1);
+
+						hot.loadData(obj); //reset pedigree
+						hot.selectCell(indexID, 1); //select index						
+
+						if( brotherInput.value > 0){
+							for (let step = 0; step < brotherInput.value; step++) {
+								createBrother()
+							}
+						}
+						if( sisterInput.value > 0){
+							for (let step = 0; step < sisterInput.value; step++) {
+								createSister()
+							}
+						}
+						if( sonInput.value > 0){
+							for (let step = 0; step < sonInput.value; step++) {
+								createChild('M')
+							}
+						}
+						if( daughterInput.value > 0){
+							for (let step = 0; step < daughterInput.value; step++) {
+								createChild('F')
+							}
+						}
+
+						//select father to create aunt/uncle
+						let myDeepClone = JSON.stringify(hot.getSourceData());
+							obj = JSON.parse(myDeepClone);
+						let father = getRow(obj, obj[indexID].FathID);
+											
+						hot.selectCell(father, 1); //select father
+						if( unclePInput.value > 0){
+							for (let step = 0; step < unclePInput.value; step++) {
+								createBrother()
+							}
+						}
+						if( auntPInput.value > 0){
+							for (let step = 0; step < auntPInput.value; step++) {
+								createSister()
+							}
+						}
+
+						//select mother to create aunt/uncle
+						myDeepClone = JSON.stringify(hot.getSourceData());
+						obj = JSON.parse(myDeepClone);
+						let mother = getRow(obj, obj[indexID].MothID);
+											
+						hot.selectCell(mother, 1); //select mother
+						if( uncleMInput.value > 0){
+							for (let step = 0; step < uncleMInput.value; step++) {
+								createBrother()
+							}
+						}
+						if( auntMInput.value > 0){
+							for (let step = 0; step < auntMInput.value; step++) {
+								createSister()
+							}
+						}
+						
+						document.getElementById('dropdownFam').classList.remove('open')
+					});
+				</script>
 
 				<!-- create buttons -->
-				<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique'" class="intext-btn ">Charger l'arbre <i class="fa fa-refresh"></i></button>
-				&nbsp &nbsp
-				<button id="reload" title="Charger depuis la sauvegarde locale" class="intext-btn "><i class="fa fa-refresh"></i></button>
-				<script>
-					var buttonReload = document.getElementById('reload');
-					Handsontable.dom.addEvent(buttonReload, 'click', function() {
-						hot.loadData(JSON.parse(sessionStorage['data']))
-					});
-				</script>
+				<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique" class="btn  btn-primary">Charger l'arbre <i class="fa fa-refresh"></i></button>
+				<div class="btnDivider"></div>
 
-				<button id="reset" title="Réinitialiser" class="intext-btn "><i class="fa fa-eraser" aria-hidden="true"></i></button>
-				<script>
-					var buttonReset = document.getElementById('reset');
-					Handsontable.dom.addEvent(buttonReset, 'click', function() {
-						hot.loadData(JSON.parse(myDataSafe))
-					});
-				</script>
+				<button id="reload" title="Charger depuis la sauvegarde locale" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+				<button id="reset" title="Réinitialiser" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+				<button id="undo" title="Défaire" class="btn btn-primary"><i class="fa fa-undo" aria-hidden="true"></i></button>
+				<button id="redo" title="Refaire" class="btn btn-primary"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+				<div class="btnDivider"></div>
 
-				<button id="undo" title="Défaire" class="intext-btn "><i class="fa fa-undo" aria-hidden="true"></i></button>
-				<script>
-					var buttonUndo = document.getElementById('undo');
-					Handsontable.dom.addEvent(buttonUndo, 'click', function() {
-						hot.undo()
-					});
-				</script>
+				<button id="add-parents" title="Ajouter des parents" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
+				<button id="add-brother" title="Ajouter un frère" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
+				<button id="add-sister" title="Ajouter une sœur" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
+				<button id="add-son" title="Ajouter un fils" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
+				<button id="add-daughter" title="Ajouter une fille" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
+				<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
+				<div class="btnDivider"></div>
+				
+				<label class="switch">
+					<input type="checkbox" id="myCheckOnco" checked> 
+					<span class="slider round" for="myCheckOnco" ></span>
+				</label>
+				<label style='font-weight: normal;'>Onco</label>
+				<div class="btnDivider"></div>
 
-				<button id="redo" title="Refaire" class="intext-btn "><i class="fa fa-repeat" aria-hidden="true"></i></button>
-				<script>
-					var buttonRedo = document.getElementById('redo');
-					Handsontable.dom.addEvent(buttonRedo, 'click', function() {
-						hot.redo()
-					});
-				</script>
-
-				&nbsp &nbsp
-
-				<button id="add-parents" title="Ajouter des parents" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
-				<script>
-					var buttonParents = document.getElementById('add-parents');
-					Handsontable.dom.addEvent(buttonParents, 'click', function() {
-						createParents();
-					});
-				</script>
-
-				<button id="add-brother" title="Ajouter un frère" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
-				<script>
-					var buttonParents = document.getElementById('add-brother');
-					Handsontable.dom.addEvent(buttonParents, 'click', function() {
-						createBrother();
-					});
-				</script>
-
-				<button id="add-sister" title="Ajouter une sœur" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
-				<script>
-					var buttonParents = document.getElementById('add-sister');
-					Handsontable.dom.addEvent(buttonParents, 'click', function() {
-						createSister();
-					});
-				</script>
-
-				<button id="add-son" title="Ajouter un fils" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
-				<script>
-					var buttonSon = document.getElementById('add-son');
-					Handsontable.dom.addEvent(buttonSon, 'click', function() {
-						createChild("M");
-					});
-				</script>
-
-				<button id="add-daughter" title="Ajouter une fille" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
-				<script>
-					var buttonDaughter = document.getElementById('add-daughter');
-					Handsontable.dom.addEvent(buttonDaughter, 'click', function() {
-						createChild("F");
-					});
-				</script>
-
-				<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="intext-btn"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
-				<script>
-					var buttonPartner = document.getElementById('add-partner');
-					Handsontable.dom.addEvent(buttonPartner, 'click', function() {
-						createChild("F", true);
-					});
-				</script>
-
-				&nbsp &nbsp &nbsp
-
-				<input type="checkbox" id="myCheck" onclick="addOnco()" checked> 
-				<label for="myCheck" style='font-weight: normal;'>Ajouter les pathologies boadicea</label>
+				<label class="switch">
+					<input type="checkbox" id="myCheckHPO"> 
+					<span class="slider round" for="myCheckHPO" ></span>
+				</label>
+				<label style='font-weight: normal;'>HPO</label>
 			</div>
 		</div>
 		</br>
 		<div class="row">
-			<div class="text-center">
+			<div class="text-center"'>
 				<!-- create handsontable table -->
-				<div id="dataTable" style="display:inline-block;z-index: 0;"></div>
+				<div class='hotContainer'>
+					<div id="dataTable" class="hot handsontable" style="display:inline-block;z-index: 0;min-height:100px;"></div>
+				</div>
 				<script>
-				//Defaut datasets
-				var myData = [
-						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
-					]
-					var myDataSafe = JSON.stringify(myData) //save 
-					
-					var myDataExtended1 = [
-						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Père pat","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Mère pat","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Père mat","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Mère mat","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
-					]
-					var myDataExtended1Safe = JSON.stringify(myDataExtended1) //save
-
-					var myDataExtended2 = [
-						{"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
-						{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Père pat","IndivID": "4","FathID": "8","MothID": "9","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Mère pat","IndivID": "5","FathID": "10","MothID": "11","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Père mat","IndivID": "6","FathID": "12","MothID": "13","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "Grand-Mère mat","IndivID": "7","FathID": "14","MothID": "15","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "8","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "9","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "10","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "11","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "12","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "13","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "14","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""},
-						{"FamID": "1","Name": "","IndivID": "15","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Option":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":""}
-					]
-					var myDataExtended2Safe = JSON.stringify(myDataExtended2) //save
-				
-					// define column to display
-					var cols = [{
-						data: 'FamID'
-						}, {
-						data: 'Name'
-						}, {
-						data: 'IndivID'
-						}, {
-						data: 'FathID'
-						}, {
-						data: 'MothID'
-						}, {
-						data: 'Sex'//,
-						//type: 'dropdown',
-						//source: ['M','F','U']
-						}, {
-						data: 'Affected',
-						type: 'checkbox',
-						checkedTemplate: '2',
-						uncheckedTemplate: '1'
-						}, {
-						data: 'Deceased',
-						type: 'checkbox',
-						checkedTemplate: '1',
-						uncheckedTemplate: '0'
-						}, {
-						data: 'Age',
-						type: 'numeric'
-						}, {
-						data: 'Yob',
-						type: 'numeric'
-						}, {
-						data: 'Option',
-						type: 'dropdown',
-						source: ['FCS', 'IMG', 'Grossesse','JumMZ', 'JumDZ', 'Adopté']
-						}, {
-						data: 'Disease1',
-						type: 'autocomplete',
-						source: [],
-						strict: false,
-						filter: false,
-						renderer: autRenderer
-						}, {
-						data: 'Age1',
-						type: 'numeric'
-						}, {
-						data: 'Disease2',
-						type: 'autocomplete',
-						source: [],
-						strict: false,
-						filter: false,
-						renderer: autRenderer
-						}, {
-						data: 'Age2',
-						type: 'numeric'
-						}, {
-						data: 'Disease3',
-						type: 'autocomplete',
-						source: [],
-						strict: false,
-						filter: false,
-						renderer: autRenderer
-						}, {
-						data: 'Age3',
-						type: 'numeric'
-						}];
-
-					var onco = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
-					var diseases = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
-					var set = false
-
-					function autRenderer(instance, td, row, col, prop, value, cellProperties) {
-						var checkBox = document.getElementById("myCheck"),
-							val = value
-
-						if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
-							if (checkBox.checked & set) {
-								diseases = onco.concat(diseases)
-								set = false
-								
-							} else if (!checkBox.checked) { // remove onco disease
-								set = !set
-								var index;
-								for (var i = 0; i < onco.length; i++) {
-									index = diseases.indexOf(onco[i]);
-									if (index > -1) {
-										diseases.splice(index, 1);
-									}
-								};
-							}
-							diseases.push(val);
-						}
-						cellProperties.source = diseases
-						Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-					};
-					
-					// define column header
-					cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3']
+					//Not working in JS
+					colsOnco=cols().concat(colsOnco);
 					
 					// create handsonetable
 					var container = document.getElementById('dataTable');
 					var hot = new Handsontable(container, {
 						data: myData,
-						//startRows: 8,
 						rowHeaders: false,
-						colHeaders: cols_header, 
-						columns: cols,
+						colHeaders: cols_headerOnco, 
+						columns: colsOnco,
 						filters: true,
 						dropdownMenu: true,
 						className: "htCenter",
@@ -693,6 +483,11 @@
 						outsideClickDeselects: false,
 						persistentState: true,
 						undo: true,
+						width: '100%',
+						//stretchH:"all",
+						height: '100%',
+						//preventOverflow: 'horizontal',
+						//manualColumnResize: true,
 						hiddenColumns: {
 							columns: [0,6], //hide famID and affected
 							indicators: false
@@ -738,105 +533,54 @@
 					);
 
 				</script>
-				</br>
-				</br>		
+				<br>
 
-				<!-- create export to TSV button -->
-				<button id="export-file" title="Télécharger le tableau" class="intext-btn">TSV <i class="fa fa-download"></i></button> &emsp;
-				<script>
-					var button1 = document.getElementById('export-file');
-					var exportPlugin1 = hot.getPlugin('exportFile');
-			
-					button1.addEventListener('click', function() {
-						exportPlugin1.downloadFile('csv', {
-						bom: false,
-						columnDelimiter: '\t',
-						columnHeaders: cols_header,
-						exportHiddenColumns: true,
-						exportHiddenRows: true,
-						fileExtension: 'tsv',
-						filename: 'GeneTree_[YYYY]-[MM]-[DD]',
-						mimeType: 'text/csv',
-						rowDelimiter: '\r\n',
-						rowHeaders: false
-						});
-					});
-				</script>
+				<!-- create export buttons -->
+				<button id="exportJson" title="Données brutes" class="btn btn-primary">JSON <i class="fa fa-download"></i></button>
+				<div class="btnDivider"></div>
+				<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="btn btn-primary">BOADICEA <i class="fa fa-download"></i></button>
+				<div class="btnDivider"></div>
 
-				<!-- create export to PED button -->		
-				<button id="savePed" title="Fichier Plink" class="intext-btn">PED <i class="fa fa-download"></i></button> &emsp;
-				<script>
-					Handsontable.dom.addEvent(savePed, 'click', function() {
-						var toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected']
-						JSONToPEDConvertor(hot.getSourceData(), toKeep); 
-					});
-				</script>
+				<!-- create dropdown button to other export file -->
+				<div class="dropdown" style="display:inline;">
+					<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Autres formats" >
+						Exporter... &nbsp;<span class="caret"></span>
+					</button>
+					<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
+						<button id="export-file" title="Télécharger le tableau" class="btn btn-block">TSV</button>
+						<button id="savePed" title="Fichier Plink" class="btn btn-block">PED</button>
+						<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="btn btn-block">Pedigreejs</button>
+					</div>
+				</div>
 
-				<!-- create export to PedigreeJS JSON button -->
-				<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="intext-btn">Pedigreejs <i class="fa fa-download"></i></button> &emsp;
-				<script>
-					Handsontable.dom.addEvent(exportPedigreejs, 'click', function() {
-						let myDeepClone = JSON.stringify(hot.getSourceData())
-						var obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-						ExportJSON(obj)
-					});
-				</script>
-
-				<!-- create export to JSON button -->
-				<button id="exportJson" title="Données brutes" class="intext-btn">JSON <i class="fa fa-download"></i></button> &emsp;
-				<script>
-					Handsontable.dom.addEvent(exportJson, 'click', function() {
-						let myDeepClone = JSON.stringify(hot.getSourceData())
-						ExportJSON(JSON.parse(myDeepClone))
-					});
-				</script>
-
-				<!-- create export to BOADICEA button -->
-				<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="intext-btn">BOADICEA <i class="fa fa-download"></i></button>
-				<script>
-					Handsontable.dom.addEvent(exportBOADICEA, 'click', function() {
-						let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-						var Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone))
-						ExportBOADICEv4(Tdata)
-					});
-				</script>
-				&nbsp;
+				<div class="btnDivider"></div>
 				<a target="_blank" title="Lien vers BOADICEA v4.0" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 			</div>
 		</div>
 
 		<!-- create pedigree buttons -->
-		<div class='row'>
-			<h3>Arbre généalogique</h3>
-			<div class="text-center">
-				<label class="btn btn-default btn-file">
-					<input id="loadFromHot" type="button" style="display: none;"/>Charger le tableau <i class="fa fa-refresh"></i>
-				</label>
-				<label class="btn btn-default btn-file">
-						<input id="load" type="file" style="display: none;"/><i class="fa fa-folder-open-o"></i>
-				</label>
-				&emsp;
-				<label class="btn btn-default btn-file">
-						<input id="save" type="button" style="display: none;"/>JSON <i class="fa fa-download"></i>
-				</label>
-				<label class="btn btn-default btn-file">
-					<input id="boadicea_download" type="button" style="display: none;"/>BOADICEA <i class="fa fa-download"></i>
-				</label>
-				&emsp;
-				<label class="btn btn-default btn-file">
-						<input id="svg_download" type="button" style="display: none;"/>SVG <i class="fa fa-download"></i>
-				</label>
-				<label class="btn btn-default btn-file">
-						<input id="png_download" type="button" style="display: none;"/>JPEG <i class="fa fa-download"></i>
-				</label>
-				<label class="btn btn-default btn-file">
-					<input id="print" type="button" style="display: none;"/>Imprimer
-				</label>
+		<div class='row' style='margin-top: 30px;'>
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Arbre généalogique</h3></div>
+			</div>
 
-				&emsp;
-				<label class="btn btn-default btn-file">
-					<input id="fh_edit_settings" type="button" style="display: none;"><i class="fa fa-cog" aria-hidden="true"></i>
+			<div class="text-center">
+				<button id="loadFromHot" class='btn btn-primary'>Charger le tableau <i class="fa fa-refresh"></i></button>
+				<label class="btn btn-primary">
+					<i class="fa fa-folder-open-o"></i><input id="load" type="file" hidden>
 				</label>
+				<div class="btnDivider"></div>
+
+				<button id="save" class='btn btn-primary'>JSON <i class="fa fa-download"></i></button>
+				<button id="boadicea_download"class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
+				<div class="btnDivider"></div>
+
+				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
+				<button id="png_download" class='btn btn-primary'>JPEG <i class="fa fa-download"></i></button>
+				<button id="print" class='btn btn-primary'>Imprimer</button>
+				<div class="btnDivider"></div>
+
+				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog" aria-hidden="true"></i></button>
 				<br></br>
 
 				<!-- create pedigree -->
@@ -849,34 +593,32 @@
 			</div>
 		</div>
 
+		<br>
 		<div class='row'>
-			<h3>Histoire clinique</h3> 
-			<div>
-				<button id="loadStory" title ='Màj texte'><i class="fa fa-refresh"></i></button>
-				<button onclick="copyToClipboard('story')">Copier</button>
-				
-				<p><div id="story" contenteditable="true"></div></p>
-				
-				<script>
-					Handsontable.dom.addEvent(loadStory, 'click', function() {
-						// Load data (in pedigreeJS format)
-						let myDeepClone = JSON.stringify(hot.getSourceData())
-						let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-					
-						//alert(histoire(obj))
-						document.getElementById('story').innerHTML = histoire(obj)
-					});
-				</script>
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Histoire clinique</h3>
+					<button class='btn btn-light btn-sm' id="loadStory" title ='Màj texte'><i class="fa fa-refresh"></i></button>
+					<button class='btn btn-light btn-sm' onclick="copyToClipboard('story')">Copier</button>
+				</div>
 			</div>
+			
+			<p>
+				<div id="story" contenteditable="true"></div>
+			</p>
 		</div>
 
-		<div class='row'>
+		<div class='row' style='margin-top: 30px;'>
 			<h3>Références</h3>
 			<div>
 				<p><strong>pedigreejs: a web-based graphical pedigree editor</strong><br>
 					Carver T, Cunningham AP, Babb de Villiers C, Lee A, Hartley S, Tischkowitz M, et al. 
 					<i>Bioinformatics <a href="http://dx.doi.org/10.1093/bioinformatics/btx705" target="_blank">
-					doi:10.1093/bioinformatics/btx705</a></i></p>
+					doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
+				<p><strong>HPO-translations</strong><br>
+					<a href="https://github.com/drseb/HPO-translations" target="_blank">drseb/HPO-translations</a>
+				</p>
 				<p>
 					Copyright : Jean-Marie Ravel, 2020
 					<br>
