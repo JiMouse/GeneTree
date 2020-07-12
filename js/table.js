@@ -175,7 +175,6 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
 
 
 //---Load functions ---
-
 $(document).ready(function() {
     //Load functions
     $( "#submitLoad" ).change(function(event) {
@@ -220,6 +219,21 @@ $(document).ready(function() {
         hot.loadData(JSON.parse(myDataExtended2Safe)); //bug ?
         document.getElementById('dropdownFam').classList.remove('open')
     });
+    $( "#submitCustomFam" ).click(function() {
+        // construct famObj
+        fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'];
+        famObj = {};
+
+        $.each(fam, function(index, value) {
+            if ($('#'+value).val() != undefined && $('#'+value).val() > 0) {
+                famObj[value] = $('#'+value).val();
+            }
+        });
+
+        //create new family
+        createFamily(famObj,hot);
+    });
+
     $( "#reload" ).click(function() {
         hot.loadData(JSON.parse(sessionStorage['data']))
     });
@@ -266,7 +280,6 @@ $(document).ready(function() {
                 colHeaders: cols_headerOnco
             });
         } else {
-            //alert(JSON.stringify(cols()))
             hot.updateSettings({
                 cells: function (row, col, prop) {
                     if (prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') {

@@ -1,3 +1,5 @@
+const { sortedIndex } = require("lodash");
+
 function ArrToJSON(d) {
     let obj = DEFAULT_DISEASES
 
@@ -501,10 +503,9 @@ function ExportBOADICEv4(JSONData) {
         let age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0');
         let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '0');
 
-        let name
+        let name;
 
         // shorter long name : get uppercase + last word if exists
-        
         if(arrData[i]['display_name'] != '') {
             name = arrData[i]['display_name']
             if (name.length >8) {
@@ -580,63 +581,66 @@ function getRow(obj, id) {
     };
 }
 
-function isFather(obj, i, index) {
-    return(obj[i].IndivID == obj[getRow(obj, index)].FathID);
+function isFather(rowData, obj, index) {
+    return(rowData.IndivID == obj[getRow(obj, index)].FathID);
 }
 
-function isMother(obj, i, index) {
-    return(obj[i].IndivID == obj[getRow(obj, index)].MothID);
+function isMother(rowData, obj, index) {
+    return(rowData.IndivID == obj[getRow(obj, index)].MothID);
 }
 
-function getName(i, JSONData) { //JSONData en format Table
-    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+function getName(i, tableData, rowData) { //JSONData, table format
+    var obj = typeof tableData != 'object' ? JSON.parse(tableData) : tableData;
     var indexID = 1,
         father = obj[getRow(obj, indexID)].FathID,
         mother = obj[getRow(obj, indexID)].MothID;
 
-    function isBrother(i, index) {
+    // if row in table
+    if(typeof(rowData)=='undefined') {var rowData=obj[i]}
+
+    function isBrother(index) {
         return(
-            obj[i].FathID != '0' 
-            && obj[i].MothID != '0'
-            && obj[i].MothID == obj[getRow(obj, index)].MothID
-            && obj[i].FathID == obj[getRow(obj, index)].FathID
-            && obj[i].Sex == 'M'
+            rowData.FathID != '0' 
+            && rowData.MothID != '0'
+            && rowData.MothID == obj[getRow(obj, index)].MothID
+            && rowData.FathID == obj[getRow(obj, index)].FathID
+            && rowData.Sex == 'M'
     );
     }
     
-    function isSister(i, index) {
+    function isSister(index) {
         return(
-            obj[i].FathID != '0' 
-            && obj[i].MothID != '0'
-            && obj[i].MothID == obj[getRow(obj, index)].MothID
-            && obj[i].FathID == obj[getRow(obj, index)].FathID
-            && obj[i].Sex == 'F'
+            rowData.FathID != '0' 
+            && rowData.MothID != '0'
+            && rowData.MothID == obj[getRow(obj, index)].MothID
+            && rowData.FathID == obj[getRow(obj, index)].FathID
+            && rowData.Sex == 'F'
     );
     }
     
-    if(i == getRow(obj, indexID)) result='Index';
+    if(rowData.IndivID==indexID) result='Index';
 
-    else if (isBrother(i, indexID)){result = 'Frère'}
-    else if (isSister(i, indexID)){result = 'Soeur'}
+    else if (isBrother(indexID)){result = 'Frère'}
+    else if (isSister(indexID)){result = 'Soeur'}
 
-    else if(isFather(obj, i, indexID)){result = 'Père'}
-    else if (isMother(obj, i, indexID)){result = 'Mère'}
+    else if(isFather(rowData, obj, indexID)){result = 'Père'}
+    else if (isMother(rowData, obj, indexID)){result = 'Mère'}
 
-    else if (isBrother(i, father)){result = 'Oncle pat'}
-    else if (isSister(i, father)){result = 'Tante pat'}
-    else if (isBrother(i, mother)){result = 'Oncle mat'}
-    else if (isSister(i, mother)){result = 'Tante mat'}
+    else if (isBrother(father)){result = 'Oncle pat'}
+    else if (isSister(father)){result = 'Tante pat'}
+    else if (isBrother(mother)){result = 'Oncle mat'}
+    else if (isSister(mother)){result = 'Tante mat'}
     
-    else if(isFather(obj, i, father)){result = 'Grand-Père pat'}
-    else if(isMother(obj, i, father)){result = 'Grand-Mère pat'}
-    else if(isFather(obj, i, mother)){result = 'Grand-Père mat'}
-    else if(isMother(obj, i, mother)){result = 'Grand-Mère mat'}
+    else if(isFather(rowData, obj, father)){result = 'Grand-Père pat'}
+    else if(isMother(rowData, obj, father)){result = 'Grand-Mère pat'}
+    else if(isFather(rowData, obj, mother)){result = 'Grand-Père mat'}
+    else if(isMother(rowData, obj, mother)){result = 'Grand-Mère mat'}
     
-    else result =""
+    else result ="";
 
+    // check if already exist
+    let colnames=''
     if (result != "") {
-        // check if already exist
-        colnames = []
         for (var j = 0; j < obj.length; j++) {
             colnames += ","+ obj[j].Name
         } 
@@ -666,23 +670,154 @@ function displayName(JSONData) {
     element.remove()
   }
 
-  function createFamily(hot, famObj){ //to do
-    //get selected row's index
-    let indexArr = hot.getSelectedLast();
-
-    //load hot data once
-    let myDeepClone = JSON.stringify(hot.getSourceData()),
-        obj = JSON.parse(myDeepClone);
-
-    //create array based on famObj
+function createFamily(famObj, hot){
+    //famObj as JS object
     /*
-    famObj = [
-        {"son":2},
-        {"oncleP":"1"}
-    }]
+    famObj = {
+        son:2,
+        brother:1
+    };
     */
 
-    // insert and populate rows
-    hot.alter('insert_row', indexArr[0]+1, 1); // insert rows below
-    hot.populateFromArray(indexArr[0]+1, 0,[result]);
+    var obj = JSON.parse(myDataSafe),
+        index=0, //index' row
+        father=getRow(obj, obj[index].FathID),
+        mother=getRow(obj, obj[index].MothID);
+    
+    function newName(obj){
+        let col=[];
+        for (let i = 0; i < obj.length; i++) {
+            col.push(obj[i].IndivID)
+        }
+        let max = Math.max.apply(null, col)+1
+        return max
+    }
+
+   function NewInd(fathID, mothID, sex, obj, ind,  replace=false,pre){
+       let row = {
+                "FamID":obj[0].FamID,
+                "Name": "",
+                "IndivID": newName(obj),
+                "FathID": fathID,
+                "MothID": mothID,
+                "Sex": sex,
+                "Affected": '1',
+                "Deceased": '0'
+            };  
+       row.Name = (getName(i, obj, row) == '' & typeof(pre) != 'undefined' ? pre : getName(i, obj, row)); //i not used
+       if(replace == true && typeof(ind)!='undefined' && ind != '') (sex =='M' ? obj[ind].FathID = row.IndivID : obj[ind].MothID = row.IndivID);
+       return row
+    };
+
+    function addNewInd(fathID, mothID, sex, obj, ind, replace=false, pre){
+        if (typeof(ind)!='undefined') {
+            obj.splice(ind+1, 0, NewInd(fathID, mothID, sex, obj, ind, replace,pre));
+        } else {
+            obj.push(NewInd(fathID, mothID, sex, obj, ind, replace, pre));
+        }
+    }
+
+    function hasParents(row){//obj[i]
+        return (row.FathID != '0' || row.MothID != '0');
+    }
+
+    function newParents(obj,i){ //row index
+        if(hasParents(obj[i])) return
+        //create parent and replace index row content
+        addNewInd(0, 0, 'M', obj, i, true);
+        addNewInd(0, 0, 'F', obj, i, true);
+    }
+
+    function partner(obj,i) {
+        for (var j = 0; j < obj.length; j++) {
+            if (obj[i].IndivID==obj[j].FathID) return obj[j].MothID;
+            if (obj[i].IndivID==obj[j].MothID) return obj[j].FathID;  
+        };
+        return undefined
+    }
+
+    function prefixeChild(obj,father, mother, pre) {
+        let colnames='';
+        for (var j = 0; j < obj.length; j++) {
+            if (obj[j].FathID == father && obj[j].MothID == mother) colnames += ","+ obj[j].Name;
+        }        
+        if (colnames != "") {
+            let re = new RegExp(pre, 'g'),
+                count = (colnames.match(re) || []).length;
+            pre = (count==0 ? pre : pre+parseFloat(count+1));
+        }
+        return pre;
+    }
+
+    function newChild(obj,i,sex, n=famObj[keys[j]]){
+        for (let step = 0; step < n; step++) {        
+            let spouse = partner(obj,i),
+                spouseSex = (obj[i].Sex=='M' ? 'F' : 'M' );
+            var pre = (sex == 'M' ? 'Fils' : 'Fille');
+            
+            // if partner doesn't exist : create it
+            if (typeof(spouse) == 'undefined') {
+                spouse = newName(obj);
+                addNewInd(0, 0, spouseSex,obj,i);
+            }
+            
+            //define father and mother
+            let fathID = (obj[i].Sex=='M' ? obj[i].IndivID : spouse),
+                mothID = (obj[i].Sex=='M' ? spouse : obj[i].IndivID);
+            
+            //update pre if other child
+            pre = prefixeChild(obj,fathID, mothID, pre) +'-' + obj[i].Name
+
+            //create child
+            addNewInd(fathID, mothID, sex, obj, i, false, pre);            
+        };
+    };
+
+    function newSiblings(obj, i, sex, n=famObj[keys[j]]){
+        for (let step = 0; step < n; step++) {
+            newParents(obj,i);
+            addNewInd(obj[i].FathID, obj[i].MothID, sex,obj,i);
+        }
+    }
+
+   //create array of individual to be inserted
+   var keys = Object.keys(famObj);
+
+   for (var j = 0; j < keys.length; j++) {
+       switch(keys[j]){ 
+           case 'brother':
+               newSiblings(obj, index, 'M', famObj[keys[j]]);
+               break;
+            case 'sister':
+                newSiblings(obj, index, 'F', famObj[keys[j]]);
+                break;
+            case 'son':
+                newChild(obj,index,'M', famObj[keys[j]]);
+                break;
+            case 'daughter':
+                newChild(obj,index,'F', famObj[keys[j]]);
+               break;
+            case 'uncleP':
+                father=getRow(obj, obj[index].FathID);
+                newSiblings(obj, father, 'M', famObj[keys[j]]);
+                break;
+            case 'auntP':
+                father=getRow(obj, obj[index].FathID);
+                newSiblings(obj, father, 'F', famObj[keys[j]]);
+                break;
+            case 'uncleM':
+                mother=getRow(obj, obj[index].MothID);
+                newSiblings(obj, mother, 'M', famObj[keys[j]]);
+                break;
+            case 'auntM':
+                mother=getRow(obj, obj[index].MothID);
+                newSiblings(obj, mother, 'F', famObj[keys[j]]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    //load new data
+    hot.loadData(obj)
   }
