@@ -1,7 +1,7 @@
 const { sortedIndex } = require("lodash");
 
 function ArrToJSON(d) {
-    let obj = DEFAULT_DISEASES
+    let obj = DEFAULT_DISEASES // not needed ?
 
     // generate random colour
     const setBg = () => {
@@ -179,6 +179,19 @@ function UpdateOptions(o,i) {
         else if (o[i][ "Option" ]=='Grossesse') {o[i][ "sex" ]= "U" ; delete o[i][ "Option" ] }
         };
     }
+}
+
+function getTablePatho(obj) {
+    let patho = [],
+        d = ['Disease1', 'Disease2', 'Disease3'];
+    
+    for (let i = 0; i < obj.length; i++) {
+        for (let j = 0; j < d.length; j++) {
+            let val = obj[i][d[j]]
+            if(!patho.includes(val) && val != '') patho.push(val)
+        }
+    }
+    return patho
 }
 
 function FormatToTable(JSONData) {

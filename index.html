@@ -244,12 +244,18 @@
 
 		// Update dataset from handsontable
 		function loadFromHot() {
+			// load table and convert it
 			let myDeepClone = JSON.stringify(hot.getSourceData())
 			var obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
-			let formattedDiseases = ArrToJSON(diseases)
+			
+			// get all disease of the obj 
+			let allDiseases = getTablePatho(JSON.parse(myDeepClone))
+
+			//update disease list
+			let formattedDiseases = ArrToJSON(allDiseases)
 
 			opts.dataset = obj;
-			opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+			opts.diseases = $.extend(true, [], DEFAULT_DISEASES); 
 			ptree.rebuild(opts);
 			update_diseases();
 			localStorage.setItem('diseases', JSON.stringify(opts.diseases));
@@ -544,6 +550,7 @@
 					<a href="https://github.com/drseb/HPO-translations" target="_blank">drseb/HPO-translations</a>
 				</p>
 				<p>
+
 					Copyright : Jean-Marie Ravel, 2020
 					<br>
 					<a href="mailto:jmravel.dev@gmail.com?	subject=GeneTree">Contact : jmravel.dev@gmail.com</a>

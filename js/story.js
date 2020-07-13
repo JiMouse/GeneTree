@@ -148,7 +148,7 @@ function textline(obj, i){
   return result.civil + result.patho  + ' ' + result.fratrie
 }
 
-function textCivil(obj,i){
+function textCivil(obj,i){ // si décédé : (décédé(e) à x ans) + présentait et non présente
   let sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
@@ -162,7 +162,7 @@ function textCivil(obj,i){
   return out
 }
 
-function getChildList(obj,i,text_child_neg) {
+function getChildList(obj,i,text_child_neg) {//obj[i].hasOwnProperty('noparents')
   let child,
       child1 = [],
       child2 = [],
@@ -174,7 +174,7 @@ function getChildList(obj,i,text_child_neg) {
   //grossesse : obj[k].sex == "U"
 
   for (var k = 0; k < obj.length; k++) {
-    if (obj[k].sex == "U") continue
+    if (obj[k].sex == "U" || obj[k].hasOwnProperty('noparents')) continue
     if (obj[k]['father'] == obj[i]['name'] || obj[k]['mother'] == obj[i]['name']) {
       if (typeof fath === 'undefined') {
         fath = obj[k]['father']
@@ -235,7 +235,7 @@ function getChildList(obj,i,text_child_neg) {
   return child;
 }
 
-function getFratList(obj,i,text_frat_neg) {
+function getFratList(obj,i,text_frat_neg) { 
   let frat, //fratrie
       fratpm = [],
       fratm = [],
@@ -289,6 +289,8 @@ function getFratList(obj,i,text_frat_neg) {
       let text_neg = '',
           text_pos = " suivi pour un ";
       result += getPatho(obj, k,text_neg, text_pos);
+
+      //add getChild list ()
     }
     return result
   }
