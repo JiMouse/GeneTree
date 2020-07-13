@@ -1,8 +1,6 @@
 const { sortedIndex } = require("lodash");
 
 function ArrToJSON(d) {
-    let obj = DEFAULT_DISEASES // not needed ?
-
     // generate random colour
     const setBg = () => {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
@@ -10,25 +8,32 @@ function ArrToJSON(d) {
     }
 
     //get all values of obj
-    let values = []
+    let values = [],
+        obj = (document.getElementById("myCheckOnco").checked ? [
+            {'type': 'cancer_sein', 'colour': '#FFC0CB'},
+            {'type': 'cancer_sein2', 'colour': '#f00c93'},
+            {'type': 'cancer_ovaire', 'colour': '#4DAA4D'},
+            {'type': 'cancer_pancréas', 'colour': '#D5494A'},
+            {'type': 'cancer_prostate', 'colour': '#4289BA'}
+       ] : []);
+
     for (var j = 0; j < obj.length; j++) {
-        values[j] = obj[j].type
+        values[j] = obj[j].type;
     }
 
     // add new elements
     for (var i = 0; i < d.length; i++) {
         if (!values.includes(d[i])) { // change onco to list of value of type
-            var pos = obj.length
-            if(d[i] != null) obj[pos] = {'type': d[i], 'colour': setBg()}
+            var pos = obj.length;
+            if(d[i] != null) obj[pos] = {'type': d[i], 'colour': setBg()};
         }   
     }
     
-    return obj
+    return obj;
 }
 
 function JSONToPEDConvertor(JSONData, toKeep) {
-    var 
-        arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         CSV = '',   
         row = "",
         fileName = 'GeneTree_ped_'+ getFormattedTime() +'.txt';

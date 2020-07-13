@@ -255,7 +255,7 @@
 			let formattedDiseases = ArrToJSON(allDiseases)
 
 			opts.dataset = obj;
-			opts.diseases = $.extend(true, [], DEFAULT_DISEASES); 
+			opts.diseases = $.extend(true, [], formattedDiseases); 
 			ptree.rebuild(opts);
 			update_diseases();
 			localStorage.setItem('diseases', JSON.stringify(opts.diseases));
