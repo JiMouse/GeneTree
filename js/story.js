@@ -100,14 +100,15 @@ function histoire(obj) {
 }
 
 function textIndex(obj, i){
-    // motif de consultation
     let result = {'index':'', 'child':'', 'fratrie':''},
         sex = obj[i].sex,
         status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
     
-    result.index = textCivil(obj,i)
+    //civil
+    result.index = textCivil(obj,i);
     result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
     
+    // motif de consultation
     let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
         text_pos = " dans le cadre d'un ";
     result.index += getPatho(obj, i,text_neg, text_pos)+'.';
@@ -160,7 +161,7 @@ function textCivil(obj,i){
   return out
 }
 
-function getChildList(obj,i,text_child_neg) {
+function getChildList(obj,i,text_child_neg, suffixe='.') {
   let child,
       child1 = [],
       child2 = [],
@@ -214,15 +215,15 @@ function getChildList(obj,i,text_child_neg) {
     child += textOption(img1,'IMG','IMG',' ');
     child += ' ; ' + (child2.length>0 ? child2.length:'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : ";
     child += childText(child2);
-    child += '.';
-    child += textOption(fcs2,'fausses-couches','fausse-couche');
-    child +=textOption(img2,'IMG','IMG',' ','.');
+    //child += '.'; //suffixe
+    child += textOption(fcs2,'fausses-couches','fausse-couche','.');
+    child +=textOption(img2,'IMG','IMG','.');
   } else {
     child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : ';
     child += childText(child1);
-    child += '.';
-    child += textOption(fcs1,'fausses-couches','fausse-couche','','.');
-    child += textOption(img1,'IMG','IMG',' ','.');
+    //child += '.';
+    child += textOption(fcs1,'fausses-couches','fausse-couche','.');
+    child += textOption(img1,'IMG','IMG','.');
   }
   if(obj[i].proband == true) child = dico.pronom[sex]+ " a " + child
 
@@ -230,7 +231,7 @@ function getChildList(obj,i,text_child_neg) {
   if (obj[i].proband == true && child != ".") {
     // conjoint 1 & 2
   }
-  return child;
+  return child+suffixe;
 }
 
 function getFratList(obj,i,text_frat_neg) { 
@@ -288,7 +289,10 @@ function getFratList(obj,i,text_frat_neg) {
           text_pos = " suivi pour un ";
       result += getPatho(obj, k,text_neg, text_pos);
 
-      //add getChild list ()
+      //child
+      let text_child_neg = "";
+      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
+
     }
     return result
   }
