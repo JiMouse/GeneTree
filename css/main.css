@@ -69,11 +69,6 @@ h1{
     border-radius: 50%;
   }
 
-  /*hotContainer*/
-  .hotContainer{
-    height: 250px;
-  }
-
   .btnDivider{
     width:10px;
     height:auto;
@@ -104,3 +99,7 @@ h3 {
   margin-right: 0;
 }
 
+/* Pulldown can break out of handsontable boundary */
+.htColumnHeaders {
+  overflow: visible !important;
+}

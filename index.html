@@ -392,8 +392,8 @@
 		<div class="row">
 			<div class="text-center"'>
 				<!-- create handsontable table -->
-				<div class='hotContainer'>
-					<div id="dataTable" class="hot handsontable" style="display:inline-block;z-index: 0;min-height:100px;"></div>
+				<div class='hotContainer' style="height: 250px;">
+					<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
 				</div>
 				<script>
 					//Not working in JS
@@ -414,8 +414,9 @@
 						persistentState: true,
 						undo: true,
 						width: '100%',
-						//stretchH:"all",
 						height: '100%',
+						//stretchH:"all",
+						//trimDropdown:false,
 						//preventOverflow: 'horizontal',
 						//manualColumnResize: true,
 						hiddenColumns: {
