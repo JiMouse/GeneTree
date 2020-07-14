@@ -12,9 +12,7 @@ $(document).ready(function() {
 var dico = {
     'pronom':{
         'M':'Il',
-        'F':'Elle',
-        'MM':'Ils',
-        'Mmes':'Elles'
+        'F':'Elle'
     },
     'pronom2':{
         'M':'Son',
@@ -22,15 +20,11 @@ var dico = {
     },
     'civil':{
         'M':'Monsieur',
-        'F':'Madame',
-        'MM':'Messieurs',
-        'Mmes':'Mesdames'
+        'F':'Madame'
     },
     'naissance':{
         'M':'né',
-        'F':'née',
-        'MM':'nés',
-        'Mmes':'nées'
+        'F':'née'
     },
     'décés':{
         'M':'décédé',
@@ -51,6 +45,10 @@ var dico = {
     'fratrie':{
       'M':'un frère',
       'F':'une soeur'
+    },
+    'presenter':{
+      'vie':'présente',
+      'décés':'présentait'
     }
   }
 
@@ -136,7 +134,7 @@ function textline(obj, i){
   if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
 
   //patho
-  let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ne présente pas de pathologie cancéreuse',
+  let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ne '+ dico.presenter[status] + ' pas de pathologie cancéreuse',
       text_pos = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ' + dico.etre[status] + " suivi pour un "; //" et" + 
   result.patho = getPatho(obj, i,text_neg, text_pos)+'.';
 
@@ -148,7 +146,7 @@ function textline(obj, i){
   return result.civil + result.patho  + ' ' + result.fratrie
 }
 
-function textCivil(obj,i){ // si décédé : (décédé(e) à x ans) + présentait et non présente
+function textCivil(obj,i){
   let sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
@@ -156,13 +154,13 @@ function textCivil(obj,i){ // si décédé : (décédé(e) à x ans) + présenta
             + (obj[i].yob != '' ? dico.etre[status] + ' ':'')
             : '');
   out += (obj[i].yob != '' && obj[i].yob != null  ? ' ' + dico.naissance[sex] + ' en ' + obj[i].yob : '');
-  out += (obj[i].age != '' && obj[i].age != null ? ' (' + obj[i].age +' ans)':'');
+  if (obj[i].age != '' && obj[i].age != null) out += ' (' + (status == 'décés' ? dico.décés[sex] + " à " : "") + obj[i].age +' ans)';
   if(obj[i].proband == true && obj[i].yob != '') out += ' et '
   
   return out
 }
 
-function getChildList(obj,i,text_child_neg) {//obj[i].hasOwnProperty('noparents')
+function getChildList(obj,i,text_child_neg) {
   let child,
       child1 = [],
       child2 = [],

@@ -157,7 +157,7 @@ function UpdateDiseases(o,i){
         
         if (content != "" && content != null){
             var new_col = o[i][ col ]
-            o[i][new_col+"_diagnosis_age"] = o[i][ age ];
+            o[i][new_col+"_diagnosis_age"] = (o[i][ age ]==null ? "" : o[i][ age ]);
             delete o[i][ col ];
             delete o[i][ age ];
         }
@@ -415,7 +415,7 @@ function NewName(){
     var IdIndex = 2 // define IndivID index column
     var col = hot.getDataAtCol(IdIndex)
     var max = Math.max.apply(null, col)+1
-    return max
+    return max.toString() //return string
 }
 
 function createParents() {
@@ -708,7 +708,7 @@ function createFamily(famObj, hot){
             col.push(obj[i].IndivID)
         }
         let max = Math.max.apply(null, col)+1
-        return max
+        return max.toString() //return string
     }
 
    function NewInd(fathID, mothID, sex, obj, ind,  replace=false,pre){
