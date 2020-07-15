@@ -42,28 +42,30 @@ $(document).ready(function() {
       document.getElementById('myCheckOnco').checked = false;
       hot.updateSettings({
           cells: function (row, col, prop) {
-              if (prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') {
+              isDiseaseProp = function(val) {return prop == val};
+              if (colsDiseases.some(isDiseaseProp)) {
                   var cellProperties = {};
                   cellProperties.type = 'dropdown';
                   cellProperties.source = HPOArr;
                   return cellProperties;
                 }
               },
-              columns: cols(),
+              columns: cols,
               colHeaders: cols_header
       });
     } else {
       //autRenderer without onco
       hot.updateSettings({
           cells: function (row, col, prop) {
-              if (prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') {
+              isDiseaseProp = function(val) {return prop == val};
+              if (colsDiseases.some(isDiseaseProp)) {
                   var cellProperties = {};
                   cellProperties.renderer = autRenderer2;
                   cellProperties.type = 'autocomplete';
                   return cellProperties;
               }
           },
-          columns: cols(),
+          columns: cols,
           colHeaders: cols_header
       });
     }

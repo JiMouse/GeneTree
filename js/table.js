@@ -38,8 +38,7 @@ var myDataExtended2 = [
     myDataExtended2Safe = JSON.stringify(myDataExtended2);
 
 // define column to display
-var cols = function() {
-    return [{data: 'FamID'}, 
+var cols = [{data: 'FamID'}, 
             {data: 'Name'},
             {data: 'IndivID'},
             {data: 'FathID'},
@@ -100,7 +99,6 @@ var cols = function() {
             type: 'text'
             }
         ];
-    };
 
 //Boadicea supp. cols 
 var colsOnco = [
@@ -121,7 +119,20 @@ var colsOnco = [
     {data: 'CK14', type: 'dropdown', source:['P','N', 'U']},
     {data: 'CK56', type: 'dropdown', source:['P','N', 'U']}
     ];
-//colsOnco=cols().concat(colsOnco); //not processed outside of script?
+colsOnco=cols.concat(colsOnco);
+
+//diseases cols
+var colsDiseases = [];
+for (var j = 0; j < cols.length; j++) {
+    if (cols[j].data.indexOf("Disease") !== -1) {
+        colsDiseases.push(cols[j].data);
+    };
+};
+
+//define custom function to select disease columns
+//isDiseaseProp = function(val) {return prop == val}; //prop == 'Disease1' || etc.
+//colsDiseases.some(isDiseaseProp)
+
 
 // define column header
 var cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3','Comment.']
@@ -172,7 +183,6 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     cellProperties.source = diseases
     Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
 };
-
 
 //---Load functions ---
 $(document).ready(function() {
@@ -270,7 +280,8 @@ $(document).ready(function() {
             document.getElementById('myCheckHPO').checked = false;
             hot.updateSettings({
                 cells: function (row, col, prop) {
-                    if (prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') {
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) { //prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') { //colsDiseases.some(isDiseaseProp)
                         var cellProperties = {};
                         cellProperties.renderer = autRenderer;
                         return cellProperties;
@@ -282,13 +293,14 @@ $(document).ready(function() {
         } else {
             hot.updateSettings({
                 cells: function (row, col, prop) {
-                    if (prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') {
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) { //(prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') { //colsDiseases.some(isDiseaseProp)
                         var cellProperties = {};
                         cellProperties.renderer = autRenderer2;
                         return cellProperties;
                     }
                 },
-                columns: cols(),
+                columns: cols,
                 colHeaders: cols_header
             });
         }

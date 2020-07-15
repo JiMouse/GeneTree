@@ -147,7 +147,7 @@ function FormatToPedigreeJS(JSONData) {
 }
 
 function UpdateDiseases(o,i){
-    var colDiseases = ["Disease1","Disease2", "Disease3"]
+    var colDiseases = ["Disease1","Disease2", "Disease3"] //colsDiseases
     var colAges = ["Age1","Age2", "Age3"]
 
     for (var j = 0; j < colDiseases.length; j++) {
@@ -188,7 +188,7 @@ function UpdateOptions(o,i) {
 
 function getTablePatho(obj) {
     let patho = [],
-        d = ['Disease1', 'Disease2', 'Disease3'];
+        d = ['Disease1', 'Disease2', 'Disease3']; //colsDiseases
     
     for (let i = 0; i < obj.length; i++) {
         for (let j = 0; j < d.length; j++) {
@@ -241,7 +241,7 @@ function FormatToTable(JSONData) {
             "Age": obj[i].age,
             "Yob": obj[i].yob,
             "Option" : options(),
-            "Disease1":patho[0],
+            "Disease1":patho[0], ////if patho.length > 3 add indi.Disease4 / indi.Age4 etc.
             "Age1":age[0],
             "Disease2":patho[1],
             "Age2":age[1],
@@ -298,6 +298,7 @@ function Formatboadicea(boadicea_lines) {
                 indi.Age2 = age[1];
                 indi.Disease3 = patho[2];
                 indi.Age3 = age[2];
+                //if patho.length > 3 add indi.Disease4 / indi.Age4 etc.
                 
                 // bug encodage UTF-8 / ISO : replace �
                 indi.Name = indi.Name.replace("�","è")

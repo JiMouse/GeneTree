@@ -396,9 +396,6 @@
 					<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
 				</div>
 				<script>
-					//Not working in JS
-					colsOnco=cols().concat(colsOnco);
-					
 					// create handsonetable
 					var container = document.getElementById('dataTable');
 					var hot = new Handsontable(container, {
@@ -420,7 +417,7 @@
 						//preventOverflow: 'horizontal',
 						//manualColumnResize: true,
 						hiddenColumns: {
-							columns: [0,6], //hide famID and affected
+							columns: [0,6], //hide famID and affected columns
 							indicators: false
 						},
 						licenseKey: 'non-commercial-and-evaluation',
