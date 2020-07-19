@@ -184,7 +184,41 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
 };
 
-//---Load functions ---
+//---Pedigreejs variables---
+if(utils.isIE() || utils.isEdge()) {
+    //<!-- canvg used to convert svf to png image -->
+    document.write('<script src="https://cdn.jsdelivr.net/npm/canvg@2.0.0/dist/browser/canvg.min.js"><\/script>');
+}
+
+function capitaliseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+var DEFAULT_DISEASES = [
+     {'type': 'cancer_sein', 'colour': '#FFC0CB'},
+     {'type': 'cancer_sein2', 'colour': '#f00c93'},
+     {'type': 'cancer_ovaire', 'colour': '#4DAA4D'},
+     {'type': 'cancer_pancréas', 'colour': '#D5494A'},
+     {'type': 'cancer_prostate', 'colour': '#4289BA'}
+];
+
+var opts = {
+    'targetDiv': 'pedigree',
+    'btn_target': 'pedigree_history',
+    //'nodeclick': pedigree_form.nodeclick,
+    'width': ($(window).width() > 450 ? 900 : $(window).width()- 30),
+    'height': 500,
+    'symbol_size': 30,
+    'edit': true,
+    'zoomIn': .8,
+    'zoomOut': 3.,
+    'font_size': '0.75em',
+    'edit': true,
+    'labels': ['stillbirth', 'age', 'yob', 'alleles', 'comment'],
+    'diseases': $.extend(true, [], DEFAULT_DISEASES),
+    'DEBUG': (pedigree_util.urlParam('debug') === null ? false : true)};
+
+//---Load table functions ---
 $(document).ready(function() {
     //Load functions
     $( "#submitLoad" ).change(function(event) {
@@ -216,23 +250,19 @@ $(document).ready(function() {
     });
     $( "#nuclear" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
-        hot.loadData(JSON.parse(myDataSafe)); //bug ?
         document.getElementById('dropdownFam').classList.remove('open')
     });
     $( "#extended1" ).click(function() {
         hot.loadData(JSON.parse(myDataExtended1Safe));
-        hot.loadData(JSON.parse(myDataExtended1Safe)); //bug ?
         document.getElementById('dropdownFam').classList.remove('open')
     });
     $( "#extended2" ).click(function() {
         hot.loadData(JSON.parse(myDataExtended2Safe));
-        hot.loadData(JSON.parse(myDataExtended2Safe)); //bug ?
         document.getElementById('dropdownFam').classList.remove('open')
     });
     $( "#submitCustomFam" ).click(function() {
-        // construct famObj
-        fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'];
-        famObj = {};
+        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'],
+            famObj = {};
 
         $.each(fam, function(index, value) {
             if ($('#'+value).val() != undefined && $('#'+value).val() > 0) {
@@ -240,40 +270,47 @@ $(document).ready(function() {
             }
         });
 
-        //create new family
-        createFamily(famObj,hot);
+        createFamily(famObj);
+        loadFromHot();
     });
 
     $( "#reload" ).click(function() {
-        hot.loadData(JSON.parse(sessionStorage['data']))
+        hot.loadData(JSON.parse(sessionStorage['data']));
     });
     $( "#reset" ).click(function() {
-        hot.loadData(JSON.parse(myDataSafe))
+        hot.loadData(JSON.parse(myDataSafe));
     });
     $( "#undo" ).click(function() {
-        hot.undo()
+        hot.undo();
     });
     $( "#redo" ).click(function() {
-        hot.redo()
+        hot.redo();
     });
     $( "#add-parents" ).click(function() {
-        createParents();
+        famObj = {parents:1};
+        createFamily(famObj,hot);
     });
     $( "#add-brother" ).click(function() {
-        createBrother();
+        famObj = {brother:1};
+        createFamily(famObj,hot);
     });
     $( "#add-sister" ).click(function() {
-        createSister();
+        famObj = {sister:1};
+        createFamily(famObj,hot);
     });
     $( "#add-son" ).click(function() {
-        createChild("M");
+        famObj = {son:1};
+        createFamily(famObj,hot);
     });
     $( "#add-daughter" ).click(function() {
-        createChild("F");
+        famObj = {daughter:1};
+        createFamily(famObj,hot);
     });
     $( "#add-partner" ).click(function() {
-        createChild("F", true);
+        famObj = {spouse:1};
+        createFamily(famObj,hot);
     });
+    
     $( "#myCheckOnco" ).click(function() {
         var checkBox = document.getElementById("myCheckOnco");
         if (checkBox.checked == true){
@@ -281,7 +318,7 @@ $(document).ready(function() {
             hot.updateSettings({
                 cells: function (row, col, prop) {
                     isDiseaseProp = function(val) {return prop == val};
-                    if (colsDiseases.some(isDiseaseProp)) { //prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') { //colsDiseases.some(isDiseaseProp)
+                    if (colsDiseases.some(isDiseaseProp)) {
                         var cellProperties = {};
                         cellProperties.renderer = autRenderer;
                         return cellProperties;
@@ -294,7 +331,7 @@ $(document).ready(function() {
             hot.updateSettings({
                 cells: function (row, col, prop) {
                     isDiseaseProp = function(val) {return prop == val};
-                    if (colsDiseases.some(isDiseaseProp)) { //(prop == 'Disease1' || prop == 'Disease2' || prop == 'Disease3') { //colsDiseases.some(isDiseaseProp)
+                    if (colsDiseases.some(isDiseaseProp)) {
                         var cellProperties = {};
                         cellProperties.renderer = autRenderer2;
                         return cellProperties;
@@ -308,22 +345,22 @@ $(document).ready(function() {
 
     //Export functions
     $( "#exportJson" ).click(function() {
-        let myDeepClone = JSON.stringify(hot.getSourceData())
-        ExportJSON(JSON.parse(myDeepClone))
+        let myDeepClone = JSON.stringify(hot.getSourceData());
+        ExportJSON(JSON.parse(myDeepClone));
     });
     $( "#exportBOADICEA" ).click(function() {
-        let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-        var Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone))
-        ExportBOADICEv4(Tdata)
+        let myDeepClone = JSON.stringify(hot.getSourceData()),
+            Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone));
+        ExportBOADICEv4(Tdata);
     });
     $( "#exportPedigreejs" ).click(function() {
-        let myDeepClone = JSON.stringify(hot.getSourceData())
-        var obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-        ExportJSON(obj)
+        let myDeepClone = JSON.stringify(hot.getSourceData()),
+            obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
+        ExportJSON(obj);
     });
     $( "#savePed" ).click(function() {
-        var toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected']
-        JSONToPEDConvertor(hot.getSourceData(), toKeep); 
+        let toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected'];
+        JSONToPEDConvertor(hot.getSourceData(), toKeep);
     });
     $( "#export-file" ).click(function() {
         var exportPlugin1 = hot.getPlugin('exportFile');
@@ -340,4 +377,197 @@ $(document).ready(function() {
             rowHeaders: false
         });
     });    
+
+//---Pedigreejs script---
+    var DEBUG = (pedigree_util.urlParam('debug') === null ? false : true);
+
+    //defaut dataset
+    var dataset = [
+        {"famid":"1","display_name":"index","name":"1","father":"2","mother":"3","sex":"M", "proband":true},
+        {"famid":"1","display_name":"Père","name":"2","sex":"M","top_level":"true"},
+        {"famid":"1","display_name":"Mère","name":"3","sex":"F","top_level":"true"}
+    ];
+
+    // append graphic to body
+    $( "#pedigrees" ).append( $( "<div id='pedigree_history'></div>" ) );
+    $( "#pedigrees" ).append( $( "<div id='pedigree'></div>" ) );
+
+    // load tree 
+    var local_dataset = pedcache.current(opts);
+    if (local_dataset !== undefined && local_dataset !== null) {
+        opts.dataset = local_dataset;
+    } else {
+        opts.dataset = dataset;
+    }
+    opts= ptree.build(opts);
+
+    //edit disease configuration
+    $('#fh_edit_settings').on( "click", function() {
+        $('#fh_settings').dialog({
+            autoOpen: false,
+            title: "Configuration des pathologies",
+            buttons: [
+                {
+                    text: "Réinitialiser",
+                      click: function() {
+                          $("#reset_dialog").dialog({
+                            title: 'Confirmez la réinitialisation',
+                              modal: true,
+                              buttons: {
+                                Oui: function() {
+                                  newdataset = ptree.copy_dataset(pedcache.current(opts));
+                                opts.dataset = newdataset;
+                                opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+                                ptree.rebuild(opts);
+                                update_diseases();
+                                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                                $(this).dialog("close");
+                                },
+                                Non: function() {
+                                    $(this).dialog("close");
+                                }
+                              }
+                            });
+                    }
+                },
+                {
+                  text: "OK",
+                  click: function() {
+                    $( this ).dialog( "close" );
+                    newdataset = ptree.copy_dataset(pedcache.current(opts));
+                    opts.dataset = newdataset;
+                    ptree.rebuild(opts);
+                  }
+                }
+              ],
+            width: ($(window).width() > 400 ? 500 : $(window).width()- 30)
+        });
+        var html_dis =
+            '<br><div class="row">'+
+                '<div class="col-md-4 text-right">'+
+                      '<label for="dis_name">Ajouter une maladie:</label>' +
+                '</div>' +
+                '<div class="col-md-6">'+
+                      '<input type="text" class="form-control" id="dis_name">' +
+                '</div>' +
+                '<div class="col-md-2">'+
+                    '<label class="btn btn-default btn-file">' +
+                        '<input id="add_disease" type="button" style="display: none;"/><i class="fa fa-plus" aria-hidden="true"></i>' +
+                    '</label>' +
+                '</div>' +
+            '</div><br><div id="disease_table"></div>';
+            
+        function validTextColour(stringToTest) {
+            //Alter the following conditions according to your need.
+            if (stringToTest === "") { return false; }
+            if (stringToTest === "inherit") { return false; }
+            if (stringToTest === "transparent") { return false; }
+            
+            var image = document.createElement("img");
+            image.style.color = "rgb(0, 0, 0)";
+            image.style.color = stringToTest;
+            if (image.style.color !== "rgb(0, 0, 0)") { return true; }
+            image.style.color = "rgb(255, 255, 255)";
+            image.style.color = stringToTest;
+            var isValid = image.style.color !== "rgb(255, 255, 255)";
+            image.remove();
+            return isValid;
+        }
+
+        function update_diseases() {
+            var tab = "<table class='table table-condensed table-striped table-bordered'>" +
+                        "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
+            $.each(opts.diseases, function(k, v) {
+                var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
+                tab += "<tr>" +
+                            "<td style='text-align:right'>"+capitaliseFirstLetter(v.type.replace(/_/g , " "))+
+                                disease_colour+"&nbsp;</td>" +
+                            "<td>" +
+                              "<input type='text' class='form-control' id='disease_colour-"+v.type+"' value='" + opts.diseases[k].colour + "'>" +
+                            "</td>" +
+                            "<td>" +
+                                "<label class='btn btn-default btn-sm'>" +
+                                    "<input id='delete_disease-"+v.type+"' type='button' style='display: none;'/>" +
+                                        "<i class='fa fa-times' aria-hidden='true' style='color:#8B0000'></i>" +
+                                "</label>" +
+                            "</td>" +
+                        "</tr>";
+            });
+            tab += "</table>";
+            $('#disease_table').html(tab);
+
+            $("input[id^='delete_disease-']").on( "click", function() {
+                var this_disease = $(this).attr('id').replace('delete_disease-', '');
+                var new_diseases = $.extend(true, [], opts.diseases);
+                new_diseases = new_diseases.filter(function(el) {
+                    return el.type !== this_disease;
+                });
+                opts.diseases = new_diseases;
+                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                update_diseases();
+            });
+
+            $('input[id^="disease_colour-"]').on('keypress mouseleave', function(e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 13 || code == 0) {
+                    var this_disease = $(this).attr('id').replace('disease_colour-', '');
+                    var this_colour = $(this).val();
+                    // test if valid colour string or hex
+                    if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour)){
+                        console.error('Couleur invalide !', this_colour);
+                        return;
+                    }
+                    var new_diseases = $.extend(true, [], opts.diseases);
+                    $.each(new_diseases, function(index, value) {
+                         if(value.type == this_disease) {
+                             value.colour = this_colour;
+                         }
+                    });
+                    opts.diseases = new_diseases;
+                    localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                    update_diseases();
+                }
+            });
+        }
+
+        $('#fh_settings').html(html_dis);
+        update_diseases();
+        $('#fh_settings').dialog('open');
+        
+        $('#add_disease').on( "click", function() {
+            if($('#dis_name').val() == "")
+                return;
+            var new_diseases = $.extend(true, [], opts.diseases);
+            new_diseases.push({'type': $('#dis_name').val().replace(/\s/g , "_"), 'colour': 'red'});
+            opts.diseases = new_diseases;
+            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            update_diseases();
+        });
+    });
+
+    // Update dataset from handsontable
+    function loadFromHot() {
+        
+        // load table and convert it
+        let myDeepClone = JSON.stringify(hot.getSourceData());
+        var obj = JSON.parse(myDeepClone);
+        obj = FormatToPedigreeJS(obj);
+        
+        // get all disease of the obj 
+        let allDiseases = getTablePatho(JSON.parse(myDeepClone));
+
+        //update diseases list
+        let formattedDiseases = ArrToJSON(allDiseases);
+        
+
+        opts.dataset = obj;
+        opts.diseases = $.extend(true, [], formattedDiseases); 
+        ptree.rebuild(opts);
+        update_diseases();
+        localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+    }
+
+    $('#loadFromHot').click(function() {
+        loadFromHot();
+    });
 });

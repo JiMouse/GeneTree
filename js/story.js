@@ -1,13 +1,20 @@
 $(document).ready(function() {
   $( "#loadStory" ).click(function() {
-    // Load data (in pedigreeJS format)
-    let myDeepClone = JSON.stringify(hot.getSourceData())
-    let obj = FormatToPedigreeJS(JSON.parse(myDeepClone))
-
-    document.getElementById('story').innerHTML = histoire(obj)
+    loadStory();
   });
+
+  $( "#copyToClip" ).click(function() {
+    copyToClipboard('story');
+  });
+  
 });
 
+function loadStory(){
+  let myDeepClone = JSON.stringify(hot.getSourceData()),
+  obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
+
+  document.getElementById('story').innerHTML = histoire(obj);
+}
 //Create JSON dictionnary
 var dico = {
     'pronom':{

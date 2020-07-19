@@ -313,7 +313,6 @@ function Formatboadicea(boadicea_lines) {
         return ped
 }
 
-
 function ExportJSON(obj) {
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
     var a = document.createElement("a");    
@@ -370,134 +369,13 @@ function GetPartner(o,i) {
 function getFormattedTime() {
     var today = new Date();
     var y = today.getFullYear();
-    // JavaScript months are 0-based.
-    var m = today.getMonth() + 1;
+    var m = today.getMonth() + 1; // JavaScript months are 0-based.
     var d = today.getDate();
-    var h = today.getHours();
-    var mi = today.getMinutes();
-    var s = today.getSeconds();
-    return y + "-" + m + "-" + d; //+ "-" + h + "-" + mi + "-" + s;
-}
-
-function createNewInd(fathID, mothID, sex, newParentID){
-    var indexArr = hot.getSelectedLast(), //get selected row's index
-        indivID = NewName(),
-        result=[
-            hot.getDataAtCell(indexArr[0], 0),
-            '',
-            indivID,
-            fathID,
-            mothID,
-            sex,
-            '1',
-            '0'
-        ];
-
-    // insert and populate row
-    hot.alter('insert_row', indexArr[0]+1, 1); // insert row below
-    hot.populateFromArray(indexArr[0]+1, 0,[result]);
-
-    //update index
-    //define col index
-    var fathIDindex = 3,
-        mothIDindex = 4;
-    
-    if(newParentID == true) {
-        var parentIndex = (sex == 'M' ? fathIDindex : mothIDindex);
-        hot.setDataAtCell(indexArr[0], parentIndex, indivID);
-    };
-
-    //add names
-    var nameInd = getName(indexArr[0]+1, hot.getSourceData());
-    hot.setDataAtCell(indexArr[0]+1, 1, nameInd);
-}
-
-function NewName(){
-    var IdIndex = 2 // define IndivID index column
-    var col = hot.getDataAtCol(IdIndex)
-    var max = Math.max.apply(null, col)+1
-    return max.toString() //return string
-}
-
-function createParents() {
-    let indexArr = hot.getSelectedLast(),
-        indexData = hot.getSourceDataAtRow(indexArr[0]);
-    if (indexData.FathID == '0' && indexData.MothID == '0') {
-        createNewInd('0', '0', 'M', true)
-        createNewInd('0', '0', 'F', true)
-    }
-}
-
-function createBrother() {
-    let indexArr = hot.getSelectedLast(),
-        indexData = hot.getSourceDataAtRow(indexArr[0]);
-    if(indexData.FathID == 0 && indexData.MothID == 0) {
-        createParents();
-    }
-    createNewInd(indexData.FathID, indexData.MothID, 'M');
-}
-
-function createSister() {
-    let indexArr = hot.getSelectedLast(), //get selected row's index
-        indexData = hot.getSourceDataAtRow(indexArr[0]); //get selected row's data
-    if(indexData.FathID == 0 && indexData.MothID == 0) {
-        createParents()
-    }
-    createNewInd(indexData.FathID, indexData.MothID, 'F')
-}
-
-function createChild(sex, New) {
-    let myDeepClone = JSON.stringify(hot.getSourceData()) //save hot
-    var obj = FormatToPedigreeJS(JSON.parse(myDeepClone)) // import table
-    var indexArr = hot.getSelectedLast()[0]; //get selected row's index
-    let indexData = obj[indexArr]
-    let partner = GetPartner(obj,indexArr)
-    var pre = (sex == 'M' ? 'Fils' : 'Fille')
-
-    // if partner exists, use it as mother/father
-    if (typeof partner == 'undefined' || New) {
-        let partnerSex = (indexData["sex"]=='M' ? 'F' : 'M' );
-        var partnerName = NewName()
-        createNewInd('0', '0', partnerSex)
-    } else {
-        var partnerIndex = partner[0].index
-        var partnerName = obj[partnerIndex]["name"]
-    }
-
-    if (indexData["sex"]=='M') {
-        FathID = indexData["name"];
-        MothID = partnerName;
-    } else {
-        FathID = partnerName;
-        MothID = indexData["name"];
-    }
-
-    createNewInd(FathID, MothID, sex);
-
-    //add name if empty  
-    if (hot.getDataAtCell(indexArr+1, 1)=="") {
-        //check if already exist
-        colnames = []
-        for (var j = 0; j < obj.length; j++) {
-            if (obj[j].hasOwnProperty('father') && obj[j].hasOwnProperty('mother')) {
-                if (obj[j].father == FathID && obj[j].mother == MothID) colnames += ","+ obj[j].display_name;
-            }
-        } 
-        
-        if (colnames != "") {
-            var re = new RegExp(pre, 'g');
-            var count = (colnames.match(re) || []).length;
-            pre = (count==0 ? pre : pre+parseFloat(count+1))
-        }
-
-        // update result accordingly
-        hot.setDataAtCell(indexArr+1, 1, pre+"-"+indexData.display_name); //add name
-    }
+    return y + "-" + m + "-" + d;
 }
 
 function ExportBOADICEv4(JSONData) {
-    var 
-        arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         CSV = '',   
         row = "BOADICEA import pedigree file format 4.0",
         mainHeader = ["FamID","Name","Target","IndivID","FathID","MothID","Sex","MZTwin","Dead","Age","Yob","1stBrCa","2ndBrCa","OvCa","ProCa","PanCa"].join('\t')
@@ -505,8 +383,8 @@ function ExportBOADICEv4(JSONData) {
         fileName = 'Boadicea_'+ getFormattedTime() +'.txt';
 
     // Put the header
-    header = mainHeader + ' \t' + otherHeader
-    row += '\r\n' + header
+    header = mainHeader + ' \t' + otherHeader;
+    row += '\r\n' + header;
     CSV += row + '\r\n';
 
     // Adding each rows of the table
@@ -517,12 +395,11 @@ function ExportBOADICEv4(JSONData) {
             let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
             return result
         }
-        let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0');
-        let mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0');
-        let age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0');
-        let yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '0');
-
-        let name;
+        let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0'),
+            mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0'),
+            age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0'),
+            yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '0'),
+            name;
 
         // shorter long name : get uppercase + last word if exists
         if(arrData[i]['display_name'] != '') {
@@ -568,7 +445,7 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'HER2',arrData[i]['HER2']),
             KeyStatus(i,'CK14',arrData[i]['CK14']),
             KeyStatus(i,'CK56',arrData[i]['CK56'])
-        ].join('\t')
+        ].join('\t');
 
         CSV += row + '\r\n';
     }
@@ -689,18 +566,21 @@ function displayName(JSONData) {
     element.remove()
   }
 
-function createFamily(famObj, hot){
-    //famObj as JS object
-    /*
-    famObj = {
-        son:2,
-        brother:1
+function createFamily(famObj, hotObj){
+    if(typeof(hotObj) !== 'undefined') {
+        let deepObj = JSON.stringify(hotObj.getSourceData());
+        try {
+            var obj=JSON.parse(deepObj),
+                index = hotObj.getSelectedLast()[0]; //index' row
+          } catch (error) {
+            alert('Aucun individu sélectionné');
+          }
+    }else{
+        var obj = JSON.parse(myDataSafe),
+            index=0; //index' row
     };
-    */
 
-    var obj = JSON.parse(myDataSafe),
-        index=0, //index' row
-        father=getRow(obj, obj[index].FathID),
+    var father=getRow(obj, obj[index].FathID),
         mother=getRow(obj, obj[index].MothID);
     
     function newName(obj){
@@ -710,7 +590,7 @@ function createFamily(famObj, hot){
         }
         let max = Math.max.apply(null, col)+1
         return max.toString() //return string
-    }
+    };
 
    function NewInd(fathID, mothID, sex, obj, ind,  replace=false,pre){
        let row = {
@@ -725,7 +605,7 @@ function createFamily(famObj, hot){
             };  
        row.Name = (getName(i, obj, row) == '' & typeof(pre) != 'undefined' ? pre : getName(i, obj, row)); //i not used
        if(replace == true && typeof(ind)!='undefined' && ind != '') (sex =='M' ? obj[ind].FathID = row.IndivID : obj[ind].MothID = row.IndivID);
-       return row
+       return row;
     };
 
     function addNewInd(fathID, mothID, sex, obj, ind, replace=false, pre){
@@ -768,14 +648,14 @@ function createFamily(famObj, hot){
         return pre;
     }
 
-    function newChild(obj,i,sex, n=famObj[keys[j]]){
+    function newChild(obj,i,sex, n=famObj[keys[j]],forceCreation){
         for (let step = 0; step < n; step++) {        
             let spouse = partner(obj,i),
                 spouseSex = (obj[i].Sex=='M' ? 'F' : 'M' );
             var pre = (sex == 'M' ? 'Fils' : 'Fille');
             
             // if partner doesn't exist : create it
-            if (typeof(spouse) == 'undefined') {
+            if (typeof(spouse) == 'undefined' || forceCreation== true) {
                 spouse = newName(obj);
                 addNewInd(0, 0, spouseSex,obj,i);
             }
@@ -803,7 +683,7 @@ function createFamily(famObj, hot){
    var keys = Object.keys(famObj);
 
    for (var j = 0; j < keys.length; j++) {
-       switch(keys[j]){ 
+       switch(keys[j]){
            case 'brother':
                newSiblings(obj, index, 'M', famObj[keys[j]]);
                break;
@@ -832,11 +712,18 @@ function createFamily(famObj, hot){
                 mother=getRow(obj, obj[index].MothID);
                 newSiblings(obj, mother, 'F', famObj[keys[j]]);
                 break;
+            case 'parents':
+                newParents(obj,index);
+                break;
+            case 'spouse':
+                newChild(obj,index,'F', 1, true);
+                break;
             default:
                 break;
         }
-    }
+    };
 
     //load new data
-    hot.loadData(obj)
+    hot.loadData(obj);
   }
+
