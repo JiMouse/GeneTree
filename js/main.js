@@ -201,12 +201,13 @@ function getTablePatho(obj) {
 
 function FormatToTable(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
+    var toRep = [];
 
     for (var i = 0; i < obj.length; i++) {
 
         //Options
         const options = () => {
-            var opt = ''
+            var opt = '';
             if(obj[i].hasOwnProperty('miscarriage')) opt = 'FCS'
             if(obj[i].hasOwnProperty('termination')) opt =  'IMG'
             if(obj[i].hasOwnProperty('adopted_in')) opt =  'Adopté'
@@ -217,13 +218,13 @@ function FormatToTable(JSONData) {
         }
 
         //diseases & age
-        var patho = []
-        var age = []
-        var keys = Object.keys(obj[i])
+        var patho = [],
+            age = [],
+            keys = Object.keys(obj[i]);
         
         for (var j = 0; j < keys.length; j++) {
             if (keys[j].indexOf("_diagnosis_age") !== -1) {
-                var out = keys[j].substring(0, keys[j].length - 14)
+                var out = keys[j].substring(0, keys[j].length - 14);
                 patho.push(out);
                 age.push(obj[i][keys[j]]);
             }
@@ -249,9 +250,24 @@ function FormatToTable(JSONData) {
             "Age3":age[2],
             "proband": obj[i].proband
         }
+
+        if(isNaN(obj[i].IndivID)) {
+            toRep.push(obj[i].IndivID);
+        };
     }
 
-    return obj
+    if(toRep != "") {
+        for (var j = 0; j < toRep.length; j++) { //if non numeric replace in IndivID FathID MothID by newName(obj)
+            let newID = newName(obj);
+            for (var k = 0; k < obj.length; k++) {
+                obj[k].IndivID=obj[k].IndivID.replace(toRep[j], newID);
+                obj[k].FathID=obj[k].FathID.replace(toRep[j], newID);
+                obj[k].MothID=obj[k].MothID.replace(toRep[j], newID);
+            };
+        };
+    }
+
+    return obj;
 }
 
 function Formatboadicea(boadicea_lines) {
@@ -566,6 +582,16 @@ function displayName(JSONData) {
     element.remove()
   }
 
+function newName(obj){
+    let col=[];
+    for (let i = 0; i < obj.length; i++) { //
+        if(!isNaN(obj[i].IndivID)) {col.push(obj[i].IndivID)};
+    }
+    if (col=="") return 1;
+    let max = Math.max.apply(null, col)+1
+    return max.toString() //return string
+};
+
 function createFamily(famObj, hotObj){
     if(typeof(hotObj) !== 'undefined') {
         let deepObj = JSON.stringify(hotObj.getSourceData());
@@ -582,15 +608,6 @@ function createFamily(famObj, hotObj){
 
     var father=getRow(obj, obj[index].FathID),
         mother=getRow(obj, obj[index].MothID);
-    
-    function newName(obj){
-        let col=[];
-        for (let i = 0; i < obj.length; i++) {
-            col.push(obj[i].IndivID)
-        }
-        let max = Math.max.apply(null, col)+1
-        return max.toString() //return string
-    };
 
    function NewInd(fathID, mothID, sex, obj, ind,  replace=false,pre){
        let row = {
