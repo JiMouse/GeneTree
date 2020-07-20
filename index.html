@@ -54,208 +54,218 @@
 	</div>
 
 	<div class="container">
+		<!-- Table --> 
 		<div class = "row">
+			<!-- Title--> 
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Tableau</h3></div>
 			</div>
-			<div class="text-center">
-				<!--  buttons edit familly -->
-				<div class="dropdown" id="dropdownFam" style="display:inline;">
-					<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Nouvelle famille&nbsp;
-					<span class="caret"></span></button>
-					<ul class="dropdown-menu" style="padding:10px;min-width:300px">
-						<li><div class="text-center">
-							<label class="btn btn-primary btn-block">
-								<i class="fa fa-folder-open-o"><abbr title="Format JSON ou Boadicea"> Charger un fichier </abbr></i><input id="submitLoad" type="file" hidden>
-							</label>
-						</div></li>
-						<li class="divider"></li>
-						<li><div class="text-center">
-							<label class="radio-inline"><input type="radio" name="optradio" id="nuclear">Noyau</label>
-							<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup>er</sup> degré</label>
-							<label class="radio-inline"><input type="radio" name="optradio" id="extended2">2<sup>ième</sup> degré</label>
-						</div></li>
-						<li class="divider"></li>
-						<li>
-							<div class="row text-center">
-								<b>Créer un arbre</b>
-							</div>
-							<p>
 
-								<div class="row" style='padding-bottom: 5px;'>
-									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>frères</label></div>
-									<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
-
-									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>sœurs</label></div>
-									<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
+			<!-- Buttons --> 
+			<div style="padding:0px 20px 15px;">
+				<div class="text-center">
+					<!--  buttons edit familly -->
+					<div class="dropdown" id="dropdownFam" style="display:inline;">
+						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Nouvelle famille&nbsp;
+						<span class="caret"></span></button>
+						<ul class="dropdown-menu" style="padding:10px;min-width:300px">
+							<li><div class="text-center" style="padding:0px 10px;">
+								<label class="btn btn-primary btn-block">
+									<i class="fa fa-folder-open-o"><abbr title="Format JSON ou Boadicea"> Charger un fichier </abbr></i><input id="submitLoad" type="file" hidden>
+								</label>
+							</div></li>
+							<li class="divider"></li>
+							<li><div class="text-center">
+								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear">Noyau</label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup>er</sup> degré</label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="extended2">2<sup>ième</sup> degré</label>
+							</div></li>
+							<li class="divider"></li>
+							<li>
+								<div class="row text-center">
+									<b>Créer une famille</b>
+									<div class="btnDivider"></div>
+									<i id="clearFam"  title="Vider les champs" class="fa fa-eraser" aria-hidden="true" style="color: grey;"></i>
 								</div>
-								
+								<p>
+
+									<div class="row" style='padding-bottom: 5px;'>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>frères</label></div>
+										<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
+
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>sœurs</label></div>
+										<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
+									</div>
+									
+									<div class="row">
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>fils</label></div>
+										<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
+
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>filles</label></div>
+										<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
+									</div>
+									<p>
+										<div class="row text-center" style='padding-bottom: 5px;'><i>Branche paternelle</i></div>
+										<div class="row">
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+											<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
+
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+											<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
+										</div>
+									</p>
+									<p>
+										<div class="row text-center" style='padding-bottom: 5px;'><i>Branche maternelle</i></div>
+										<div class="row">
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+											<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
+											
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+											<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
+										</div>
+									</p>
+								</p>
 								<div class="row">
-									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>fils</label></div>
-									<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
-
-									<div class="col-sm-2 text-right"><label style='font-weight: normal;'>filles</label></div>
-									<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
-								</div>
-								<p>
-									<div class="row text-center" style='padding-bottom: 5px;'><i>Branche paternelle</i></div>
-									<div class="row">
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
-										<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
-
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
-										<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
+									<div class="text-center">
+										<div class="btn-group"> 
+											<button id="submitCustomFam" class="btn btn-primary btn-sm">Créer un nouvel arbre</button>
+											<button id="submitAddBranch" class="btn btn-primary btn-sm">Ajouter à l'individu</button>
+										</div>
 									</div>
-								</p>
-								<p>
-									<div class="row text-center" style='padding-bottom: 5px;'><i>Branche maternelle</i></div>
-									<div class="row">
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
-										<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
-										
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
-										<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
-									</div>
-								</p>
-
-							</p>
-							<div class="row">
-								<div class="text-center"> 
-									<button id="submitCustomFam" class="btn btn-primary">Créer</button>
 								</div>
-							</div>
-						</li>
-					</ul>
+							</li>
+						</ul>
+					</div>
+
+					<!-- create buttons -->
+					<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique" class="btn  btn-primary">Charger l'arbre <i class="fa fa-refresh"></i></button>
+					<div class="btnDivider"></div>
+
+					<button id="reload" title="Charger depuis la sauvegarde locale" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+					<button id="reset" title="Réinitialiser" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+					<button id="undo" title="Défaire" class="btn btn-primary"><i class="fa fa-undo" aria-hidden="true"></i></button>
+					<button id="redo" title="Refaire" class="btn btn-primary"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+					<div class="btnDivider"></div>
+
+					<button id="add-parents" title="Ajouter des parents" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
+					<button id="add-brother" title="Ajouter un frère" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
+					<button id="add-sister" title="Ajouter une sœur" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
+					<button id="add-son" title="Ajouter un fils" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
+					<button id="add-daughter" title="Ajouter une fille" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
+					<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
+					<div class="btnDivider"></div>
+					
+					<label class="switch">
+						<input type="checkbox" id="myCheckOnco" checked> 
+						<span class="slider round" for="myCheckOnco" ></span>
+					</label>
+					<label style='font-weight: normal;'>Onco</label>
+					<div class="btnDivider"></div>
+
+					<label class="switch">
+						<input type="checkbox" id="myCheckHPO"> 
+						<span class="slider round" for="myCheckHPO" ></span>
+					</label>
+					<label style='font-weight: normal;'>HPO</label>
 				</div>
-
-				<!-- create buttons -->
-				<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique" class="btn  btn-primary">Charger l'arbre <i class="fa fa-refresh"></i></button>
-				<div class="btnDivider"></div>
-
-				<button id="reload" title="Charger depuis la sauvegarde locale" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-				<button id="reset" title="Réinitialiser" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-				<button id="undo" title="Défaire" class="btn btn-primary"><i class="fa fa-undo" aria-hidden="true"></i></button>
-				<button id="redo" title="Refaire" class="btn btn-primary"><i class="fa fa-repeat" aria-hidden="true"></i></button>
-				<div class="btnDivider"></div>
-
-				<button id="add-parents" title="Ajouter des parents" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
-				<button id="add-brother" title="Ajouter un frère" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
-				<button id="add-sister" title="Ajouter une sœur" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
-				<button id="add-son" title="Ajouter un fils" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
-				<button id="add-daughter" title="Ajouter une fille" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
-				<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
-				<div class="btnDivider"></div>
-				
-				<label class="switch">
-					<input type="checkbox" id="myCheckOnco" checked> 
-					<span class="slider round" for="myCheckOnco" ></span>
-				</label>
-				<label style='font-weight: normal;'>Onco</label>
-				<div class="btnDivider"></div>
-
-				<label class="switch">
-					<input type="checkbox" id="myCheckHPO"> 
-					<span class="slider round" for="myCheckHPO" ></span>
-				</label>
-				<label style='font-weight: normal;'>HPO</label>
 			</div>
-		</div>
-		</br>
-		<div class="row">
-			<div class="text-center"'>
-				<!-- create handsontable table -->
-				<div class='hotContainer' style="height: 250px;">
-					<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
-				</div>
-				<script>
-					// create handsonetable
-					var container = document.getElementById('dataTable');
-					var hot = new Handsontable(container, {
-						data: myData,
-						rowHeaders: false,
-						colHeaders: cols_headerOnco, 
-						columns: colsOnco,
-						filters: true,
-						dropdownMenu: true,
-						className: "htCenter",
-						contextMenu: true,
-						outsideClickDeselects: false,
-						persistentState: true,
-						undo: true,
-						width: '100%',
-						height: '100%',
-						hiddenColumns: {
-							columns: [0,6], //hide famID and affected columns
-							indicators: false
-						},
-						licenseKey: 'non-commercial-and-evaluation',
-						afterChange: function (change, source) {
-							// save all data to local storge if the edit happends
-							if (source !== "loadData") {								
-								sessionStorage['data'] = JSON.stringify(this.getSourceData());
-								return
+
+			<div class="row" style="padding:0px 30px;">
+				<div class="text-center">
+					<!-- create handsontable table -->
+					<div class='hotContainer' style="height: 250px;">
+						<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
+					</div>
+					<script>
+						// create handsonetable
+						var container = document.getElementById('dataTable');
+						var hot = new Handsontable(container, {
+							data: myData,
+							rowHeaders: false,
+							colHeaders: cols_headerOnco, 
+							columns: colsOnco,
+							filters: true,
+							dropdownMenu: true,
+							className: "htCenter",
+							contextMenu: true,
+							outsideClickDeselects: false,
+							persistentState: true,
+							undo: true,
+							width: '100%',
+							height: '100%',
+							hiddenColumns: {
+								columns: [0,6], //hide famID and affected columns
+								indicators: false
+							},
+							licenseKey: 'non-commercial-and-evaluation',
+							afterChange: function (change, source) {
+								// save all data to local storge if the edit happends
+								if (source !== "loadData") {								
+									sessionStorage['data'] = JSON.stringify(this.getSourceData());
+									return
+								}
 							}
-						}
-						});
+							});
 
-					var setter = false;
-					hot.addHook('afterChange', 
-						function(changes, source) {
-							if(changes != null) {
-								col = changes[0][1];
-								var deceasedIndex = 7
-								row = changes[0][0];
-								dead = this.getSourceDataAtCell(row, deceasedIndex)
-								if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
-									newValue = changes[0][3];
-									var today = new Date();
-									var y = today.getFullYear();
-									if (!setter) {
-											setter = true;
-										if(col == 'Age'){
-											let value = y-newValue
-											this.setDataAtRowProp(row, 'Yob', value)
+						var setter = false;
+						hot.addHook('afterChange', 
+							function(changes, source) {
+								if(changes != null) {
+									col = changes[0][1];
+									var deceasedIndex = 7
+									row = changes[0][0];
+									dead = this.getSourceDataAtCell(row, deceasedIndex)
+									if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
+										newValue = changes[0][3];
+										var today = new Date();
+										var y = today.getFullYear();
+										if (!setter) {
+												setter = true;
+											if(col == 'Age'){
+												let value = y-newValue
+												this.setDataAtRowProp(row, 'Yob', value)
 
-										}else {
-											let value = y-newValue
-											this.setDataAtRowProp(row, 'Age', value)
+											}else {
+												let value = y-newValue
+												this.setDataAtRowProp(row, 'Age', value)
+											}
+										} else {
+											setter = false;
 										}
-									} else {
-										setter = false;
 									}
 								}
 							}
-						}
-					);
+						);	
+					</script>
 
-				</script>
-				<br>
+					<!-- create export buttons -->
+					<div style="padding-top: 15px;">
+						<button id="exportJson" title="Données brutes" class="btn btn-primary">JSON <i class="fa fa-download"></i></button>
+						<div class="btnDivider"></div>
+						<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="btn btn-primary">BOADICEA <i class="fa fa-download"></i></button>
+						<div class="btnDivider"></div>
 
-				<!-- create export buttons -->
-				<button id="exportJson" title="Données brutes" class="btn btn-primary">JSON <i class="fa fa-download"></i></button>
-				<div class="btnDivider"></div>
-				<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="btn btn-primary">BOADICEA <i class="fa fa-download"></i></button>
-				<div class="btnDivider"></div>
+						<!-- create dropdown button to other export file -->
+						<div class="dropdown" style="display:inline;">
+							<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Autres formats" >
+								Exporter... &nbsp;<span class="caret"></span>
+							</button>
+							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
+								<button id="export-file" title="Télécharger le tableau" class="btn btn-block">TSV</button>
+								<button id="savePed" title="Fichier Plink" class="btn btn-block">PED</button>
+								<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="btn btn-block">Pedigreejs</button>
+							</div>
+						</div>
 
-				<!-- create dropdown button to other export file -->
-				<div class="dropdown" style="display:inline;">
-					<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Autres formats" >
-						Exporter... &nbsp;<span class="caret"></span>
-					</button>
-					<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
-						<button id="export-file" title="Télécharger le tableau" class="btn btn-block">TSV</button>
-						<button id="savePed" title="Fichier Plink" class="btn btn-block">PED</button>
-						<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="btn btn-block">Pedigreejs</button>
+						<div class="btnDivider"></div>
+						<a target="_blank" title="Lien vers BOADICEA v4.0" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 					</div>
 				</div>
-
-				<div class="btnDivider"></div>
-				<a target="_blank" title="Lien vers BOADICEA v4.0" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 			</div>
 		</div>
 
-		<!-- create pedigree buttons -->
-		<div class='row' style='margin-top: 30px;'>
+		<!-- Tree -->
+		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Arbre généalogique</h3></div>
 			</div>
@@ -289,8 +299,8 @@
 			</div>
 		</div>
 
-		<br>
-		<div class='row'>
+		<!-- Story -->
+		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
 					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Histoire clinique</h3>
@@ -300,11 +310,12 @@
 			</div>
 			
 			<p>
-				<div id="story" contenteditable="true"></div>
+				<div id="story" contenteditable="true"  style="padding:0px 20px;"></div>
 			</p>
 		</div>
 
-		<div class='row' style='margin-top: 30px;'>
+		<!-- References -->
+		<div class='row' style="padding-top: 20px;">
 			<h3>Références</h3>
 			<div>
 				<p><strong>pedigreejs: a web-based graphical pedigree editor</strong><br>

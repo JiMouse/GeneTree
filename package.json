@@ -1,6 +1,6 @@
 {
   "name": "genetree",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^1.0.1",

@@ -260,6 +260,15 @@ $(document).ready(function() {
         hot.loadData(JSON.parse(myDataExtended2Safe));
         document.getElementById('dropdownFam').classList.remove('open')
     });
+
+    $( "#clearFam" ).click(function(e) {
+        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'];
+        $.each(fam, function(index, value) {
+            $('#'+value).val("")
+        });
+        e.stopPropagation();
+    });
+
     $( "#submitCustomFam" ).click(function() {
         let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'],
             famObj = {};
@@ -271,6 +280,19 @@ $(document).ready(function() {
         });
 
         createFamily(famObj);
+        loadFromHot();
+    });
+    $( "#submitAddBranch" ).click(function() {
+        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'],
+            famObj = {};
+
+        $.each(fam, function(index, value) {
+            if ($('#'+value).val() != undefined && $('#'+value).val() > 0) {
+                famObj[value] = $('#'+value).val();
+            }
+        });
+
+        createFamily(famObj,hot);
         loadFromHot();
     });
 
@@ -558,7 +580,6 @@ $(document).ready(function() {
 
         //update diseases list
         let formattedDiseases = ArrToJSON(allDiseases);
-        
 
         opts.dataset = obj;
         opts.diseases = $.extend(true, [], formattedDiseases); 
