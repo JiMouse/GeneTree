@@ -261,8 +261,8 @@ $(document).ready(function() {
         loadFromHot();
     });
 
+    var fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM','auntM'];
     $( "#clearFam" ).click(function(e) {
-        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'];
         $.each(fam, function(index, value) {
             $('#'+value).val("")
         });
@@ -270,9 +270,7 @@ $(document).ready(function() {
     });
 
     $( "#submitCustomFam" ).click(function() {
-        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'],
-            famObj = {};
-
+        let famObj = {};
         $.each(fam, function(index, value) {
             if ($('#'+value).val() != undefined && $('#'+value).val() > 0) {
                 famObj[value] = $('#'+value).val();
@@ -283,9 +281,7 @@ $(document).ready(function() {
         loadFromHot();
     });
     $( "#submitAddBranch" ).click(function() {
-        let fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM'],
-            famObj = {};
-
+        let famObj = {};
         $.each(fam, function(index, value) {
             if ($('#'+value).val() != undefined && $('#'+value).val() > 0) {
                 famObj[value] = $('#'+value).val();
