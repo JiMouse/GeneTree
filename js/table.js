@@ -250,15 +250,15 @@ $(document).ready(function() {
     });
     $( "#nuclear" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
-        document.getElementById('dropdownFam').classList.remove('open')
+        loadFromHot();
     });
     $( "#extended1" ).click(function() {
         hot.loadData(JSON.parse(myDataExtended1Safe));
-        document.getElementById('dropdownFam').classList.remove('open')
+        loadFromHot();
     });
     $( "#extended2" ).click(function() {
         hot.loadData(JSON.parse(myDataExtended2Safe));
-        document.getElementById('dropdownFam').classList.remove('open')
+        loadFromHot();
     });
 
     $( "#clearFam" ).click(function(e) {
