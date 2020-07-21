@@ -714,18 +714,22 @@ function createFamily(famObj, hotObj){
                 newChild(obj,index,'F', famObj[keys[j]]);
                break;
             case 'uncleP':
+                newParents(obj,index);
                 father=getRow(obj, obj[index].FathID);
                 newSiblings(obj, father, 'M', famObj[keys[j]]);
                 break;
             case 'auntP':
+                newParents(obj,index);
                 father=getRow(obj, obj[index].FathID);
                 newSiblings(obj, father, 'F', famObj[keys[j]]);
                 break;
             case 'uncleM':
+                newParents(obj,index);
                 mother=getRow(obj, obj[index].MothID);
                 newSiblings(obj, mother, 'M', famObj[keys[j]]);
                 break;
             case 'auntM':
+                newParents(obj,index);
                 mother=getRow(obj, obj[index].MothID);
                 newSiblings(obj, mother, 'F', famObj[keys[j]]);
                 break;
