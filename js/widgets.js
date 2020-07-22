@@ -48,7 +48,7 @@
 			.attr("x", font_size/3)
 			.attr("y", font_size*1.5)
 			.text("\uf096 ");
-		var square_title = square.append("svg:title").text("add male");
+		var square_title = square.append("svg:title").text("Ajouter homme");
 
 		var circle = popup_selection.append("text")  // female
 			.attr('font-family', 'FontAwesome')
@@ -59,7 +59,7 @@
 			.attr("x", font_size*1.7)
 			.attr("y", font_size*1.5)
 			.text("\uf10c ");
-		var circle_title = circle.append("svg:title").text("add female");
+		var circle_title = circle.append("svg:title").text("Ajouter femme");
 
 		var unspecified = popup_selection.append("text")  // unspecified
 			.attr('font-family', 'FontAwesome')
@@ -68,7 +68,7 @@
 			.attr("transform", "translate(-1000,-100)")
 			.attr("class", "popup_selection fa-lg fa-unspecified popup_selection_rotate45 persontype")
 			.text("\uf096 ");
-		var unspecified_title = unspecified.append("svg:title").text("add unspecified");
+		var unspecified_title = unspecified.append("svg:title").text("Ajouter inconnu");
 
 		var dztwin = popup_selection.append("text")  // dizygotic twins
 			.attr('font-family', 'FontAwesome')
@@ -78,7 +78,7 @@
 			.attr("x", font_size*4.6)
 			.attr("y", font_size*1.5)
 			.text("\uf106 ");
-		var dztwin_title = dztwin.append("svg:title").text("add dizygotic/fraternal twins");
+		var dztwin_title = dztwin.append("svg:title").text("Ajouter des jumeaux dizygotique");
 
 		var mztwin = popup_selection.append("text")  // monozygotic twins
 		.attr('font-family', 'FontAwesome')
@@ -88,7 +88,7 @@
 		.attr("x", font_size*6.2)
 		.attr("y", font_size*1.5)
 		.text("\uf0d8");
-		var mztwin_title = mztwin.append("svg:title").text("add monozygotic/identical twins");
+		var mztwin_title = mztwin.append("svg:title").text("Ajouter des jumeaux monozygotique");
 
 		var add_person = {};
 		// click the person type selection
@@ -124,14 +124,14 @@
 			  // add tooltips to font awesome widgets
 			  if(add_person.type === 'addsibling'){
 				 if(d3.select(this).classed("fa-square"))
-					  square_title.text("add brother");
+					  square_title.text("Ajouter un frère");
 				  else
-					  circle_title.text("add sister");
+					  circle_title.text("Ajouter une sœur");
 			  } else if(add_person.type === 'addchild'){
 				  if(d3.select(this).classed("fa-square"))
-					  square_title.text("add son");
+					  square_title.text("Ajouter un fils");
 				  else
-					  circle_title.text("add daughter");
+					  circle_title.text("Ajouter une fille");
 			  }
 		  });
 
