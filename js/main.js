@@ -83,22 +83,15 @@ function FormatToPedigreeJS(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
     
     // Update key and format JSON for pedigreeJS
-    var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age']
-    var old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age']
+    var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age'],
+        old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age'];
 
     function UpdateFields(o) {
         for (var i = 0; i < o.length; i++) {
+            
             // remove father/mother keys if empty, then add top_level : 'true'
-            if (o[i][ 'father' ] == '0') {
-                o[i][ 'top_level' ] = 'true' ;
-                delete o[i][ 'father' ];
-            };
-            if (o[i][ 'mother' ] == '0') {
-                if (o[i][ 'top_level' ] != 'true')  {
-                    o[i][ 'top_level' ] = 'true' ;
-                }
-                delete o[i][ 'mother' ];
-            };
+            if (o[i][ 'father' ] == '0') delete o[i][ 'father' ];
+            if (o[i][ 'mother' ] == '0') delete o[i][ 'mother' ];
 
             // remove affected if not affected
             if (o[i][ 'affected' ] == '1') {
@@ -108,23 +101,6 @@ function FormatToPedigreeJS(JSONData) {
             // remove status if alive : not "status": 1,
             if (o[i][ 'status' ] != '1') {
                 delete o[i][ 'status' ];
-            };
-
-            // manage levels
-            if(o[i].hasOwnProperty('top_level')) {
-                //remove top_level if mother id or father id != 0
-                if (o[i].hasOwnProperty('father') && o[i][ 'father' ] != '0' | o[i].hasOwnProperty('mother') && o[i][ 'mother' ] != '0') {
-                    delete o[i][ 'top_level' ];
-                } else {
-                    //check if partner has parents
-                    var Partner = GetPartner(o,i)[0].index
-                    if (o[Partner].hasOwnProperty('father') && o[Partner][ 'father' ] != '0' | o[Partner].hasOwnProperty('mother') && o[Partner][ 'mother' ] != '0') { // if has parents
-                        o[i][ 'father' ] = o[Partner]['father'];
-                        o[i][ 'mother' ] = o[Partner]['mother'];
-                        o[i][ 'noparents' ] = 'true';
-                        delete o[i][ 'top_level' ];
-                    }                    
-                }
             };
 
             // remove proband if null
@@ -141,8 +117,110 @@ function FormatToPedigreeJS(JSONData) {
     }
 
     for (var i = 0; i < new_key.length ; i++) { UpdateKey(obj, old_key[i], new_key[i]) };
-    UpdateFields(obj)    
+    UpdateFields(obj);
+    UpdateLevels(obj);
 
+    return obj;
+}
+
+function hasParentsPedigreeJS(row){//obj[i]
+    return (row.hasOwnProperty('father') && row.father != '0' || row.hasOwnProperty('mother') && row.mother != '0');
+}
+
+//Update parents levels (adapted from io.js of pedigreejs)
+function UpdateLevels(obj) {
+    // for a given individual assign levels to a parents ancestors
+    function getLevel(obj, name) {
+        var idx = getRowPedigreeJS(obj, name);
+        var level = (obj[idx].level ? obj[idx].level : 0);
+        update_parents_level(idx, level, obj);
+    }
+
+    // recursively update parents levels
+    function update_parents_level(idx, level, obj) {
+        var parents = ['mother', 'father'];
+        level++;
+        for(var i=0; i<parents.length; i++) {
+            var pidx = getRowPedigreeJS(obj, obj[idx][parents[i]]);
+            if(pidx >= 0) {
+                var ma = obj[getRowPedigreeJS(obj, obj[idx].mother)];
+                var pa = obj[getRowPedigreeJS(obj, obj[idx].father)];
+                if(!obj[pidx].level || obj[pidx].level < level) {
+                    ma.level = level;
+                    pa.level = level;
+                }
+
+                if(ma.level < pa.level) {
+                    ma.level = pa.level;
+                } else if(pa.level < ma.level) {
+                    pa.level = ma.level;
+                }
+                update_parents_level(pidx, level, obj);
+            }
+        }
+    }
+
+    for(var j=0;j<2;j++) {
+        for(var i=0;i<obj.length;i++) {
+            getLevel(obj, obj[i].name);
+        }
+    }
+
+    // find the max level (i.e. top_level)
+    var max_level = 0;
+    for(i=0;i<obj.length;i++) {
+        if(obj[i].level && obj[i].level > max_level)
+            max_level = obj[i].level;
+    }
+
+    // get the depth of the given person from the root
+    getDepth = function(dataset, name) {
+        var idx = getRowPedigreeJS(dataset, name);
+        var depth = 1;
+
+        while(idx >= 0 && ('mother' in dataset[idx] || dataset[idx].top_level)){
+            idx = getRowPedigreeJS(dataset, dataset[idx].mother);
+            depth++;
+        }
+        return depth;
+    };
+
+    // identify top_level and other nodes without parents
+    for(i=0;i<obj.length;i++) {
+        if(getDepth(obj, obj[i].name) == 1) { //?
+            if(obj[i].level && obj[i].level == max_level) {
+                obj[i].top_level = true;
+            } else {
+                obj[i].noparents = true;
+                // 1. look for partners parents
+                var pidx = getRowPedigreeJS(obj,getPartner(obj,i));
+            
+                if(typeof(pidx)!= 'undefined') {
+                    if(obj[pidx].mother) {
+                        obj[i].mother = obj[pidx].mother;
+                        obj[i].father = obj[pidx].father;
+                    }
+                }
+                
+                // 2. or adopt parents from level above
+                if(!obj[i].mother){
+                    //alert('pas de mère : individu '+obj[i].name);
+                    for(var j=0; j<obj.length; j++) {
+                        if(obj[i].level == (obj[j].level-1)) {
+                            pidx = getRowPedigreeJS(obj,getPartner(obj,j));
+                            if(pidx > -1) {
+                                obj[i].mother = (obj[j].sex === 'F' ? obj[j].name : obj[pidx].name);
+                                obj[i].father = (obj[j].sex === 'M' ? obj[j].name : obj[pidx].name);
+                            }
+                        }
+                    }
+                }
+                
+            }
+        } else {
+            delete obj[i].top_level;
+        }
+    }
     return obj
 }
 
@@ -362,24 +440,13 @@ function GetChild(o,i) {
     };
 }
 
-function GetPartner(o,i) {
-    var childfull = GetChild(o,i)
-    if (typeof childfull === 'undefined') {
-        return result
-    }else{
-    var child = GetChild(o,i)[0].index
-    var parent = (o[child]['father']==o[i]['name'] ? 'mother' : 'father' );
-    var j
+function getPartner(o,i) {
+    if (typeof GetChild(o,i) === 'undefined') return 'undefined';
     
-    for (var j = 0; j < o.length; j++) {
-        if (o[j]['name']==o[child][parent]) {
-            var result = [{'index':j,
-                            'name':o[child][parent]
-                        }]
-            return result;
-        };
-    };
-};
+    let child = GetChild(o,i)[0].index,
+        parent = (o[child]['father']==o[i]['name'] ? 'mother' : 'father' );
+    
+    return o[child][parent];
 }
 
 function getFormattedTime() {
