@@ -575,10 +575,29 @@ $(document).ready(function() {
         let allDiseases = getTablePatho(JSON.parse(myDeepClone));
 
         //update diseases list
-        let formattedDiseases = ArrToJSON(allDiseases);
+        var new_diseases = $.extend(true, [], opts.diseases); //get previous list of diseases
+        for (let i = 0; i < allDiseases.length; i++) {
+            let val=allDiseases[i],
+                new_diseaseList = [];
 
+            //list of all disease of the current pedigree
+            for (var j = 0; j < new_diseases.length; j++) {
+                new_diseaseList.push(new_diseases[j].type);
+            }
+            
+            //add disease if not included
+            if(typeof(val) != 'undefined' && !new_diseaseList.includes(val) && val != '') {
+                const setBg = () => {
+                    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+                    return "#" + randomColor.toUpperCase();
+                }
+                new_diseases.push({'type': val, 'colour': setBg()});
+            }
+        }
+
+        //Update pedigree and diseases
+        opts.diseases = $.extend(true, [], new_diseases);
         opts.dataset = obj;
-        opts.diseases = $.extend(true, [], formattedDiseases); 
         ptree.rebuild(opts);
         update_diseases();
         localStorage.setItem('diseases', JSON.stringify(opts.diseases));
