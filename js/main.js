@@ -446,10 +446,11 @@ function ExportBOADICEv4(JSONData) {
             let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
             return result
         }
+        
         let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0'),
             mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0'),
-            age = (arrData[i]['age'] !="" ? arrData[i]['age'] : '0'),
-            yob = (arrData[i]['yob'] !="" ? arrData[i]['yob'] : '0'),
+            age = (arrData[i].age =="" || typeof(arrData[i].age)=="undefined" ? '0' : arrData[i].age),
+            yob = (arrData[i].yob =="" || typeof(arrData[i].yob)=="undefined" ? '0' : arrData[i].yob),
             name;
 
         // shorter long name : get uppercase + last word if exists
