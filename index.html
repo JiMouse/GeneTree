@@ -16,13 +16,35 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
 
-	<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script> 
+	<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/d3@4.13.0/build/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 	
 	<script src="package/lodash.js"></script>
 
+	<!-- languages script -->
+	<script>
+		//check if one prefered langages is french else set english as default
+		var userLang = navigator.languages || navigator.userLanguage;
+		function isFr(lang) {
+			return /fr/.test(lang)
+		}
+		default_lang=(userLang.some(isFr) ? "fr" : "eng");
+		
+		//define load lang : check if localStorage
+		var local_lang = localStorage.getItem("language");
+		if (local_lang !== undefined && local_lang !== null) {
+			load_lang = local_lang;
+		} else {
+			load_lang = default_lang;
+		}
+		
+		//load languages scripts
+		document.write('<scr'+'ipt type="text/javascript" src="lang/lang.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="lang/story.'+load_lang+'.js"></sc'+'ript>');
+	</script>
+	
 	<!-- load pedigreejs -->
     <script src="js/io.js"></script>
     <script src="js/pedigree_form.js"></script>
@@ -32,24 +54,77 @@
 	
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/story.js"></script>
-	<script type="text/javascript" src="data/diseases.js"></script>
-	<script type="text/javascript" src="js/table.js"></script>
-	<script type="text/javascript" src="js/HPO.js"></script>
+	<script type="text/javascript" src="js/main_front.js"></script>
 
+	<!-- main css -->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	
+
 	<!-- load handsontable module --> 
 	<script src="https://cdn.jsdelivr.net/npm/handsontable@7.4.2/dist/handsontable.full.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/handsontable@7.4.2/dist/handsontable.full.min.css" rel="stylesheet" media="screen">
-</head>
 
+	<!-- Display a loading icon until the page loads completely --> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+	<script>
+		$(window).on("load", function (e) {
+			$(".se-pre-con").fadeOut("slow");
+
+			//load HPOArr
+			var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
+			HPOArr = ImportHPO(filePath);
+		});
+	</script>
+</head>
 <body>
+	<div class="se-pre-con"></div>
+	<script>
+		$(document).ready(function(){
+			$('.lang').each(function() {
+				var value = $(this).attr('id');
+				//add text
+				if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
+
+				//add title
+				if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
+			});
+
+			//Load load_lang
+			setSetterLanguage(load_lang);
+		});
+	</script>
 	<div class="jumbotron">
 		<div class="container">
-				  <a class="btn btn-primary btn-lg pull-right" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
-				  <h1><i>GeneTree</i></h1>
-				  <h2>Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.</h2>
+			<div class='row'>
+				<div class="col-lg-9">
+					<i><h1 id="title" class="lang"  style="margin-bottom:0px;"></h1></i>
+				</div>
+				<div class="col-lg-3">
+					<div class="row pull-right">
+						<a class="btn btn-primary btn-lg" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
+						<div class="btnDivider"></div>
+						<div class="dropdown" style="display:inline;">
+							<button class="dropdown btn btn-lg" type='button' id="LangSetter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #dbe9f5;">
+								<img id="LangSetterImg" alt="Français" src="/data/images/fr.svg">
+								<span id="LangSetterText" class="lang"></span>
+								<span class="caret"></span>
+							</button>
+							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
+								<button class="btn btn-block" type='button' id="LangSetterFr" style="background-color: #dbe9f5;">
+									<img alt="Français" src="/data/images/fr.svg">
+									<span>Fr</span>
+								</button>
+								<button class="btn btn-block" type='button' id="LangSetterEng" style="background-color: #dbe9f5;">
+									<img alt="Anglais" src="/data/images/eng.svg">
+									<span>Eng</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class='row'>
+				<h2 id ="subtitle"  class="lang" style="margin-left:20px;"></h2>
+			</div>
 		</div>
 	</div>
 
@@ -58,7 +133,7 @@
 		<div class = "row">
 			<!-- Title--> 
 			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Tableau</h3></div>
+				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id = "title_table" class="lang"></h3></div>
 			</div>
 
 			<!-- Buttons --> 
@@ -66,61 +141,64 @@
 				<div class="text-center">
 					<!--  buttons edit familly -->
 					<div class="dropdown" id="dropdownFam" style="display:inline;">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Nouvelle famille&nbsp;
-						<span class="caret"></span></button>
+						<button class="btn btn-primary dropdown-toggle lang"  type="button" data-toggle="dropdown">
+							<span>&nbsp;</span>
+							<span class="lang" id = "NewFam"></span>
+							<span class="caret"></span>
+						</button>
 						<ul class="dropdown-menu" style="padding:10px;min-width:300px">
 							<li><div class="text-center" style="padding:0px 10px;">
 								<label class="btn btn-primary btn-block">
-									<i class="fa fa-folder-open-o"><abbr title="Format JSON ou Boadicea"> Charger un fichier </abbr></i><input id="submitLoad" type="file" hidden>
+									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang"><span id="loadFile" class="lang"></span></abbr></i><input id="submitLoad" type="file" hidden>
 								</label>
 							</div></li>
 							<li class="divider"></li>
 							<li><div class="text-center">
-								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear">Noyau</label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup>er</sup> degré</label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended2">2<sup>ième</sup> degré</label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear"><span id="nuclear_1" class="lang"></span></label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup><span id="extended1_1" class="lang"></span></sup><span id="extended1_2" class="lang"></span></label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="extended2"  class="lang">2<sup><span id="extended2_1" class="lang"></span></sup><span id="extended2_2" class="lang"></span></label>
 							</div></li>
 							<li class="divider"></li>
 							<li>
 								<div class="row text-center">
-									<b>Créer une famille</b>
+									<b><span id="AddFam" class="lang"></span></b>
 									<div class="btnDivider"></div>
-									<i id="clearFam"  title="Vider les champs" class="fa fa-eraser" aria-hidden="true" style="color: grey;"></i>
+									<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true" style="color: grey;"></i>
 								</div>
 								<p>
 
 									<div class="row" style='padding-bottom: 5px;'>
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>frères</label></div>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="bro" class="lang"></label></div>
 										<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
 
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>sœurs</label></div>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="sis" class="lang"></label></div>
 										<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
 									</div>
 									
 									<div class="row">
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>fils</label></div>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sons" class="lang"></label></label></div>
 										<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
 
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'>filles</label></div>
+										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="daugh" class="lang"></label></label></div>
 										<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
 									</div>
 									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i>Branche paternelle</i></div>
+										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="patBranch" class="lang"></span></i></div>
 										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc" class="lang"></label></div>
 											<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
 
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt" class="lang"></label></div>
 											<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
 										</div>
 									</p>
 									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i>Branche maternelle</i></div>
+										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="matBranch" class="lang"></span></i></div>
 										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>oncles</label></div>
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc2" class="lang"></label></div>
 											<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
 											
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;'>tantes</label></div>
+											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt2" class="lang"></label></div>
 											<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
 										</div>
 									</p>
@@ -128,8 +206,8 @@
 								<div class="row">
 									<div class="text-center">
 										<div class="btn-group"> 
-											<button id="submitCustomFam" class="btn btn-primary btn-sm">Créer un nouvel arbre</button>
-											<button id="submitAddBranch" class="btn btn-primary btn-sm">Ajouter à l'individu</button>
+											<button id="submitCustomFam" class="btn btn-primary btn-sm lang"></button>
+											<button id="submitAddBranch" class="btn btn-primary btn-sm lang"></button>
 										</div>
 									</div>
 								</div>
@@ -138,21 +216,36 @@
 					</div>
 
 					<!-- create buttons -->
-					<button id="loadFormPedigree" title="Charger depuis l'arbre généalogique" class="btn  btn-primary">Charger l'arbre <i class="fa fa-refresh"></i></button>
+					<button id="loadFormPedigree" class="btn btn-primary">
+						<span id="loadFormPedigreeText" class="lang"></span>
+						<span><i class="fa fa-refresh"></i></span>
+					</button>
 					<div class="btnDivider"></div>
 
-					<button id="reload" title="Charger depuis la sauvegarde locale" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-					<button id="reset" title="Réinitialiser" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-					<button id="undo" title="Défaire" class="btn btn-primary"><i class="fa fa-undo" aria-hidden="true"></i></button>
-					<button id="redo" title="Refaire" class="btn btn-primary"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+					<button id="reload" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+					<button id="reset" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+					<button id="undo" class="btn btn-primary lang"><i class="fa fa-undo" aria-hidden="true"></i></button>
+					<button id="redo" class="btn btn-primary lang"><i class="fa fa-repeat" aria-hidden="true"></i></button>
 					<div class="btnDivider"></div>
 
-					<button id="add-parents" title="Ajouter des parents" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> parents</button>
-					<button id="add-brother" title="Ajouter un frère" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> frère</button>
-					<button id="add-sister" title="Ajouter une sœur" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> sœur</button>
-					<button id="add-son" title="Ajouter un fils" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fils</button>
-					<button id="add-daughter" title="Ajouter une fille" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> fille</button>
-					<button id="add-partner" title="Ajouter un nouveau conjoint avec un enfant" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> conjoint</button>
+					<button id="add-parents" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_parents" class="lang"></span>
+					</button>
+					<button id="add-brother" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_brother" class="lang"></span>
+					</button>
+					<button id="add-sister" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_sister" class="lang"></span>
+					</button>
+					<button id="add-son" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_son" class="lang"></span>
+					</button>
+					<button id="add-daughter" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_daughter" class="lang"></span>
+					</button>
+					<button id="add-partner" class="btn btn-primary">
+						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_spouse" class="lang"></span>
+					</button>
 					<div class="btnDivider"></div>
 					
 					<label class="switch">
@@ -205,7 +298,7 @@
 									return
 								}
 							}
-							});
+						});
 
 						var setter = false;
 						hot.addHook('afterChange', 
@@ -240,25 +333,27 @@
 
 					<!-- create export buttons -->
 					<div style="padding-top: 15px;">
-						<button id="exportJson" title="Données brutes" class="btn btn-primary">JSON <i class="fa fa-download"></i></button>
+						<button id="exportJson" class="btn btn-primary lang">JSON <i class="fa fa-download"></i></button>
 						<div class="btnDivider"></div>
-						<button id="exportBOADICEA" title="Format BOADICEA v4.0" class="btn btn-primary">BOADICEA <i class="fa fa-download"></i></button>
+						<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA <i class="fa fa-download"></i></button>
 						<div class="btnDivider"></div>
 
 						<!-- create dropdown button to other export file -->
 						<div class="dropdown" style="display:inline;">
-							<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Autres formats" >
-								Exporter... &nbsp;<span class="caret"></span>
+							<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+								<span id="exportText" class="lang"></span>
+								<span>... &nbsp;</span>
+								<span class="caret"></span>
 							</button>
 							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
-								<button id="export-file" title="Télécharger le tableau" class="btn btn-block">TSV</button>
-								<button id="savePed" title="Fichier Plink" class="btn btn-block">PED</button>
-								<button id="exportPedigreejs" title="Fichier compatible avec Pedigreejs" class="btn btn-block">Pedigreejs</button>
+								<button id="export_file" class="btn btn-block lang">TSV</button>
+								<button id="savePed" class="btn btn-block lang">PED</button>
+								<button id="exportPedigreejs" class="btn btn-block lang">Pedigreejs</button>
 							</div>
 						</div>
 
 						<div class="btnDivider"></div>
-						<a target="_blank" title="Lien vers BOADICEA v4.0" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
+						<a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
 					</div>
 				</div>
 			</div>
@@ -267,11 +362,14 @@
 		<!-- Tree -->
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3>Arbre généalogique</h3></div>
+				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id="title_pedigree" class="lang"></h3></div>
 			</div>
 
 			<div class="text-center">
-				<button id="loadFromHot" class='btn btn-primary'>Charger le tableau <i class="fa fa-refresh"></i></button>
+				<button id="loadFromHot" class='btn btn-primary'>
+					<span id = "loadFromHotText" class="lang"></span>
+					<span><i class="fa fa-refresh"></i></span>
+				</button>
 				<label class="btn btn-primary">
 					<i class="fa fa-folder-open-o"></i><input id="load" type="file" hidden>
 				</label>
@@ -283,7 +381,7 @@
 
 				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
 				<button id="png_download" class='btn btn-primary'>JPEG <i class="fa fa-download"></i></button>
-				<button id="print" class='btn btn-primary'>Imprimer</button>
+				<button id="print" class='btn btn-primary lang'></button>
 				<div class="btnDivider"></div>
 
 				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog" aria-hidden="true"></i></button>
@@ -295,7 +393,7 @@
 
 				<!-- create disease settings -->
 				<div id="fh_settings"></div>
-				<div id="reset_dialog" title="Confirmation de la réinitialisation des maladies"></div>
+				<div id="reset_dialog" class="lang"></div>
 			</div>
 		</div>
 
@@ -303,9 +401,9 @@
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Histoire clinique</h3>
-					<button class='btn btn-light btn-sm' id="loadStory" title ='Màj texte'><i class="fa fa-refresh"></i></button>
-					<button class='btn btn-light btn-sm' id="copyToClip">Copier</button>
+					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"></h3>
+					<button class='btn btn-light btn-sm lang' id="loadStory"><i class="fa fa-refresh"></i></button>
+					<button class='btn btn-light btn-sm lang' id="copyToClip"></button>
 				</div>
 			</div>
 			
@@ -318,7 +416,7 @@
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3>Références</h3>
+					<h3 id="title_reference" class="lang"></h3>
 				</div>
 			</div>
 			
@@ -330,6 +428,9 @@
 				</p>
 				<p><strong>HPO-translations</strong><br>
 					<a href="https://github.com/drseb/HPO-translations" target="_blank">drseb/HPO-translations</a>
+				</p>
+				<p><strong>The Human Phenotype Ontology (HPO)</strong><br>
+					<a href="https://hpo.jax.org/app/download/annotation" target="_blank">Annotations</a>
 				</p>
 				<p>
 

@@ -8,11 +8,12 @@
 			btn_target: 'pedigree_history'
         }, options );
 
-		var btns = [{"fa": "fa-undo", "title": "Défaire"},
-					{"fa": "fa-repeat", "title": "Refaire"},
-					{"fa": "fa-refresh", "title": "Réinitialiser"},
-					{"fa": "fa-arrows", "title": "Centrer l'arbre"},
-					{"fa": "fa-arrows-alt", "title": "Plein écran"}];
+		var btns = [{"fa": "fa-undo", "title": title.undo},
+					{"fa": "fa-repeat", "title": title.redo},
+					{"fa": "fa-refresh", "title": title.reset},
+					{"fa": "fa-arrows", "title": title.center},
+					{"fa": "fa-arrows-alt", "title": title.fullscreen}
+				];
 		var lis = "";
 		for(var i=0; i<btns.length; i++) {
 			lis += '<li">';
@@ -69,22 +70,25 @@
 				$("#"+opts.targetDiv).empty();
 				ptree.build(opts);
 			} else if ($(e.target).hasClass('fa-refresh')) {
-				$('<div id="msgDialog">Réinitialiser entraînera une perte de données.</div>').dialog({
-					title: 'Confirmez la réinitialisation',
+				$('<div id="msgDialog">'+lang.confirmReset+'</div>').dialog({
+					title: lang.reset_dialogs,
 					resizable: false,
 					height: "auto",
 					width: 400,
 					modal: true,
-					buttons: {
-						Continuer: function() {
+					buttons: [{
+						text: lang.continue,
+						click: function () {
 					    	pbuttons.reset(opts, opts.keep_proband_on_reset);
 					    	$(this).dialog( "close" );
 						},
-						Annuler: function() {
+					}, {
+						text: lang.cancel,
+						click: function () {
 							$(this).dialog( "close" );
 							return;
-					    }
-					}
+						},
+					}],
 				});
 			} else if ($(e.target).hasClass('fa-arrows')) {
 				var xtransform = opts.symbol_size/2;
@@ -143,8 +147,8 @@
         		{"name":"xIw","display_name":"maternal uncle","sex":"M","mother":"dOH","father":"zwB","status":"0"}];
 		} else if(selected.length > 0 && selected.val() == 'extended1') {    // primary relatives
 			opts.dataset = [
-				{"name":"m21","sex":"M","mother":null,"father":null,"status":"0","display_name":"père","noparents":true},
-				{"name":"f21","sex":"F","mother":null,"father":null,"status":"0","display_name":"mère","noparents":true},
+				{"name":"m21","sex":"M","mother":null,"father":null,"status":"0","display_name":lang.father,"noparents":true},
+				{"name":"f21","sex":"F","mother":null,"father":null,"status":"0","display_name":lang.mother,"noparents":true},
 				{"name":"aOH","sex":"F","mother":"f21","father":"m21","status":"0","display_name":"soeur"},
 				{"name":"Vha","sex":"M","mother":"f21","father":"m21","status":"0","display_name":"frère"},
 				{"name":"Spj","sex":"M","mother":"f21","father":"m21","noparents":true,"status":"0","display_name":"conjoint"},
@@ -154,8 +158,8 @@
 				{"name":"Knx","display_name":"fils","sex":"M","mother":"ch1","father":"Spj","status":"0"}];
 		} else {
 			opts.dataset = [
-				{"name": "m21", "display_name": "père", "sex": "M", "top_level": true},
-    		    {"name": "f21", "display_name": "mère", "sex": "F", "top_level": true},
+				{"name": "m21", "display_name": lang.father, "sex": "M", "top_level": true},
+    		    {"name": "f21", "display_name": lang.mother, "sex": "F", "top_level": true},
     		    proband];
     			//{"name": "ch1", "display_name": "me", "sex": "F", "mother": "f21", "father": "m21", "proband": true}];
 		}

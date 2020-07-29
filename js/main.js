@@ -1,5 +1,9 @@
 const { sortedIndex } = require("lodash");
 
+//set global variables
+var i,
+    HPOArr = [];
+
 function JSONToPEDConvertor(JSONData, toKeep) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         CSV = '',   
@@ -84,7 +88,9 @@ function FormatToPedigreeJS(JSONData) {
         }
     }
 
-    for (var i = 0; i < new_key.length ; i++) { UpdateKey(obj, old_key[i], new_key[i]) };
+    for (var i = 0; i < new_key.length ; i++) {
+        UpdateKey(obj, old_key[i], new_key[i])
+    };
     UpdateFields(obj);
     UpdateLevels(obj);
 
@@ -92,7 +98,10 @@ function FormatToPedigreeJS(JSONData) {
 }
 
 function hasParentsPedigreeJS(row){//obj[i]
-    return (row.hasOwnProperty('father') && row.father != '0' || row.hasOwnProperty('mother') && row.mother != '0');
+    return (row.hasOwnProperty('father')
+    && row.father != '0'
+    || row.hasOwnProperty('mother')
+    && row.mother != '0');
 }
 
 //Update parents levels (adapted from io.js of pedigreejs)
@@ -172,7 +181,6 @@ function UpdateLevels(obj) {
                 
                 // 2. or adopt parents from level above
                 if(!obj[i].mother){
-                    //alert('pas de mère : individu '+obj[i].name);
                     for(var j=0; j<obj.length; j++) {
                         if(obj[i].level == (obj[j].level-1)) {
                             pidx = getRowPedigreeJS(obj,getPartner(obj,j));
@@ -193,16 +201,13 @@ function UpdateLevels(obj) {
 }
 
 function UpdateDiseases(o,i){
-    var colDiseases = ["Disease1","Disease2", "Disease3"] //colsDiseases
-    var colAges = ["Age1","Age2", "Age3"]
-
-    for (var j = 0; j < colDiseases.length; j++) {
-        col = colDiseases[j]
-        age = colAges[j]
-        var content = o[i][ col ]
+    for (var j = 0; j < colsDiseases.length; j++) {
+        let col = colsDiseases[j],
+            age = colsAges[j],
+            content = o[i][col];
         
         if (content != "" && content != null){
-            var new_col = o[i][ col ]
+            var new_col = o[i][ col ];
             o[i][new_col+"_diagnosis_age"] = (o[i][ age ]==null ? "" : o[i][ age ]);
             delete o[i][ col ];
             delete o[i][ age ];
@@ -214,53 +219,50 @@ function UpdateDiseases(o,i){
 }
 
 function UpdateOptions(o,i) {
-    var content = o[i][ "Option" ]
-    var options1 = ['FCS', 'IMG', 'Adopté']
-    var output1 = ['miscarriage', 'termination', 'adopted_in']
+    var content = o[i][ "Option" ],
+        options1 = [lang.miscarriage, lang.termination, lang.adopted_in],
+        output1 = ['miscarriage', 'termination', 'adopted_in'];
 
-    if (content != "" && content != null){
+    if (content != "" && content != null && typeof(content) !="undefined"){
         for (var j = 0; j < options1.length; j++) {
-            if (o[i][ "Option" ] == options1[j  ]) {
+            if (o[i][ "Option" ] == options1[j ]) {
                 o[i][output1[j]] = true;
-                if (o[i][ "Option" ]=='IMG') o[i][ "status" ]= "1"
+                if (o[i][ "Option" ]==lang.termination) o[i][ "status" ]= "1"
                 delete o[i][ "Option" ];
             }
-        if (o[i][ "Option" ]=='JumMZ') {o[i][ "mztwin" ]= "1" ; delete o[i][ "Option" ] }
-        else if (o[i][ "Option" ]=='JumDZ') {o[i][ "dztwin" ]= "1" ; delete o[i][ "Option" ] }
-        else if (o[i][ "Option" ]=='Grossesse') {o[i][ "sex" ]= "U" ; delete o[i][ "Option" ] }
+        if (o[i][ "Option" ]==lang.mztwin) {o[i][ "mztwin" ]= "1" ; delete o[i][ "Option" ] }
+        else if (o[i][ "Option" ]==lang.dztwin) {o[i][ "dztwin" ]= "1" ; delete o[i][ "Option" ] }
+        else if (o[i][ "Option" ]==lang.pregnancy) {o[i][ "sex" ]= "U" ; delete o[i][ "Option" ] }
         };
     }
 }
 
 function getTablePatho(obj) {
-    let patho = [],
-        d = ['Disease1', 'Disease2', 'Disease3']; //colsDiseases
-    
+    let patho = [];
     for (let i = 0; i < obj.length; i++) {
-        for (let j = 0; j < d.length; j++) {
-            let val = obj[i][d[j]]
-            if(!patho.includes(val) && val != '') patho.push(val)
+        for (let j = 0; j < colsDiseases.length; j++) {
+            let val = obj[i][colsDiseases[j]];
+            if(!patho.includes(val) && val != '') patho.push(val);
         }
     }
-    return patho
+    return patho;
 }
 
 function FormatToTable(JSONData) {
-    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
-    var toRep = [];
+    var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+        toRep = [];
 
     for (var i = 0; i < obj.length; i++) {
-
         //Options
         const options = () => {
             var opt = '';
-            if(obj[i].hasOwnProperty('miscarriage')) opt = 'FCS'
-            if(obj[i].hasOwnProperty('termination')) opt =  'IMG'
-            if(obj[i].hasOwnProperty('adopted_in')) opt =  'Adopté'
-            if(obj[i].hasOwnProperty('mztwin')) opt =  'JumMZ'
-            if(obj[i].hasOwnProperty('dztwin')) opt =  'JumDZ'
-            if(obj[i].sex == 'U') opt =  'Grossesse'
-            return opt
+            if(obj[i].hasOwnProperty('miscarriage')) opt = lang.miscarriage;
+            if(obj[i].hasOwnProperty('termination')) opt =  lang.termination;
+            if(obj[i].hasOwnProperty('adopted_in')) opt =  lang.adopted_in;
+            if(obj[i].hasOwnProperty('mztwin')) opt =  lang.mztwin;
+            if(obj[i].hasOwnProperty('dztwin')) opt =  lang.dztwin;
+            if(obj[i].sex == 'U') opt =  lang.pregnancy;
+            return opt;
         }
 
         //diseases & age
@@ -288,22 +290,24 @@ function FormatToTable(JSONData) {
             "Age": obj[i].age,
             "Yob": obj[i].yob,
             "Option" : options(),
-            "Disease1":patho[0], ////if patho.length > 3 add indi.Disease4 / indi.Age4 etc.
-            "Age1":age[0],
-            "Disease2":patho[1],
-            "Age2":age[1],
-            "Disease3":patho[2],
-            "Age3":age[2],
             "proband": obj[i].proband
         }
 
+        //Add diseases
+        for (let c = 0; c < colsDiseases.length; c++) {
+            obj[i][colsDiseases[c]]=patho[c];
+            obj[i][colsAges[c]]=age[c];
+        }
+
+        //Add new IndivID if non numerical
         if(isNaN(obj[i].IndivID)) {
             toRep.push(obj[i].IndivID);
         };
     }
 
+    //if non numeric replace in IndivID FathID MothID by newName(obj)
     if(toRep != "") {
-        for (var j = 0; j < toRep.length; j++) { //if non numeric replace in IndivID FathID MothID by newName(obj)
+        for (var j = 0; j < toRep.length; j++) {
             let newID = newName(obj);
             for (var k = 0; k < obj.length; k++) {
                 obj[k].IndivID=obj[k].IndivID.replace(toRep[j], newID);
@@ -312,14 +316,12 @@ function FormatToTable(JSONData) {
             };
         };
     }
-
     return obj;
 }
 
 function Formatboadicea(boadicea_lines) {
-    var lines = boadicea_lines.trim().split('\n');
-    var ped = [];
-    var onco = ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_pancréas','cancer_prostate']
+    var lines = boadicea_lines.trim().split('\n'),
+        ped = [];
 
     // assumes two line header
     for(var i = 2;i < lines.length;i++){
@@ -327,7 +329,7 @@ function Formatboadicea(boadicea_lines) {
             if(attr.length > 1) {
                 var indi = {
                     'FamID': attr[0],
-                    'Name': attr[1], // bug special caractere
+                    'Name': attr[1],
                     'IndivID':	attr[3],
                     'FathID': attr[4],
                     'MothID': attr[5],
@@ -335,44 +337,34 @@ function Formatboadicea(boadicea_lines) {
                     'Affected': '1',
                     'Deceased': attr[8]
                 };
-                
+                if(attr[2] == 1) indi.proband = true;
                 if(attr[9] !== "0") indi.Age = attr[9];
                 if(attr[10] !== "0") indi.Yob = attr[10];
                 
                 // add diseases
-                var patho = []
-                var age = []               
+                // Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
+                var patho = [],
+                    age = [];
 
                 var idx = 11;
-                for (var o = 0; o < onco.length; o++) {
-					// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
+                for (var o = 0; o < onco().length; o++) {
 					if(attr[idx] !== "0") {
-                        patho.push(onco[o]);
+                        patho.push(onco()[o]);
                         var out = attr[idx] != 'AU' ? attr[idx] : '';
                         age.push(out);
 					}
 					idx++;
                 };
                 
-                indi.Disease1 = patho[0];
-                indi.Age1 = age[0];
-                indi.Disease2 = patho[1];
-                indi.Age2 = age[1];
-                indi.Disease3 = patho[2];
-                indi.Age3 = age[2];
-                //if patho.length > 3 add indi.Disease4 / indi.Age4 etc.
-                
-                // bug encodage UTF-8 / ISO : replace �
-                indi.Name = indi.Name.replace("�","è")
-                indi.Name = indi.Name.replace("%uFFFD","è")
-
-                if(attr[2] == 1) indi.proband = true;
-
+                //Add diseases
+                for (let c = 0; c < colsDiseases.length; c++) {
+                    indi[colsDiseases[c]]=patho[c];
+                    indi[colsAges[c]]=age[c];
+                }
                 ped.push(indi);  
             }
         }
-
-        return ped
+    return ped;
 }
 
 function ExportJSON(obj) {
@@ -391,7 +383,7 @@ function ExportJSON(obj) {
 function UpdateKey(o, old_key, new_key) {
     // JSON object
     for (var i = 0; i < o.length; i++) {
-        o[i][ new_key ] = o[i][ old_key ]; //change key
+        o[i][ new_key ] = o[i][ old_key ];
         delete o[i][ old_key ];
     };
 }
@@ -429,8 +421,8 @@ function ExportBOADICEv4(JSONData) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         CSV = '',   
         row = "BOADICEA import pedigree file format 4.0",
-        mainHeader = ["FamID","Name","Target","IndivID","FathID","MothID","Sex","MZTwin","Dead","Age","Yob","1stBrCa","2ndBrCa","OvCa","ProCa","PanCa"].join('\t')
-        otherHeader = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"].join('\t')
+        mainHeader = ["FamID","Name","Target","IndivID","FathID","MothID","Sex","MZTwin","Dead","Age","Yob","1stBrCa","2ndBrCa","OvCa","ProCa","PanCa"].join('\t'),
+        otherHeader = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"].join('\t'),
         fileName = 'Boadicea_'+ getFormattedTime() +'.txt';
 
     // Put the header
@@ -440,29 +432,36 @@ function ExportBOADICEv4(JSONData) {
 
     // Adding each rows of the table
     for (var i = 0; i < arrData.length; i++) {
-        var std = '0'+ '\t'
+        var std = '0'+ '\t';
 
         function KeyStatus(i,key,output) {
             let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
-            return result
+            return result;
         }
-        
-        let father = (arrData[i].hasOwnProperty('father') ? arrData[i][ 'father' ] : '0'),
-            mother = (arrData[i].hasOwnProperty('mother') ? arrData[i][ 'mother' ] : '0'),
+
+        let father = (arrData[i].hasOwnProperty('father') && !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'father' ] : '0'),
+            mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0'),
             age = (arrData[i].age =="" || typeof(arrData[i].age)=="undefined" ? '0' : arrData[i].age),
             yob = (arrData[i].yob =="" || typeof(arrData[i].yob)=="undefined" ? '0' : arrData[i].yob),
             name;
-
+        
         // shorter long name : get uppercase + last word if exists
         if(arrData[i]['display_name'] != '') {
-            name = arrData[i]['display_name']
+            name = arrData[i]['display_name'].replace(/[^a-zA-Z0-9 ]/g, "") //replace special character/accent
             if (name.length >8) {
-                var result = name.match(/[A-Z]|[0-9]/g).join(''),
-                suf = name.split(' ')[1]
+                var result = name.match(/[A-Z]|[0-9]/g).join('');
+                suf = name.split(' ')[1];
                 if(name.split(' ').length > 1) result += suf
-                name = result
+                name = result;
             };
-        }else{ name = arrData[i]['name']};
+        } else {
+            name = arrData[i]['name'];
+        };
+
+        function BoadiceaDisease(i,nb) {
+            let col = onco()[nb]+'_diagnosis_age';
+            return KeyStatus(i,col,arrData[i][col] !=0 ? arrData[i][col] : 'AU');
+        }
 
         var row = [
             arrData[i]['famid'],
@@ -476,11 +475,11 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'status','1'),
             age,
             yob,
-            KeyStatus(i,'cancer_sein_diagnosis_age',arrData[i][ 'cancer_sein_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_sein_diagnosis_age' ] : 'AU'),
-            KeyStatus(i,'cancer_sein2_diagnosis_age',arrData[i][ 'cancer_sein2_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_sein2_diagnosis_age' ] : 'AU'),
-            KeyStatus(i,'cancer_ovaire_diagnosis_age',arrData[i][ 'cancer_ovaire_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_ovaire_diagnosis_age' ] : 'AU'),
-            KeyStatus(i,'cancer_pancréas_diagnosis_age',arrData[i][ 'cancer_pancréas_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_pancréas_diagnosis_age' ] : 'AU'),
-            KeyStatus(i,'cancer_prostate_diagnosis_age',arrData[i][ 'cancer_prostate_diagnosis_age' ]!=0 ? arrData[i][ 'cancer_prostate_diagnosis_age' ] : 'AU'),
+            BoadiceaDisease(i,0),
+            BoadiceaDisease(i,1),
+            BoadiceaDisease(i,2),
+            BoadiceaDisease(i,3),
+            BoadiceaDisease(i,4),
             KeyStatus(i,'Ashkn',arrData[i]['Ashkn']), 
             KeyStatus(i,'BRCA1t',arrData[i]['BRCA1t']),
             KeyStatus(i,'BRCA1r',arrData[i]['BRCA1r']),
@@ -529,17 +528,11 @@ function getRow(obj, id) {
     };
 }
 
-function isFather(rowData, obj, index) {
-    return(rowData.IndivID == obj[getRow(obj, index)].FathID);
-}
-
-function isMother(rowData, obj, index) {
-    return(rowData.IndivID == obj[getRow(obj, index)].MothID);
-}
-
 function getName(i, tableData, rowData) { //JSONData, table format
     var obj = typeof tableData != 'object' ? JSON.parse(tableData) : tableData;
-    var indexID = 1,
+
+    //define const
+    var indexID = 1, 
         father = obj[getRow(obj, indexID)].FathID,
         mother = obj[getRow(obj, indexID)].MothID;
 
@@ -565,25 +558,33 @@ function getName(i, tableData, rowData) { //JSONData, table format
             && rowData.Sex == 'F'
     );
     }
-    
-    if(rowData.IndivID==indexID) result='Index';
 
-    else if (isBrother(indexID)){result = 'Frère'}
-    else if (isSister(indexID)){result = 'Soeur'}
-
-    else if(isFather(rowData, obj, indexID)){result = 'Père'}
-    else if (isMother(rowData, obj, indexID)){result = 'Mère'}
-
-    else if (isBrother(father)){result = 'Oncle pat'}
-    else if (isSister(father)){result = 'Tante pat'}
-    else if (isBrother(mother)){result = 'Oncle mat'}
-    else if (isSister(mother)){result = 'Tante mat'}
+    function isFather(index) {
+        return(rowData.IndivID == obj[getRow(obj, index)].FathID);
+    }
     
-    else if(isFather(rowData, obj, father)){result = 'Grand-Père pat'}
-    else if(isMother(rowData, obj, father)){result = 'Grand-Mère pat'}
-    else if(isFather(rowData, obj, mother)){result = 'Grand-Père mat'}
-    else if(isMother(rowData, obj, mother)){result = 'Grand-Mère mat'}
+    function isMother(index) {
+        return(rowData.IndivID == obj[getRow(obj, index)].MothID);
+    }
     
+    if(rowData.IndivID==indexID) result = lang.index;
+
+    else if (isBrother(indexID)){result = lang.brother}
+    else if (isSister(indexID)){result = lang.sister}
+
+    else if(isFather(indexID)){result = lang.father}
+    else if (isMother(indexID)){result = lang.mother}
+
+    else if (isBrother(father)){result = lang.unclePat}
+    else if (isSister(father)){result = lang.auntPat}
+    else if (isBrother(mother)){result = lang.uncleMat}
+    else if (isSister(mother)){result = lang.auntMat}
+    
+    else if(isFather(father)){result = lang.gpp} 
+    else if(isMother(father)){result = lang.gmp}
+    else if(isFather(mother)){result = lang.gpm}
+    else if(isMother(mother)){result = lang.gmm}
+
     else result ="";
 
     // check if already exist
@@ -605,27 +606,27 @@ function displayName(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         names = [];
     for (var i = 0; i < obj.length; i++) {
-        result = getName(i, obj)
-        names.push([result])
+        result = getName(i, obj);
+        names.push([result]);
     }
-    hot.populateFromArray(0, 1, names)
+    hot.populateFromArray(0, 1, names);
 }
 
   function copyToClipboard(element) {
-    var text = $('#'+element).clone().find('br').prepend('\r\n').end().text()
-    element = $('<textarea>').appendTo('body').val(text).select()
-    document.execCommand('copy')
-    element.remove()
+    var text = $('#'+element).clone().find('br').prepend('\r\n').end().text();
+    element = $('<textarea>').appendTo('body').val(text).select();
+    document.execCommand('copy');
+    element.remove();
   }
 
 function newName(obj){
     let col=[];
-    for (let i = 0; i < obj.length; i++) { //
+    for (let i = 0; i < obj.length; i++) {
         if(!isNaN(obj[i].IndivID)) {col.push(obj[i].IndivID)};
     }
     if (col=="") return 1;
-    let max = Math.max.apply(null, col)+1
-    return max.toString() //return string
+    let max = Math.max.apply(null, col)+1;
+    return max.toString();
 };
 
 function createFamily(famObj, hotObj){
@@ -635,7 +636,7 @@ function createFamily(famObj, hotObj){
             var obj=JSON.parse(deepObj),
                 index = hotObj.getSelectedLast()[0]; //index' row
           } catch (error) {
-            alert('Aucun individu sélectionné');
+            alert(lang.noIndSelected);
           }
     }else{
         var obj = JSON.parse(myDataSafe),
@@ -655,9 +656,9 @@ function createFamily(famObj, hotObj){
                 "Sex": sex,
                 "Affected": '1',
                 "Deceased": '0'
-            };  
-       row.Name = (getName(i, obj, row) == '' & typeof(pre) != 'undefined' ? pre : getName(i, obj, row)); //i not used
+            };
        if(replace == true && typeof(ind)!='undefined' && ind != '') (sex =='M' ? obj[ind].FathID = row.IndivID : obj[ind].MothID = row.IndivID);
+       row.Name = (getName(i, obj, row) == '' & typeof(pre) != 'undefined' ? pre : getName(i, obj, row)); //i not used
        return row;
     };
 
@@ -705,10 +706,10 @@ function createFamily(famObj, hotObj){
         for (let step = 0; step < n; step++) {        
             let spouse = partner(obj,i),
                 spouseSex = (obj[i].Sex=='M' ? 'F' : 'M' );
-            var pre = (sex == 'M' ? 'Fils' : 'Fille');
+            var pre = (sex == 'M' ? lang.son : lang.daughter);
             
             // if partner doesn't exist : create it
-            if (typeof(spouse) == 'undefined' || forceCreation== true) {
+            if (typeof(spouse) == 'undefined' || forceCreation==true) {
                 spouse = newName(obj);
                 addNewInd(0, 0, spouseSex,obj,i);
             }
@@ -784,3 +785,231 @@ function createFamily(famObj, hotObj){
     hot.loadData(obj);
   }
 
+  function createjscssfile(filename, filetype){
+    if (filetype=="js"){ //if filename is a external JavaScript file
+        var fileref=document.createElement('script')
+        fileref.setAttribute("type","text/javascript")
+        fileref.setAttribute("src", filename)
+    }
+    else if (filetype=="css"){ //if filename is an external CSS file
+        var fileref=document.createElement("link")
+        fileref.setAttribute("rel", "stylesheet")
+        fileref.setAttribute("type", "text/css")
+        fileref.setAttribute("href", filename)
+    }
+    return fileref
+}
+ 
+function replacejscssfile(oldfilename, newfilename, filetype){
+    var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
+    var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+    var allsuspects=document.getElementsByTagName(targetelement)
+    for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+        if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
+            var newelement=createjscssfile(newfilename, filetype)
+            allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
+        }
+    }
+}
+
+function setSetterLanguage(newLang){
+    let fullLang = (newLang=="fr" ? "Français" : "English");
+    let shortLang = (newLang=="fr" ? "Fr" : "Eng");
+
+    $( "#LangSetterImg" ).attr("src", "/data/images/"+newLang+".svg");
+    $( "#LangSetterImg" ).prop("alt", fullLang);
+    $( "#LangSetterText" ).text(shortLang);
+
+    localStorage.setItem("language", newLang);
+}
+
+function setLanguage(oldLang, newLang){
+    setSetterLanguage(newLang);
+
+    //Replace all occurences of "oldscript.js" with "newscript.js"
+    replacejscssfile("lang/lang."+oldLang+".js", "lang/lang."+newLang+".js", "js")
+    replacejscssfile("lang/story."+oldLang+".js", "lang/story."+newLang+".js", "js")
+
+    //change HPO source
+    filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    HPOArr = ImportHPO(filePath);
+}
+
+function updateLangage(oldLang, newLang) {
+    setLanguage(oldLang, newLang);
+
+    var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
+    setTimeout(function() {
+        $('.lang').each(function() {
+            var value = $(this).attr('id');
+            //add text
+            if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
+
+            //add title
+            if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
+        });
+
+        //update hot settings
+        let checkBox = document.getElementById("myCheckOnco"),
+            checkBoxHPO = document.getElementById("myCheckHPO");
+
+        if (checkBox.checked == true){
+            document.getElementById('myCheckHPO').checked = false;
+            
+            hot.updateSettings({
+                cells: function (row, col, prop) {
+                    
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) {
+                        var cellProperties = {};
+                        cellProperties.renderer = autRenderer;
+                        return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                },
+                columns: colsOnco,
+                colHeaders: cols_headerOnco
+            });
+            
+        } else if (checkBoxHPO.checked == true){
+          document.getElementById('myCheckOnco').checked = false;
+          hot.updateSettings({
+              cells: function (row, col, prop) {
+                  isDiseaseProp = function(val) {return prop == val};
+                  if (colsDiseases.some(isDiseaseProp)) {
+                      var cellProperties = {};
+                      cellProperties.type = 'dropdown';
+                      cellProperties.source = HPOArr;
+                      return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                  },
+                  columns: cols,
+                  colHeaders: cols_header
+          });
+        } else { 
+            hot.updateSettings({
+                cells: function (row, col, prop) {
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) {
+                        var cellProperties = {};
+                        cellProperties.renderer = autRenderer2;
+                        return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                },
+                columns: cols,
+                colHeaders: cols_header
+            });
+        }
+
+        //load new table
+        hot.loadData(JSON.parse(myDataSafe));
+
+        //reset disease and refresh pedigree
+        opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+        loadFromHot();
+
+    }, delayInMilliseconds);
+}
+
+// Synchronously read a text file from the web server with Ajax
+// from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
+
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      result = xmlhttp.responseText;
+    }
+    return result;
+}
+  
+//Convert tsvtoJSON
+function tsvJSON(tsv) {
+    const lines = tsv.split('\n');
+    const headers = lines.shift().trim().split('\t');
+    return lines.map(line => {
+    var data = line.trim().split('\t');
+    return headers.reduce((obj, nextKey, index) => {
+        obj[nextKey] = data[index];
+        return obj;
+    }, {});
+    });
+};
+
+//Upload HPO terms
+function ImportHPO(filePath) {
+    let tsv = loadFile(filePath),
+        HPO = tsvJSON(tsv),
+        Arr = [];
+
+    for(var i in HPO) {
+        Arr.push(HPO[i].LABEL);
+    }
+    return Arr;
+}
+  
+var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
+HPOArr = ImportHPO(filePath);
+
+function loadStory(){
+    let myDeepClone = JSON.stringify(hot.getSourceData()),
+        obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
+    document.getElementById('story').innerHTML = histoire(obj);
+}
+
+function checkOption(obj,k,key) {
+    return obj[k][key] == true;
+}
+
+function textOption(opt,textOption1, textOption2,prefixe,suffixe) {
+    if(opt>0) {
+        return (typeof(prefixe)!='undefined' ? prefixe : '') + opt + ' ' + (opt>1 ? textOption1 : textOption2)
+        + (typeof(suffixe)!='undefined' ? suffixe : '');
+    } else {
+        return ''
+    }
+}
+
+function getRowPedigreeJS(obj, id) {
+    for (var j = 0; j < obj.length; j++) {
+        if (obj[j].name == id) {
+            return j;
+        };
+    };
+}
+  
+function isFatherPedigreeJS(obj, i, index) {
+    return(obj[i].name == obj[index].father);
+}
+
+function isMotherPedigreeJS(obj, i, index) {
+    return(obj[i].name == obj[index].mother);
+}
+
+function t(patho) {
+    if(dicoD().hasOwnProperty(patho.toLowerCase())) {
+        return dicoD()[patho]
+    } else {
+        return lowerFirstLetter(patho);
+    }
+}
+
+function lowerFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}

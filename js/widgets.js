@@ -48,7 +48,7 @@
 			.attr("x", font_size/3)
 			.attr("y", font_size*1.5)
 			.text("\uf096 ");
-		var square_title = square.append("svg:title").text("Ajouter homme");
+		var square_title = square.append("svg:title").text(lang.addMale);
 
 		var circle = popup_selection.append("text")  // female
 			.attr('font-family', 'FontAwesome')
@@ -59,7 +59,7 @@
 			.attr("x", font_size*1.7)
 			.attr("y", font_size*1.5)
 			.text("\uf10c ");
-		var circle_title = circle.append("svg:title").text("Ajouter femme");
+		var circle_title = circle.append("svg:title").text(lang.addFemale);
 
 		var unspecified = popup_selection.append("text")  // unspecified
 			.attr('font-family', 'FontAwesome')
@@ -68,7 +68,7 @@
 			.attr("transform", "translate(-1000,-100)")
 			.attr("class", "popup_selection fa-lg fa-unspecified popup_selection_rotate45 persontype")
 			.text("\uf096 ");
-		var unspecified_title = unspecified.append("svg:title").text("Ajouter inconnu");
+		var unspecified_title = unspecified.append("svg:title").text(lang.addUnknown);
 
 		var dztwin = popup_selection.append("text")  // dizygotic twins
 			.attr('font-family', 'FontAwesome')
@@ -78,7 +78,7 @@
 			.attr("x", font_size*4.6)
 			.attr("y", font_size*1.5)
 			.text("\uf106 ");
-		var dztwin_title = dztwin.append("svg:title").text("Ajouter des jumeaux dizygotiques");
+		var dztwin_title = dztwin.append("svg:title").text(lang.addDZTwin);
 
 		var mztwin = popup_selection.append("text")  // monozygotic twins
 		.attr('font-family', 'FontAwesome')
@@ -88,7 +88,7 @@
 		.attr("x", font_size*6.2)
 		.attr("y", font_size*1.5)
 		.text("\uf0d8");
-		var mztwin_title = mztwin.append("svg:title").text("Ajouter des jumeaux monozygotiques");
+		var mztwin_title = mztwin.append("svg:title").text(lang.addDZTwin);
 
 		var add_person = {};
 		// click the person type selection
@@ -124,14 +124,14 @@
 			  // add tooltips to font awesome widgets
 			  if(add_person.type === 'addsibling'){
 				 if(d3.select(this).classed("fa-square"))
-					  square_title.text("Ajouter un frère");
+					  square_title.text(title.add_brother);
 				  else
-					  circle_title.text("Ajouter une sœur");
+					  circle_title.text(title.add_sister);
 			  } else if(add_person.type === 'addchild'){
 				  if(d3.select(this).classed("fa-square"))
-					  square_title.text("Ajouter un fils");
+					  square_title.text(title.add_son);
 				  else
-					  circle_title.text("Ajouter une fille");
+					  circle_title.text(title.add_daughter);
 			  }
 		  });
 
@@ -169,16 +169,16 @@
 		var fy = opts.symbol_size -2;
 		var off = 0;
 		var widgets = {
-			'addchild':   {'text': '\uf063', 'title': 'Ajouter enfant',   'fx': fx, 'fy': fy},
-			'addsibling': {'text': '\uf234', 'title': 'Ajouter frère/sœur', 'fx': fx, 'fy': fy},
-			'addpartner': {'text': '\uf0c1', 'title': 'Ajouter conjoint', 'fx': fx, 'fy': fy},
+			'addchild':   {'text': '\uf063', 'title': lang.addChild,   'fx': fx, 'fy': fy},
+			'addsibling': {'text': '\uf234', 'title': lang.addSiblings, 'fx': fx, 'fy': fy},
+			'addpartner': {'text': '\uf0c1', 'title': lang.addSpouse, 'fx': fx, 'fy': fy},
 			'addparents': {
-				'text': '\uf062', 'title': 'Ajouter parents',
+				'text': '\uf062', 'title': lang.addParents,
 				'fx': - 0.75*opts.symbol_size,
 				'fy': - opts.symbol_size + 11
 			},
 			'delete': {
-				'text': 'X', 'title': 'Supprimer',
+				'text': 'X', 'title': lang.delete,
 				'fx': opts.symbol_size/2 - 1,
 				'fy': - opts.symbol_size + 12,
 				'styles': {"font-weight": "bold", "fill": "darkred", "font-family": "monospace"}
@@ -186,7 +186,7 @@
 		};
 
 		if(opts.edit) {
-			widgets.settings = {'text': '\uf013', 'title': 'Paramètres', 'fx': -font_size/2+2, 'fy': -opts.symbol_size + 11};
+			widgets.settings = {'text': '\uf013', 'title': lang.parameters, 'fx': -font_size/2+2, 'fy': -opts.symbol_size + 11};
 		}
 
 		for(var key in widgets) {
@@ -339,7 +339,7 @@
 	                .on("start", dragstart)
 	                .on("drag", drag)
 	                .on("end", dragstop));
-		dline.append("svg:title").text("étendre pour créer un conjoint consanguin");
+		dline.append("svg:title").text(lang.addConsang);
 
 		setLineDragPosition(0, 0, 0, 0);
 
@@ -406,35 +406,34 @@
 
 		var table = "<table id='person_details' class='table'>";
 
-		table += "<tr><td style='text-align:right'>Identifiant</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
+		table += "<tr><td style='text-align:right'>"+lang.id+"</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
 		(d.data.name ? d.data.name : "")+"></td></tr>";
-		table += "<tr><td style='text-align:right'>Nom</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
+		table += "<tr><td style='text-align:right'>"+lang.name+"</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
 				(d.data.display_name ? d.data.display_name : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>Âge</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
+		table += "<tr><td style='text-align:right'>"+lang.age+"</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
 				(d.data.age ? d.data.age : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>Année de naissance</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
+		table += "<tr><td style='text-align:right'>"+lang.yob+"</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
 			(d.data.yob ? d.data.yob : "")+"></td></tr>";
 
 		table += '<tr><td colspan="2" id="id_sex">' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="M" '+(d.data.sex === 'M' ? "checked" : "")+'>Homme</label>' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="F" '+(d.data.sex === 'F' ? "checked" : "")+'>Femme</label>' +
-				 '<label class="radio-inline"><input type="radio" name="sex" value="U">Inconnu</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="M" '+(d.data.sex === 'M' ? "checked" : "")+'>'+lang.man+'</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="F" '+(d.data.sex === 'F' ? "checked" : "")+'>'+lang.woman+'</label>' +
+				 '<label class="radio-inline"><input type="radio" name="sex" value="U">'+lang.unknown+'</label>' +
 				 '</td></tr>';
 
 		// alive status = 0; dead status = 1
 		table += '<tr><td colspan="2" id="id_status">' +
-				 '<label class="checkbox-inline"><input type="radio" name="status" value="0" '+(d.data.status === 0 ? "checked" : "")+'>&thinsp;en vie</label>' +
-				 '<label class="checkbox-inline"><input type="radio" name="status" value="1" '+(d.data.status === 1 ? "checked" : "")+'>&thinsp;décédé</label>' +
+				 '<label class="checkbox-inline"><input type="radio" name="status" value="0" '+(d.data.status === 0 ? "checked" : "")+'>&thinsp;'+lang.alive+'</label>' +
+				 '<label class="checkbox-inline"><input type="radio" name="status" value="1" '+(d.data.status === 1 ? "checked" : "")+'>&thinsp;'+lang.dead+'</label>' +
 				 '</td></tr>';
 		$("#id_status input[value='"+d.data.status+"']").prop('checked', true);
 
 		// switches
 		var switches = ["adopted_in", "adopted_out", "miscarriage", "stillbirth", "termination"];
-		var switches_fr = ["Adopté (dans)", "Adopté (hors)", "Fausse-couche", "Mort-né", "IMG"];
 
-		table += '<tr><td colspan="2"><strong>Grossesse :</strong></td></tr>';
+		table += '<tr><td colspan="2"><strong>'+lang.pregnancy+' :</strong></td></tr>';
 		table += '<tr><td colspan="2">';
 		for(var iswitch=0; iswitch<switches.length; iswitch++){
 			var attr = switches[iswitch];
@@ -452,7 +451,7 @@
 			           "level", "age", "sex", "status", "display_name", "mother", "father",
 			           "yob", "mztwin", "dztwin", "famid"];
 		$.merge(exclude, switches);
-		table += '<tr><td colspan="2"><strong>Âge au diagnostic :</strong></td></tr>';
+		table += '<tr><td colspan="2"><strong>'+lang.diagnosticAge+' :</strong></td></tr>';
 		$.each(opts.diseases, function(k, v) {
 			exclude.push(v.type+"_diagnosis_age");
 

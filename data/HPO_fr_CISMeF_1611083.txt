@@ -1,4 +1,4 @@
-CODE	FR_LABEL	TYPE
+CODE	LABEL	TYPE
 HP:0000001	Tous	pt
 HP:0000002	Anomalie de la taille corporelle	pt
 HP:0000002	Anomalie de la taille	uf

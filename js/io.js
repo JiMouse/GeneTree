@@ -157,14 +157,13 @@
 		//New buttons
 		$('#boadicea_download').click(function(e) {
 			var content = JSON.stringify(pedcache.current(opts));
-			ExportBOADICEv4(content)
-			//io.save_file(opts, obj);
+			ExportBOADICEv4(content);
 		});
 
 		$('#loadFormPedigree').click(function(e) {
 			var content = pedcache.current(opts);
-			content = FormatToTable(content)
-			hot.loadData(content)
+			content = FormatToTable(content);
+			hot.loadData(content);
 		});
 		// End buttons
 
@@ -201,7 +200,7 @@
 		        } else {
 					var a      = document.createElement('a');
 					a.href     = obj.img;
-					a.download = 'GeneTree_arbre_'+ getFormattedTime() +'.jpg'; //'plot.png';
+					a.download = 'GeneTree_'+ lang.pedigree +'_'+ getFormattedTime() +'.jpg';
 					a.target   = '_blank';
 					document.body.appendChild(a); a.click(); document.body.removeChild(a);
 		        }
@@ -350,7 +349,7 @@
 	io.svg_download = function(svg){
 		var a      = document.createElement('a');
 		a.href     = 'data:image/svg+xml;base64,'+ btoa( unescape( encodeURIComponent( svg.html() ) ) );
-		a.download = 'plot.svg';
+		a.download = 'GeneTree_'+ lang.pedigree +'_'+ getFormattedTime() +'.svg';
 		a.target   = '_blank';
 		document.body.appendChild(a); a.click(); document.body.removeChild(a);
 	};
@@ -411,7 +410,7 @@
 	io.save_file = function(opts, content, filename, type){
 		if(opts.DEBUG)
 			console.log(content);
-		if(!filename) filename = "ped.txt";
+		if(!filename) filename = 'GeneTree_'+ lang.pedigree +'_'+ getFormattedTime() +"_pedigreejs.json";
 		if(!type) type = "text/plain";
 
 	   var file = new Blob([content], {type: type});
