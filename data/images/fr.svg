@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:export-ydpi="300"
+   inkscape:export-xdpi="300"
+   inkscape:export-filename="C:\Users\jeanm\Documents\Internat\Projets\GenetArbre-2.0\data\images\fr.png"
+   sodipodi:docname="fr.svg"
+   id="svg13"
+   version="1.1"
+   fill="none"
+   height="14"
+   width="20">
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs17" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg13"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:cy="7"
+     inkscape:cx="6.4758065"
+     inkscape:zoom="62"
+     showgrid="false"
+     id="namedview15"
+     inkscape:window-height="1017"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <rect
+     id="rect2"
+     fill="#fff"
+     rx="1"
+     height="14"
+     width="20" />
+  <mask
+     height="12"
+     width="18"
+     y="1"
+     x="1"
+     maskUnits="userSpaceOnUse"
+     id="a">
+    <path
+       id="path4"
+       d="M1 1h18v12H1z"
+       fill="#fff" />
+  </mask>
+  <g
+     id="g11"
+     mask="url(#a)">
+    <path
+       id="path7"
+       d="M1 1h6v12H1z"
+       fill="#498FE1" />
+    <path
+       id="path9"
+       d="M13 1h6v12h-6z"
+       fill="#D01D1B" />
+  </g>
+</svg>

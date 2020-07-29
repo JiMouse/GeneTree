@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:export-ydpi="300"
+   inkscape:export-xdpi="300"
+   inkscape:export-filename="C:\Users\jeanm\Documents\Internat\Projets\GenetArbre-2.0\data\images\eng.png"
+   sodipodi:docname="eng.svg"
+   id="svg27"
+   version="1.1"
+   fill="none"
+   height="14"
+   width="20">
+  <metadata
+     id="metadata33">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs31" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg27"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:cy="4.4193548"
+     inkscape:cx="6.4758065"
+     inkscape:zoom="62"
+     showgrid="false"
+     id="namedview29"
+     inkscape:window-height="1017"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <rect
+     id="rect2"
+     fill="#fff"
+     rx="1"
+     height="14"
+     width="20" />
+  <mask
+     height="12"
+     width="18"
+     y="1"
+     x="1"
+     maskUnits="userSpaceOnUse"
+     id="a">
+    <path
+       id="path4"
+       d="M1 1h18v12H1z"
+       fill="#fff" />
+  </mask>
+  <g
+     id="g25"
+     mask="url(#a)">
+    <path
+       id="path7"
+       fill="#4758A9"
+       d="M17.805 13H2.188A1.183 1.183 0 0 1 1 11.824V2.176C1 1.527 1.533 1 2.188 1h15.625C18.466 1 19 1.527 19 2.176v9.655A1.192 1.192 0 0 1 17.805 13z" />
+    <path
+       id="path9"
+       fill="#fff"
+       d="M.199 12.55l.68 1.054L19.817 1.381l-.68-1.054L.199 12.55z" />
+    <path
+       id="path11"
+       fill="#ED5565"
+       d="M.557 12.514l.503.779L19.452 1.42 18.95.643.557 12.514z" />
+    <path
+       id="path13"
+       fill="#fff"
+       d="M.879.328l-.68 1.054 18.937 12.223.68-1.054L.88.328z" />
+    <path
+       id="path15"
+       fill="#ED5565"
+       d="M1.06.64l-.503.778L18.95 13.289l.502-.778L1.06.64z" />
+    <path
+       id="path17"
+       fill="#fff"
+       d="M11.475.473H8.361v13.183h3.114V.473z" />
+    <path
+       id="path19"
+       fill="#fff"
+       d="M19.342 5.51H.502v3.115h18.84V5.51z" />
+    <path
+       id="path21"
+       fill="#ED5565"
+       d="M11.076 1H8.767v12.328h2.309V1z" />
+    <path
+       id="path23"
+       fill="#ED5565"
+       d="M19.071 5.91H.772v2.308h18.3V5.91z" />
+  </g>
+</svg>
