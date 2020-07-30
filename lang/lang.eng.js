@@ -135,6 +135,15 @@ var title = {
     fullScreen:"Full screen"
 };
 
+var boadicea = {
+    proband:"The age of the index case is not provided.",
+    disease:"All family members with cancer must have a valid age.",
+    test1:"",
+    test2:"test is filled in but the result is not defined.",
+    result1:"The result of the ",
+    result2:"test is filled in but the type of test is not defined ('S' for mutation search or 'T' for direct gene test)."
+}
+
 function dicoD () {
     return {
         "breast_cancer":"breast cancer",

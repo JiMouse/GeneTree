@@ -128,12 +128,21 @@ var title = {
     savePed:"Fichier Plink",
     exportPedigreejs:"Fichier compatible avec Pedigreejs",
     BoadiceaLink:"Lien vers BOADICEA v4.0",
-    loadStory:'Màj texte',
+    loadStory:"Màj texte",
 
     //undo_redo_refresh.js
     center:"Centrer l'arbre",
     fullScreen:"Plein écran"
 };
+
+var boadicea = {
+    proband:"L'âge du cas index n'est pas renseigné.",
+    disease:"Tous les membres atteints d'un cancer de la famille doivent avoir un âge valide.",
+    test1:"Le test",
+    test2:"est renseigné mais le résultat n'est pas rempli.",
+    result1:"Le résultat du test",
+    result2:"est renseigné mais le type de test n'est pas défini ('S' pour une recherche de mutation ponctuelle ou 'T' pour une analyse du gène complet)."
+}
 
 function dicoD () {
     return {

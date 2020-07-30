@@ -430,43 +430,50 @@ function ExportBOADICEv4(JSONData) {
     row += '\r\n' + header;
     CSV += row + '\r\n';
 
+    //Set warning
+    let warning='',
+        warningAge=false;
+
     // Adding each rows of the table
     for (var i = 0; i < arrData.length; i++) {
-        var std = '0'+ '\t';
 
         function KeyStatus(i,key,output) {
-            let result = (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
-            return result;
+            return (arrData[i].hasOwnProperty(key) ? (arrData[i][ key ] != '0' ? output : '0') : '0');
         }
 
         let father = (arrData[i].hasOwnProperty('father') && !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'father' ] : '0'),
             mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0'),
             age = (arrData[i].age =="" || typeof(arrData[i].age)=="undefined" ? '0' : arrData[i].age),
             yob = (arrData[i].yob =="" || typeof(arrData[i].yob)=="undefined" ? '0' : arrData[i].yob),
-            name;
+            name= arrData[i]['display_name'],
+            proband=KeyStatus(i,'proband','1');
         
         // shorter long name : get uppercase + last word if exists
-        if(arrData[i]['display_name'] != '') {
-            name = arrData[i]['display_name'].replace(/[^a-zA-Z0-9 ]/g, "") //replace special character/accent
-            if (name.length >8) {
-                var result = name.match(/[A-Z]|[0-9]/g).join('');
-                suf = name.split(' ')[1];
-                if(name.split(' ').length > 1) result += suf
-                name = result;
+        if(name != '') {
+            name=name.replace(/-/g," ")//split words
+            name = name.replace(/[^a-zA-Z0-9 ]/g, "") //replace non alpha-numeric characters
+            if (name.length >8) { //max length in boadicea
+                name = name.match(/\b(\w)/g).join('');
             };
         } else {
-            name = arrData[i]['name'];
+            name = arrData[i]['name']; 
         };
 
+        //Boadicea diseases
         function BoadiceaDisease(i,nb) {
             let col = onco()[nb]+'_diagnosis_age';
             return KeyStatus(i,col,arrData[i][col] !=0 ? arrData[i][col] : 'AU');
         }
 
-        var row = [
+        let rowDiseases=[];
+        for(let d =0; d < 5; d++){
+            rowDiseases.push(BoadiceaDisease(i,d))
+        }
+        
+        let rowInit = [
             arrData[i]['famid'],
             name,
-            KeyStatus(i,'proband','1'),
+            proband,
             arrData[i]['name'],
             father,
             mother,
@@ -474,31 +481,47 @@ function ExportBOADICEv4(JSONData) {
             KeyStatus(i,'mztwin','1'),
             KeyStatus(i,'status','1'),
             age,
-            yob,
-            BoadiceaDisease(i,0),
-            BoadiceaDisease(i,1),
-            BoadiceaDisease(i,2),
-            BoadiceaDisease(i,3),
-            BoadiceaDisease(i,4),
-            KeyStatus(i,'Ashkn',arrData[i]['Ashkn']), 
-            KeyStatus(i,'BRCA1t',arrData[i]['BRCA1t']),
-            KeyStatus(i,'BRCA1r',arrData[i]['BRCA1r']),
-            KeyStatus(i,'BRCA2t',arrData[i]['BRCA2t']),
-            KeyStatus(i,'BRCA2r',arrData[i]['BRCA2r']),
-            KeyStatus(i,'PALB2t',arrData[i]['PALB2t']),
-            KeyStatus(i,'PALB2r',arrData[i]['PALB2r']),
-            KeyStatus(i,'ATMt',arrData[i]['ATMt']),
-            KeyStatus(i,'ATMr',arrData[i]['ATMr']),
-            KeyStatus(i,'CHEK2t',arrData[i]['CHEK2t']),
-            KeyStatus(i,'CHEK2r',arrData[i]['CHEK2r']),
-            KeyStatus(i,'ER',arrData[i]['ER']),
-            KeyStatus(i,'PR',arrData[i]['PR']),
-            KeyStatus(i,'HER2',arrData[i]['HER2']),
-            KeyStatus(i,'CK14',arrData[i]['CK14']),
-            KeyStatus(i,'CK56',arrData[i]['CK56'])
-        ].join('\t');
+            yob];
 
+        let row = rowInit.concat(rowDiseases);
+        row.push(KeyStatus(i,'Ashkn',arrData[i]['Ashkn']));
+        
+        let rowTest=[],
+            test=["BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r"];
+        for(let r =0; r < test.length; r++){
+            rowTest.push(KeyStatus(i,test[r],arrData[i][test[r]]))
+        }
+
+        let rowRecept=[],
+            recept=["ER","PR","HER2","CK14","CK56"];
+        for(let r =0; r < recept.length; r++){
+            rowRecept.push(KeyStatus(i,recept[r],arrData[i][recept[r]]))
+        }
+
+        row = row.concat(rowTest).concat(rowRecept).join('\t');
         CSV += row + '\r\n';
+        
+        //Check boadicea conformity
+        if(proband==1 && yob==0) warning +='\r   -'+ boadicea.proband; //index need to have yob
+
+        //if cancer : need valide age
+        const exist = (element) => element != 0;
+        if (rowDiseases.some(exist) && yob==0 && !warningAge){
+            warning +='\r   -'+ boadicea.disease
+            warningAge=true;
+        }
+
+        //if test : need to have result
+        for(let r =0; r < rowTest.length; r+=2){
+            if(rowTest[r]!=0 && rowTest[r+1]==0) warning +='\r   -'+ boadicea.test1 + ' ' + test[r] + ' ' + boadicea.test2;
+            if(rowTest[r+1]!=0 && rowTest[r]==0) warning +='\r   -'+ boadicea.result1 + ' ' + test[r] + ' ' + boadicea.result2;
+        }
+        
+    }
+
+    if(warning!='') {
+        alert('Fichier Boadicea non conforme : '+ warning);
+        return;
     }
 
     // Downloading the new generated csv.
