@@ -47,6 +47,7 @@ var lang = {
     mztwin:"JumMZ",
     dztwin:"JumDZ",
     pregnancy:"Grossesse",
+    Acknowledgment: "Outil initié pour satisfaire une certaine paresse et éprouvé par les membres de l'équipe du service de génétique clinique du CHRU de Nancy que je remercie.",
 
     //io.js
     pedigree:"arbre",

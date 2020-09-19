@@ -47,6 +47,7 @@ var lang = {
     mztwin:"mztwin",
     dztwin:"dztwin",
     pregnancy:"pregnancy",
+    Acknowledgment: "Tool initiated to satisfy a certain laziness and tested by the members of the team of the clinical genetics service of the CHRU of Nancy, whom I thank.",
 
     //io.js
     pedigree:"pedigree",
