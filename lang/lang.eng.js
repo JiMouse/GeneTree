@@ -217,7 +217,7 @@ var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PAL
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
 var onco = function(){
-    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','pancreatic_cancer','prostate_cancer'];
+    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer'];
 }
 var diseases = onco()
                                     
