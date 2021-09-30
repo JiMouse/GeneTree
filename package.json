@@ -15,7 +15,7 @@
   },
   "license": "GPL-3.0",
   "dependencies": {
-    "handsontable": "^7.4.2",
+    "handsontable": "^10.0.0",
     "pedigreejs":"0.2.0",
     "lodash": ">=4.17.19"
   }
