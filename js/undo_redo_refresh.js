@@ -90,15 +90,10 @@
 						},
 					}],
 				});
-			} else if ($(e.target).hasClass('fa-arrows')) {
-				var xtransform = opts.symbol_size/2;
-				var ytransform = (-opts.symbol_size*2.5);
-				var zoom = 1;
-				d3.select("#"+opts.targetDiv).select('g').attr("transform", "translate("+xtransform+"," + ytransform + ") scale("+zoom+")");
+			} else if ($(e.target).hasClass('fa-arrows')) { //scale_to_fit
+				pzoom.scale_to_fit(opts);
+			} 
 
-				//set cached position
-				pedcache.setposition(opts, xtransform, ytransform);
-			}
 			// trigger fhChange event
 			$(document).trigger('fhChange', [opts]);
 		});

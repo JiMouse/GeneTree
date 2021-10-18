@@ -531,8 +531,8 @@
         	height: 400,
 			symbol_size: 35,
 			store_type: 'session',
-        	zoomIn: 1.0,
-        	zoomOut: 1.0,
+        	zoomIn: 3,
+        	zoomOut: 0.3,
         	diseases: [	{'type': 'breast_cancer', 'colour': '#F68F35'},
         				{'type': 'breast_cancer2', 'colour': 'pink'},
 						{'type': 'ovarian_cancer', 'colour': '#4DAA4D'},
@@ -1019,24 +1019,11 @@
 		        .attr("stroke", "black")
 		        .attr("marker-end", "url(#triangle)");
 		}
-		// drag and zoom
-		zoom = d3.zoom()
-		  .scaleExtent([opts.zoomIn, opts.zoomOut])
-		  .on('zoom', zoomFn);
 
-		function zoomFn() {
-			var t = d3.event.transform;
-			if(d3.event, t.x.toString().length > 10)	// IE fix for drag off screen
-				return;
-			var pos = [(t.x + parseInt(xtransform)), (t.y + parseInt(ytransform))];
-			if(t.k == 1) {
-				pedcache.setposition(opts, pos[0], pos[1]);
-			} else {
-				pedcache.setposition(opts, pos[0], pos[1], t.k);
-			}
-			ped.attr('transform', 'translate(' + pos[0] + ',' + pos[1] + ') scale(' + t.k + ')');
-		}
-		svg.call(zoom);
+		// drag and zoom
+		
+		pzoom.init_zoom(opts,svg); // interference with $('#loadFromHot').click(function()
+
 		return opts;
 	};
 

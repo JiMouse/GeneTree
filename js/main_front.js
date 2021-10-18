@@ -611,12 +611,18 @@ $(document).ready(function() {
         //Update pedigree and diseases
         opts.diseases = $.extend(true, [], new_diseases);
         opts.dataset = obj;
+
+        //TO DO-------------
+        // How to not split partners ?
+        //------------------
+
         ptree.rebuild(opts);
         update_diseases();
         localStorage.setItem('diseases', JSON.stringify(opts.diseases));
     }
 
     $('#loadFromHot').click(function() {
+        // alert('loadFromHot')
         loadFromHot();
     });
 });
