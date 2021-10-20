@@ -707,18 +707,20 @@ function createFamily(famObj, hotObj){
     };
 
     function addNewInd(fathID, mothID, sex, obj, ind, replace=false, pre){
+        let row = NewInd(fathID, mothID, sex, obj, ind, replace, pre)
         if (typeof(ind)!='undefined') {
-            obj.splice(ind+1, 0, NewInd(fathID, mothID, sex, obj, ind, replace,pre));
+            obj.splice(ind+1, 0, row);
         } else {
-            obj.push(NewInd(fathID, mothID, sex, obj, ind, replace, pre));
+            obj.push(row);
         }
+        // obj.splice(1, 0, row);
     }
 
     function hasParents(row){//obj[i]
         return (row.FathID != '0' || row.MothID != '0');
     }
 
-    function newParents(obj,i){ //row index
+    function newParents(obj,i){ //i=row index
         if(hasParents(obj[i])) return
         //create parent and replace index row content
         addNewInd(0, 0, 'M', obj, i, true);
