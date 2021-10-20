@@ -245,7 +245,7 @@ function getTablePatho(obj) {
     for (let i = 0; i < obj.length; i++) {
         for (let j = 0; j < colsDiseases.length; j++) {
             let val = obj[i][colsDiseases[j]];
-            if(!patho.includes(val) && val != '') patho.push(val);
+            if(!patho.includes(val) && val != '' && val != null) patho.push(val);
         }
     }
     return patho;

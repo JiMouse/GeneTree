@@ -428,11 +428,14 @@ $(document).ready(function() {
         opts.dataset = dataset;
     }
 
-    // var dis = localStorage.getItem('diseases');
-    // if(dis !== undefined && dis !== null){
-    //     opts.diseases = JSON.parse(dis);
-    // }
-
+    // load diseases
+    var dis = localStorage.getItem('diseases');
+    if(dis !== undefined && dis !== null){
+        opts.diseases = JSON.parse(dis);
+    } else {
+        opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+    }
+    
     opts= ptree.build(opts);
 
     //edit disease configuration
@@ -617,14 +620,12 @@ $(document).ready(function() {
         //Update pedigree and diseases
         opts.diseases = $.extend(true, [], new_diseases);
         opts.dataset = obj;
-
-        //TO DO-------------
-        // How to not split partners ?
-        //------------------
-
         ptree.rebuild(opts);
-        update_diseases();
+
+        opts.diseases = new_diseases;
         localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+        update_diseases();
+
     }
 
     $('#loadFromHot').click(function() {
