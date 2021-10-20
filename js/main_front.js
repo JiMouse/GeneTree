@@ -427,6 +427,12 @@ $(document).ready(function() {
     } else {
         opts.dataset = dataset;
     }
+
+    // var dis = localStorage.getItem('diseases');
+    // if(dis !== undefined && dis !== null){
+    //     opts.diseases = JSON.parse(dis);
+    // }
+
     opts= ptree.build(opts);
 
     //edit disease configuration
@@ -505,7 +511,7 @@ $(document).ready(function() {
             return isValid;
         }
 
-        function update_diseases() {
+        function update_diseases() { //BUG if new manual row : v.type null
             var tab = "<table class='table table-condensed table-striped table-bordered'>" +
                         "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
             $.each(opts.diseases, function(k, v) {
@@ -622,7 +628,6 @@ $(document).ready(function() {
     }
 
     $('#loadFromHot').click(function() {
-        // alert('loadFromHot')
         loadFromHot();
     });
 });

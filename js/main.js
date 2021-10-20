@@ -79,6 +79,9 @@ function FormatToPedigreeJS(JSONData) {
             if (o[i][ 'proband' ] == null) {
                 delete o[i][ 'proband' ];
             };
+            
+            //Update fields if null (by manual editing of the table)
+            UpdateNullKey(o,i);  
 
             //Update diseases
             UpdateDiseases(o,i)
@@ -386,6 +389,24 @@ function UpdateKey(o, old_key, new_key) {
         o[i][ new_key ] = o[i][ old_key ];
         delete o[i][ old_key ];
     };
+}
+
+function UpdateNullKey(o,i) {
+    // To correct manually added rows
+    var keys = Object.keys(o[i]);
+    for (var j = 0; j < keys.length; j++) {
+        if (o[i][keys[j]] == null) {
+            if (keys[j] == 'famid') {
+                o[i][ 'famid' ] = '1'
+            } else if (keys[j] == 'yob'|keys[j] == 'age') {
+                o[i][keys[j]] = ''
+            } else {
+                delete o[i][keys[j]];
+            }
+        };
+    };
+    if(!o[i].hasOwnProperty('Option')) o[i]['Option'] = ''; //useful ?
+
 }
 
 function GetChild(o,i) {
@@ -734,7 +755,7 @@ function createFamily(famObj, hotObj){
             // if partner doesn't exist : create it
             if (typeof(spouse) == 'undefined' || forceCreation==true) {
                 spouse = newName(obj);
-                addNewInd(0, 0, spouseSex,obj,i);
+                addNewInd(0, 0, spouseSex,obj,i); 
             }
             
             //define father and mother
