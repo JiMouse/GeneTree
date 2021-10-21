@@ -131,7 +131,7 @@
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container">  <!-- class="container-fluid" style="padding:0px 200px;"--> 
 		<!-- Table --> 
 		<div class = "row">
 			<!-- Title--> 
@@ -295,7 +295,7 @@
 							},
 							licenseKey: 'non-commercial-and-evaluation',
 							afterChange: function (change, source) {
-								// save all data to local storge if the edit happends
+								// save all data to local storge if the edit happens
 								if (source !== "loadData") {								
 									sessionStorage['data'] = JSON.stringify(this.getSourceData());
 									return
@@ -304,7 +304,7 @@
 						});
 
 						var setter = false;
-						hot.addHook('afterChange', 
+						hot.addHook('afterChange',  //update age and yob if alive
 							function(changes, source) {
 								if(changes != null) {
 									col = changes[0][1];
@@ -331,7 +331,27 @@
 									}
 								}
 							}
-						);	
+						);
+						
+						//Debug to add rendering on load
+						hot.updateSettings({
+							cells: function (row, col, prop) {
+								isDiseaseProp = function(val) {return prop == val};
+								if (colsDiseases.some(isDiseaseProp)) {
+									var cellProperties = {};
+									cellProperties.renderer = autRenderer;
+									return cellProperties;
+								}
+								if(prop=="Option") {
+									var cellProperties = {};
+									cellProperties.source = optionList();
+									return cellProperties;
+								}
+							},
+							columns: colsOnco,
+							colHeaders: cols_headerOnco
+						});
+
 					</script>
 
 					<!-- create export buttons -->

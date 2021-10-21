@@ -98,6 +98,7 @@ for (var j = 0; j < colsDiseases.length; j++) {
 // autRenderer with onco
 var set = false;
 function autRenderer(instance, td, row, col, prop, value, cellProperties) {
+    //add onco diseases (if not included)
     let index;
     for (var i = 0; i < onco().length; i++) {
         index = diseases.indexOf(onco()[i]);
@@ -106,10 +107,13 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
         }
     };
     
+    //add new value to disease list
     let val = value;
     if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
         diseases.push(val);
     }
+
+    //Update cell properties
     cellProperties.type = 'autocomplete';
     cellProperties.source = diseases
     Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
@@ -117,6 +121,7 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
 
 //autRenderer without onco
 function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
+    //remove onco diseases (if any)
     let index;
     for (var i = 0; i < onco().length; i++) {
         index = diseases.indexOf(onco()[i]);
@@ -125,10 +130,13 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
         }
     };
 
+    //add new value to disease list
     let val = value;
     if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
         diseases.push(val);
     }
+
+    //Update cell properties
     cellProperties.type = 'autocomplete';
     cellProperties.source = diseases
     Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
