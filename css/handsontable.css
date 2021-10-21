@@ -1,0 +1,70 @@
+
+/* 
+
+*/
+
+
+.btyellow,
+.btblue,
+.btpink,
+.btwhite,
+.btgreen {
+  padding: 10px;
+  width: 150px;
+  border: 2px solid #ccc;
+  margin-bottom: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.handsontable .white {
+  background: #fff;
+}
+
+.handsontable .yellow {
+  background: #f7ecb7;
+}
+
+.handsontable .blue {
+  background: #b7ebf4;
+}
+
+.handsontable .pink {
+  background: #fcc9e9;
+}
+
+.handsontable .green {
+  background: #ccf7a0;
+}
+
+.yellow-dot,
+.blue-dot,
+.pink-dot,
+.white-dot,
+.green-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  float: right;
+  border: 1px solid #aaa;
+}
+
+.white-dot {
+  background: #fff;
+}
+
+.yellow-dot {
+  background: #f7ecb7;
+}
+
+.blue-dot {
+  background: #b7ebf4;
+}
+
+.pink-dot {
+  background: #fcc9e9;
+}
+
+.green-dot {
+  background: #ccf7a0;
+}
