@@ -151,7 +151,9 @@ function dicoD () {
         "breast_cancer2" :"bilateral breast cancer",
         "ovarian_cancer":"ovarian cancer",
         "pancreatic_cancer":"pancreatic cancer",
-        "prostate_cancer":"prostate cancer"
+        "prostate_cancer":"prostate cancer",
+        "colon_cancer":"colon cancer",
+        "stomach_cancer":"stomach cancer"
     };
 }
 
@@ -198,7 +200,10 @@ var DEFAULT_DISEASES = [
     {'type': 'breast_cancer2', 'colour': '#f00c93'},
     {'type': 'ovarian_cancer', 'colour': '#4DAA4D'},
     {'type': 'pancreatic_cancer', 'colour': '#D5494A'},
-    {'type': 'prostate_cancer', 'colour': '#4289BA'}
+    {'type': 'prostate_cancer', 'colour': '#4289BA'},
+    {'type': 'colon_cancer', 'colour': '#3E5FB5'},
+    {'type': 'stomach_cancer', 'colour': '#C9D6FF'}
+];
 ];
 
 var dataset = [
@@ -217,7 +222,7 @@ var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PAL
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
 var onco = function(){
-    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer'];
+    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer', 'colon_cancer', 'stomach_cancer'];
 }
 var diseases = onco()
                                     

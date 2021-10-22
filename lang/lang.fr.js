@@ -151,7 +151,9 @@ function dicoD () {
         "cancer_sein2" :"cancer du sein bilatéral",
         "cancer_ovaire":"cancer de l'ovaire",
         "cancer_pancréas":"cancer du pancréas",
-        "cancer_prostate":"cancer de la prostate"
+        "cancer_prostate":"cancer de la prostate",
+        "cancer_colon":"cancer du colon",
+        "cancer_estomac":"cancer de l'estomac"
     };
 }
 
@@ -198,9 +200,11 @@ var myDataExtended2 = [
 var DEFAULT_DISEASES = [
     {'type': 'cancer_sein', 'colour': '#FFC0CB'},
     {'type': 'cancer_sein2', 'colour': '#f00c93'},
-    {'type': 'cancer_ovaire', 'colour': '#4DAA4D'},
-    {'type': 'cancer_pancréas', 'colour': '#D5494A'},
-    {'type': 'cancer_prostate', 'colour': '#4289BA'}
+    {'type': 'cancer_ovaire', 'colour': '#008080'},
+    {'type': 'cancer_pancréas', 'colour': '#800080'},
+    {'type': 'cancer_prostate', 'colour': '#8DB8D5'},
+    {'type': 'cancer_colon', 'colour': '#3E5FB5'},
+    {'type': 'cancer_estomac', 'colour': '#C9D6FF'}
 ];
 
 var dataset = [
@@ -220,7 +224,7 @@ var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PAL
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
 var onco = function(){
-    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas'] //
+    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas', 'cancer_colon', 'cancer_estomac'] //
 }
 var diseases = onco();
                                     

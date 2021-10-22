@@ -337,6 +337,16 @@
 							}
 						);
 
+						//add hook before row manual moving to let index in the first row
+						hot.addHook('beforeRowMove',  //update dataset
+							function(movedRows, finalIndex, dropIndex, movePossible, orderChanged, source) {
+								if(dropIndex !== undefined && finalIndex=='0'){									
+									alert('Le cas index doit être dans la première ligne.')
+									return false;
+								}
+							}
+						);
+
 						//add hook after row manual moving
 						hot.addHook('afterRowMove',  //update dataset
 							function(movedRows, finalIndex, dropIndex, movePossible, orderChanged, source) {
@@ -352,8 +362,9 @@
 										arr.splice(toIndex, 0, element);
 									}
 									
-									array_move(arr, movedRows, finalIndex)
-									// manage multiple rows ?
+									for (let j = 0; j < movedRows.length; j++) {
+										array_move(arr, movedRows[j], finalIndex+j);
+									}
 
 									//load data back
 									hot.loadData(arr)
