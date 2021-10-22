@@ -130,6 +130,9 @@ var title = {
     exportPedigreejs:"Pedigreejs compatible file",
     BoadiceaLink:"Link to BOADICEA v4.0",
     loadStory:'Updating text',
+    pattern:"Patterns",
+    switchToPatterns:"Reset colours and use patterns",
+    help: "Pathologies are represented on the graph by colours or patterns. The colours can be filled in with a HEX code or in English. The possible patterns are: ",
 
     //undo_redo_refresh.js
     center:"Center the pedigree",
@@ -204,7 +207,6 @@ var DEFAULT_DISEASES = [
     {'type': 'colon_cancer', 'colour': '#3E5FB5'},
     {'type': 'stomach_cancer', 'colour': '#C9D6FF'}
 ];
-];
 
 var dataset = [
     {"famid":"1","display_name":"Index","name":"1","father":"2","mother":"3","sex":"M", "proband":true},
@@ -225,7 +227,11 @@ var onco = function(){
     return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer', 'colon_cancer', 'stomach_cancer'];
 }
 var diseases = onco()
-                                    
+
+var patterns = function(){//all id selected by user
+    return ['circles', 'diagonal', 'dots', 'horizontal', 'vertical', 'crosshatch', 'diagonal'];
+}  
+
 //Story
 //Create JSON dictionnary
 var dico = {
@@ -274,5 +280,3 @@ var dico = {
       'décés':'had'
     }
   };
-
-  

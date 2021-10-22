@@ -130,6 +130,9 @@ var title = {
     exportPedigreejs:"Fichier compatible avec Pedigreejs",
     BoadiceaLink:"Lien vers BOADICEA v4.0",
     loadStory:"Màj texte",
+    pattern:"Motifs",
+    switchToPatterns:"Réinitialiser les couleurs et utiliser des motifs ?",
+    help: "Les pathologies sont représentées sur le graphique par des couleurs ou des motifs. Les couleurs peuvent être renseignées par un code HEX ou en toute lettre anglais. Les motifs possibles sont : ",
 
     //undo_redo_refresh.js
     center:"Centrer l'arbre",
@@ -227,7 +230,11 @@ var onco = function(){
     return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas', 'cancer_colon', 'cancer_estomac'] //
 }
 var diseases = onco();
-                                    
+
+var patterns = function(){//all id selected by user
+    return ['cercles', 'diagonale', 'points', 'horizontal', 'vertical', 'croisé', 'diagonale2'];
+}  
+
 //Story
 //Create JSON dictionnary
 var dico = {
@@ -273,4 +280,4 @@ var dico = {
     }
   };
 
-  
+

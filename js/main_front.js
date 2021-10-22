@@ -453,6 +453,47 @@ $(document).ready(function() {
             title: lang.pathoTitle,
             buttons: [
                 {
+                    text: "?", //switch colour to pattern
+                      click: function() {
+                          $('<div id="msgDialog">'+title.help+patterns().join(', ')+'</div>').dialog({
+                            title: title.switchToPatterns,
+                            width: ($(window).width() > 400 ? 500 : $(window).width()- 30),
+                            modal: true
+                        });
+                    }
+                },{
+                    text: title.pattern, //switch colour to pattern
+                      click: function() {
+                          $("#reset_dialog").dialog({
+                            title: title.switchToPatterns,
+                            width: ($(window).width() > 400 ? 500 : $(window).width()- 30),
+                            modal: true,
+                            buttons: [{
+                                text: lang.yes,
+                                click: function () {
+                                    newdataset = ptree.copy_dataset(pedcache.current(opts));
+                                    opts.dataset = newdataset;
+
+                                    //update colour
+                                    for (let i = 0; i < opts.diseases.length; i++) {
+                                        opts.diseases[i].colour = patternsId()[i];
+                                    }
+
+                                    ptree.rebuild(opts);
+                                    update_diseases();
+                                    localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                                    $(this).dialog("close");
+                                },
+                            }, {
+                                text: lang.no,
+                                click: function () {
+                                    $(this).dialog("close");
+                                },
+                            }],
+                        });
+                    }
+                },
+                {
                     text: title.reset,
                       click: function() {
                           $("#reset_dialog").dialog({
@@ -522,7 +563,7 @@ $(document).ready(function() {
             return isValid;
         }
 
-        function update_diseases() { //BUG if new manual row : v.type null
+        function update_diseases() {
             var tab = "<table class='table table-condensed table-striped table-bordered'>" +
                         "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
             $.each(opts.diseases, function(k, v) {
@@ -560,11 +601,19 @@ $(document).ready(function() {
                 if (code == 13 || code == 0) {
                     var this_disease = $(this).attr('id').replace('disease_colour-', '');
                     var this_colour = $(this).val();
-                    // test if valid colour string or hex
-                    if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour)){
-                        console.error('Couleur invalide !', this_colour);
+                    // test if valid colour string or hex or pattern
+                    if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour) 
+                        && !patterns().includes(this_colour) && !patternsId().includes(this_colour)){ //test valid HEX color representation
+                        alert('Couleur invalide !', this_colour);
                         return;
                     }
+
+                    // convert to valid svg pattern
+                    if(patterns().includes(this_colour)){
+                        this_colour = patternsId()[patterns().indexOf(this_colour)]
+                    }
+
+                    //update disease
                     var new_diseases = $.extend(true, [], opts.diseases);
                     $.each(new_diseases, function(index, value) {
                          if(value.type == this_disease) {
