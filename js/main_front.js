@@ -599,8 +599,9 @@ $(document).ready(function() {
         // load table and convert it
         let myDeepClone = JSON.stringify(hot.getSourceData());
         var obj = JSON.parse(myDeepClone);
-        obj = FormatToPedigreeJS(obj);
-        
+        obj = FormatToPedigreeJS(obj, true); //without
+        //TO DO: add clean level update as with Boadicea input.
+
         // get all disease of the obj 
         let allDiseases = getTablePatho(JSON.parse(myDeepClone));
 

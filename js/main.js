@@ -51,53 +51,76 @@ function JSONToPEDConvertor(JSONData, toKeep) {
     }   
 }
 
-function FormatToPedigreeJS(JSONData) {
+function FormatToPedigreeJS(JSONData, UpdateLevel=true) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
     
     // Update key and format JSON for pedigreeJS
     var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age'],
         old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age'];
 
-    function UpdateFields(o) {
-        for (var i = 0; i < o.length; i++) {
-            
-            // remove father/mother keys if empty, then add top_level : 'true'
-            if (o[i][ 'father' ] == '0') delete o[i][ 'father' ];
-            if (o[i][ 'mother' ] == '0') delete o[i][ 'mother' ];
-
-            // remove affected if not affected
-            if (o[i][ 'affected' ] == '1') {
-                delete o[i][ 'affected' ];
-            };
-
-            // remove status if alive : not "status": 1,
-            if (o[i][ 'status' ] != '1') {
-                delete o[i][ 'status' ];
-            };
-
-            // remove proband if null
-            if (o[i][ 'proband' ] == null) {
-                delete o[i][ 'proband' ];
-            };
-            
-            //Update fields if null (by manual editing of the table)
-            UpdateNullKey(o,i);  
-
-            //Update diseases
-            UpdateDiseases(o,i)
-
-            //Update options
-            UpdateOptions(o,i)
-        }
-    }
-
-    for (var i = 0; i < new_key.length ; i++) {
-        UpdateKey(obj, old_key[i], new_key[i])
+    for (var i = 0; i < obj.length; i++) {
+        UpdateKeys(obj, i, old_key, new_key);
+        UpdateFields(obj, i);
     };
-    UpdateFields(obj);
-    UpdateLevels(obj);
 
+    if (UpdateLevel) {UpdateLevels(obj);}
     return obj;
+}
+
+function UpdateKeys(o, i, old_key, new_key) {
+    // JSON object
+    for (let j = 0; j < new_key.length ; j++) {
+        o[i][ new_key[j] ] = o[i][ old_key[j] ];
+        delete o[i][ old_key[j] ];
+    };
+}
+
+function UpdateFields(o, i) {
+        // remove father/mother keys if empty, then add top_level : 'true'
+        if (o[i][ 'father' ] == '0') delete o[i][ 'father' ];
+        if (o[i][ 'mother' ] == '0') delete o[i][ 'mother' ];
+
+        // remove affected if not affected
+        if (o[i][ 'affected' ] == '1') {
+            delete o[i][ 'affected' ];
+        };
+
+        // remove status if alive : not "status": 1,
+        if (o[i][ 'status' ] != '1') {
+            delete o[i][ 'status' ];
+        };
+
+        // remove proband if null
+        if (o[i][ 'proband' ] == null) {
+            delete o[i][ 'proband' ];
+        };
+        
+        //Update fields if null (by manual editing of the table)
+        UpdateNullKey(o,i);  
+
+        //Update diseases
+        UpdateDiseases(o,i)
+
+        //Update options
+        UpdateOptions(o,i)
+}
+
+function UpdateNullKey(o,i) {
+    // To correct manually added rows
+    var keys = Object.keys(o[i]);
+    for (var j = 0; j < keys.length; j++) {
+        if (o[i][keys[j]] == null) {
+            if (keys[j] == 'famid') {
+                o[i][ 'famid' ] = '1'
+            } else if (keys[j] == 'yob'|keys[j] == 'age') {
+                o[i][keys[j]] = ''
+            } else {
+                delete o[i][keys[j]];
+            }
+        };
+    };
+    if(!o[i].hasOwnProperty('Option')) o[i]['Option'] = ''; //useful ?
+
 }
 
 function hasParentsPedigreeJS(row){//obj[i]
@@ -383,31 +406,7 @@ function ExportJSON(obj) {
     document.body.removeChild(a);
 }
 
-function UpdateKey(o, old_key, new_key) {
-    // JSON object
-    for (var i = 0; i < o.length; i++) {
-        o[i][ new_key ] = o[i][ old_key ];
-        delete o[i][ old_key ];
-    };
-}
 
-function UpdateNullKey(o,i) {
-    // To correct manually added rows
-    var keys = Object.keys(o[i]);
-    for (var j = 0; j < keys.length; j++) {
-        if (o[i][keys[j]] == null) {
-            if (keys[j] == 'famid') {
-                o[i][ 'famid' ] = '1'
-            } else if (keys[j] == 'yob'|keys[j] == 'age') {
-                o[i][keys[j]] = ''
-            } else {
-                delete o[i][keys[j]];
-            }
-        };
-    };
-    if(!o[i].hasOwnProperty('Option')) o[i]['Option'] = ''; //useful ?
-
-}
 
 function GetChild(o,i) {
     var j
