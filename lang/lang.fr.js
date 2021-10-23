@@ -202,7 +202,7 @@ var myDataExtended2 = [
 
 var DEFAULT_DISEASES = [
     {'type': 'cancer_sein', 'colour': '#FFC0CB'},
-    {'type': 'cancer_sein2', 'colour': '#f00c93'},
+    {'type': 'cancer_sein2', 'colour': '#F00C93'},
     {'type': 'cancer_ovaire', 'colour': '#008080'},
     {'type': 'cancer_pancréas', 'colour': '#800080'},
     {'type': 'cancer_prostate', 'colour': '#8DB8D5'},

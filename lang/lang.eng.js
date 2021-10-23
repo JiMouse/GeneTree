@@ -200,10 +200,10 @@ var myDataExtended2 = [
 
 var DEFAULT_DISEASES = [
     {'type': 'breast_cancer', 'colour': '#FFC0CB'},
-    {'type': 'breast_cancer2', 'colour': '#f00c93'},
-    {'type': 'ovarian_cancer', 'colour': '#4DAA4D'},
-    {'type': 'pancreatic_cancer', 'colour': '#D5494A'},
-    {'type': 'prostate_cancer', 'colour': '#4289BA'},
+    {'type': 'breast_cancer2', 'colour': '#F00C93'},
+    {'type': 'ovarian_cancer', 'colour': '#008080'},
+    {'type': 'pancreatic_cancer', 'colour': '#800080'},
+    {'type': 'prostate_cancer', 'colour': '#8DB8D5'},
     {'type': 'colon_cancer', 'colour': '#3E5FB5'},
     {'type': 'stomach_cancer', 'colour': '#C9D6FF'}
 ];

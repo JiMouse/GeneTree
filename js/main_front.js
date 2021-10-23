@@ -475,8 +475,10 @@ $(document).ready(function() {
                                     opts.dataset = newdataset;
 
                                     //update colour
+                                    let k;
                                     for (let i = 0; i < opts.diseases.length; i++) {
-                                        opts.diseases[i].colour = patternsId()[i];
+                                        k=i%(patternsId().length)
+                                        opts.diseases[i].colour = patternsId()[k];
                                     }
 
                                     ptree.rebuild(opts);
