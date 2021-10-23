@@ -118,3 +118,19 @@ if it's not present, don't show loader */
 	z-index: 9999;
 	background: url(https://smallenvelop.com/wp-content/uploads/2014/08/Preloader_11.gif) center no-repeat #fff;
 }
+
+/* navbar */
+.header {
+  background-color: #002e5d;
+  border-radius: 0 px;
+  border-width: 0 px;
+}
+
+.navbar-default {
+  /* background-color: #f8f8f8; */
+  border-color: #e7e7e7;
+}
+
+.headerlink {
+  color:#dbe9f5;
+}

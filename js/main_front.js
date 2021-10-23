@@ -156,7 +156,7 @@ var opts = {
     'targetDiv': 'pedigree',
     'btn_target': 'pedigree_history',
     //'nodeclick': pedigree_form.nodeclick,
-    'width': ($(window).width() > 450 ? 900 : $(window).width()- 30),
+    'width': ($(window).width() > 450 ? 1200 : $(window).width()- 30), //900
     'height': 500,
     'symbol_size': 30,
     'edit': true,
@@ -478,7 +478,7 @@ $(document).ready(function() {
                                     let k;
                                     for (let i = 0; i < opts.diseases.length; i++) {
                                         k=i%(patternsId().length)
-                                        opts.diseases[i].colour = patternsId()[k];
+                                        opts.diseases[i].colour = patterns()[k];
                                     }
 
                                     ptree.rebuild(opts);
@@ -608,11 +608,6 @@ $(document).ready(function() {
                         && !patterns().includes(this_colour) && !patternsId().includes(this_colour)){ //test valid HEX color representation
                         alert('Couleur invalide !', this_colour);
                         return;
-                    }
-
-                    // convert to valid svg pattern
-                    if(patterns().includes(this_colour)){
-                        this_colour = patternsId()[patterns().indexOf(this_colour)]
                     }
 
                     //update disease

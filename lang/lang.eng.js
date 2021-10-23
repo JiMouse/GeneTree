@@ -1,5 +1,6 @@
 var lang = {
     //index.html
+    home:"Home",
     greeting : "Hello",
     title:"GeneTree",
     subtitle:"An integrated tool to build a family tree, downloadable as a BOADICEA file, and the clinical history of a family.",
