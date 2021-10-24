@@ -141,276 +141,21 @@
 			</div>
 		</div>
 	</nav>
-	<div class="jumbotron">
-		<div class="container">
-			<div class='row'>
-				<div class="col-lg-9">
-					<i><h1 id="title" class="lang"  style="margin-bottom:0px;"></h1></i>
-				</div>
-				<div class="col-lg-3">
-					<div class="row pull-right">
-						<a class="btn btn-primary btn-lg" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
-						<div class="btnDivider"></div>
-					</div>
-				</div>
-			</div>
-			<div class='row'>
-				<h2 id ="subtitle"  class="lang" style="margin-left:20px;"></h2>
-			</div>
-		</div>
-	</div>
 
 	<div class="container">  <!-- class="container-fluid" style="padding:0px 200px;"--> 
-		<!-- Table --> 
-		<div class = "row">
-			<!-- Title--> 
-			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id = "title_table" class="lang"></h3></div>
-			</div>
-
-			<!-- Buttons --> 
-			<div style="padding:0px 20px 15px;">
-				<div class="text-center">
-					<!--  buttons edit familly -->
-					<div class="dropdown" id="dropdownFam" style="display:inline;">
-						<button class="btn btn-primary dropdown-toggle lang"  type="button" data-toggle="dropdown">
-							<span>&nbsp;</span>
-							<span class="lang" id = "NewFam"></span>
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" style="padding:10px;min-width:300px">
-							<li><div class="text-center" style="padding:0px 10px;">
-								<label class="btn btn-primary btn-block">
-									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang"><span id="loadFile" class="lang"></span></abbr></i><input id="submitLoad" type="file" hidden>
-								</label>
-							</div></li>
-							<li class="divider"></li>
-							<li><div class="text-center">
-								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear"><span id="nuclear_1" class="lang"></span></label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup><span id="extended1_1" class="lang"></span></sup><span id="extended1_2" class="lang"></span></label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended2"  class="lang">2<sup><span id="extended2_1" class="lang"></span></sup><span id="extended2_2" class="lang"></span></label>
-							</div></li>
-							<li class="divider"></li>
-							<li>
-								<div class="row text-center">
-									<b><span id="AddFam" class="lang"></span></b>
-									<div class="btnDivider"></div>
-									<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true" style="color: grey;"></i>
-								</div>
-								<p>
-
-									<div class="row" style='padding-bottom: 5px;'>
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="bro" class="lang"></label></div>
-										<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
-
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="sis" class="lang"></label></div>
-										<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
-									</div>
-									
-									<div class="row">
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sons" class="lang"></label></label></div>
-										<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
-
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="daugh" class="lang"></label></label></div>
-										<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
-									</div>
-									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="patBranch" class="lang"></span></i></div>
-										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc" class="lang"></label></div>
-											<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
-
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt" class="lang"></label></div>
-											<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
-										</div>
-									</p>
-									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="matBranch" class="lang"></span></i></div>
-										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc2" class="lang"></label></div>
-											<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
-											
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt2" class="lang"></label></div>
-											<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
-										</div>
-									</p>
-								</p>
-								<div class="row">
-									<div class="text-center">
-										<div class="btn-group"> 
-											<button id="submitCustomFam" class="btn btn-primary btn-sm lang"></button>
-											<button id="submitAddBranch" class="btn btn-primary btn-sm lang"></button>
-										</div>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-
-					<!-- create buttons -->
-					<button id="loadFormPedigree" class="btn btn-primary">
-						<span id="loadFormPedigreeText" class="lang"></span>
-						<span><i class="fa fa-refresh"></i></span>
-					</button>
-					<div class="btnDivider"></div>
-
-					<button id="reload" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-					<button id="reset" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-					<button id="undo" class="btn btn-primary lang"><i class="fa fa-undo" aria-hidden="true"></i></button>
-					<button id="redo" class="btn btn-primary lang"><i class="fa fa-repeat" aria-hidden="true"></i></button>
-					<div class="btnDivider"></div>
-
-					<button id="add-parents" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_parents" class="lang"></span>
-					</button>
-					<button id="add-brother" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_brother" class="lang"></span>
-					</button>
-					<button id="add-sister" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_sister" class="lang"></span>
-					</button>
-					<button id="add-son" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_son" class="lang"></span>
-					</button>
-					<button id="add-daughter" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_daughter" class="lang"></span>
-					</button>
-					<button id="add-partner" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_spouse" class="lang"></span>
-					</button>
-					<div class="btnDivider"></div>
-					
-					<label class="switch">
-						<input type="checkbox" id="myCheckOnco" checked> 
-						<span class="slider round" for="myCheckOnco" ></span>
-					</label>
-					<label style='font-weight: normal;'>Onco</label>
-					<div class="btnDivider"></div>
-
-					<label class="switch">
-						<input type="checkbox" id="myCheckHPO"> 
-						<span class="slider round" for="myCheckHPO" ></span>
-					</label>
-					<label style='font-weight: normal;'>HPO</label>
-				</div>
-			</div>
-
-			<div class="row" style="padding:0px 30px;">
-				<div class="text-center">
-					<!-- create handsontable table -->
-					<div class='hotContainer' style="height: 250px;">
-						<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
-					</div>
-					<script>
-						var container = document.getElementById('dataTable');
-						var hot = new Handsontable(container, {
-								data: myData,
-								rowHeaders: true,//false
-								colHeaders: cols_headerOnco, 
-								columns: colsOnco,
-								filters: true,
-								dropdownMenu: true,
-								className: "htCenter",
-								contextMenu: true,
-								outsideClickDeselects: false,
-								persistentState: true,
-								undo: true,
-								width: '100%',
-								height: '100%',
-								manualRowMove: true,
-								hiddenColumns: {
-									columns: [0,6], //hide famID and affected columns
-									indicators: false
-								},
-								licenseKey: 'non-commercial-and-evaluation',
-								afterChange: function (change, source) {
-									// save all data to local storge if the edit happens
-									if (source !== "loadData") {								
-										sessionStorage['data'] = JSON.stringify(this.getSourceData());
-										return
-									}
-								}
-							});
-					</script>
-
-					<!-- create export buttons -->
-					<div style="padding-top: 15px;">
-						<button id="exportJson" class="btn btn-primary lang">JSON <i class="fa fa-download"></i></button>
-						<div class="btnDivider"></div>
-						<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA <i class="fa fa-download"></i></button>
-						<div class="btnDivider"></div>
-
-						<!-- create dropdown button to other export file -->
-						<div class="dropdown" style="display:inline;">
-							<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-								<span id="exportText" class="lang"></span>
-								<span>... &nbsp;</span>
-								<span class="caret"></span>
-							</button>
-							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
-								<button id="export_file" class="btn btn-block lang">TSV</button>
-								<button id="savePed" class="btn btn-block lang">PED</button>
-								<button id="exportPedigreejs" class="btn btn-block lang">Pedigreejs</button>
-							</div>
-						</div>
-
-						<div class="btnDivider"></div>
-						<a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://pluto.srl.cam.ac.uk/cgi-bin/bd4/v4beta14/bd.cgi">Boadicea</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Tree -->
-		<div class='row' style="padding-top: 20px;">
-			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id="title_pedigree" class="lang"></h3></div>
-			</div>
-
-			<div class="text-center">
-				<button id="loadFromHot" class='btn btn-primary'>
-					<span id = "loadFromHotText" class="lang"></span>
-					<span><i class="fa fa-refresh"></i></span>
-				</button>
-				<label class="btn btn-primary">
-					<i class="fa fa-folder-open-o"></i><input id="load" type="file" hidden>
-				</label>
-				<div class="btnDivider"></div>
-
-				<button id="save" class='btn btn-primary'>JSON <i class="fa fa-download"></i></button>
-				<button id="boadicea_download"class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
-				<div class="btnDivider"></div>
-
-				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
-				<button id="png_download" class='btn btn-primary'>JPEG <i class="fa fa-download"></i></button>
-				<button id="print" class='btn btn-primary lang'></button>
-				<div class="btnDivider"></div>
-
-				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog" aria-hidden="true"></i></button>
-				<br></br>
-
-				<!-- create pedigree -->
-				<div id="pedigrees"></div>
-				<div id="node_properties"></div>
-
-				<!-- create disease settings -->
-				<div id="fh_settings"></div>
-				<div id="reset_dialog" class="lang"></div>
-			</div>
-		</div>
 
 		<!-- Story -->
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"></h3>
-					<button class='btn btn-light btn-sm lang' id="loadStory"><i class="fa fa-refresh"></i></button>
-					<button class='btn btn-light btn-sm lang' id="copyToClip"></button>
+					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Titre</h3>
 				</div>
 			</div>
 			
 			<p>
-				<div id="story" contenteditable="true" style="padding:0px 20px;"></div>
+				<div id="story" contenteditable="true" style="padding:0px 20px;">
+					Page en cours de construction.
+				</div>
 			</p>
 		</div>
 
@@ -418,7 +163,7 @@
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 id="title_reference" class="lang"></h3>
+					<h3 id="title_reference" class="lang">Références</h3>
 				</div>
 			</div>
 			
