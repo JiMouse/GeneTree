@@ -48,22 +48,22 @@
 	</script>
 	
 	<!-- load pedigreejs -->
-    <script src="js/io.js"></script>
-    <script src="js/pedigree_form.js"></script>
-    <script src="js/pedigree.js"></script>
-    <script src="js/undo_redo_refresh.js"></script>
-	<script src="js/widgets.js"></script>
-	<script src="js/zoom.js"></script>
-	<script src="js/table.js"></script>
+    <script src="../js/io.js"></script>
+    <script src="../js/pedigree_form.js"></script>
+    <script src="../js/pedigree.js"></script>
+    <script src="../js/undo_redo_refresh.js"></script>
+	<script src="../js/widgets.js"></script>
+	<script src="../js/zoom.js"></script>
+	<script src="../js/table.js"></script>
 
 	<!-- main script -->
-	<script type="text/javascript" src="js/main.js"></script>
-	<script type="text/javascript" src="js/main_front.js"></script>
-	<script type="text/javascript" src="js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../js/main.js"></script>
+	<script type="text/javascript" src="../js/main_front.js"></script>
+	<script type="text/javascript" src="../js/hotContextMenu.js"></script>
 
 	<!-- main css -->
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
 
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -135,8 +135,8 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span></a> </li>
+					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang"></span></a></li>
 					<li><a class="headerlink" href="/GeneTree/docs/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
-					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="user_friendly" class="lang"></span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -144,19 +144,70 @@
 
 	<div class="container">  <!-- class="container-fluid" style="padding:0px 200px;"--> 
 
-		<!-- Story -->
+		<!-- Introduction -->
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Titre</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Introduction</h3>
 				</div>
 			</div>
 			
-			<p>
-				<div id="story" contenteditable="true" style="padding:0px 20px;">
-					Page en cours de construction.
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					Cette application est un outil intégré pour aider les médecins dans le cadre de leur consultation de génétique, notamment francophones (disponible en anglais également).
+					Il dispose d'un mode spécifique pour la consultation d'oncogénétique ainsi qu'un utilisant les phénotypes HPO. La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, puis complétée via un tableau ou une interface graphique, tout deux interconnectés.
+					L'arbre est exportable dans plusieurs format de fichiers (TSV, JSON, PED, BOADICEA) et modifiable par un éditeur vectoriel (format PDF, SVG : que j'utilise dans le cadre de publication).
+					Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau (à ma connaissance la seule qui le permet).
+
+					Initialement, cet outil a été conçu particulièrement en pensant aux consultations d'oncogénétique afin d'éviter la triple saisie (texte-arbre- score de risque boadicea).
+					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte.
+				</p>
+			</div>
+		</div>
+
+		<!-- Prise en main du tableur -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Introduction</h3>
 				</div>
-			</p>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					
+				</p>
+			</div>
+		</div>
+
+		<!-- Prise en main de l'arbre généalogique -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Prise en main de l'arbre généalogique</h3>
+				</div>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					
+				</p>
+			</div>
+		</div>
+
+		<!-- Génération du texte -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Génération du texte</h3>
+				</div>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					
+				</p>
+			</div>
 		</div>
 
 		<!-- References -->

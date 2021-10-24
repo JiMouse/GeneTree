@@ -63,7 +63,16 @@ function FormatToPedigreeJS(JSONData, UpdateLevel=true) {
         UpdateFields(obj, i);
     };
 
-    if (UpdateLevel) {UpdateLevels(obj);}
+    if (UpdateLevel) {
+        UpdateLevels(obj);
+        //get index of mother and father of index
+        // var indexID = 1, 
+        //     father = obj[getRow(obj, indexID)].FathID,
+        //     mother = obj[getRow(obj, indexID)].MothID;
+        //(getRowPedigreeJS(father)>getRowPedigreeJS(mother)?"":"")
+        //getRowPedigreeJS
+
+    }
     return obj;
 }
 
