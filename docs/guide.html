@@ -160,7 +160,11 @@
 					Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau (à ma connaissance la seule qui le permet).
 
 					Initialement, cet outil a été conçu particulièrement en pensant aux consultations d'oncogénétique afin d'éviter la triple saisie (texte-arbre- score de risque boadicea).
-					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte.
+					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte. Des boutons (en rouge) permettent de synchroniser manuellement les données
+					entre ces trois volets.
+				</p>
+				<p class="text-center">
+					<img src="../data/images/plan général.png"  alt="fonctionnement général" height="600" style="display: inline-block;">
 				</p>
 			</div>
 		</div>
@@ -169,13 +173,54 @@
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Introduction</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Tableau de saisie</h3>
 				</div>
 			</div>
 			
 			<div  style="padding:0px 10px 20px;">
 				<p>
-					
+					<h4>Chargement d'un fichier</h4>
+					<p>
+						Un fichier Boadicea v4 ou JSON (issu de l'arbre ou du tableur) peut être chargé directement.
+					</p>
+					<hr>
+					<h4>Création d'une famille</h4>
+					<p>
+						<li>Modèle prédéfini</li>
+						<p>
+							Un arbre de base est proposé : le cas index et ses parents, les grands-parents, et enfin les arrières-grands-parents.
+						</p>
+						<li>Modèle personalisé</li>
+						<p>
+							Il est aussi possible de générer un arbre personnalisé avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)
+							via le bouton 'Créer un nouvel arbre'.
+							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu').
+						</p>
+					</p>
+					<hr>
+					<h4>Ajout d'un individu</h4>
+					<p>
+						Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un membre correspondant.
+						Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu.
+						Il est ensuite possible de personaliser cet individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc. Un champs "commentaire" est également 
+						existant et son contenu sera ajouté dans le texte généré.
+					</p>
+					<hr>
+					<h4>Autres fonctions</h4>
+					<p>
+						<ul>
+							<li>Réinitialiser : efface l'arbre est créer un arbre de base propositus et parents.</li>
+							<li>Défaire : défait la dernière action</li>
+							<li>Refaire : refait la dernière action</li>
+							<li>Mode "onco" : pré-rempli la liste des pathologies avec des cancers et affiche les colonnes présentes dans Boadicéa.</li>
+							<li>Mode "HPO" : importe la liste des pathologies et symptômes HPO lors du choix des pathologies.</li>
+						</ul>
+						Le tableur est également utilisable comme un tableur excel : il est possible de copier, coller ou supprimer des lignes.
+						Attention à ne pas supprimer des individus référencés comme ascendants d'autres individus (exemple : les parents).
+						Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque
+						l'arbre généré a des branches croisées.
+						Il est possible également de colorer des lignes ou colonnes ou cellules grâce au menu contextuel (clic droit).
+					</p>
 				</p>
 			</div>
 		</div>
@@ -190,7 +235,29 @@
 			
 			<div  style="padding:0px 10px 20px;">
 				<p>
-					
+					L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4.
+					Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.
+				</p>
+				<p>
+					Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les "widgets" utilisés pour l'édition.
+					Vous pouvez utiliser ces "widgets" pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre.
+					La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.
+				</p>
+				<p>
+					Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif.
+					Un bouton spécifique permets de transformer les couleurs en motifs.
+				</p>
+				<p class="text-center">
+					<img src="../data/images/widgets.jpg"  alt="fonctionnement général" width="200" style="display: inline-block;">
+				</p>
+				<p>
+					L'arbre est ensuite téléchargeable dans différent fichier : "JSON" pour la sauvegarde de toutes les informations, Boadicea afin d'utiliser <a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
+					,  "SVG" afin de permettre de le modifier avec un logiciel vectoriel et enfin "JPEG". L'impression directe ou l'export en format PDF est également possible via un bouton dédié.<br>
+					Avant de l'exporter, il est utile d'utiliser le bouton "centrer l'arbre" afin de centrer l'arbre et le mettre à l'échelle du cadre.
+				</p>
+				<hr>
+				<p>
+					L'abre est sauvegardé en copie locale (aucune donnée n'est envoyée au serveur) ce qui empêche la perte de donnée en cas de raffraichissement accidentel.
 				</p>
 			</div>
 		</div>
@@ -205,7 +272,7 @@
 			
 			<div  style="padding:0px 10px 20px;">
 				<p>
-					
+					Le texte est généré à partir du tableau (et non de l'arbre) grâce au bouton dédié. Le texte est ensuite modifiable, sélectionable et copiable.
 				</p>
 			</div>
 		</div>
