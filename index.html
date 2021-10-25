@@ -97,17 +97,24 @@
 
 			//Load load_lang
 			setSetterLanguage(load_lang);
+
+			(function() {
+				var strLink = '/GeneTree/docs/'+load_lang+'/user-interface.html'
+				document.getElementById("userLink").setAttribute("href", strLink);
+				var strLink2 = '/GeneTree/docs/'+load_lang+'/guide.html'
+				document.getElementById("guideLink").setAttribute("href", strLink);
+			})();
 		});
 	</script>
 	<nav class="navbar navbar-default header" style="margin-bottom:0px;margin-top:0px;background-color: #002e5d;">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" style="background-color:#dbe9f5" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+				<button type="button" class="navbar-toggle collapsed" style="background-color:#002e5d;" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only" style="color: #dbe9f5">Navigation</span>
+					<span class="icon-bar" style="color: #dbe9f5"></span>
+					<span class="icon-bar" style="color: #dbe9f5"></span>
+					<span class="icon-bar" style="color: #dbe9f5"></span>
 				</button>
 			</div>
 	
@@ -135,8 +142,8 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span></a> </li>
-					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang"></span></a></li>
-					<li><a class="headerlink" href="/GeneTree/docs/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
+					<li><a class="headerlink" id="guideLink" style="color:#dbe9f5"><span id="user_friendly" class="lang"></span></a></li>
+					<li><a class="headerlink" id="userLink" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -247,7 +254,8 @@
 					</div>
 
 					<!-- create buttons -->
-					<button id="loadFormPedigree" class="btn btn-primary" style="background-color:#b73338;border-color: #8f282c;">
+					<!-- style="background-color:#b73338;border-color: #8f282c;" -->
+					<button id="loadFormPedigree" class="btn btn-primary">
 						<span id="loadFormPedigreeText" class="lang"></span>
 						<span><i class="fa fa-refresh"></i></span>
 					</button>
@@ -346,10 +354,10 @@
 								<span>... &nbsp;</span>
 								<span class="caret"></span>
 							</button>
-							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;">
-								<button id="export_file" class="btn btn-block lang">TSV</button>
-								<button id="savePed" class="btn btn-block lang">PED</button>
-								<button id="exportPedigreejs" class="btn btn-block lang">Pedigreejs</button>
+							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #337ab7;">
+								<button id="export_file" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">TSV</button>
+								<button id="savePed" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">PED</button>
+								<button id="exportPedigreejs" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">Pedigreejs</button>
 							</div>
 						</div>
 
@@ -367,7 +375,7 @@
 			</div>
 
 			<div class="text-center">
-				<button id="loadFromHot" class='btn btn-primary'  style="background-color:#b73338;border-color: #8f282c;">
+				<button id="loadFromHot" class='btn btn-primary'>
 					<span id = "loadFromHotText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
 				</button>
@@ -403,7 +411,7 @@
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
 					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"></h3>
-					<button class='btn btn-light btn-sm lang' id="loadStory"  style="color:white; background-color:#b73338;border-color: #8f282c;"><i class="fa fa-refresh"></i></button>
+					<button class='btn btn-light btn-sm lang' id="loadStory"  style="background-color:#dbe9f5"><i class="fa fa-refresh"></i></button>
 					<button class='btn btn-light btn-sm lang' id="copyToClip" style="background-color:#dbe9f5"></button>
 				</div>
 			</div>
