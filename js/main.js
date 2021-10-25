@@ -65,13 +65,26 @@ function FormatToPedigreeJS(JSONData, UpdateLevel=true) {
 
     if (UpdateLevel) {
         UpdateLevels(obj);
-        //get index of mother and father of index
-        // var indexID = 1, 
-        //     father = obj[getRow(obj, indexID)].FathID,
-        //     mother = obj[getRow(obj, indexID)].MothID;
-        //(getRowPedigreeJS(father)>getRowPedigreeJS(mother)?"":"")
-        //getRowPedigreeJS
 
+        // adjust position of mother and father to avoid crossing branches
+        //get index of mother and father of index
+        let indexID = 1, 
+            fatherID = obj[getRowPedigreeJS(obj, indexID)].father,
+            motherID = obj[getRowPedigreeJS(obj, indexID)].mother,
+            fatherIndex = getRowPedigreeJS(obj, fatherID),
+            motherIndex = getRowPedigreeJS(obj, motherID);
+        
+        //move rows with the lower index
+        if(Math.abs(fatherIndex-motherIndex)>1) {
+            if(fatherIndex > motherIndex) {
+                var movedRow=motherIndex,
+                    finalRow=fatherIndex;
+            }else{
+                var movedRow=fatherIndex,
+                    finalRow=motherIndex;
+            }
+            array_move(obj, movedRow, finalRow);
+        }
     }
     return obj;
 }
