@@ -134,3 +134,9 @@ if it's not present, don't show loader */
 .headerlink {
   color:#dbe9f5;
 }
+
+.responsive {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
