@@ -24,8 +24,8 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 	<!-- main css -->
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../../css/handsontable.css">
 
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -48,30 +48,29 @@
 	
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
-
 				<ul class="nav navbar-nav navbar-left">
-					<li class="dropdown" style="display:inline;">
+					<!-- <li class="dropdown" style="display:inline;">
 						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
-							<!-- <img id="LangSetterImg" alt="Français" src="../data/images/fr.svg"> -->
 							<span id="LangSetterText" class="lang"></span>
 							<span class="caret"></span>
 						</button>
 						<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
 							<button class="btn btn-block" type='button' id="LangSetterFr" style="background-color: #002e5d;color: #dbe9f5">
-								<!-- <img alt="Français" src="../data/images/fr.svg">	 -->
 								<span>Fr</span>
 							</button>
 							<button class="btn btn-block" type='button' id="LangSetterEng"  style="background-color: #002e5d;color: #dbe9f5">
-								<!-- <img alt="Anglais" src="../data/images/eng.svg"> -->
 								<span>Eng</span>
 							</button>
 						</div>
-					</li>
+					</li> -->
+					<li>
+			            <a data-lang="en" href="/GeneTree/docs/eng/guide.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
+			        </li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span></a> </li>
-					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang"></span></a></li>
-					<li><a class="headerlink" href="/GeneTree/docs/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
+					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Accueil</span></a> </li>
+					<li><a class="headerlink" href="/GeneTree/docs/fr/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang">Interface simplifiée</span></a></li>
+					<li><a class="headerlink" href="/GeneTree/docs/fr/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -99,7 +98,9 @@
 					entre ces trois volets.
 				</p>
 				<p class="text-center">
-					<img src="../data/images/plan général.png"  alt="fonctionnement général" height="600" style="display: inline-block;">
+					<img src="../../data/images/plan général.png"  alt="fonctionnement général" height="600" style="display: inline-block;">
+					<br><br>
+					<span>Figure 1. Fonctionnement général de l'application</span>
 				</p>
 			</div>
 		</div>
@@ -116,20 +117,20 @@
 				<p>
 					<h4>Chargement d'un fichier</h4>
 					<p>
-						Un fichier Boadicea v4 ou JSON (issu de l'arbre ou du tableur) peut être chargé directement.
+						Un fichier Boadicea v4 ou JSON (issu de l'arbre ou du tableur) peut être chargé directement (1).
 					</p>
 					<hr>
 					<h4>Création d'une famille</h4>
 					<p>
 						<li>Modèle prédéfini</li>
 						<p>
-							Un arbre de base est proposé : le cas index et ses parents, les grands-parents, et enfin les arrières-grands-parents.
+							Un arbre de base est proposé : le cas index et ses parents, les grands-parents, et enfin les arrières-grands-parents (2).
 						</p>
 						<li>Modèle personalisé</li>
 						<p>
-							Il est aussi possible de générer un arbre personnalisé avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)
-							via le bouton 'Créer un nouvel arbre'.
-							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu').
+							Il est aussi possible de générer un arbre personnalisé (3) avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)
+							via le bouton 'Créer un nouvel arbre' (4).
+							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu')(5).
 						</p>
 					</p>
 					<hr>
@@ -157,6 +158,11 @@
 						Il est possible également de colorer des lignes ou colonnes ou cellules grâce au menu contextuel (clic droit).
 					</p>
 				</p>
+				<p class="text-center">
+					<img src="../../data/images/menu.png"  alt="menu arbre" width="200" style="display: inline-block;">
+					<br><br>
+					<span>Figure 2. Menu déroulant du tableau</span>
+				</p>
 			</div>
 		</div>
 
@@ -183,7 +189,9 @@
 					Un bouton spécifique permets de transformer les couleurs en motifs.
 				</p>
 				<p class="text-center">
-					<img src="../data/images/widgets.jpg"  alt="fonctionnement général" width="200" style="display: inline-block;">
+					<img src="../../data/images/widgets.jpg"  alt="fonctionnement général" width="200" style="display: inline-block;">
+					<br><br>
+					<span>Figure 3. "Widgets" autour d'un individu</span>
 				</p>
 				<p>
 					L'arbre est ensuite téléchargeable dans différent fichier : "JSON" pour la sauvegarde de toutes les informations, Boadicea afin d'utiliser <a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
@@ -216,7 +224,7 @@
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 id="title_reference" class="lang"></h3>
+					<h3 id="title_reference" class="lang">Références</h3>
 				</div>
 			</div>
 			
