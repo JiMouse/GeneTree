@@ -38,7 +38,7 @@
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" style="background-color:#dbe9f5" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<button type="button" class="navbar-toggle collapsed" style="border:#dbe9f5;background-color:#dbe9f5" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -87,18 +87,21 @@
 			</div>
 			
 			<div  style="padding:0px 10px 20px;">
-				<p>
+				<p class="big">
 					Cette application est un outil intégré pour aider les médecins dans le cadre de leur consultation de génétique, notamment francophones (disponible en anglais également).
-					Il dispose d'un mode spécifique pour la consultation d'oncogénétique ainsi qu'un utilisant les phénotypes HPO. La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, puis complétée via un tableau ou une interface graphique, tout deux interconnectés.
-					L'arbre est exportable dans plusieurs format de fichiers (TSV, JSON, PED, BOADICEA) et modifiable par un éditeur vectoriel (format PDF, SVG : que j'utilise dans le cadre de publication).
-					Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau (à ma connaissance la seule qui le permet).
-
+					Il dispose d'un mode spécifique pour la consultation d'oncogénétique ainsi qu'un utilisant les phénotypes HPO. 
+					<br>
+					La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, puis complétée via un tableau ou une interface graphique, tout deux interconnectés.
+					<br>
+					L'arbre est exportable dans plusieurs format de fichiers (TSV, JSON, PED, BOADICEA) et modifiable par un éditeur vectoriel (format PDF, SVG).
+					<br>Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau.
+					<hr>
 					Initialement, cet outil a été conçu particulièrement en pensant aux consultations d'oncogénétique afin d'éviter la triple saisie (texte-arbre- score de risque boadicea).
 					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte. Des boutons (en rouge) permettent de synchroniser manuellement les données
 					entre ces trois volets.
 				</p>
 				<p class="text-center">
-					<img src="../../data/images/plan général.png"  alt="fonctionnement général" class="responsive">
+					<img src="../../data/images/plan général.png"  alt="fonctionnement général" class="responsive" style="max-width:800px;">
 					<br><br>
 					<span>Figure 1. Fonctionnement général de l'application</span>
 				</p>
@@ -132,6 +135,11 @@
 							via le bouton 'Créer un nouvel arbre' (4).
 							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu')(5).
 						</p>
+						<p class="text-center">
+							<img src="../../data/images/menu.png"  alt="menu arbre" width="300" style="display: inline-block;">
+							<br><br>
+							<span>Figure 2. Menu déroulant du tableau</span>
+						</p>
 					</p>
 					<hr>
 					<h4>Ajout d'un individu</h4>
@@ -157,11 +165,6 @@
 						l'arbre généré a des branches croisées.
 						Il est possible également de colorer des lignes ou colonnes ou cellules grâce au menu contextuel (clic droit).
 					</p>
-				</p>
-				<p class="text-center">
-					<img src="../../data/images/menu.png"  alt="menu arbre" width="300" style="display: inline-block;">
-					<br><br>
-					<span>Figure 2. Menu déroulant du tableau</span>
 				</p>
 			</div>
 		</div>
@@ -193,6 +196,7 @@
 					<br><br>
 					<span>Figure 3. "Widgets" autour d'un individu</span>
 				</p>
+				<hr>
 				<p>
 					L'arbre est ensuite téléchargeable dans différent fichier : "JSON" pour la sauvegarde de toutes les informations, Boadicea afin d'utiliser <a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
 					,  "SVG" afin de permettre de le modifier avec un logiciel vectoriel et enfin "JPEG". L'impression directe ou l'export en format PDF est également possible via un bouton dédié.<br>
@@ -200,7 +204,7 @@
 				</p>
 				<hr>
 				<p>
-					L'abre est sauvegardé en copie locale (aucune donnée n'est envoyée au serveur) ce qui empêche la perte de donnée en cas de raffraichissement accidentel.
+					Note : l'abre est sauvegardé en cache local ce qui empêche la perte de donnée en cas de raffraichissement accidentel. Par ailleurs, aucune donnée n'est envoyée au serveur.
 				</p>
 			</div>
 		</div>

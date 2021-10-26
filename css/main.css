@@ -137,6 +137,9 @@ if it's not present, don't show loader */
 
 .responsive {
   width: 100%;
-  max-width: 600px;
   height: auto;
+}
+
+p.big {
+  line-height: 1.5;
 }
