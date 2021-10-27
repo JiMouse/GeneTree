@@ -795,7 +795,7 @@
 				}, 'indi_details');
 		}
 
-		// individuals disease details
+		// individuals disease details //<- add comment ?
 		for(var i=0;i<opts.diseases.length; i++) {
 			var disease = opts.diseases[i].type;
 			addLabel(opts, node, ".25em", -(opts.symbol_size),
