@@ -798,7 +798,8 @@
 		// individuals disease details //<- add comment ?
 		for(var i=0;i<opts.diseases.length; i++) {
 			var disease = opts.diseases[i].type;
-			addLabel(opts, node, ".25em", -(opts.symbol_size),
+			
+			(opts, node, ".25em", -(opts.symbol_size),
 					function(d) {
 						var y_offset = (d.y_offset ? d.y_offset+font_size: font_size*2.2);
 						for(var j=0;j<opts.diseases.length; j++) {

@@ -210,7 +210,8 @@ var DEFAULT_DISEASES = [
     {'type': 'cancer_pancréas', 'colour': '#800080'},
     {'type': 'cancer_prostate', 'colour': '#8DB8D5'},
     {'type': 'cancer_colon', 'colour': '#3E5FB5'},
-    {'type': 'cancer_estomac', 'colour': '#C9D6FF'}
+    {'type': 'cancer_estomac', 'colour': '#C9D6FF'},
+    {'type': 'polypes', 'colour': 'croisé'}
 ];
 
 var dataset = [
