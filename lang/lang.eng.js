@@ -159,7 +159,10 @@ function dicoD () {
         "pancreatic_cancer":"pancreatic cancer",
         "prostate_cancer":"prostate cancer",
         "colon_cancer":"colon cancer",
-        "stomach_cancer":"stomach cancer"
+        "stomach_cancer":"stomach cancer",
+        "uterine_cancer":"uterine cancer",
+        "kidney_cancer":"kidney cancer",
+        "liver_cancer":"liver cancer"
     };
 }
 
@@ -209,6 +212,10 @@ var DEFAULT_DISEASES = [
     {'type': 'prostate_cancer', 'colour': '#8DB8D5'},
     {'type': 'colon_cancer', 'colour': '#3E5FB5'},
     {'type': 'stomach_cancer', 'colour': '#C9D6FF'},
+    {'type': 'uterine_cancer', 'colour': '#FFE5B4'},
+    {'type': 'kidney_cancer', 'colour': '#FFA500'},
+    {'type': 'liver_cancer', 'colour': '#01D758'},
+    {'type': 'melanoma', 'colour': 'black'},
     {'type': 'polypes', 'colour': 'crosshatch'}
 ];
 

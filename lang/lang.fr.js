@@ -159,7 +159,11 @@ function dicoD () {
         "cancer_pancréas":"cancer du pancréas",
         "cancer_prostate":"cancer de la prostate",
         "cancer_colon":"cancer du colon",
-        "cancer_estomac":"cancer de l'estomac"
+        "cancer_estomac":"cancer de l'estomac",
+        "cancer_utérus":"cancer de l'utérus",
+        "cancer_rein":"cancer du rein",
+        "cancer_foie":"cancer du foie"
+    
     };
 }
 
@@ -211,6 +215,10 @@ var DEFAULT_DISEASES = [
     {'type': 'cancer_prostate', 'colour': '#8DB8D5'},
     {'type': 'cancer_colon', 'colour': '#3E5FB5'},
     {'type': 'cancer_estomac', 'colour': '#C9D6FF'},
+    {'type': 'cancer_utérus', 'colour': '#FFE5B4'},
+    {'type': 'cancer_rein', 'colour': '#FFA500'},
+    {'type': 'cancer_foie', 'colour': '#01D758'},
+    {'type': 'mélanome', 'colour': 'black'},
     {'type': 'polypes', 'colour': 'croisé'}
 ];
 
