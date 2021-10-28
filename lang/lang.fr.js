@@ -162,7 +162,8 @@ function dicoD () {
         "cancer_estomac":"cancer de l'estomac",
         "cancer_utérus":"cancer de l'utérus",
         "cancer_rein":"cancer du rein",
-        "cancer_foie":"cancer du foie"
+        "cancer_foie":"cancer du foie",
+        "cancer_ORL":"cancer ORL"
     
     };
 }
@@ -218,7 +219,8 @@ var DEFAULT_DISEASES = [
     {'type': 'cancer_utérus', 'colour': '#FFE5B4'},
     {'type': 'cancer_rein', 'colour': '#FFA500'},
     {'type': 'cancer_foie', 'colour': '#01D758'},
-    {'type': 'mélanome', 'colour': 'black'},
+    {'type': 'mélanome', 'colour': '#808080'},
+    {'type': 'cancer_ORL', 'colour': '#808080'},
     {'type': 'polypes', 'colour': 'croisé'}
 ];
 

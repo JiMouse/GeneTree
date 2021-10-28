@@ -796,6 +796,7 @@
 		}
 
 		// individuals disease details //<- add comment ?
+		//add line for each diseases in the pedigree ?
 		for(var i=0;i<opts.diseases.length; i++) {
 			var disease = opts.diseases[i].type;
 			

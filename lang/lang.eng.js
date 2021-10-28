@@ -162,7 +162,8 @@ function dicoD () {
         "stomach_cancer":"stomach cancer",
         "uterine_cancer":"uterine cancer",
         "kidney_cancer":"kidney cancer",
-        "liver_cancer":"liver cancer"
+        "liver_cancer":"liver cancer",
+        "head_neck_cancer":"head and neck cancer"
     };
 }
 
@@ -215,7 +216,8 @@ var DEFAULT_DISEASES = [
     {'type': 'uterine_cancer', 'colour': '#FFE5B4'},
     {'type': 'kidney_cancer', 'colour': '#FFA500'},
     {'type': 'liver_cancer', 'colour': '#01D758'},
-    {'type': 'melanoma', 'colour': 'black'},
+    {'type': 'head_neck_cancer', 'colour': '#808080'},
+    {'type': 'melanoma', 'colour': '#808080'},
     {'type': 'polypes', 'colour': 'crosshatch'}
 ];
 
