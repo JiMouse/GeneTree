@@ -53,7 +53,7 @@ function JSONToPEDConvertor(JSONData, toKeep) {
 
 function FormatToPedigreeJS(JSONData, UpdateLevel=true) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData
-    
+
     // Update key and format JSON for pedigreeJS
     var new_key = ['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age'],
         old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age'];

@@ -707,10 +707,6 @@
 			    			return 'darkgrey';
 				    	return opts.node_background;
 			    	}
-					//if patterns
-					if(patterns().includes(opts.diseases[i].colour)){
-                        return patternsId()[patterns().indexOf(opts.diseases[i].colour)]
-                    }
 			    	return opts.diseases[i].colour;
 			    });
 
@@ -795,12 +791,10 @@
 				}, 'indi_details');
 		}
 
-		// individuals disease details //<- add comment ?
-		//add line for each diseases in the pedigree ?
+		// individuals disease details
 		for(var i=0;i<opts.diseases.length; i++) {
 			var disease = opts.diseases[i].type;
-			
-			(opts, node, ".25em", -(opts.symbol_size),
+			addLabel(opts, node, ".25em", -(opts.symbol_size),
 					function(d) {
 						var y_offset = (d.y_offset ? d.y_offset+font_size: font_size*2.2);
 						for(var j=0;j<opts.diseases.length; j++) {

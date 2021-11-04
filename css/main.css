@@ -143,3 +143,38 @@ if it's not present, don't show loader */
 p.big {
   line-height: 1.5;
 }
+
+.custom-theme {
+  background:#337ab7;
+  border:#337ab7;
+  color:white;
+}
+
+.custom-background {
+  background:#fff;
+  border:#337ab7;
+}
+
+.custom-btn {
+  color: #fff;
+  background:#337ab7;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+.no-bullets {
+  list-style-type: none;
+}
+
+.field_label {
+  /* display: block;
+  float: left;
+  width: 200px;
+  text-align: right; */
+  margin-top: 5px;
+  /* padding-right: 10px; */
+}
+.field {
+  float: left;
+  margin-bottom: 10px;
+}

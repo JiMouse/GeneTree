@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<title>GeneTree</title>
 	<meta charset="UTF-8">
@@ -8,21 +9,28 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<!-- load bootstrap dependencies -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
 
 	<!-- load pedigreejs dependencies : jquery, bootstrap, font-awesome, d3 -->
-		<!-- css -->
-	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- css -->
+	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css"
+		media="all" />
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+		type="text/css" media="all" />
 
-		<!-- javascript -->
+	<!-- javascript -->
 	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	
+
 	<script src="package/lodash.js"></script>
 
 	<!-- languages script -->
@@ -32,8 +40,8 @@
 		function isFr(lang) {
 			return /fr/.test(lang)
 		}
-		default_lang=(userLang.some(isFr) ? "fr" : "eng");
-		
+		default_lang = (userLang.some(isFr) ? "fr" : "eng");
+
 		//define load lang : check if localStorage
 		var local_lang = localStorage.getItem("language");
 		if (local_lang !== undefined && local_lang !== null) {
@@ -41,20 +49,21 @@
 		} else {
 			load_lang = default_lang;
 		}
-		
+
 		//load languages scripts
-		document.write('<scr'+'ipt type="text/javascript" src="lang/lang.'+load_lang+'.js"></sc'+'ript>');
-		document.write('<scr'+'ipt type="text/javascript" src="lang/story.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr' + 'ipt type="text/javascript" src="lang/lang.' + load_lang + '.js"></sc' + 'ript>');
+		document.write('<scr' + 'ipt type="text/javascript" src="lang/story.' + load_lang + '.js"></sc' + 'ript>');
 	</script>
-	
+
 	<!-- load pedigreejs -->
-    <script src="js/io.js"></script>
-    <script src="js/pedigree_form.js"></script>
-    <script src="js/pedigree.js"></script>
-    <script src="js/undo_redo_refresh.js"></script>
+	<script src="js/io.js"></script>
+	<script src="js/pedigree_form.js"></script>
+	<script src="js/pedigree.js"></script>
+	<script src="js/undo_redo_refresh.js"></script>
 	<script src="js/widgets.js"></script>
 	<script src="js/zoom.js"></script>
 	<script src="js/hotTable.js"></script>
+	<script src="js/indexWidgets.js"></script>
 
 	<!-- main script -->
 	<script type="text/javascript" src="js/main.js"></script>
@@ -65,12 +74,13 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/handsontable.css">
 
-	<!-- load handsontable module v10.0 --> 
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+	<!-- load handsontable module v10.0 -->
+	<script type="text/javascript"
+		src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
 
 
-	<!-- Display a loading icon until the page loads completely --> 
+	<!-- Display a loading icon until the page loads completely -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 	<script>
 		$(window).on("load", function (e) {
@@ -82,26 +92,27 @@
 		});
 	</script>
 </head>
+
 <body>
 	<div class="se-pre-con"></div>
 	<script>
-		$(document).ready(function(){
-			$('.lang').each(function() {
+		$(document).ready(function () {
+			$('.lang').each(function () {
 				var value = $(this).attr('id');
 				//add text
-				if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
+				if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]);
 
 				//add title
-				if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
+				if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]);
 			});
 
 			//Load load_lang
 			setSetterLanguage(load_lang);
 
-			(function() {
-				var strLink = '/GeneTree/docs/'+load_lang+'/user-interface.html'
+			(function () {
+				var strLink = '/GeneTree/docs/' + load_lang + '/user-interface.html'
 				document.getElementById("userLink").setAttribute("href", strLink);
-				var strLink2 = '/GeneTree/docs/'+load_lang+'/guide.html'
+				var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
 				document.getElementById("guideLink").setAttribute("href", strLink2);
 			})();
 		});
@@ -110,40 +121,50 @@
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" style="background-color:#002e5d;" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<button type="button" class="navbar-toggle collapsed" style="background-color:#002e5d;"
+					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only" style="background-color: #dbe9f5">Navigation</span>
 					<span class="icon-bar" style="background-color: #dbe9f5"></span>
 					<span class="icon-bar" style="background-color: #dbe9f5"></span>
 					<span class="icon-bar" style="background-color: #dbe9f5"></span>
 				</button>
 			</div>
-	
+
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false"
+				style="height: 1px;">
 
 				<ul class="nav navbar-nav navbar-left">
 					<li class="dropdown" style="display:inline;">
-						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
+						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false"
+							style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
 							<img id="LangSetterImg" alt="Français" src="data/images/fr.svg">
 							<span id="LangSetterText" class="lang"></span>
 							<span class="caret"></span>
 						</button>
-						<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
-							<button class="btn btn-block" type='button' id="LangSetterFr" style="background-color: #002e5d;color: #dbe9f5">
-								<img alt="Français" src="data/images/fr.svg">	
+						<div class="dropdown-menu" aria-labelledby="export"
+							style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
+							<button class="btn btn-block" type='button' id="LangSetterFr"
+								style="background-color: #002e5d;color: #dbe9f5">
+								<img alt="Français" src="data/images/fr.svg">
 								<span>Fr</span>
 							</button>
-							<button class="btn btn-block" type='button' id="LangSetterEng"  style="background-color: #002e5d;color: #dbe9f5">
+							<button class="btn btn-block" type='button' id="LangSetterEng"
+								style="background-color: #002e5d;color: #dbe9f5">
 								<img alt="Anglais" src="data/images/eng.svg">
 								<span>Eng</span>
 							</button>
 						</div>
 					</li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span></a> </li>
-					<li><a class="headerlink" id="userLink" style="color:#dbe9f5"><span id="user_friendly" class="lang"></span></a></li>
-					<li><a class="headerlink" id="guideLink" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i
+								class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span></a> </li>
+					<li><a class="headerlink" id="userLink" style="color:#dbe9f5"><span id="user_friendly"
+								class="lang"></span></a></li>
+					<li><a class="headerlink" id="guideLink" style="color:#dbe9f5"><i class="fa fa-info"
+								aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -152,218 +173,799 @@
 		<div class="container">
 			<div class='row'>
 				<div class="col-lg-9">
-					<i><h1 id="title" class="lang"  style="margin-bottom:0px;"></h1></i>
+					<i>
+						<h1 id="title" class="lang" style="margin-bottom:0px;"></h1>
+					</i>
 				</div>
 				<div class="col-lg-3">
 					<div class="row pull-right">
-						<a class="btn btn-primary btn-lg" role="button" href="https://github.com/JiMouse/GeneTree/">GitHub</a>
+						<a class="btn btn-primary btn-lg" role="button"
+							href="https://github.com/JiMouse/GeneTree/">GitHub</a>
 						<div class="btnDivider"></div>
 					</div>
 				</div>
 			</div>
 			<div class='row'>
-				<h2 id ="subtitle"  class="lang" style="margin-left:20px;"></h2>
+				<h2 id="subtitle" class="lang" style="margin-left:20px;"></h2>
 			</div>
 		</div>
 	</div>
 
-	<div class="container">  <!-- class="container-fluid" style="padding:0px 200px;"--> 
-		<!-- Table --> 
-		<div class = "row">
-			<!-- Title--> 
-			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id = "title_table" class="lang"></h3></div>
+	<div class="container">
+		<!-- Table -->
+		<div class="panel">
+			<div class="panel-heading" style="background-color: #dbe9f5;">
+				<h3 id="title_table" class="lang"></h3>
+			</div>
+		</div>
+
+		<!-- Buttons -->
+		<div class="row" style="padding:0px 20px 15px;">
+			<div class="col-sm-4">
+				<!--  buttons edit familly -->
+				<div class="dropdown" id="dropdownFam" style="display:inline;">
+					<button class="btn btn-primary dropdown-toggle lang" type="button" data-toggle="dropdown">
+						<span>&nbsp;</span>
+						<span class="lang" id="NewFam"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="padding:10px;min-width:300px">
+						<li>
+							<div class="text-center" style="padding:0px 10px;">
+								<label class="btn btn-primary btn-block">
+									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang"><span
+												id="loadFile" class="lang"></span></abbr></i><input id="submitLoad"
+										type="file" hidden>
+								</label>
+							</div>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<div class="text-center">
+								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear"><span
+										id="nuclear_1" class="lang"></span></label>
+								<label class="radio-inline"><input type="radio" name="optradio"
+										id="extended1">1<sup><span id="extended1_1" class="lang"></span></sup><span
+										id="extended1_2" class="lang"></span></label>
+								<label class="radio-inline"><input type="radio" name="optradio" id="extended2"
+										class="lang">2<sup><span id="extended2_1" class="lang"></span></sup><span
+										id="extended2_2" class="lang"></span></label>
+							</div>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<div class="row text-center">
+								<b><span id="AddFam" class="lang"></span></b>
+								<div class="btnDivider"></div>
+								<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true"
+									style="color: grey;"></i>
+							</div>
+							<p>
+							<div class="row" style='padding-bottom: 5px;'>
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="bro"
+										class="lang"></label></div>
+								<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
+
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sis"
+										class="lang"></label></div>
+								<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sons"
+										class="lang"></label></label></div>
+								<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
+
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="daugh"
+										class="lang"></label></label></div>
+								<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
+							</div>
+							<p>
+							<div class="row text-center" style='padding-bottom: 5px;'><i><span id="patBranch"
+										class="lang"></span></i></div>
+							<div class="row">
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc"
+										class="lang"></label></div>
+								<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
+
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt"
+										class="lang"></label></div>
+								<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
+							</div>
+							</p>
+							<p>
+							<div class="row text-center" style='padding-bottom: 5px;'><i><span id="matBranch"
+										class="lang"></span></i></div>
+							<div class="row">
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc2"
+										class="lang"></label></div>
+								<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
+
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt2"
+										class="lang"></label></div>
+								<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
+							</div>
+							</p>
+							</p>
+							<div class="row">
+								<div class="text-center">
+									<div class="btn-group">
+										<button id="submitCustomFam" class="btn btn-primary btn-sm lang"></button>
+										<button id="submitAddBranch" class="btn btn-primary btn-sm lang"></button>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+				<!-- buttons -->
+				<button id="loadFormPedigree" class="btn btn-primary">
+					<span id="loadFormPedigreeText" class="lang"></span>
+					<span><i class="fa fa-refresh"></i></span>
+				</button>
 			</div>
 
-			<!-- Buttons --> 
-			<div style="padding:0px 20px 15px;">
-				<div class="text-center">
-					<!--  buttons edit familly -->
-					<div class="dropdown" id="dropdownFam" style="display:inline;">
-						<button class="btn btn-primary dropdown-toggle lang"  type="button" data-toggle="dropdown">
-							<span>&nbsp;</span>
-							<span class="lang" id = "NewFam"></span>
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" style="padding:10px;min-width:300px">
-							<li><div class="text-center" style="padding:0px 10px;">
-								<label class="btn btn-primary btn-block">
-									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang"><span id="loadFile" class="lang"></span></abbr></i><input id="submitLoad" type="file" hidden>
-								</label>
-							</div></li>
-							<li class="divider"></li>
-							<li><div class="text-center">
-								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear"><span id="nuclear_1" class="lang"></span></label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended1">1<sup><span id="extended1_1" class="lang"></span></sup><span id="extended1_2" class="lang"></span></label>
-								<label class="radio-inline"><input type="radio" name="optradio" id="extended2"  class="lang">2<sup><span id="extended2_1" class="lang"></span></sup><span id="extended2_2" class="lang"></span></label>
-							</div></li>
-							<li class="divider"></li>
-							<li>
-								<div class="row text-center">
-									<b><span id="AddFam" class="lang"></span></b>
-									<div class="btnDivider"></div>
-									<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true" style="color: grey;"></i>
+			<!-- <div class="btnDivider"></div> -->
+			<div class="col-sm-4 text-center">
+				<button id="reload" class="btn btn-primary btn-sm disabled"><i class="fa fa-refresh"></i></button>
+				<button id="reset" class="btn btn-primary btn-sm"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+				<button id="undo" class="btn btn-primary btn-sm lang disabled"><i class="fa fa-undo"
+						aria-hidden="true"></i></button>
+				<button id="redo" class="btn btn-primary btn-sm lang disabled"><i class="fa fa-repeat"
+						aria-hidden="true"></i></button>
+			</div>
+
+			<div class="col-sm-4 text-center">
+				<label class="switch">
+					<input type="checkbox" id="myCheckOnco" checked>
+					<span class="slider round" for="myCheckOnco"></span>
+				</label>
+				<label style='font-weight: normal;'>Onco</label>
+
+				<div class="btnDivider"></div>
+
+				<label class="switch">
+					<input type="checkbox" id="myCheckHPO">
+					<span class="slider round" for="myCheckHPO"></span>
+				</label>
+				<label style='font-weight: normal;'>HPO</label>
+			</div>
+		</div>
+
+		<div class="row" style="padding:0px 20px 15px;">
+
+			<div class="col-sm-4 text-center">
+				<!-- Button trigger modal -->
+				<!-- style="background-color:#b73338;border-color: #8f282c;" -->
+				<button id="supp_edit_info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+					Ajouter des informations à un individu
+				</button>
+				
+				<div id="supp_info" style="background-color: white;" class='container'>
+					<form action="post" novalidate="novalidate">
+						<fieldset>
+							<p class="text-center">
+								<i>Formulaire en cours de construction.</i>
+							</p>
+							<div class="row">
+								<div class="col-sm-4 text-right field_label">
+									<label for="form_id_name">Nom :</label>
 								</div>
-								<p>
-									<div class="row" style='padding-bottom: 5px;'>
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="bro" class="lang"></label></div>
-										<div class="col-sm-3"><input type="number" id="brother" min="0" max="20"></div>
+								<div class="field col-sm-8">
+									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
+										id="form_id_name" aria-invalid="false">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 text-right">
+									<label for="id_sex_0">
+										<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
+											Homme
+									</label>
+								</div>
+								<div class="col-sm-6 text-left">
+									<label for="id_sex_1">
+										<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid">
+											Femme
+									</label>
+								</div>
+							</div>
+							<hr>
+							<div class="row" style="padding-left: 20px;padding-right: 20px;">
+									<label for="form_id_comment">Commentaire :</label>
+									<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
+									rows="4"></textarea>
+							</div>
 
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;'id="sis" class="lang"></label></div>
-										<div class="col-sm-2"><input type="number" id="sister" min="0" max="20"></div>
+							<!-- <div class="row">
+								<div class="col-xs-5 text-right field_label"><label
+										for="id_status_0"></label></div>
+								<div class="field col-xs-7">
+									<ul id="id_status">
+										<li><label for="id_status_0"><input type="radio" name="status" value="0" required="" id="id_status_0" checked=""
+													class="valid">
+												Vivant</label></li>
+										<li><label for="id_status_1"><input type="radio" name="status"
+													value="1" required="" id="id_status_1"
+													class="valid">
+												Décédé</label></li>
+									</ul>
+								</div>
+							</div> -->
+							
+							<!-- <div class="row">
+								<div class="col-xs-5 text-right field_label"><label for="id_age"><span
+											id="id_age_0">Âge:</span><span id="id_age_1"
+											class="hidden">Âge au décès:</span></label><span
+										id="age_yob_lock" class="fa fa-lg fa-lock" aria-hidden="true"
+										title="L’âge et l’année de naissance sont synchronisés pour les personnes inscrites «&nbsp;Vivant&nbsp;». Cliquez sur ce symbole pour déverrouiller/verrouiller ces champs. Pour les personnes inscrites «&nbsp;Décédé&nbsp;», ces champs sont indépendants."></span>
+								</div>
+								<div class="field col-xs-7">
+									<input type="number" name="age"
+										class="form-control invalid fa" min="0" max="125" id="id_age"
+										aria-describedby="id_age-error" aria-invalid="true">
+										<strong id="id_age-error" class="invalid fa">&thinsp;</strong>
 									</div>
-									
-									<div class="row">
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sons" class="lang"></label></label></div>
-										<div class="col-sm-3"><input type="number" id="son" min="0" max="20"></div>
-
-										<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="daugh" class="lang"></label></label></div>
-										<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
-									</div>
-									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="patBranch" class="lang"></span></i></div>
-										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc" class="lang"></label></div>
-											<div class="col-sm-3"><input type="number" id="uncleP" min="0" max="20"></div>
-
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt" class="lang"></label></div>
-											<div class="col-sm-2"><input type="number" id="auntP" min="0" max="20"></div>
+							</div> -->
+							<!-- <div class="row">
+								<div class="col-xs-5 text-right field_label">
+									<label for="id_yob_0">Date de naissance:</label>
+								</div>
+								<div class="field col-xs-7">
+									<input type="number" name="yob_0"
+										class="form-control invalid fa" min="1850" max="2021" id="id_age"
+										aria-describedby="id_age-error" aria-invalid="true">
+								</div>
+							</div> -->
+							<!-- <div class="row">
+								<div title="proband" class="field_label col-md-5 text-md-right"><label
+										for="id_proband">Cas index:</label><span
+										class="field_checkbox"><input type="checkbox" name="proband"
+											id="id_proband" disabled=""></span>
+								</div>
+								<div title="exclude from calculation" class="field_label col-md-6">
+									<label for="id_exclude">Exclure:</label><span
+										class="field_checkbox"><input type="checkbox" name="exclude"
+											id="id_exclude"></span>
+								</div>
+								<div id="tabs" class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+									<ul id="tablist"
+										class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+										<li role="tab" tabindex="0" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active"
+											aria-controls="cancer" aria-labelledby="ui-id-1"
+											aria-selected="true" aria-expanded="true">
+											<a href="#cancer"
+												role="presentation" tabindex="-1" class="ui-tabs-anchor"
+												id="ui-id-1">Âge au diagnostic
+											</a>
+										</li>
+										<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab"
+											aria-controls="bc_pathology" aria-labelledby="ui-id-2"
+											aria-selected="false" aria-expanded="false">
+											<a
+												href="#bc_pathology" role="presentation" tabindex="-1"
+												class="ui-tabs-anchor" id="ui-id-2">Pathologie
+											</a>
+										</li>
+										<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab"
+											aria-controls="gene_test" aria-labelledby="ui-id-3"
+											aria-selected="false" aria-expanded="false">
+											<a href="#gene_test"
+												role="presentation" tabindex="-1" class="ui-tabs-anchor"
+												id="ui-id-3">Tests génétiques
+											</a>
+										</li>
+									</ul>
+									<div id="info">
+										<div id="cancer" class="hideTab" aria-labelledby="ui-id-1" role="tabpanel"
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+											<div class="row">
+												<div title="approximate age of diagnosis"
+													class="field_label col-md-6 text-md-right"><label
+														for="id_approx">approx.</label><span
+														class="field_checkbox"><input type="checkbox"
+															name="approx" id="id_approx"></span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-5 text-md-right"><label
+														for="id_breast_cancer_diagnosis_age_0">Sein:&thinsp;<span
+															class="pleft5 bg-breast_cancer"></span></label>
+												</div>
+												<div class="field col-md-6 col-sm-6"><input type="number"
+														name="breast_cancer_diagnosis_age_0" min="0" max="125"
+														class="form-control valid"
+														id="id_breast_cancer_diagnosis_age_0"><select
+														name="breast_cancer_diagnosis_age_1"
+														class="form-control valid"
+														id="id_breast_cancer_diagnosis_age_1"
+														style="display: none;">
+														<option value="" selected="">-</option>
+														<option value="5">&lt;10</option>
+														<option value="15">10-20</option>
+														<option value="25">20-30</option>
+														<option value="35">30-40</option>
+														<option value="45">40-50</option>
+														<option value="55">50-60</option>
+														<option value="65">60-70</option>
+														<option value="75">70-80</option>
+														<option value="85">&gt;80</option>
+													</select>
+												</div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-5 text-md-right"><label
+														for="id_breast_cancer2_diagnosis_age_0">Sein
+														controlatéral:&thinsp;<span
+															class="pleft5 bg-breast_cancer2"></span></label>
+												</div>
+												<div class="field col-md-6 col-sm-6"><input type="number"
+														name="breast_cancer2_diagnosis_age_0" min="0" max="125"
+														class="form-control valid"
+														id="id_breast_cancer2_diagnosis_age_0"><select
+														name="breast_cancer2_diagnosis_age_1"
+														class="form-control valid"
+														id="id_breast_cancer2_diagnosis_age_1"
+														style="display: none;">
+														<option value="" selected="">-</option>
+														<option value="5">&lt;10</option>
+														<option value="15">10-20</option>
+														<option value="25">20-30</option>
+														<option value="35">30-40</option>
+														<option value="45">40-50</option>
+														<option value="55">50-60</option>
+														<option value="65">60-70</option>
+														<option value="75">70-80</option>
+														<option value="85">&gt;80</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-5 text-md-right"><label
+														for="id_ovarian_cancer_diagnosis_age_0">Ovaires:&thinsp;<span
+															class="pleft5 bg-ovarian_cancer"></span></label>
+												</div>
+												<div class="field col-md-6 col-sm-6"><input type="number"
+														name="ovarian_cancer_diagnosis_age_0" min="0" max="125"
+														class="form-control valid"
+														id="id_ovarian_cancer_diagnosis_age_0"><select
+														name="ovarian_cancer_diagnosis_age_1"
+														class="form-control valid"
+														id="id_ovarian_cancer_diagnosis_age_1"
+														style="display: none;">
+														<option value="" selected="">-</option>
+														<option value="5">&lt;10</option>
+														<option value="15">10-20</option>
+														<option value="25">20-30</option>
+														<option value="35">30-40</option>
+														<option value="45">40-50</option>
+														<option value="55">50-60</option>
+														<option value="65">60-70</option>
+														<option value="75">70-80</option>
+														<option value="85">&gt;80</option>
+													</select>
+												</div>
+											</div>
+											<div class="row" style="display: none;">
+												<div class="field_label col-md-5 text-md-right"><label
+														for="id_prostate_cancer_diagnosis_age_0">Prostate:&thinsp;<span
+															class="pleft5 bg-prostate_cancer"></span></label>
+												</div>
+												<div class="field col-md-6 col-sm-6"><input type="number"
+														name="prostate_cancer_diagnosis_age_0" min="0" max="125"
+														class="form-control valid"
+														id="id_prostate_cancer_diagnosis_age_0"><select
+														name="prostate_cancer_diagnosis_age_1"
+														class="form-control valid"
+														id="id_prostate_cancer_diagnosis_age_1"
+														style="display: none;">
+														<option value="" selected="">-</option>
+														<option value="5">&lt;10</option>
+														<option value="15">10-20</option>
+														<option value="25">20-30</option>
+														<option value="35">30-40</option>
+														<option value="45">40-50</option>
+														<option value="55">50-60</option>
+														<option value="65">60-70</option>
+														<option value="75">70-80</option>
+														<option value="85">&gt;80</option>
+													</select>
+												</div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-5 text-md-right"><label
+														for="id_pancreatic_cancer_diagnosis_age_0">Pancréas:&thinsp;<span
+															class="pleft5 bg-pancreatic_cancer"></span></label>
+												</div>
+												<div class="field col-md-6 col-sm-6"><input type="number"
+														name="pancreatic_cancer_diagnosis_age_0" min="0"
+														max="125" class="form-control valid"
+														id="id_pancreatic_cancer_diagnosis_age_0"><select
+														name="pancreatic_cancer_diagnosis_age_1"
+														class="form-control valid"
+														id="id_pancreatic_cancer_diagnosis_age_1"
+														style="display: none;">
+														<option value="" selected="">-</option>
+														<option value="5">&lt;10</option>
+														<option value="15">10-20</option>
+														<option value="25">20-30</option>
+														<option value="35">30-40</option>
+														<option value="45">40-50</option>
+														<option value="55">50-60</option>
+														<option value="65">60-70</option>
+														<option value="75">70-80</option>
+														<option value="85">&gt;80</option>
+													</select>
+												</div>
+											</div>
 										</div>
-									</p>
-									<p>
-										<div class="row text-center" style='padding-bottom: 5px;'><i><span id="matBranch" class="lang"></span></i></div>
-										<div class="row">
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="unc2" class="lang"></label></div>
-											<div class="col-sm-3"><input type="number" id="uncleM" min="0" max="20"></div>
-											
-											<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="aunt2" class="lang"></label></div>
-											<div class="col-sm-2"><input type="number" id="auntM" min="0" max="20"></div>
+
+										<div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
+											aria-hidden="true" style="display: none;">
+											<div class="row">
+												<div class="field_label col-md-8 text-md-right"><label
+														for="id_er_bc_pathology">Récepteur d’œstrogènes:</label>
+												</div>
+												<div class="field col-md-4"><select name="er_bc_pathology"
+														class="form-control valid" id="id_er_bc_pathology"
+														disabled="" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-8 text-md-right"><label
+														for="id_pr_bc_pathology">Récepteurs à la
+														progestérone:</label></div>
+												<div class="field col-md-4"><select name="pr_bc_pathology"
+														class="form-control valid" id="id_pr_bc_pathology"
+														disabled="" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-8 text-md-right"><label
+														for="id_her2_bc_pathology">HER2:</label></div>
+												<div class="field col-md-4"><select name="her2_bc_pathology"
+														class="form-control valid" id="id_her2_bc_pathology"
+														disabled="" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-8 text-md-right"><label
+														for="id_ck14_bc_pathology">Cytokératine 14:</label>
+												</div>
+												<div class="field col-md-4"><select name="ck14_bc_pathology"
+														class="form-control valid" id="id_ck14_bc_pathology"
+														disabled="" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-md-8 text-md-right"><label
+														for="id_ck56_bc_pathology">Cytokératine 5/6:</label>
+												</div>
+												<div class="field col-md-4"><select name="ck56_bc_pathology"
+														class="form-control valid" id="id_ck56_bc_pathology"
+														disabled="" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
 										</div>
-									</p>
-								</p>
-								<div class="row">
-									<div class="text-center">
-										<div class="btn-group"> 
-											<button id="submitCustomFam" class="btn btn-primary btn-sm lang"></button>
-											<button id="submitAddBranch" class="btn btn-primary btn-sm lang"></button>
+
+										<div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
+											aria-hidden="true" style="display: none;">
+											<div class="row bottom5">
+												<div class="field_label col-lg-4 text-lg-right">
+													<label for="select_all_gene_tests">Définir tous les tests&nbsp;:</label>
+												</div>
+												<div class="field col-lg-6">
+													<select class="form-control"
+														id="select_all_gene_tests">
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+														<option value="N">Absent</option>
+														<option value="reset">Réinitialiser</option>
+													</select>
+												</div>
+											</div>
+											<div class="row hidden-md">
+												<div class="col-lg-4"></div>
+												<div class="col-lg-4">
+													<a href="https://canrisk.atlassian.net/wiki/spaces/FAQS/pages/30703617/What+is+the+difference+between+a+mutation+search+and+a+direct+gene+test"
+														title="FAQ" target="_blank">Type de test
+													</a>
+												</div>
+												<div class="col-lg-4">Résultat</div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_brca1_gene_test">BRCA1 test :</label>
+												</div>
+												<div class="field col-lg-4">
+													<select name="brca1_gene_test"
+														class="form-control valid" id="id_brca1_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select>
+												</div>
+												<div class="field col-lg-4">
+													<select
+														name="brca1_gene_test_result" class="form-control valid"
+														id="id_brca1_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select>
+												</div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_brca2_gene_test">BRCA2 test :</label></div>
+												<div class="field col-lg-4"><select name="brca2_gene_test"
+														class="form-control valid" id="id_brca2_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="brca2_gene_test_result" class="form-control valid"
+														id="id_brca2_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_palb2_gene_test">PALB2 test :</label></div>
+												<div class="field col-lg-4"><select name="palb2_gene_test"
+														class="form-control valid" id="id_palb2_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="palb2_gene_test_result" class="form-control valid"
+														id="id_palb2_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_chek2_gene_test">CHEK2 test :</label></div>
+												<div class="field col-lg-4"><select name="chek2_gene_test"
+														class="form-control valid" id="id_chek2_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="chek2_gene_test_result" class="form-control valid"
+														id="id_chek2_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_atm_gene_test">ATM test :</label></div>
+												<div class="field col-lg-4"><select name="atm_gene_test"
+														class="form-control valid" id="id_atm_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select name="atm_gene_test_result"
+														class="form-control valid" id="id_atm_gene_test_result"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_rad51d_gene_test">RAD51D test :</label></div>
+												<div class="field col-lg-4"><select name="rad51d_gene_test"
+														class="form-control valid" id="id_rad51d_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="rad51d_gene_test_result"
+														class="form-control valid"
+														id="id_rad51d_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_rad51c_gene_test">RAD51C test :</label></div>
+												<div class="field col-lg-4"><select name="rad51c_gene_test"
+														class="form-control valid" id="id_rad51c_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="rad51c_gene_test_result"
+														class="form-control valid"
+														id="id_rad51c_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
+											<div class="row">
+												<div class="field_label col-lg-4 text-lg-right"><label
+														for="id_brip1_gene_test">BRIP1 test :</label></div>
+												<div class="field col-lg-4"><select name="brip1_gene_test"
+														class="form-control valid" id="id_brip1_gene_test"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">Non testé</option>
+														<option value="S">Recherche de mutation</option>
+														<option value="T">Test génétique direct</option>
+													</select></div>
+												<div class="field col-lg-4"><select
+														name="brip1_gene_test_result" class="form-control valid"
+														id="id_brip1_gene_test_result" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">Mut-présente</option>
+														<option value="N">Mut-absente</option>
+													</select></div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</li>
-						</ul>
-					</div>
-
-					<!-- create buttons -->
-					<!-- style="background-color:#b73338;border-color: #8f282c;" -->
-					<button id="loadFormPedigree" class="btn btn-primary">
-						<span id="loadFormPedigreeText" class="lang"></span>
-						<span><i class="fa fa-refresh"></i></span>
-					</button>
-					<div class="btnDivider"></div>
-
-					<button id="reload" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-					<button id="reset" class="btn btn-primary"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-					<button id="undo" class="btn btn-primary lang"><i class="fa fa-undo" aria-hidden="true"></i></button>
-					<button id="redo" class="btn btn-primary lang"><i class="fa fa-repeat" aria-hidden="true"></i></button>
-					<div class="btnDivider"></div>
-
-					<button id="add-parents" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_parents" class="lang"></span>
-					</button>
-					<button id="add-brother" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_brother" class="lang"></span>
-					</button>
-					<button id="add-sister" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_sister" class="lang"></span>
-					</button>
-					<button id="add-son" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_son" class="lang"></span>
-					</button>
-					<button id="add-daughter" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_daughter" class="lang"></span>
-					</button>
-					<button id="add-partner" class="btn btn-primary">
-						<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_spouse" class="lang"></span>
-					</button>
-					<div class="btnDivider"></div>
-					
-					<label class="switch">
-						<input type="checkbox" id="myCheckOnco" checked> 
-						<span class="slider round" for="myCheckOnco" ></span>
-					</label>
-					<label style='font-weight: normal;'>Onco</label>
-					<div class="btnDivider"></div>
-
-					<label class="switch">
-						<input type="checkbox" id="myCheckHPO"> 
-						<span class="slider round" for="myCheckHPO" ></span>
-					</label>
-					<label style='font-weight: normal;'>HPO</label>
+							</div> -->
+						</fieldset>
+					</form>
 				</div>
 			</div>
 
-			<div class="row" style="padding:0px 30px;">
-				<div class="text-center">
-					<!-- create handsontable table -->
-					<div class='hotContainer' style="height: 250px;">
-						<div id="dataTable" class="hot handsontable htColumnHeaders" style="display:inline-block;z-index: 0;min-height:100px;"></div>
-					</div>
-					<script>
-						var container = document.getElementById('dataTable');
-						var hot = new Handsontable(container, {
-								data: myData,
-								rowHeaders: true,//false
-								colHeaders: cols_headerOnco, 
-								columns: colsOnco,
-								filters: true,
-								dropdownMenu: true,
-								className: "htCenter",
-								contextMenu: true,
-								outsideClickDeselects: false,
-								persistentState: true,
-								undo: true,
-								width: '100%',
-								height: '100%',
-								manualRowMove: true,
-								hiddenColumns: {
-									columns: [0,6], //hide famID and affected columns
-									indicators: false
-								},
-								licenseKey: 'non-commercial-and-evaluation',
-								afterChange: function (change, source) {
-									// save all data to local storge if the edit happens
-									if (source !== "loadData") {								
-										sessionStorage['data'] = JSON.stringify(this.getSourceData());
-										return
-									}
-								}
-							});
-					</script>
+			<div class="col-sm-8 text-center">
+				<button id="add-parents" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_parents" class="lang"></span>
+				</button>
+				<button id="add-brother" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_brother" class="lang"></span>
+				</button>
+				<button id="add-sister" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_sister" class="lang"></span>
+				</button>
+				<button id="add-son" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_son" class="lang"></span>
+				</button>
+				<button id="add-daughter" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_daughter" class="lang"></span>
+				</button>
+				<button id="add-partner" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_spouse" class="lang"></span>
+				</button>
+			</div>
 
-					<!-- create export buttons -->
-					<div style="padding-top: 15px;">
-						<button id="exportJson" class="btn btn-primary lang">JSON <i class="fa fa-download"></i></button>
-						<div class="btnDivider"></div>
-						<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA <i class="fa fa-download"></i></button>
-						<div class="btnDivider"></div>
+		</div>
 
-						<!-- create dropdown button to other export file -->
-						<div class="dropdown" style="display:inline;">
-							<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-								<span id="exportText" class="lang"></span>
-								<span>... &nbsp;</span>
-								<span class="caret"></span>
-							</button>
-							<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #337ab7;">
-								<button id="export_file" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">TSV</button>
-								<button id="savePed" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">PED</button>
-								<button id="exportPedigreejs" class="btn btn-block lang" style="color:#fff;background-color: #337ab7;">Pedigreejs</button>
-							</div>
+		<!-- hot table and export buttons -->
+		<div class="row" style="padding:0px 30px;">
+			<div class="text-center">
+				<!-- create handsontable table -->
+				<div class='hotContainer' style="height: 250px;">
+					<div id="dataTable" class="hot handsontable htColumnHeaders"
+						style="display:inline-block;z-index: 0;min-height:100px;"></div>
+				</div>
+				<script>
+					var container = document.getElementById('dataTable');
+					var hot = new Handsontable(container, {
+						data: myData,
+						rowHeaders: true,//false
+						colHeaders: cols_headerOnco,
+						columns: colsOnco,
+						filters: true,
+						dropdownMenu: true,
+						className: "htCenter",
+						contextMenu: true,
+						outsideClickDeselects: false,
+						persistentState: true,
+						undo: true,
+						width: '100%',
+						height: '100%',
+						manualRowMove: true,
+						hiddenColumns: {
+							columns: [0, 6], //hide famID and affected columns
+							indicators: false
+						},
+						licenseKey: 'non-commercial-and-evaluation',
+						afterChange: function (change, source) {
+							// save all data to local storge if the edit happens
+							if (source !== "loadData") {
+								sessionStorage['data'] = JSON.stringify(this.getSourceData());
+								return
+							}
+						}
+					});
+				</script>
+
+				<!-- create export buttons -->
+				<div style="padding-top: 15px;">
+					<button id="exportJson" class="btn btn-primary lang">JSON <i
+							class="fa fa-download"></i></button>
+					<div class="btnDivider"></div>
+					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA <i
+							class="fa fa-download"></i></button>
+					<div class="btnDivider"></div>
+
+					<!-- create dropdown button to other export file -->
+					<div class="dropdown" style="display:inline;">
+						<button class="dropdown btn btn-primary" type='button' id="export" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							<span id="exportText" class="lang"></span>
+							<span>... &nbsp;</span>
+							<span class="caret"></span>
+						</button>
+						<div class="dropdown-menu" aria-labelledby="export"
+							style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #337ab7;">
+							<button id="export_file" class="btn btn-block lang"
+								style="color:#fff;background-color: #337ab7;">TSV</button>
+							<button id="savePed" class="btn btn-block lang"
+								style="color:#fff;background-color: #337ab7;">PED</button>
+							<button id="exportPedigreejs" class="btn btn-block lang"
+								style="color:#fff;background-color: #337ab7;">Pedigreejs</button>
 						</div>
-
-						<div class="btnDivider"></div>
-						<a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
 					</div>
+
+					<div class="btnDivider"></div>
+					<a target="_blank" id="BoadiceaLink" rel="noopener noreferrer"
+						href="https://canrisk.org/canrisk_tool/">Canrisk</a>
+
 				</div>
 			</div>
 		</div>
@@ -371,12 +973,14 @@
 		<!-- Tree -->
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;"><h3 id="title_pedigree" class="lang"></h3></div>
+				<div class="panel-heading" style="background-color: #dbe9f5;">
+					<h3 id="title_pedigree" class="lang"></h3>
+				</div>
 			</div>
 
 			<div class="text-center">
 				<button id="loadFromHot" class='btn btn-primary'>
-					<span id = "loadFromHotText" class="lang"></span>
+					<span id="loadFromHotText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
 				</button>
 				<label class="btn btn-primary">
@@ -385,7 +989,7 @@
 				<div class="btnDivider"></div>
 
 				<button id="save" class='btn btn-primary'>JSON <i class="fa fa-download"></i></button>
-				<button id="boadicea_download"class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
+				<button id="boadicea_download" class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
 				<div class="btnDivider"></div>
 
 				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
@@ -393,7 +997,8 @@
 				<button id="print" class='btn btn-primary lang'></button>
 				<div class="btnDivider"></div>
 
-				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog" aria-hidden="true"></i></button>
+				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog"
+						aria-hidden="true"></i></button>
 				<br></br>
 
 				<!-- create pedigree -->
@@ -407,17 +1012,19 @@
 		</div>
 
 		<!-- Story -->
-		<div class='row'  style="padding-top: 20px;">
+		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"></h3>
-					<button class='btn btn-light btn-sm lang' id="loadStory"  style="background-color:#dbe9f5"><i class="fa fa-refresh"></i></button>
+					<h3 class="lang" id="title_story"
+						style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"></h3>
+					<button class='btn btn-light btn-sm lang' id="loadStory" style="background-color:#dbe9f5"><i
+							class="fa fa-refresh"></i></button>
 					<button class='btn btn-light btn-sm lang' id="copyToClip" style="background-color:#dbe9f5"></button>
 				</div>
 			</div>
-			
+
 			<p>
-				<div id="story" contenteditable="true" style="padding:0px 20px;"></div>
+			<div id="story" contenteditable="true" style="padding:0px 20px;"></div>
 			</p>
 		</div>
 
@@ -428,12 +1035,12 @@
 					<h3 id="title_reference" class="lang"></h3>
 				</div>
 			</div>
-			
-			<div  style="padding:0px 10px 20px;">
+
+			<div style="padding:0px 10px 20px;">
 				<p><strong>pedigreejs: a web-based graphical pedigree editor</strong><br>
-					Carver T, Cunningham AP, Babb de Villiers C, Lee A, Hartley S, Tischkowitz M, et al. 
+					Carver T, Cunningham AP, Babb de Villiers C, Lee A, Hartley S, Tischkowitz M, et al.
 					<i>Bioinformatics <a href="http://dx.doi.org/10.1093/bioinformatics/btx705" target="_blank">
-					doi:10.1093/bioinformatics/btx705</a></i>
+							doi:10.1093/bioinformatics/btx705</a></i>
 				</p>
 				<p><strong>HPO-translations</strong><br>
 					<a href="https://github.com/drseb/HPO-translations" target="_blank">drseb/HPO-translations</a>
@@ -453,18 +1060,74 @@
 		</div>
 	</div>
 
-	<!-- pattern fills //.style('fill', 'url(#circles-1)') --> 
+	<!-- pattern fills //.style('fill', 'url(#circles-1)') -->
 	<div id="patterns" style="height:0;">
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10"><image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSJ3aGl0ZSIgLz4KICA8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0iYmxhY2siLz4KPC9zdmc+" x="0" y="0" width="10" height="10"></image></pattern></defs></svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="dots-8" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nOCcgaGVpZ2h0PSc4JyBmaWxsPSdibGFjaycgLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="horizontal-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMTAnIGhlaWdodD0nMicgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="vertical-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMicgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="8" width="8" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="crosshatch" patternUnits="userSpaceOnUse" width="8" height="8"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnPgogIDxyZWN0IHdpZHRoPSc4JyBoZWlnaHQ9JzgnIGZpbGw9JyNmZmYnLz4KICA8cGF0aCBkPSdNMCAwTDggOFpNOCAwTDAgOFonIHN0cm9rZS13aWR0aD0nMC41JyBzdHJva2U9JyNhYWEnLz4KPC9zdmc+Cg==" x="0" y="0" width="8" height="8"> </image> </pattern> </defs> </svg>        
-		<svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs> </svg>
+		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSJ3aGl0ZSIgLz4KICA8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0iYmxhY2siLz4KPC9zdmc+"
+						x="0" y="0" width="10" height="10"></image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg=="
+						x="0" y="0" width="10" height="10"> </image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="dots-8" patternUnits="userSpaceOnUse" width="10" height="10">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nOCcgaGVpZ2h0PSc4JyBmaWxsPSdibGFjaycgLz4KPC9zdmc+"
+						x="0" y="0" width="10" height="10"> </image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="horizontal-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMTAnIGhlaWdodD0nMicgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg=="
+						x="0" y="0" width="10" height="10"> </image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="vertical-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMicgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg=="
+						x="0" y="0" width="10" height="10"> </image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="8" width="8" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="crosshatch" patternUnits="userSpaceOnUse" width="8" height="8">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnPgogIDxyZWN0IHdpZHRoPSc4JyBoZWlnaHQ9JzgnIGZpbGw9JyNmZmYnLz4KICA8cGF0aCBkPSdNMCAwTDggOFpNOCAwTDAgOFonIHN0cm9rZS13aWR0aD0nMC41JyBzdHJva2U9JyNhYWEnLz4KPC9zdmc+Cg=="
+						x="0" y="0" width="8" height="8"> </image>
+				</pattern>
+			</defs>
+		</svg>
+		<svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1">
+			<defs>
+				<pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5">
+					<image
+						xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg=="
+						x="0" y="0" width="5" height="5"> </image>
+				</pattern>
+			</defs>
+		</svg>
 	</div>
 	<script>
-		var patternsId = function(){//all id
+		var patternsId = function () {//all id
 			items = ['circles-1', 'diagonal-stripe-1', 'dots-8', 'horizontal-stripe-2', 'vertical-stripe-2', 'crosshatch', 'lightstripe'];
 			for (let i = 0; i < items.length; i++) {
 				items[i] = 'url(#' + items[i] + ')';
