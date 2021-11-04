@@ -13,7 +13,7 @@ $(document).ready(function(){
 		"ui-dialog-content": "custom-background",
 		"ui-dialog-buttonpane": "custom-background"
 	},
-	//   width: ($(window).width() > 400 ? 540 : $(window).width()- 30)
+	width: ($(window).width() > 400 ? 330 : $(window).width()- 30),
 	modal: true,
 	buttons: {
 		"Sauvegarder": updateHot,
@@ -48,7 +48,7 @@ $(document).ready(function(){
 		var name = obj[index]['Name'];
 		$( "#form_id_name" ).val(name);
 
-		//sex <- in case unknow ?
+		//sex
 		var sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
 
