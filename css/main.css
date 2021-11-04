@@ -178,3 +178,8 @@ p.big {
   float: left;
   margin-bottom: 10px;
 }
+
+.table>tbody>tr.no-border>td,
+.table>tbody>tr.no-border>th {
+  border: none;
+}

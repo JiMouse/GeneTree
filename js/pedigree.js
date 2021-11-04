@@ -707,6 +707,10 @@
 			    			return 'darkgrey';
 				    	return opts.node_background;
 			    	}
+					//if patterns
+					if(patterns().includes(opts.diseases[i].colour)){
+						return patternsId()[patterns().indexOf(opts.diseases[i].colour)]
+					}
 			    	return opts.diseases[i].colour;
 			    });
 

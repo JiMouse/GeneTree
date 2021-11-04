@@ -401,30 +401,31 @@
 		$('#node_properties').dialog({
 		    autoOpen: false,
 		    title: d.data.display_name,
-		    width: ($(window).width() > 400 ? 450 : $(window).width()- 30)
+		    width: ($(window).width() > 400 ? 450 : $(window).width()- 30),
+			maxHeight: 600
 		});
 
-		var table = "<table id='person_details' class='table'>";
+		var table = "<table id='person_details' class='table table-condensed'>";
 
-		table += "<tr><td style='text-align:right'>"+lang.id+"</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
+		table += "<tr class='no-border'><td style='text-align:right'>"+lang.id+"</td><td><input class='form-control' type='text' id='id_name' name='name' value="+
 		(d.data.name ? d.data.name : "")+"></td></tr>";
-		table += "<tr><td style='text-align:right'>"+lang.name+"</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
+		table += "<tr class='no-border'><td style='text-align:right'>"+lang.name+"</td><td><input class='form-control' type='text' id='id_display_name' name='display_name' value="+
 				(d.data.display_name ? d.data.display_name : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>"+lang.age+"</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
+		table += "<tr class='no-border'><td style='text-align:right'>"+lang.age+"</td><td><input class='form-control' type='number' id='id_age' min='0' max='120' name='age' style='width:7em' value="+
 				(d.data.age ? d.data.age : "")+"></td></tr>";
 
-		table += "<tr><td style='text-align:right'>"+lang.yob+"</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
+		table += "<tr class='no-border'><td style='text-align:right'>"+lang.yob+"</td><td><input class='form-control' type='number' id='id_yob' min='1900' max='2050' name='yob' style='width:7em' value="+
 			(d.data.yob ? d.data.yob : "")+"></td></tr>";
 
-		table += '<tr><td colspan="2" id="id_sex">' +
+		table += '<tr class="no-border"><td colspan="2" id="id_sex">' +
 				 '<label class="radio-inline"><input type="radio" name="sex" value="M" '+(d.data.sex === 'M' ? "checked" : "")+'>'+lang.man+'</label>' +
 				 '<label class="radio-inline"><input type="radio" name="sex" value="F" '+(d.data.sex === 'F' ? "checked" : "")+'>'+lang.woman+'</label>' +
 				 '<label class="radio-inline"><input type="radio" name="sex" value="U">'+lang.unknown+'</label>' +
 				 '</td></tr>';
 
 		// alive status = 0; dead status = 1
-		table += '<tr><td colspan="2" id="id_status">' +
+		table += '<tr class="no-border"><td colspan="2" id="id_status">' +
 				 '<label class="checkbox-inline"><input type="radio" name="status" value="0" '+(d.data.status === 0 ? "checked" : "")+'>&thinsp;'+lang.alive+'</label>' +
 				 '<label class="checkbox-inline"><input type="radio" name="status" value="1" '+(d.data.status === 1 ? "checked" : "")+'>&thinsp;'+lang.dead+'</label>' +
 				 '</td></tr>';
@@ -434,11 +435,11 @@
 		var switches = ["adopted_in", "adopted_out", "miscarriage", "stillbirth", "termination"];
 
 		table += '<tr><td colspan="2"><strong>'+lang.pregnancy+' :</strong></td></tr>';
-		table += '<tr><td colspan="2">';
+		table += '<tr class="no-border"><td colspan="2">';
 		for(var iswitch=0; iswitch<switches.length; iswitch++){
 			var attr = switches[iswitch];
 			if(iswitch === 2)
-				table += '</td></tr><tr><td colspan="2">';
+				table += '</td></tr><tr class="no-border"><td colspan="2">';
 			table +=
 			 '<label class="checkbox-inline"><input type="checkbox" id="id_'+attr +
 			    '" name="'+attr+'" value="0" '+(d.data[attr] ? "checked" : "")+'>&thinsp;' +
@@ -458,9 +459,9 @@
 			var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
 			var diagnosis_age = d.data[v.type + "_diagnosis_age"];
 
-			table += "<tr><td style='text-align:right'>"+capitaliseFirstLetter(v.type.replace("_", " "))+
+			table += "<tr class='no-border'><td style='text-align:right'>"+capitaliseFirstLetter(v.type.replace("_", " "))+
 						disease_colour+"&nbsp;</td><td>" +
-						"<input class='form-control' id='id_" +
+						"<input class='form-control input-sm' id='id_" +
 						v.type + "_diagnosis_age_0' max='110' min='0' name='" +
 						v.type + "_diagnosis_age_0' style='width:5em' type='number' value='" +
 						(diagnosis_age !== undefined ? diagnosis_age : "") +"'></td></tr>";
