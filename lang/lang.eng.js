@@ -241,6 +241,14 @@ var onco = function(){
 }
 var diseases = onco()
 
+var cancers_canrisk = {
+    'breast_cancer': 'breast_cancer_diagnosis_age',
+    'breast_cancer2': 'breast_cancer2_diagnosis_age',
+    'ovarian_cancer': 'ovarian_cancer_diagnosis_age',
+    'prostate_cancer': 'prostate_cancer_diagnosis_age',
+    'pancreatic_cancer': 'pancreatic_cancer_diagnosis_age'
+};
+
 var patterns = function(){//all id selected by user
     return ['circles', 'diagonal', 'dots', 'horizontal', 'vertical', 'crosshatch', 'diagonal'];
 }  

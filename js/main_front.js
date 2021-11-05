@@ -547,82 +547,6 @@ $(document).ready(function() {
                     '</label>' +
                 '</div>' +
             '</div><br><div id="disease_table"></div>';
-            
-        function validTextColour(stringToTest) {
-            //Alter the following conditions according to your need.
-            if (stringToTest === "") { return false; }
-            if (stringToTest === "inherit") { return false; }
-            if (stringToTest === "transparent") { return false; }
-            
-            var image = document.createElement("img");
-            image.style.color = "rgb(0, 0, 0)";
-            image.style.color = stringToTest;
-            if (image.style.color !== "rgb(0, 0, 0)") { return true; }
-            image.style.color = "rgb(255, 255, 255)";
-            image.style.color = stringToTest;
-            var isValid = image.style.color !== "rgb(255, 255, 255)";
-            image.remove();
-            return isValid;
-        }
-
-        function update_diseases() {
-            var tab = "<table class='table table-condensed table-striped table-bordered'>" +
-                        "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
-            $.each(opts.diseases, function(k, v) {
-                var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
-                tab += "<tr>" +
-                            "<td style='text-align:right'>"+capitaliseFirstLetter(v.type.replace(/_/g , " "))+
-                                disease_colour+"&nbsp;</td>" +
-                            "<td>" +
-                              "<input type='text' class='form-control' id='disease_colour-"+v.type+"' value='" + opts.diseases[k].colour + "'>" +
-                            "</td>" +
-                            "<td>" +
-                                "<label class='btn btn-default btn-sm'>" +
-                                    "<input id='delete_disease-"+v.type+"' type='button' style='display: none;'/>" +
-                                        "<i class='fa fa-times' aria-hidden='true' style='color:#8B0000'></i>" +
-                                "</label>" +
-                            "</td>" +
-                        "</tr>";
-            });
-            tab += "</table>";
-            $('#disease_table').html(tab);
-
-            $("input[id^='delete_disease-']").on( "click", function() {
-                var this_disease = $(this).attr('id').replace('delete_disease-', '');
-                var new_diseases = $.extend(true, [], opts.diseases);
-                new_diseases = new_diseases.filter(function(el) {
-                    return el.type !== this_disease;
-                });
-                opts.diseases = new_diseases;
-                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
-                update_diseases();
-            });
-
-            $('input[id^="disease_colour-"]').on('keypress mouseleave', function(e) {
-                var code = (e.keyCode ? e.keyCode : e.which);
-                if (code == 13 || code == 0) {
-                    var this_disease = $(this).attr('id').replace('disease_colour-', '');
-                    var this_colour = $(this).val();
-                    // test if valid colour string or hex or pattern
-                    if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour) 
-                        && !patterns().includes(this_colour) && !patternsId().includes(this_colour)){ //test valid HEX color representation
-                        alert('Couleur invalide !', this_colour);
-                        return;
-                    }
-
-                    //update disease
-                    var new_diseases = $.extend(true, [], opts.diseases);
-                    $.each(new_diseases, function(index, value) {
-                         if(value.type == this_disease) {
-                             value.colour = this_colour;
-                         }
-                    });
-                    opts.diseases = new_diseases;
-                    localStorage.setItem('diseases', JSON.stringify(opts.diseases));
-                    update_diseases();
-                }
-            });
-        }
 
         $('#fh_settings').html(html_dis);
         update_diseases();
@@ -639,9 +563,85 @@ $(document).ready(function() {
         });
     });
 
+    function validTextColour(stringToTest) {
+        //Alter the following conditions according to your need.
+        if (stringToTest === "") { return false; }
+        if (stringToTest === "inherit") { return false; }
+        if (stringToTest === "transparent") { return false; }
+        
+        var image = document.createElement("img");
+        image.style.color = "rgb(0, 0, 0)";
+        image.style.color = stringToTest;
+        if (image.style.color !== "rgb(0, 0, 0)") { return true; }
+        image.style.color = "rgb(255, 255, 255)";
+        image.style.color = stringToTest;
+        var isValid = image.style.color !== "rgb(255, 255, 255)";
+        image.remove();
+        return isValid;
+    }
+
+    function update_diseases() {
+        var tab = "<table class='table table-condensed table-striped table-bordered'>" +
+                    "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
+        $.each(opts.diseases, function(k, v) {
+            var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
+            tab += "<tr>" +
+                        "<td style='text-align:right'>"+capitaliseFirstLetter(v.type.replace(/_/g , " "))+
+                            disease_colour+"&nbsp;</td>" +
+                        "<td>" +
+                          "<input type='text' class='form-control' id='disease_colour-"+v.type+"' value='" + opts.diseases[k].colour + "'>" +
+                        "</td>" +
+                        "<td>" +
+                            "<label class='btn btn-default btn-sm'>" +
+                                "<input id='delete_disease-"+v.type+"' type='button' style='display: none;'/>" +
+                                    "<i class='fa fa-times' aria-hidden='true' style='color:#8B0000'></i>" +
+                            "</label>" +
+                        "</td>" +
+                    "</tr>";
+        });
+        tab += "</table>";
+        $('#disease_table').html(tab);
+
+        $("input[id^='delete_disease-']").on( "click", function() {
+            var this_disease = $(this).attr('id').replace('delete_disease-', '');
+            var new_diseases = $.extend(true, [], opts.diseases);
+            new_diseases = new_diseases.filter(function(el) {
+                return el.type !== this_disease;
+            });
+            opts.diseases = new_diseases;
+            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            update_diseases();
+        });
+
+        $('input[id^="disease_colour-"]').on('keypress mouseleave', function(e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13 || code == 0) {
+                var this_disease = $(this).attr('id').replace('disease_colour-', '');
+                var this_colour = $(this).val();
+                // test if valid colour string or hex or pattern
+                if(!validTextColour(this_colour) && !/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(this_colour) 
+                    && !patterns().includes(this_colour) && !patternsId().includes(this_colour) //test valid HEX color representation
+                    ){ 
+                    alert('Couleur invalide !', this_colour);
+                    return;
+                }
+
+                //update disease
+                var new_diseases = $.extend(true, [], opts.diseases);
+                $.each(new_diseases, function(index, value) {
+                     if(value.type == this_disease) {
+                         value.colour = this_colour;
+                     }
+                });
+                opts.diseases = new_diseases;
+                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                update_diseases();
+            }
+        });
+    }
+
     // Update dataset from handsontable
     function loadFromHot() {
-        
         // load table and convert it
         let myDeepClone = JSON.stringify(hot.getSourceData());
         var obj = JSON.parse(myDeepClone);
@@ -686,4 +686,9 @@ $(document).ready(function() {
     $('#loadFromHot').click(function() {
         loadFromHot();
     });
+
+    $('#save_canrisk_fromHot').on('click', function (e) {
+        loadFromHot();
+		$('#save-canrisk-dialog').modal('show');
+	});
 });

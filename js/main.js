@@ -130,10 +130,12 @@ function UpdateFields(o, i) {
 function UpdateNullKey(o,i) {
     // To correct manually added rows
     var keys = Object.keys(o[i]);
+    let famid;
     for (var j = 0; j < keys.length; j++) {
         if (o[i][keys[j]] == null) {
             if (keys[j] == 'famid') {
-                o[i][ 'famid' ] = '1'
+                famid=(o[0][ 'famid' ] == null?o[0][ 'famid' ]:o[1][ 'famid' ])
+                o[i][ 'famid' ] = famid
             } else if (keys[j] == 'yob'|keys[j] == 'age') {
                 o[i][keys[j]] = ''
             } else {

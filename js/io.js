@@ -167,19 +167,19 @@
 		});
 		// End buttons
 
-		$('#save_canrisk').click(function(e) {
-			var meta = io.get_surgical_ops();
-			try {
-				var prs = io.get_prs_values();
-		    	if(prs.breast_cancer_prs && prs.breast_cancer_prs.alpha !== 0 && prs.breast_cancer_prs.zscore !== 0) {
-		    		meta += "\n##PRS_BC=alpha="+prs.breast_cancer_prs.alpha+",zscore="+prs.breast_cancer_prs.zscore;
-		    	}
-		    	if(prs.ovarian_cancer_prs && prs.ovarian_cancer_prs.alpha !== 0 && prs.ovarian_cancer_prs.zscore !== 0) {
-		    		meta += "\n##PRS_OC=alpha="+prs.ovarian_cancer_prs.alpha+",zscore="+prs.ovarian_cancer_prs.zscore;
-		    	}
-			} catch(err) { console.warn("PRS", prs); }
-			io.save_canrisk(opts, meta);
-		});
+		// $('#save_canrisk').click(function(e) {
+		// 	var meta = io.get_surgical_ops();
+		// 	try {
+		// 		var prs = io.get_prs_values();
+		//     	if(prs.breast_cancer_prs && prs.breast_cancer_prs.alpha !== 0 && prs.breast_cancer_prs.zscore !== 0) {
+		//     		meta += "\n##PRS_BC=alpha="+prs.breast_cancer_prs.alpha+",zscore="+prs.breast_cancer_prs.zscore;
+		//     	}
+		//     	if(prs.ovarian_cancer_prs && prs.ovarian_cancer_prs.alpha !== 0 && prs.ovarian_cancer_prs.zscore !== 0) {
+		//     		meta += "\n##PRS_OC=alpha="+prs.ovarian_cancer_prs.alpha+",zscore="+prs.ovarian_cancer_prs.zscore;
+		//     	}
+		// 	} catch(err) { alert("PRS", prs); }
+		// 	io.save_canrisk(opts, meta);
+		// });
 
 		$('#print').click(function(e) {
 			io.print(io.get_printable_svg(opts));
@@ -436,7 +436,7 @@
 	};
 
 	io.save_canrisk = function(opts, meta){
-		io.save_file(opts, run_prediction.get_non_anon_pedigree(pedcache.current(opts), meta), "canrisk.txt");
+		io.save_file(opts, get_non_anon_pedigree(pedcache.current(opts), meta), "canrisk.txt");
 	};
 
 	io.canrisk_validation = function(opts) {
