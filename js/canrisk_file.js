@@ -36,6 +36,109 @@ $(document).ready(function(){
 		return meta;
 	}
 
+	readCanRisk=function(boadicea_lines) {
+		let cancers = cancers_canrisk //language dependant
+		let genetic_test1 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
+		let genetic_test2 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'bard1', 'rad51d', 'rad51c', 'brip1'];
+
+		let lines = boadicea_lines.trim().split('\n');
+		let ped = [];
+		let hdr = [];  // collect risk factor header lines
+		const regexp = /([0-9])/;
+		let version = 2;
+		let gt = (version === 1 ? genetic_test1 : genetic_test2);
+		let ncol = [26, 27];	// number of columns - v1, v2
+		// assumes two line header
+		for(let i = 0;i < lines.length;i++){
+			let ln = lines[i].trim();
+			if(ln.indexOf("##") === 0) {
+				if(ln.indexOf("##CanRisk") === 0) {
+					const match = ln.match(regexp);
+					version = parseInt(match[1]);
+					gt = (version === 1 ? genetic_test1 : genetic_test2);
+					console.log("CanRisk File Format version "+version);
+	
+					if(ln.indexOf(";") > -1) {   // contains surgical op data
+						let ops = ln.split(";");
+						for(let j=1; j<ops.length; j++) {
+							let opdata = ops[j].split("=");
+							if(opdata.length === 2) {
+								hdr.push(ops[j]);
+							}
+						}
+					}
+				}
+				if(ln.indexOf("CanRisk") === -1 && ln.indexOf("##FamID") !== 0) {
+					hdr.push(ln.replace("##", ""));
+				}
+				continue;
+			}
+	
+			let delim = /\t/;
+			if(ln.indexOf('\t') < 0) {
+				delim = /\s+/;
+				console.log("NOT TAB DELIM");
+			}
+			let attr = $.map(ln.split(delim), function(val, _i){return val.trim();});
+	
+			if(attr.length > 1) {
+				if(attr.length !== ncol[version-1]) {
+					console.error(ln, attr);
+					throw 'Found number of columns '+attr.length+'; expected '+ncol[version-1]+' for CanRisk version '+version;
+				}
+				let indi = {
+					'famid': attr[0],
+					'display_name': attr[1],
+					'name':	attr[3],
+					'sex': attr[6],
+					'status': attr[8]
+				};
+				if(attr[2] == 1) indi.proband = true;
+				if(attr[4] !== "0") indi.father = attr[4];
+				if(attr[5] !== "0") indi.mother = attr[5];
+				if(attr[7] !== "0") indi.mztwin = attr[7];
+				if(attr[9] !== "0") indi.age = attr[9];
+				if(attr[10] !== "0") indi.yob = attr[10];
+	
+				let idx = 11;
+				$.each(cancers, function(cancer, diagnosis_age) {
+					// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
+					if(attr[idx] !== "0") {
+						indi[diagnosis_age] = attr[idx];
+					}
+					idx++;
+				});
+	
+				if(attr[idx++] !== "0") indi.ashkenazi = 1;
+				// BRCA1, BRCA2, PALB2, ATM, CHEK2, .... genetic tests
+				// genetic test type, 0 = untested, S = mutation search, T = direct gene test
+				// genetic test result, 0 = untested, P = positive, N = negative
+				for(let j=0; j<gt.length; j++) {
+					let gene_test = attr[idx].split(":");
+					if(gene_test[0] !== '0') {
+						if((gene_test[0] === 'S' || gene_test[0] === 'T') && (gene_test[1] === 'P' || gene_test[1] === 'N'))
+							indi[gt[j] + '_gene_test'] = {'type': gene_test[0], 'result': gene_test[1]};
+						else
+							console.warn('UNRECOGNISED GENE TEST ON LINE '+ (i+1) + ": " + gene_test[0] + " " + gene_test[1]);
+					}
+					idx++;
+				}
+				// status, 0 = unspecified, N = negative, P = positive
+				let path_test = attr[idx].split(":");
+				for(let j=0; j<path_test.length; j++) {
+					if(path_test[j] !== '0') {
+						if(path_test[j] === 'N' || path_test[j] === 'P')
+							indi[pathology_tests[j] + '_bc_pathology'] = path_test[j];
+						else
+							console.warn('UNRECOGNISED PATHOLOGY ON LINE '+ (i+1) + ": " +pathology_tests[j] + " " +path_test[j]);
+					}
+				}
+				ped.unshift(indi);
+			}
+		}
+		return [hdr, ped];
+	}
+
 	get_pedigree=function(dataset, famid, meta, isanon, version=2) {
 		let cancers = cancers_canrisk //language dependant
 
@@ -185,5 +288,19 @@ $(document).ready(function(){
 
 	get_non_anon_pedigree=function(dataset, meta) {
 		return get_pedigree(dataset, undefined, meta, false);
+	}
+
+	get_risk_factors=function(obj, risk_factors=risk_factors){
+		let indexRow = getIndexRow(obj),
+			risk_factors_keys = String(risk_factors).split(',');
+
+		// loop through risk_factors and append it
+		for (let j = 0; j < risk_factors_keys.length; j++) {
+			let key=risk_factors_keys[j].split('=')[0],
+				val=risk_factors_keys[j].split('=')[1];
+			if (key!= "") {
+				obj[indexRow][key]=val //bug
+			};
+		};
 	}
 })

@@ -30,7 +30,7 @@ var lang = {
     aunt2:"tantes",
     submitCustomFam:"Create a new pedigree",
     submitAddBranch:"Add to individual",
-    loadFormPedigreeText:"Load pedigree ",
+    loadFromPedigreeText:"Load pedigree ",
     add_parents:" parents",
     add_brother:" brother",
     add_sister:" sister",

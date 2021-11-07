@@ -167,20 +167,6 @@
 		});
 		// End buttons
 
-		// $('#save_canrisk').click(function(e) {
-		// 	var meta = io.get_surgical_ops();
-		// 	try {
-		// 		var prs = io.get_prs_values();
-		//     	if(prs.breast_cancer_prs && prs.breast_cancer_prs.alpha !== 0 && prs.breast_cancer_prs.zscore !== 0) {
-		//     		meta += "\n##PRS_BC=alpha="+prs.breast_cancer_prs.alpha+",zscore="+prs.breast_cancer_prs.zscore;
-		//     	}
-		//     	if(prs.ovarian_cancer_prs && prs.ovarian_cancer_prs.alpha !== 0 && prs.ovarian_cancer_prs.zscore !== 0) {
-		//     		meta += "\n##PRS_OC=alpha="+prs.ovarian_cancer_prs.alpha+",zscore="+prs.ovarian_cancer_prs.zscore;
-		//     	}
-		// 	} catch(err) { alert("PRS", prs); }
-		// 	io.save_canrisk(opts, meta);
-		// });
-
 		$('#print').click(function(e) {
 			io.print(io.get_printable_svg(opts));
 		});
@@ -454,6 +440,16 @@
 		});
 	}
 
+	io.readCanRiskFile=function(boadicea_lines) {
+		let [hdr, ped] = readCanRisk(boadicea_lines);
+		try {
+			return [hdr, process_ped(ped)];
+		} catch(e) {
+			console.error(e);
+			return [hdr, ped];
+		}
+	}
+
 	io.load = function(e, opts) {
 	    var f = e.target.files[0];
 		if(f) {
@@ -468,9 +464,9 @@
 					} else if(e.target.result.startsWith("BOADICEA import pedigree file format 2.0")) {
 						opts.dataset = io.readBoadiceaV4(e.target.result, 2);
 						io.canrisk_validation(opts);
-					} else if(e.target.result.startsWith("##") && e.target.result.indexOf("CanRisk") !== -1) {
-						var canrisk_data = io.readCanRiskV1(e.target.result);
-						var risk_factors = canrisk_data[0];
+					} else if(e.target.result.indexOf("##") === 0 && e.target.result.indexOf("CanRisk") !== -1) {
+						let canrisk_data = io.readCanRiskFile(e.target.result);
+						risk_factors = canrisk_data[0];
 						opts.dataset = canrisk_data[1];
 						io.canrisk_validation(opts);
 					} else {
@@ -564,96 +560,6 @@
 		return process_ped(ped);
 	};
 
-	io.readCanRiskV1 = function(boadicea_lines) {
-		var lines = boadicea_lines.trim().split('\n');
-		var ped = [];
-		var hdr = [];  // collect risk factor header lines
-		// assumes two line header
-		for(var i = 0;i < lines.length;i++){
-		    if(lines[i].startsWith("##")) {
-		    	if(lines[i].startsWith("##CanRisk") && lines[i].indexOf(";") > -1) {   // contains surgical op data
-		    		var ops = lines[i].split(";");
-		    		for(var j=1; j<ops.length; j++) {
-		    			var opdata = ops[j].split("=");
-		    			if(opdata.length === 2) {
-		    				hdr.push(ops[j]);
-		    			}
-		    		}
-		    	}
-		    	if(lines[i].indexOf("CanRisk") === -1 && !lines[i].startsWith("##FamID")) {
-		    		hdr.push(lines[i].replace("##", ""));
-		    	}
-		    	continue;
-		    }
-
-		    var delim = /\t/;
-		    if(lines[i].indexOf('\t') < 0) {
-		    	delim = /\s+/;
-		    	console.log("NOT TAB DELIM");
-		    }
-		    var attr = $.map(lines[i].trim().split(delim), function(val, i){return val.trim();});
-
-			if(attr.length > 1) {
-				var indi = {
-					'famid': attr[0],
-					'display_name': attr[1],
-					'name':	attr[3],
-					'sex': attr[6],
-					'status': attr[8]
-				};
-				if(attr[2] == 1) indi.proband = true;
-				if(attr[4] !== "0") indi.father = attr[4];
-				if(attr[5] !== "0") indi.mother = attr[5];
-				if(attr[7] !== "0") indi.mztwin = attr[7];
-				if(attr[9] !== "0") indi.age = attr[9];
-				if(attr[10] !== "0") indi.yob = attr[10];
-
-				var idx = 11;
-				$.each(io.cancers, function(cancer, diagnosis_age) {
-					// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
-					if(attr[idx] !== "0") {
-						indi[diagnosis_age] = attr[idx];
-					}
-					idx++;
-				});
-
-				if(attr[idx++] !== "0") indi.ashkenazi = 1;
-				// BRCA1, BRCA2, PALB2, ATM, CHEK2, .... genetic tests
-				// genetic test type, 0 = untested, S = mutation search, T = direct gene test
-				// genetic test result, 0 = untested, P = positive, N = negative
-				for(var j=0; j<io.genetic_test.length; j++) {
-					var gene_test = attr[idx].split(":");
-					if(gene_test[0] !== '0') {
-						if((gene_test[0] === 'S' || gene_test[0] === 'T') && (gene_test[1] === 'P' || gene_test[1] === 'N'))
-							indi[io.genetic_test[j] + '_gene_test'] = {'type': gene_test[0], 'result': gene_test[1]};
-						else
-							console.warn('UNRECOGNISED GENE TEST ON LINE '+ (i+1) + ": " + gene_test[0] + " " + gene_test[1]);
-					}
-					idx++;
-				}
-				// status, 0 = unspecified, N = negative, P = positive
-				var path_test = attr[idx].split(":");
-				for(j=0; j<path_test.length; j++) {
-					if(path_test[j] !== '0') {
-						if(path_test[j] === 'N' || path_test[j] === 'P')
-							indi[io.pathology_tests[j] + '_bc_pathology'] = path_test[j];
-						else
-							console.warn('UNRECOGNISED PATHOLOGY ON LINE '+ (i+1) + ": " +io.pathology_tests[j] + " " +path_test[j]);
-					}
-				}
-				ped.unshift(indi);
-			}
-		}
-
-		try {
-			return [hdr, process_ped(ped)];
-		} catch(e) {
-			console.error(e);
-			return [hdr, ped];
-		}
-	};
-
-	// read boadicea format v4 & v2
 	io.readBoadiceaV4 = function(boadicea_lines, version) {
 		var lines = boadicea_lines.trim().split('\n');
 		var ped = [];

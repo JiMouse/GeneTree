@@ -595,6 +595,14 @@ function getRow(obj, id) {
     };
 }
 
+function getIndexRow(obj) {
+    for (var j = 0; j < obj.length; j++) {
+        if (obj[j].proband == true) {
+            return j;
+        };
+    };
+}
+
 function getName(i, tableData, rowData) { //JSONData, table format
     var obj = typeof tableData != 'object' ? JSON.parse(tableData) : tableData;
 

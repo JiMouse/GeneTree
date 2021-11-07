@@ -30,7 +30,7 @@ var lang = {
     aunt2:"tantes",
     submitCustomFam:"Créer un nouvel arbre",
     submitAddBranch:"Ajouter à l'individu",
-    loadFormPedigreeText:"Charger l'arbre ",
+    loadFromPedigreeText:"Charger l'arbre ",
     add_parents:" parents",
     add_brother:" frère",
     add_sister:" sœur",

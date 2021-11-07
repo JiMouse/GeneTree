@@ -180,7 +180,15 @@ $(document).ready(function() {
 
                 if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
                     data = Formatboadicea(event.target.result);
-
+                } else if(event.target.result.indexOf("##") === 0 && event.target.result.indexOf("CanRisk") !== -1) {
+                    //load pedigreeJS
+                    let canrisk_data = io.readCanRiskFile(event.target.result);
+                    risk_factors = canrisk_data[0]; //to add as new key
+                    content = canrisk_data[1];
+                    content = FormatToTable(content);
+                    get_risk_factors(content, risk_factors) //add risk_factors as new keys
+                    hot.loadData(content);
+        
                 } else {
                     data = JSON.parse(event.target.result);
                     if (!data[0].hasOwnProperty('FathID')) {
