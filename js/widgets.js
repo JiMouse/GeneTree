@@ -472,10 +472,10 @@
 			if($.inArray(k, exclude) == -1) {
 				var kk = capitaliseFirstLetter(k);
 				if(v === true || v === false) {
-					table += "<tr><td style='text-align:right'>"+kk+"&nbsp;</td><td><input type='checkbox' id='id_" + k + "' name='" +
+					table += "<tr class='no-border'><td style='text-align:right'>"+kk+"&nbsp;</td><td><input type='checkbox' id='id_" + k + "' name='" +
 							k+"' value="+v+" "+(v ? "checked" : "")+"></td></tr>";
 				} else if(k.length > 0){
-					table += "<tr><td style='text-align:right'>"+kk+"&nbsp;</td><td><input type='text' id='id_" +
+					table += "<tr class='no-border'><td style='text-align:right'>"+kk+"&nbsp;</td><td><input type='text' id='id_" +
 							k+"' name='"+k+"' value="+v+"></td></tr>";
 				}
 			}

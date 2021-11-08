@@ -150,9 +150,18 @@ p.big {
   color:white;
 }
 
+.custom-theme-no-background {
+  border:#337ab7;
+  color:black; 
+}
+
 .custom-background {
   background:#fff;
   border:#337ab7;
+}
+
+.custom-background-white {
+  background:#fff;
 }
 
 .custom-btn {
@@ -182,4 +191,26 @@ p.big {
 .table>tbody>tr.no-border>td,
 .table>tbody>tr.no-border>th {
   border: none;
+}
+
+.custom-btn-light {
+  background-color: #dbe9f5;
+}
+
+.ui-tabs .ui-tabs-nav {
+  text-align: center;
+  padding-top: 0.2em;
+  padding-right: 0.2em;
+  padding-bottom: 0.2em;
+  padding-left: 0.2em;
+}
+
+.ui-tabs .ui-tabs-nav li {
+  float: none !important;
+  display: inline-block;
+}
+
+.row-std {
+  margin-left: 0px;
+  margin-right: 0px;
 }

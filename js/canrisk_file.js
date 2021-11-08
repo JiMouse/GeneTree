@@ -168,7 +168,7 @@ $(document).ready(function(){
 		}
 
 		if(sex !== 'M') {
-			let menarche    = undefined //get_risk_factor('menarche_age');
+			let menarche    = dataset[probandIdx]['menarche']
 			let parity      = undefined //get_risk_factor('parity');
 			let first_birth = undefined //get_risk_factor('age_of_first_live_birth');
 			let oc_use      = undefined //get_risk_factor('oral_contraception');
@@ -299,7 +299,7 @@ $(document).ready(function(){
 			let key=risk_factors_keys[j].split('=')[0],
 				val=risk_factors_keys[j].split('=')[1];
 			if (key!= "") {
-				obj[indexRow][key]=val //bug
+				obj[indexRow][key]=val
 			};
 		};
 	}

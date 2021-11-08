@@ -384,230 +384,60 @@
 									<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
 									rows="4"></textarea>
 							</div>
-
-							<!-- <div class="row">
-								<div class="col-xs-5 text-right field_label"><label
-										for="id_status_0"></label></div>
-								<div class="field col-xs-7">
-									<ul id="id_status">
-										<li><label for="id_status_0"><input type="radio" name="status" value="0" required="" id="id_status_0" checked=""
-													class="valid">
-												Vivant</label></li>
-										<li><label for="id_status_1"><input type="radio" name="status"
-													value="1" required="" id="id_status_1"
-													class="valid">
-												Décédé</label></li>
-									</ul>
-								</div>
-							</div> -->
-							
-							<!-- <div class="row">
-								<div class="col-xs-5 text-right field_label"><label for="id_age"><span
-											id="id_age_0">Âge:</span><span id="id_age_1"
-											class="hidden">Âge au décès:</span></label><span
-										id="age_yob_lock" class="fa fa-lg fa-lock" aria-hidden="true"
-										title="L’âge et l’année de naissance sont synchronisés pour les personnes inscrites «&nbsp;Vivant&nbsp;». Cliquez sur ce symbole pour déverrouiller/verrouiller ces champs. Pour les personnes inscrites «&nbsp;Décédé&nbsp;», ces champs sont indépendants."></span>
-								</div>
-								<div class="field col-xs-7">
-									<input type="number" name="age"
-										class="form-control invalid fa" min="0" max="125" id="id_age"
-										aria-describedby="id_age-error" aria-invalid="true">
-										<strong id="id_age-error" class="invalid fa">&thinsp;</strong>
-									</div>
-							</div> -->
-							<!-- <div class="row">
-								<div class="col-xs-5 text-right field_label">
-									<label for="id_yob_0">Date de naissance:</label>
-								</div>
-								<div class="field col-xs-7">
-									<input type="number" name="yob_0"
-										class="form-control invalid fa" min="1850" max="2021" id="id_age"
-										aria-describedby="id_age-error" aria-invalid="true">
-								</div>
-							</div> -->
-							<!-- <div class="row">
-								<div title="proband" class="field_label col-md-5 text-md-right"><label
-										for="id_proband">Cas index:</label><span
-										class="field_checkbox"><input type="checkbox" name="proband"
-											id="id_proband" disabled=""></span>
-								</div>
-								<div title="exclude from calculation" class="field_label col-md-6">
-									<label for="id_exclude">Exclure:</label><span
-										class="field_checkbox"><input type="checkbox" name="exclude"
-											id="id_exclude"></span>
-								</div>
-								<div id="tabs" class="ui-tabs ui-corner-all ui-widget ui-widget-content">
-									<ul id="tablist"
-										class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
-										<li role="tab" tabindex="0" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active"
+							<hr>
+							<div class="row" style="padding-left: 5px;padding-right: 5px;">
+								<div id="tabs" class="ui-tabs ui-widget ui-widget-content custom-background-white">
+									<ul id="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header custom-background-white">
+										<li role="tab" tabindex="0" class="ui-tabs-tab"
 											aria-controls="cancer" aria-labelledby="ui-id-1"
 											aria-selected="true" aria-expanded="true">
-											<a href="#cancer"
-												role="presentation" tabindex="-1" class="ui-tabs-anchor"
-												id="ui-id-1">Âge au diagnostic
+											<a href="#canrisk" class="btn btn-light current custom-btn-light" role="button" tabindex="-1" class="ui-tabs-anchor custom-btn"
+												id="ui-id-1">Info. CanRisk
 											</a>
 										</li>
-										<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab"
+										<li role="tab" tabindex="-1" class="ui-tabs-tab"
 											aria-controls="bc_pathology" aria-labelledby="ui-id-2"
 											aria-selected="false" aria-expanded="false">
-											<a
-												href="#bc_pathology" role="presentation" tabindex="-1"
-												class="ui-tabs-anchor" id="ui-id-2">Pathologie
+											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button" id="ui-id-2">Pathologie
 											</a>
 										</li>
-										<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab"
+										<li role="tab" tabindex="-1" class="ui-tabs-tab"
 											aria-controls="gene_test" aria-labelledby="ui-id-3"
 											aria-selected="false" aria-expanded="false">
-											<a href="#gene_test"
-												role="presentation" tabindex="-1" class="ui-tabs-anchor"
-												id="ui-id-3">Tests génétiques
+											<a href="#gene_test" class="btn btn-light" role="button" tabindex="-1" id="ui-id-3">Tests génétiques
 											</a>
 										</li>
 									</ul>
-									<div id="info">
-										<div id="cancer" class="hideTab" aria-labelledby="ui-id-1" role="tabpanel"
+									<div id="info" style="margin-top: 0.8em;">
+										<div id="canrisk" class="hideTab" aria-labelledby="ui-id-1" role="tabpanel"
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
-											<div class="row">
-												<div title="approximate age of diagnosis"
-													class="field_label col-md-6 text-md-right"><label
-														for="id_approx">approx.</label><span
-														class="field_checkbox"><input type="checkbox"
-															name="approx" id="id_approx"></span>
+											<!-- 
+												let menarche    = undefined //get_risk_factor('menarche_age');
+												let parity      = undefined //get_risk_factor('parity');
+												let first_birth = undefined //get_risk_factor('age_of_first_live_birth');
+												let oc_use      = undefined //get_risk_factor('oral_contraception');
+												let mht_use     = undefined //get_risk_factor('mht');
+												let bmi         = undefined //get_risk_factor('bmi');
+												let alcohol     = undefined //get_risk_factor('alcohol_intake');
+												let menopause   = undefined //get_risk_factor('age_of_menopause');
+												let mdensity    = undefined //get_risk_factor('mammographic_density');
+												let hgt         = undefined //get_risk_factor('height');
+												let tl          = undefined //get_risk_factor('Age_Tubal_ligation');
+												let endo        = undefined //get_risk_factor('endometriosis'); 
+											-->
+								
+											<div class="row row-std">
+												<div class="col-sm-4 text-right field_label">
+													<label for="menarche">Ménarche :</label>
 												</div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-5 text-md-right"><label
-														for="id_breast_cancer_diagnosis_age_0">Sein:&thinsp;<span
-															class="pleft5 bg-breast_cancer"></span></label>
-												</div>
-												<div class="field col-md-6 col-sm-6"><input type="number"
-														name="breast_cancer_diagnosis_age_0" min="0" max="125"
-														class="form-control valid"
-														id="id_breast_cancer_diagnosis_age_0"><select
-														name="breast_cancer_diagnosis_age_1"
-														class="form-control valid"
-														id="id_breast_cancer_diagnosis_age_1"
-														style="display: none;">
-														<option value="" selected="">-</option>
-														<option value="5">&lt;10</option>
-														<option value="15">10-20</option>
-														<option value="25">20-30</option>
-														<option value="35">30-40</option>
-														<option value="45">40-50</option>
-														<option value="55">50-60</option>
-														<option value="65">60-70</option>
-														<option value="75">70-80</option>
-														<option value="85">&gt;80</option>
-													</select>
-												</div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-5 text-md-right"><label
-														for="id_breast_cancer2_diagnosis_age_0">Sein
-														controlatéral:&thinsp;<span
-															class="pleft5 bg-breast_cancer2"></span></label>
-												</div>
-												<div class="field col-md-6 col-sm-6"><input type="number"
-														name="breast_cancer2_diagnosis_age_0" min="0" max="125"
-														class="form-control valid"
-														id="id_breast_cancer2_diagnosis_age_0"><select
-														name="breast_cancer2_diagnosis_age_1"
-														class="form-control valid"
-														id="id_breast_cancer2_diagnosis_age_1"
-														style="display: none;">
-														<option value="" selected="">-</option>
-														<option value="5">&lt;10</option>
-														<option value="15">10-20</option>
-														<option value="25">20-30</option>
-														<option value="35">30-40</option>
-														<option value="45">40-50</option>
-														<option value="55">50-60</option>
-														<option value="65">60-70</option>
-														<option value="75">70-80</option>
-														<option value="85">&gt;80</option>
-													</select></div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-5 text-md-right"><label
-														for="id_ovarian_cancer_diagnosis_age_0">Ovaires:&thinsp;<span
-															class="pleft5 bg-ovarian_cancer"></span></label>
-												</div>
-												<div class="field col-md-6 col-sm-6"><input type="number"
-														name="ovarian_cancer_diagnosis_age_0" min="0" max="125"
-														class="form-control valid"
-														id="id_ovarian_cancer_diagnosis_age_0"><select
-														name="ovarian_cancer_diagnosis_age_1"
-														class="form-control valid"
-														id="id_ovarian_cancer_diagnosis_age_1"
-														style="display: none;">
-														<option value="" selected="">-</option>
-														<option value="5">&lt;10</option>
-														<option value="15">10-20</option>
-														<option value="25">20-30</option>
-														<option value="35">30-40</option>
-														<option value="45">40-50</option>
-														<option value="55">50-60</option>
-														<option value="65">60-70</option>
-														<option value="75">70-80</option>
-														<option value="85">&gt;80</option>
-													</select>
-												</div>
-											</div>
-											<div class="row" style="display: none;">
-												<div class="field_label col-md-5 text-md-right"><label
-														for="id_prostate_cancer_diagnosis_age_0">Prostate:&thinsp;<span
-															class="pleft5 bg-prostate_cancer"></span></label>
-												</div>
-												<div class="field col-md-6 col-sm-6"><input type="number"
-														name="prostate_cancer_diagnosis_age_0" min="0" max="125"
-														class="form-control valid"
-														id="id_prostate_cancer_diagnosis_age_0"><select
-														name="prostate_cancer_diagnosis_age_1"
-														class="form-control valid"
-														id="id_prostate_cancer_diagnosis_age_1"
-														style="display: none;">
-														<option value="" selected="">-</option>
-														<option value="5">&lt;10</option>
-														<option value="15">10-20</option>
-														<option value="25">20-30</option>
-														<option value="35">30-40</option>
-														<option value="45">40-50</option>
-														<option value="55">50-60</option>
-														<option value="65">60-70</option>
-														<option value="75">70-80</option>
-														<option value="85">&gt;80</option>
-													</select>
-												</div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-5 text-md-right"><label
-														for="id_pancreatic_cancer_diagnosis_age_0">Pancréas:&thinsp;<span
-															class="pleft5 bg-pancreatic_cancer"></span></label>
-												</div>
-												<div class="field col-md-6 col-sm-6"><input type="number"
-														name="pancreatic_cancer_diagnosis_age_0" min="0"
-														max="125" class="form-control valid"
-														id="id_pancreatic_cancer_diagnosis_age_0"><select
-														name="pancreatic_cancer_diagnosis_age_1"
-														class="form-control valid"
-														id="id_pancreatic_cancer_diagnosis_age_1"
-														style="display: none;">
-														<option value="" selected="">-</option>
-														<option value="5">&lt;10</option>
-														<option value="15">10-20</option>
-														<option value="25">20-30</option>
-														<option value="35">30-40</option>
-														<option value="45">40-50</option>
-														<option value="55">50-60</option>
-														<option value="65">60-70</option>
-														<option value="75">70-80</option>
-														<option value="85">&gt;80</option>
-													</select>
+												<div class="field col-sm-8">
+													<input type="number" name="display_name" size="17" class="form-control valid" maxlength="60"
+														id="menarche" aria-invalid="false" min="8" max="14">
 												</div>
 											</div>
 										</div>
 
-										<div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
+										<!-- <div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
 											aria-hidden="true" style="display: none;">
 											<div class="row">
@@ -674,9 +504,9 @@
 														<option value="N">négatif</option>
 													</select></div>
 											</div>
-										</div>
+										</div> -->
 
-										<div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
+										<!-- <div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
 											aria-hidden="true" style="display: none;">
 											<div class="row bottom5">
@@ -869,10 +699,10 @@
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-										</div>
+										</div> -->
 									</div>
 								</div>
-							</div> -->
+							</div>
 						</fieldset>
 					</form>
 				</div>

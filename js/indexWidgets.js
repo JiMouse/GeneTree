@@ -13,7 +13,7 @@ $(document).ready(function(){
 		"ui-dialog-content": "custom-background",
 		"ui-dialog-buttonpane": "custom-background"
 	},
-	width: ($(window).width() > 400 ? 330 : $(window).width()- 30),
+	width: ($(window).width() > 400 ? 400 : $(window).width()- 30),
 	modal: true,
 	buttons: {
 		"Sauvegarder": updateHot,
@@ -55,6 +55,11 @@ $(document).ready(function(){
 		//comment
 		$( "#form_id_comment" ).val(obj[index]['comment']);
 
+		//CanRisk
+		//menarche
+		$( "#menarche" ).val(obj[index]['menarche']);
+
+
 		//title
 		dialog.dialog({
 			title: name
@@ -73,6 +78,9 @@ $(document).ready(function(){
 		//comment
 		obj[index]['comment'] = $( "#form_id_comment" ).val();
 
+		//CanRisk
+		//menarche
+		obj[index]['menarche']=$( "#menarche" ).val();
 
 		//reinject in hot (whole table)
 		hot.loadData(obj);
@@ -85,9 +93,10 @@ $(document).ready(function(){
 	$( '#bc_pathology #gene_test' ).hide(); //#cancer #bc_pathology #gene_test
 	
 	$('#tablist li').click(function(e) {
-	  $('#info .hideTab').hide(); //<= bug
-	  $('#tablist .current').removeClass("ui-tab ui-tabs-active ui-state-active current");
-	  $(this).addClass('ui-tab ui-tabs-active ui-state-active current');
+	  $('#info .hideTab').hide();
+	  $('#tablist .current').removeClass("current custom-btn-light");
+	  $(this).addClass('current custom-btn-light');
+
 
 	  var clicked = $(this).find('a:first').attr('href');
 	  $('#info ' + clicked).fadeIn('fast');
