@@ -13,8 +13,9 @@ $(document).ready(function(){
 		"ui-dialog-content": "custom-background",
 		"ui-dialog-buttonpane": "custom-background"
 	},
-	width: ($(window).width() > 400 ? 400 : $(window).width()- 30),
-	modal: true,
+	width: ($(window).width() > 400 ? 420 : $(window).width()- 30),
+	maxHeight: 700,
+	// modal: true,
 	buttons: {
 		"Sauvegarder": updateHot,
 		"Annuler": function() {
@@ -41,9 +42,6 @@ $(document).ready(function(){
 				}
 		}
 
-		// set variables
-		// old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age'];
-
 		//name
 		var name = obj[index]['Name'];
 		$( "#form_id_name" ).val(name);
@@ -56,10 +54,21 @@ $(document).ready(function(){
 		$( "#form_id_comment" ).val(obj[index]['comment']);
 
 		//CanRisk
-		//menarche
 		$( "#menarche" ).val(obj[index]['menarche']);
-
-
+		$( "#parity" ).val(obj[index]['parity']);
+		$( "#first_birth" ).val(obj[index]['first_birth']);
+		$( "#oc_use" ).val(obj[index]['oc_use']);
+		$( "#mht_use" ).val(obj[index]['mht_use']);
+		$( "#bmi" ).val(obj[index]['bmi']);
+		$( "#alcohol" ).val(obj[index]['alcohol']);
+		$( "#menopause" ).val(obj[index]['menopause']);
+		$( "#mdensity" ).val(obj[index]['mdensity']);
+		$( "#hgt" ).val(obj[index]['hgt']);
+		$( "#tl" ).val(obj[index]['tl']);
+		$( "#endo" ).val(obj[index]['endo']);
+		$( "#ovary2" ).val(obj[index]['ovary2']);
+		$( "#mast2" ).val(obj[index]['mast2']);
+		
 		//title
 		dialog.dialog({
 			title: name
@@ -76,17 +85,26 @@ $(document).ready(function(){
 		obj[index]['Sex'] = $('input[name="sex"]:checked').val();
 
 		//comment
-		obj[index]['comment'] = $( "#form_id_comment" ).val();
+		addKeyToObject(obj, index, 'comment', 'form_id_comment')
 
-		//CanRisk
-		//menarche
-		obj[index]['menarche']=$( "#menarche" ).val();
+		//CanRisk fields
+		let Canriskfield=['menarche','parity','first_birth','oc_use','mht_use','bmi','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2'];
+
+		for (let j = 0; j < Canriskfield.length; j++) {  
+			addKeyToObject(obj, index, Canriskfield[j])
+		};
 
 		//reinject in hot (whole table)
 		hot.loadData(obj);
 
 		//close dialog
 		dialog.dialog( "close" );
+	}
+
+	addKeyToObject=function(obj,i, key, jsname=key){
+		if($( "#"+jsname ).val()!=null && $( "#"+jsname ).val()!="" & $( "#"+jsname ).val()!=undefined) {
+			obj[i][key]=$( "#"+jsname ).val();
+		}
 	}
 
 	//tabs

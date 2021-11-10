@@ -3,7 +3,7 @@ function getPatho(obj, i,text_neg, text_pos) {
       tag = '_diagnosis_age',
       result = '';
   
-  let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '')
+  let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '') //bug with msg
   if (!keys.join().includes(tag)) return text_neg + comment
 
   for (var j = 0; j < keys.length; j++) {  
@@ -46,29 +46,73 @@ function histoire(obj) {
 }
 
 function textIndex(obj, i){
-    let result = {'index':'', 'child':'', 'fratrie':''},
-        sex = obj[i].sex,
-        status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
-    
-    //civil
-    result.index = textCivil(obj,i);
-    result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
-    
-    // motif de consultation
-    let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
-        text_pos = " dans le cadre d'un ";
-    result.index += getPatho(obj, i,text_neg, text_pos)+'.';
+  let result = {'index':'', 'child':'', 'fratrie':''},
+      sex = obj[i].sex,
+      status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
+  
+  //civil
+  result.index = textCivil(obj,i);
+  //ajouter le nom ? if obj[i].name != Index
+  result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
+  
+  // motif de consultation
+  let text_neg = '. ' + dico.pronom[sex] + ' ne présente pas, au jour de la consultation, de pathologie cancéreuse',
+      text_pos = " dans le cadre d'un ";
+  result.index += getPatho(obj, i,text_neg, text_pos)+'.';
 
-    //enfant & conjoint
-    let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
-    result.child = getChildList(obj,i,text_child_neg);
+  //add canrisk infos
+  let msg="";
+  let menarche    = obj[i]['menarche'];
+  let parity      = obj[i]['parity'];
+  let first_birth = obj[i]['first_birth'];
+  let oc_use      = obj[i]['oc_use'];
+  let mht_use     = obj[i]['mht_use'];
+  let bmi         = obj[i]['bmi'];
+  let alcohol     = obj[i]['alcohol'];
+  let menopause   = obj[i]['menopause'];
+  let mdensity    = obj[i]['mdensity'];
+  let hgt         = obj[i]['hgt'];
+  let tl          = obj[i]['tl'];
+  let endo        = obj[i]['endo'];
 
-    //fratrie
-    let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
-    result.fratrie = getFratList(obj,i,text_frat_neg);
+  if(menarche !== undefined)
+    msg += dico.pronom[sex] + " avait "+menarche+" ans à l'âge de la ménarche.";
+  // if(parity !== undefined)
+  //   msg += dico.pronom[sex] + "\n##parity="+parity+".";
+  if(first_birth !== undefined)
+    msg += ' ' + dico.pronom[sex] + " avait "+first_birth+" ans lors de la naissance de son premier enfant.";
+  if(oc_use !== undefined)
+    msg += ' ' + dico.pronom[sex] + "\n##oc_use="+oc_use+".";
+  if(mht_use !== undefined)
+    msg += " Traitement hormonal substitutif"+mht_use+".";
+  if(bmi !== undefined)
+    msg += " Son BMI est calculé à "+bmi+"kg/m².";
+  if(hgt !== undefined)
+    msg += " Sa taille est de "+hgt+"m.";
+  if(alcohol !== undefined)
+    msg += " Sa consommation alcoolique quotidienne moyenne est de "+alcohol+" g/j.";
+  if(menopause !== undefined)
+    msg += ' ' + dico.pronom[sex] + " avait "+menopause+" ans à l'âge de la ménopause.";
+  if(mdensity !== undefined)
+    msg += " Son score BiRads (densité mamaire) est"+mdensity+".";
+  if(tl !== undefined)
+    msg += ' ' + dico.pronom[sex] + "\n##tl="+tl+".";
+  if(endo !== undefined)
+    msg += ' ' + dico.pronom[sex] + "\n##endo="+endo+".";
 
-    //final
-    return result.index + '<br>' + result.fratrie + '<br>' + result.child
+  if(msg !== undefined)
+    result.index += msg;
+
+  //enfant & conjoint
+  let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
+  result.child = getChildList(obj,i,text_child_neg);
+
+  //fratrie
+  let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
+  result.fratrie = getFratList(obj,i,text_frat_neg);
+
+  //final
+  return result.index + '<br>' + result.fratrie + '<br>' + result.child
 }
 
 function textline(obj, i){

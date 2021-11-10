@@ -8,9 +8,9 @@ $(document).ready(function(){
 	// CanRisk file save dialog
 	$('#cr_file_save').on('click', function (e) {
 		var this_canrisk;
-		this_canrisk = get_non_anon_pedigree(pedcache.current(opts), get_meta());
+		this_canrisk = get_non_anon_pedigree(pedcache.current(opts), get_meta(pedcache.current(opts)));
 
-		var famid = $('#famid').val().trim();
+		var famid = $('#famid').val().trim().replaceAll(" ", "_");
 		if(famid.length > 0) {
 			this_canrisk = this_canrisk.replace(/^XXXX/mg, famid);
 		}
@@ -20,21 +20,34 @@ $(document).ready(function(){
 	})
 
 	// get surgical ops and PRS for canrisk header
-	get_meta=function() {
-		let meta = io.get_surgical_ops();
+	get_meta=function(dataset) {
+		let meta = get_surgical_ops(dataset);
 		let prs;
-		try {
-			prs = io.get_prs_values();
-			if(prs.breast_cancer_prs && prs.breast_cancer_prs.alpha !== 0 && prs.breast_cancer_prs.zscore !== 0) {
-				meta += "\n##PRS_BC=alpha="+prs.breast_cancer_prs.alpha+",zscore="+prs.breast_cancer_prs.zscore;
-			}
+		// try {
+		// 	prs = io.get_prs_values();
+		// 	if(prs.breast_cancer_prs && prs.breast_cancer_prs.alpha !== 0 && prs.breast_cancer_prs.zscore !== 0) {
+		// 		meta += "\n##PRS_BC=alpha="+prs.breast_cancer_prs.alpha+",zscore="+prs.breast_cancer_prs.zscore;
+		// 	}
 
-			if(prs.ovarian_cancer_prs && prs.ovarian_cancer_prs.alpha !== 0 && prs.ovarian_cancer_prs.zscore !== 0) {
-				meta += "\n##PRS_OC=alpha="+prs.ovarian_cancer_prs.alpha+",zscore="+prs.ovarian_cancer_prs.zscore;
-			}
-		} catch(err) { alert("PRS", prs); }
+		// 	if(prs.ovarian_cancer_prs && prs.ovarian_cancer_prs.alpha !== 0 && prs.ovarian_cancer_prs.zscore !== 0) {
+		// 		meta += "\n##PRS_OC=alpha="+prs.ovarian_cancer_prs.alpha+",zscore="+prs.ovarian_cancer_prs.zscore;
+		// 	}
+		// } catch(err) { alert("PRS", prs); }
 		return meta;
 	}
+
+	get_surgical_ops = function(dataset) {
+		let meta = "";
+		let probandIdx  = pedigree_util.getProbandIndex(dataset);
+
+		if(dataset[probandIdx]['ovary2'] === "Y") {
+			meta += ";OVARY2=y";
+		}
+		if(dataset[probandIdx]['mast2'] === "Y") {
+			meta += ";MAST2=y";
+		}
+		return meta;
+	};
 
 	readCanRisk=function(boadicea_lines) {
 		let cancers = cancers_canrisk //language dependant
@@ -139,7 +152,7 @@ $(document).ready(function(){
 		return [hdr, ped];
 	}
 
-	get_pedigree=function(dataset, famid, meta, isanon, version=2) {
+	get_pedigree=function(dataset, famid, meta, isanon, version=2) { //Write CanRisk File
 		let cancers = cancers_canrisk //language dependant
 
 		let genetic_test1 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
@@ -168,18 +181,18 @@ $(document).ready(function(){
 		}
 
 		if(sex !== 'M') {
-			let menarche    = dataset[probandIdx]['menarche']
-			let parity      = undefined //get_risk_factor('parity');
-			let first_birth = undefined //get_risk_factor('age_of_first_live_birth');
-			let oc_use      = undefined //get_risk_factor('oral_contraception');
-			let mht_use     = undefined //get_risk_factor('mht');
-			let bmi         = undefined //get_risk_factor('bmi');
-			let alcohol     = undefined //get_risk_factor('alcohol_intake');
-			let menopause   = undefined //get_risk_factor('age_of_menopause');
-			let mdensity    = undefined //get_risk_factor('mammographic_density');
-			let hgt         = undefined //get_risk_factor('height');
-			let tl          = undefined //get_risk_factor('Age_Tubal_ligation');
-			let endo        = undefined //get_risk_factor('endometriosis');
+			let menarche    = dataset[probandIdx]['menarche'];
+			let parity      = dataset[probandIdx]['parity'];
+			let first_birth = dataset[probandIdx]['first_birth'];
+			let oc_use      = dataset[probandIdx]['oc_use'];
+			let mht_use     = dataset[probandIdx]['mht_use'];
+			let bmi         = dataset[probandIdx]['bmi'];
+			let alcohol     = dataset[probandIdx]['alcohol'];
+			let menopause   = dataset[probandIdx]['menopause'];
+			let mdensity    = dataset[probandIdx]['mdensity'];
+			let hgt         = dataset[probandIdx]['hgt'];
+			let tl          = dataset[probandIdx]['tl'];
+			let endo        = dataset[probandIdx]['endo'];
 
 			if(menarche !== undefined)
 				msg += "\n##menarche="+menarche;
@@ -238,8 +251,8 @@ $(document).ready(function(){
 			msg += p.sex+'\t';
 			msg += ('mztwin' in p ? p.mztwin : 0)+'\t'; 						// MZtwin
 			msg += ('status' in p ? p.status : 0)+'\t';							// current status: 0 = alive, 1 = dead
-			msg += ('age' in p ? p.age : 0)+'\t';								// Age at last follow up or 0 = unspecified
-			msg += ('yob' in p ? p.yob : 0)+'\t';								// YOB or 0 = unspecified
+			msg += ('age' in p && p.age!=='' ? p.age : 0)+'\t';								// Age at last follow up or 0 = unspecified
+			msg += ('yob' in p && p.yob!=='' ? p.yob : 0)+'\t';								// YOB or 0 = unspecified
 
 			// bug if fr
 			$.each(cancers, function(cancer, diagnosis_age) {

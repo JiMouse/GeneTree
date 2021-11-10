@@ -134,16 +134,16 @@
 	    return true;
 	}
 
-	io.get_surgical_ops = function() {
-		var meta = "";
-		if(!$('#A6_4_3_check').parent().hasClass("off")) {
-			meta += ";OVARY2=y";
-		}
-		if(!$('#A6_4_7_check').parent().hasClass("off")) {
-			meta += ";MAST2=y";
-		}
-		return meta;
-	};
+	// io.get_surgical_ops = function() {//add to form and update
+	// 	var meta = "";
+	// 	// if(!$('#A6_4_3_check').parent().hasClass("off")) {
+	// 	// 	meta += ";OVARY2=y";
+	// 	// }
+	// 	// if(!$('#A6_4_7_check').parent().hasClass("off")) {
+	// 	// 	meta += ";MAST2=y";
+	// 	// }
+	// 	return meta;
+	// };
 
 	io.add = function(opts) {
 		$('#load').change(function(e) {
@@ -160,7 +160,7 @@
 			ExportBOADICEv4(content);
 		});
 
-		$('#loadFormPedigree').click(function(e) {
+		$('#loadFromPedigree').click(function(e) {
 			var content = pedcache.current(opts);
 			content = FormatToTable(content);
 			hot.loadData(content);

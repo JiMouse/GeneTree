@@ -539,7 +539,8 @@ $(document).ready(function() {
                   }
                 }
               ],
-            width: ($(window).width() > 400 ? 500 : $(window).width()- 30)
+            width: ($(window).width() > 400 ? 500 : $(window).width()- 30),
+			maxHeight: 600
         });
         var html_dis =
             '<br><div class="row">'+
