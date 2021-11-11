@@ -202,7 +202,7 @@
 
 		<!-- Buttons -->
 		<div class="row" style="padding:0px 20px 15px;">
-			<div class="col-sm-4">
+			<div class="col-sm-8">
 				<!--  buttons edit familly -->
 				<div class="dropdown" id="dropdownFam" style="display:inline;">
 					<button class="btn btn-primary dropdown-toggle lang" type="button" data-toggle="dropdown">
@@ -305,16 +305,12 @@
 					<span id="loadFromPedigreeText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
 				</button>
-			</div>
 
-			<!-- <div class="btnDivider"></div> -->
-			<div class="col-sm-4 text-center">
-				<button id="reload" class="btn btn-primary btn-sm disabled"><i class="fa fa-refresh"></i></button>
-				<button id="reset" class="btn btn-primary btn-sm"><i class="fa fa-eraser" aria-hidden="true"></i></button>
-				<button id="undo" class="btn btn-primary btn-sm lang disabled"><i class="fa fa-undo"
-						aria-hidden="true"></i></button>
-				<button id="redo" class="btn btn-primary btn-sm lang disabled"><i class="fa fa-repeat"
-						aria-hidden="true"></i></button>
+				<!-- <div class="btnDivider"></div> -->
+				<button id="reset" class="btn btn-primary btn lang">
+					<!-- <span><i class="fa fa-eraser" aria-hidden="true"></i></span> -->
+					<span id="resetText" class="lang"></span>
+				</button>
 			</div>
 
 			<div class="col-sm-4 text-center">
@@ -849,8 +845,17 @@
 				</div>
 				<script>
 					var container = document.getElementById('dataTable');
+
+					//check if sessionStorage
+					var hotData = JSON.parse(sessionStorage.getItem('hotData'));
+					if (hotData !== undefined && hotData !== null) {
+						load_hotData = hotData;
+					} else {
+						load_hotData = myData;
+					}
+					
 					var hot = new Handsontable(container, {
-						data: myData,
+						data: load_hotData,
 						rowHeaders: true,//false
 						colHeaders: cols_headerOnco,
 						columns: colsOnco,
@@ -871,10 +876,7 @@
 						licenseKey: 'non-commercial-and-evaluation',
 						afterChange: function (change, source) {
 							// save all data to local storge if the edit happens
-							if (source !== "loadData") {
-								sessionStorage['data'] = JSON.stringify(this.getSourceData());
-								return
-							}
+							sessionStorage.setItem('hotData', JSON.stringify(this.getSourceData()));
 						}
 					});
 				</script>

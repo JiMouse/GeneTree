@@ -252,17 +252,8 @@ $(document).ready(function() {
         loadFromHot();
     });
 
-    $( "#reload" ).click(function() {
-        hot.loadData(JSON.parse(sessionStorage['data']));
-    });
     $( "#reset" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
-    });
-    $( "#undo" ).click(function() {
-        hot.undo();
-    });
-    $( "#redo" ).click(function() {
-        hot.redo();
     });
     $( "#add-parents" ).click(function() {
         famObj = {parents:1};
