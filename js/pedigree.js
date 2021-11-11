@@ -1025,8 +1025,7 @@
 		}
 
 		// drag and zoom
-		
-		pzoom.init_zoom(opts,svg); // interference with $('#loadFromHot').click(function()
+		pzoom.init_zoom(opts,svg);
 
 		return opts;
 	};

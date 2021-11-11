@@ -992,12 +992,16 @@ function updateLangage(oldLang, newLang) {
             });
         }
 
+        //reset diseases
+        opts.diseases = $.extend(true, [], DEFAULT_DISEASES); // <= update diseases
+        localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+
+        //reset tree
+        pbuttons.reset(opts, opts.keep_proband_on_reset);
+
         //load new table
         hot.loadData(JSON.parse(myDataSafe));
-
-        //reset disease and refresh pedigree
-        opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
-        loadFromHot();
+        loadFromHot(); //not working
 
     }, delayInMilliseconds);
 }

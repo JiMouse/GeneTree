@@ -113,7 +113,7 @@
 			pedcache.clear_pedigree_data(opts)
 		} else {
 			var proband = {
-				"name":"ch1","sex":"F","mother":"f21","father":"m21","proband":true,"status":"0","display_name":"index"
+				"name":"ch1","sex":"F","mother":"f21","father":"m21","proband":true,"status":"0","display_name":"Index"
 			};
 			pedcache.clear(opts); // clear all storage data
 		}

@@ -188,6 +188,7 @@ $(document).ready(function() {
                     content = FormatToTable(content);
                     get_risk_factors(content, risk_factors) //add risk_factors as new keys
                     hot.loadData(content);
+                    loadFromHot(); //Load pedigreeJS
         
                 } else {
                     data = JSON.parse(event.target.result);
@@ -196,6 +197,7 @@ $(document).ready(function() {
                     }
                 }
                 hot.loadData(data);
+                loadFromHot(); //Load pedigreeJS
             };
             reader.readAsText(file);
         } else {
@@ -204,7 +206,7 @@ $(document).ready(function() {
         $("#submitLoad")[0].value = ''; // reset value
 
         // close tab
-        document.getElementById('dropdownFam').classList.remove('open')
+        document.getElementById('dropdownFam').classList.remove('open');
     });
     $( "#nuclear" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
