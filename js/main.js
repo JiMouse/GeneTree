@@ -992,7 +992,6 @@ function updateLangage(oldLang, newLang) {
             });
         }
 
-        //reset diseases
         opts.diseases = $.extend(true, [], DEFAULT_DISEASES); // <= update diseases
         localStorage.setItem('diseases', JSON.stringify(opts.diseases));
 

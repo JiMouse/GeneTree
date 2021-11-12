@@ -319,6 +319,13 @@ $(document).ready(function() {
                 columns: cols,
                 colHeaders: cols_header
             });
+                //reset diseases (empty if not onco)
+                opts.diseases = $.extend(true, [], []);
+                newdataset = ptree.copy_dataset(pedcache.current(opts));
+                opts.dataset = newdataset;
+                ptree.rebuild(opts);
+                update_diseases();
+                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
         }
     });
 

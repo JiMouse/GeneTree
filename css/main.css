@@ -214,3 +214,8 @@ p.big {
   margin-left: 0px;
   margin-right: 0px;
 }
+
+.table>tbody>tr>td,
+.table>tbody>tr>th {
+  vertical-align: middle;
+}
