@@ -30,7 +30,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age1',
@@ -40,7 +40,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age2',
@@ -50,7 +50,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age3',
