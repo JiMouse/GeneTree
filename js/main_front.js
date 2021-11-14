@@ -30,7 +30,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age1',
@@ -40,7 +40,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age2',
@@ -50,7 +50,7 @@ var cols = [{data: 'FamID'},
             type: 'autocomplete',
             source: [],
             strict: false,
-            filter: false,
+            filter: true,
             renderer: autRenderer
             }, {
             data: 'Age3',
@@ -164,7 +164,7 @@ var opts = {
     'zoomOut': 3.,
     'font_size': '0.75em',
     'edit': true,
-    'labels': ['stillbirth', 'age', 'yob', 'alleles', 'comment'],
+    'labels': ['stillbirth', 'age', 'yob', 'comment', 'dbirth', 'civil_name'],
     'diseases': $.extend(true, [], DEFAULT_DISEASES),
     'DEBUG': (pedigree_util.urlParam('debug') === null ? false : true)};
 
@@ -252,8 +252,41 @@ $(document).ready(function() {
         loadFromHot();
     });
 
+    //create reset_dialog
+    var reset_dialog;
+    reset_dialog = $('<div id="msgDialog">'+lang.confirmReset+'</div>').dialog({
+        autoOpen: false,
+        title: lang.reset_dialogs,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            // "ui-dialog-titlebar-close":"custom-btn",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+        buttons: [{
+            text: lang.continue,
+            click: function () {
+                hot.loadData(JSON.parse(myDataSafe));
+                $(this).dialog( "close" );
+            },
+        }, {
+            text: lang.cancel,
+            click: function () {
+                $(this).dialog( "close" );
+                return;
+            },
+        }],
+    });
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+
     $( "#reset" ).click(function() {
-        hot.loadData(JSON.parse(myDataSafe));
+        reset_dialog.dialog( "open" );
     });
     $( "#add-parents" ).click(function() {
         famObj = {parents:1};
@@ -301,6 +334,14 @@ $(document).ready(function() {
                 columns: colsOnco,
                 colHeaders: cols_headerOnco
             });
+            //reset diseases (onco)
+            opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+            newdataset = ptree.copy_dataset(pedcache.current(opts));
+            opts.dataset = newdataset;
+            ptree.rebuild(opts);
+            update_diseases();
+            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            
         } else {
             hot.updateSettings({
                 cells: function (row, col, prop) {

@@ -298,7 +298,7 @@ function getTablePatho(obj) {
     return patho;
 }
 
-function FormatToTable(JSONData) {
+function FormatToTable(JSONData) {  //bug with comment and abirth
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         toRep = [];
 
@@ -328,6 +328,20 @@ function FormatToTable(JSONData) {
             }
         }
 
+        //save all other fields in other object
+        const toRemove = new Set(['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age'
+                                    ,'proband','top_level','noparents','miscarriage','termination','adopted_in','mztwin','dztwin'
+                                    , 'Option', 'level']);
+        const otherKeys = keys.filter( x => !toRemove.has(x) );
+        let otherObj = {};
+        if (otherKeys != '') {
+            for (var j = 0; j < otherKeys.length; j++) {
+                if (obj[i][otherKeys[j]] !== '') {
+                    otherObj[otherKeys[j]]=obj[i][otherKeys[j]];
+                }
+            }
+        }
+        
         obj[i] = {
             "FamID": obj[i].famid,
             "Name": obj[i].display_name,
@@ -347,6 +361,13 @@ function FormatToTable(JSONData) {
         for (let c = 0; c < colsDiseases.length; c++) {
             obj[i][colsDiseases[c]]=patho[c];
             obj[i][colsAges[c]]=age[c];
+        }
+
+        //Add misc. fields
+        if (otherKeys != '') {
+            for (let j = 0; j < otherKeys.length; j++) {
+                obj[i][otherKeys[j]]= otherObj[otherKeys[j]];
+            }
         }
 
         //Add new IndivID if non numerical
@@ -992,7 +1013,11 @@ function updateLangage(oldLang, newLang) {
             });
         }
 
-        opts.diseases = $.extend(true, [], DEFAULT_DISEASES); // <= update diseases
+        if (checkBox.checked == true){
+            opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+        } else {
+            opts.diseases = $.extend(true, [], []);
+        }
         localStorage.setItem('diseases', JSON.stringify(opts.diseases));
 
         //reset tree

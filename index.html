@@ -333,8 +333,7 @@
 		<div class="row" style="padding:0px 20px 15px;">
 
 			<div class="col-sm-4 text-center">
-				<!-- Button trigger modal -->
-				<!-- style="background-color:#b73338;border-color: #8f282c;" -->
+				<!-- To do : internationalisation -->
 				<button id="supp_edit_info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
 					Ajouter des informations à un individu
 				</button>
@@ -347,14 +346,36 @@
 							</p>
 							<div class="row">
 								<div class="col-sm-4 text-right field_label">
-									<label for="form_id_name">Nom :</label>
+									<label for="form_id_name">Identifiant :</label>
 								</div>
-								<div class="field col-sm-8">
+								<div class="field col-sm-4">
 									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
 										id="form_id_name" aria-invalid="false">
 								</div>
+								<div class="field col-sm-4">
+									<label for="proband">
+										<input type="checkbox" name="proband" value="proband" required="" id="proband" class="valid">
+											Propositus
+									</label>
+								</div>
 							</div>
-							<!-- Nom ? Nom de naissance ? Date de naissance ? -->
+							<div class="row">
+								<div class="col-sm-5 text-right field_label">
+									<label for="civil_name">Nom Prénom :</label>
+								</div>
+								<div class="field col-sm-7">
+									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
+										id="civil_name" aria-invalid="false">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6 text-right field_label">
+									<label for="dbirth">Date de naissance :</label>
+								</div>
+								<div class="field col-sm-6">
+									<input type="date" name="dbirth" size="17" class="form-control valid" id="dbirth" aria-invalid="false">
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-sm-4 text-center">
 									<label for="id_sex_0">

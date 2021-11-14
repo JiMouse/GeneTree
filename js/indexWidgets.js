@@ -6,21 +6,21 @@ $(document).ready(function(){
 	dialog = $( "#supp_info" ).dialog({
 		autoOpen: false,
 		classes: {
-		"ui-dialog": "custom-background",
-		"ui-dialog-titlebar": "custom-theme",
-		"ui-dialog-title": "custom-theme text-center",
-		// "ui-dialog-titlebar-close":"custom-btn",
-		"ui-dialog-content": "custom-background",
-		"ui-dialog-buttonpane": "custom-background"
-	},
-	width: ($(window).width() > 400 ? 420 : $(window).width()- 30),
-	maxHeight: 700,
-	// modal: true,
-	buttons: {
-		"Sauvegarder": updateHot,
-		"Annuler": function() {
-			$( this ).dialog( "close" );
-		}
+			"ui-dialog": "custom-background",
+			"ui-dialog-titlebar": "custom-theme",
+			"ui-dialog-title": "custom-theme text-center",
+			// "ui-dialog-titlebar-close":"custom-btn",
+			"ui-dialog-content": "custom-background",
+			"ui-dialog-buttonpane": "custom-background"
+		},
+		width: ($(window).width() > 400 ? 420 : $(window).width()- 30),
+		maxHeight: 700,
+		// modal: true,
+		buttons: {
+			"Sauvegarder": updateHot,
+			"Annuler": function() {
+				$( this ).dialog( "close" );
+			}
 		}
 	})
 	$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
@@ -46,6 +46,17 @@ $(document).ready(function(){
 		var name = obj[index]['Name'];
 		$( "#form_id_name" ).val(name);
 
+		//proband 
+		//obj[i].proband
+		// if ($( "#proband" ).checked == true)
+
+		//civil_name
+		$( "#civil_name" ).val(obj[index]['civil_name']);
+
+		//Date of birth
+		$( "#dbirth" ).val(obj[index]['dbirth']);
+		// add on change => yob
+		
 		//sex
 		var sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
@@ -80,6 +91,17 @@ $(document).ready(function(){
 		//update obj
 		//name
 		obj[index]['Name'] = $( "#form_id_name" ).val();
+
+		//proband
+
+		//civil_name
+		addKeyToObject(obj, index, 'civil_name')
+		//add to text
+
+		//date of birth
+		addKeyToObject(obj, index, 'dbirth')
+		//add to text
+
 
 		//sex
 		obj[index]['Sex'] = $('input[name="sex"]:checked').val();
