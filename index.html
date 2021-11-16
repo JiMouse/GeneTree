@@ -32,6 +32,8 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 	<script src="package/lodash.js"></script>
+	<!-- <script src="package/jquery.inputmask.js"></script> -->
+	<script src="package/jquery.inputmask.min.js"></script>
 
 	<!-- languages script -->
 	<script>
@@ -62,14 +64,14 @@
 	<script src="js/undo_redo_refresh.js"></script>
 	<script src="js/widgets.js"></script>
 	<script src="js/zoom.js"></script>
-	<script src="js/hotTable.js"></script>
-	<script src="js/indexWidgets.js"></script>
 	<script src="js/canrisk_file.js"></script>
 
-	<!-- main script -->
+	<!-- main scripts -->
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/main_front.js"></script>
 	<script type="text/javascript" src="js/hotContextMenu.js"></script>
+	<script src="js/hotTable.js"></script>
+	<script src="js/indexWidgets.js"></script>
 
 	<!-- main css -->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
@@ -374,7 +376,7 @@
 									<label for="dbirth">Date de naissance :</label>
 								</div>
 								<div class="field col-sm-6">
-									<input type="date" name="dbirth" size="17" class="form-control valid" id="dbirth" aria-invalid="false">
+									<input id="dbirth" class="form-control" type="text" im-insert="false">
 								</div>
 							</div>
 							<div class="row">

@@ -55,7 +55,33 @@ $(document).ready(function(){
 
 		//Date of birth
 		$( "#dbirth" ).val(obj[index]['dbirth']);
-		// add on change => yob
+
+		$("#dbirth").inputmask({
+			alias: "datetime", inputFormat: "dd/mm/yyyy", placeholder: "jj/mm/aaaa"
+		})
+			
+		//Update linked fields ; age, yob, age at first birth
+		$('#dbirth').on('change', function() { 
+			//year of birth
+			let yob = $(this).val().split('/')[2];
+			if(yob!=undefined) {
+				obj[index]['Yob'] = yob;
+
+				//Age
+				var month = Number($(this).val().split('/')[1]) - 1;
+				var day = Number($(this).val().split('/')[0]);
+				var today = new Date();
+				var age = today.getFullYear() - yob;	
+
+				if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
+					age--;
+				}
+				obj[index]['Age'] = age
+
+				// obj[index]['first_birth'] =
+			}
+		});
+		
 		
 		//sex
 		var sex = obj[index]['Sex'];
@@ -96,12 +122,9 @@ $(document).ready(function(){
 
 		//civil_name
 		addKeyToObject(obj, index, 'civil_name')
-		//add to text
 
 		//date of birth
 		addKeyToObject(obj, index, 'dbirth')
-		//add to text
-
 
 		//sex
 		obj[index]['Sex'] = $('input[name="sex"]:checked').val();
@@ -124,7 +147,9 @@ $(document).ready(function(){
 	}
 
 	addKeyToObject=function(obj,i, key, jsname=key){
-		if($( "#"+jsname ).val()!=null && $( "#"+jsname ).val()!="" & $( "#"+jsname ).val()!=undefined) {
+		if($( "#"+jsname ).val()=="") {
+			delete obj[i][key];
+		} else if($( "#"+jsname ).val()!=null && $( "#"+jsname ).val()!=undefined) {
 			obj[i][key]=$( "#"+jsname ).val();
 		}
 	}

@@ -52,7 +52,6 @@ function textIndex(obj, i){
   
   //civil
   result.index = textCivil(obj,i);
-  //ajouter le nom ? if obj[i].name != Index
   result.index += "se présente en consultation de génétique pour évaluation d'une éventuelle prédisposition familiale";
   
   // motif de consultation
@@ -120,13 +119,16 @@ function textline(obj, i){
       sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
+  //nom
+  let name = (keyExist(obj[i],'civil_name') ? ', ' + dico.civil[sex] + ' ' + obj[i].civil_name + ', ' :'')
+  
   //civil
   result.civil = textCivil(obj,i)
   if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
-
+  
   //patho
-  let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ne '+ dico.presenter[status] + ' pas de pathologie cancéreuse',
-      text_pos = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' ' + dico.etre[status] + " suivi pour un "; //" et" + 
+  let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ne '+ dico.presenter[status] + ' pas de pathologie cancéreuse',
+      text_pos = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ' + dico.etre[status] + " suivi pour un "; //" et" + 
   result.patho = getPatho(obj, i,text_neg, text_pos)+'.';
 
   //fratrie
@@ -134,21 +136,34 @@ function textline(obj, i){
   result.fratrie = getFratList(obj,i,text_frat_neg);
 
   //final
-  return result.civil + result.patho  + ' ' + result.fratrie
+  return name + result.civil + result.patho  + ' ' + result.fratrie
 }
 
 function textCivil(obj,i){
   let sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
-  let out = (obj[i].proband == true ? dico.civil[sex] + ' ' 
-            + (obj[i].yob != '' ? dico.etre[status] + ' ':'')
-            : '');
-  out += (obj[i].yob != '' && obj[i].yob != null  ? ' ' + dico.naissance[sex] + ' en ' + obj[i].yob : '');
+  let out = (obj[i].proband == true ? 
+    dico.civil[sex] + ' '
+    // add name
+    + (keyExist(obj[i],'civil_name') ? obj[i].civil_name + ' ' :'')
+    + (obj[i].yob != ''||keyExist(obj[i],'dbirth') ? dico.etre[status] + ' '
+    : '')
+    :'');
+  if(keyExist(obj[i],'dbirth')) {
+    out += ' ' + dico.naissance[sex] + ' le ' + obj[i].dbirth;
+  }else{
+    out += (obj[i].yob != '' && obj[i].yob != null ? ' ' + dico.naissance[sex] + ' en ' + obj[i].yob : '');
+  }
   if (obj[i].age != '' && obj[i].age != null) out += ' (' + (status == 'décés' ? dico.décés[sex] + " à " : "") + obj[i].age +' ans)';
   if(obj[i].proband == true && obj[i].yob != '') out += ' et '
   
   return out
+}
+
+function keyExist(obj, k) {
+  if(!obj.hasOwnProperty(k)) return false
+  return obj[k] != '' && obj[k] != null && obj[k] != undefined
 }
 
 function getChildList(obj,i,text_child_neg, suffixe='.') {
