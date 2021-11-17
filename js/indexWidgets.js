@@ -92,8 +92,47 @@ $(document).ready(function(){
 
 		//CanRisk
 		$( "#menarche" ).val(obj[index]['menarche']);
-		$( "#parity" ).val(obj[index]['parity']);
-		$( "#first_birth" ).val(obj[index]['first_birth']);
+
+		$( "#parity" ).val(getChildNumber(obj, index).parity);
+		function getChildNumber(obj, i) {
+			// old_key  = ['FamID','Name','IndivID','FathID','MothID','Sex', 'Affected', 'Deceased','Yob', 'Age'];
+			let child = [];
+			for (var k = 0; k < obj.length; k++) {
+				if (obj[k].Sex == "U") continue
+				if (obj[k]['FathID'] == obj[i]['IndivID'] || obj[k]['MothID'] == obj[i]['IndivID']) {
+					if (obj[k]['Option']=='FCS' || obj[k]['Option']=='IMG' ) continue
+					child.push(k)
+				};
+			};
+			let result = {
+				parity:child.length,
+				index:child
+			}
+			return result
+		}
+
+		let first_birth = getOlderChild(obj,index)
+		if(first_birth!= undefined) {
+			first_birth=first_birth-obj[index].Yob
+			$( "#first_birth" ).val(first_birth);
+		}
+		// $( "#first_birth" ).val(obj[index]['first_birth']);
+		function getOlderChild(obj, index) {
+			if(getChildNumber(obj, index).parity>0) {
+				//find older child ?
+				let child = getChildNumber(obj, index).index;
+				for (var k = 0; k < child.length; k++) {
+					if(obj[k].Yob == '' || obj[k].Yob == undefined) continue;
+					if(typeof older_child == 'undefined'){
+						var older_child = obj[k].Yob;
+					} else {
+						older_child = (number(obj[k].Yob) < number(older_child) ? obj[k].Yob : older_child);
+					}
+				};
+				return older_child;
+			}
+		}		
+
 		$( "#oc_use" ).val(obj[index]['oc_use']);
 		$( "#mht_use" ).val(obj[index]['mht_use']);
 		$( "#bmi" ).val(obj[index]['bmi']);

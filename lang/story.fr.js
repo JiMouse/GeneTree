@@ -75,7 +75,7 @@ function textIndex(obj, i){
   let endo        = obj[i]['endo'];
 
   if(menarche !== undefined)
-    msg += dico.pronom[sex] + " avait "+menarche+" ans à l'âge de la ménarche.";
+    msg += ' ' + dico.pronom[sex] + " avait "+menarche+" ans à l'âge de la ménarche.";
   // if(parity !== undefined)
   //   msg += dico.pronom[sex] + "\n##parity="+parity+".";
   if(first_birth !== undefined)
