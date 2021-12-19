@@ -771,7 +771,7 @@
 			var label = opts.labels[ilab];
 			addLabel(opts, node, ".25em", -(0.7 * opts.symbol_size),
 				function(d) {
-					if(!d.data[label])
+					if(!d.data[label] || (label === 'yob' && d.data.hasOwnProperty('dbirth'))) // not return year if full year is specified
 						return;
 					d.y_offset = (ilab === 0 || !d.y_offset ? font_size*2.25 : d.y_offset+font_size);
 					return d.y_offset;
@@ -789,6 +789,8 @@
 							return d.data[label] +' ans'; // switch 'y' to ' ans'
 						} else if(label === 'stillbirth') {
 							return "SB";
+						} else if(label === 'yob' && d.data.hasOwnProperty('dbirth')) { // not return year if full year is specified
+							return
 						}
 						return d.data[label];
 					}

@@ -59,7 +59,7 @@ var lang = {
     //main.js
     index:"Index",
     brother:"Frère",
-    sister:"Soeur",
+    sister:"Sœur",
     father:"Père",
     mother:"Mère",
     unclePat:"Oncle pat",
@@ -155,7 +155,7 @@ var boadicea = {
 function dicoD () {
     return {
         "cancer_sein":"cancer du sein",
-        "cancer_sein2" :"cancer du sein bilatéral",
+        "cancer_sein2" :"cancer du sein controlatéral",
         "cancer_ovaire":"cancer de l'ovaire",
         "cancer_pancréas":"cancer du pancréas",
         "cancer_prostate":"cancer de la prostate",
@@ -293,7 +293,7 @@ var dico = {
     },
     'fratrie':{
       'M':'un frère',
-      'F':'une soeur'
+      'F':'une sœur'
     },
     'presenter':{
       'vie':'présente',

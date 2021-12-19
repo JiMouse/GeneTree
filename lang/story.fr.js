@@ -3,19 +3,19 @@ function getPatho(obj, i,text_neg, text_pos) {
       tag = '_diagnosis_age',
       result = '';
   
-  let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '') //bug with msg
+  let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '')
   if (!keys.join().includes(tag)) return text_neg + comment
 
   for (var j = 0; j < keys.length; j++) {  
     if (keys[j].indexOf(tag) !== -1) {
       let out = keys[j].substring(0, keys[j].length - tag.length),
           a = obj[i][keys[j]],
-          y = obj[i].yob + a;
+          y = Number(obj[i].yob) + Number(a);
       result = (result != '' ? result + " et d'un " : text_pos);
       result += t(out);
       if(a != "" && a != null) {
         result += " diagnostiqué";
-        if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y;
+        if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y; 
         result += " à l'âge de " + a + " ans";
       }
     };
