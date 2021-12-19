@@ -128,7 +128,7 @@ function textline(obj, i){
   
   //patho
   let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ne '+ dico.presenter[status] + ' pas de pathologie cancéreuse',
-      text_pos = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ' + dico.etre[status] + " suivi pour un "; //" et" + 
+      text_pos = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ' + dico.etre[status] + " suivi" + dico.accord[sex] + " pour un "; //" et" + 
   result.patho = getPatho(obj, i,text_neg, text_pos)+'.';
 
   //fratrie
@@ -206,7 +206,8 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
 
       //patho
       let text_neg = '',
-          text_pos = " suivi pour un ";
+          sex = obj[k].sex,
+          text_pos = " suivi" + dico.accord[sex] + " pour un "; //" suivi pour un ";
       result += getPatho(obj, k,text_neg, text_pos);
     }
     return result
@@ -291,7 +292,8 @@ function getFratList(obj,i,text_frat_neg) {
 
       //patho
       let text_neg = '',
-          text_pos = " suivi pour un ";
+          sex = obj[k].sex,
+          text_pos = " suivi" + dico.accord[sex] + " pour un "; //" suivi pour un ";
       result += getPatho(obj, k,text_neg, text_pos);
 
       //child

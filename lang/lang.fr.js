@@ -298,6 +298,10 @@ var dico = {
     'presenter':{
       'vie':'présente',
       'décés':'présentait'
+    },
+    'accord':{
+        'M':'',
+        'F':'e'
     }
   };
 
