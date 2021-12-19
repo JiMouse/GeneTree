@@ -1018,7 +1018,7 @@ function updateLangage(oldLang, newLang) {
         } else {
             opts.diseases = $.extend(true, [], []);
         }
-        localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+        sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
 
         //reset tree
         pbuttons.reset(opts, opts.keep_proband_on_reset);

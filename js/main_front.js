@@ -340,7 +340,7 @@ $(document).ready(function() {
             opts.dataset = newdataset;
             ptree.rebuild(opts);
             update_diseases();
-            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
             
         } else {
             hot.updateSettings({
@@ -366,7 +366,7 @@ $(document).ready(function() {
                 opts.dataset = newdataset;
                 ptree.rebuild(opts);
                 update_diseases();
-                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
         }
     });
 
@@ -486,7 +486,7 @@ $(document).ready(function() {
     }
 
     // load diseases
-    var dis = localStorage.getItem('diseases');
+    var dis = sessionStorage.getItem('diseases');
     if(dis !== undefined && dis !== null){
         opts.diseases = JSON.parse(dis);
     } else {
@@ -532,7 +532,7 @@ $(document).ready(function() {
 
                                     ptree.rebuild(opts);
                                     update_diseases();
-                                    localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                                    sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
                                     $(this).dialog("close");
                                 },
                             }, {
@@ -558,7 +558,7 @@ $(document).ready(function() {
                                     opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
                                     ptree.rebuild(opts);
                                     update_diseases();
-                                    localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                                    sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
                                     $(this).dialog("close");
                                 },
                             }, {
@@ -608,7 +608,7 @@ $(document).ready(function() {
             var new_diseases = $.extend(true, [], opts.diseases);
             new_diseases.push({'type': $('#dis_name').val().replace(/\s/g , "_"), 'colour': 'red'});
             opts.diseases = new_diseases;
-            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
             update_diseases();
         });
     });
@@ -659,7 +659,7 @@ $(document).ready(function() {
                 return el.type !== this_disease;
             });
             opts.diseases = new_diseases;
-            localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+            sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
             update_diseases();
         });
 
@@ -684,7 +684,7 @@ $(document).ready(function() {
                      }
                 });
                 opts.diseases = new_diseases;
-                localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+                sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
                 update_diseases();
             }
         });
@@ -728,7 +728,7 @@ $(document).ready(function() {
         ptree.rebuild(opts);
 
         opts.diseases = new_diseases;
-        localStorage.setItem('diseases', JSON.stringify(opts.diseases));
+        sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
         update_diseases();
 
     }
