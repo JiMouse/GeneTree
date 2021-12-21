@@ -168,7 +168,6 @@ function dicoD () {
     
     };
 }
-
 //Defaut datasets
 var myData = [
     {"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
