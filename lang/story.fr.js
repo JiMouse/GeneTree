@@ -59,8 +59,26 @@ function textIndex(obj, i){
       text_pos = " dans le cadre d'un ";
   result.index += getPatho(obj, i,text_neg, text_pos)+'.';
 
-  //add canrisk infos
+  //add anapath fields
   let msg="";
+  let er_bc_pathology = obj[i]['er_bc_pathology'];
+  let pr_bc_pathology = obj[i]['pr_bc_pathology'];
+  let her2_bc_pathology = obj[i]['her2_bc_pathology'];
+  let ck14_bc_pathology = obj[i]['ck14_bc_pathology'];
+  let ck56_bc_pathology = obj[i]['ck56_bc_pathology'];
+
+  if(er_bc_pathology !== undefined)
+    msg += 'sensible aux oestrogène.'
+  if(pr_bc_pathology !== undefined)
+    msg += 'sensible à la progestérone.'
+  if(her2_bc_pathology !== undefined)
+    msg += 'HER2-positif.'
+  if(ck14_bc_pathology !== undefined)
+    msg += 'CK14-positif.'
+  if(ck56_bc_pathology !== undefined)
+    msg += 'CK56-positif.'
+
+  //add canrisk infos
   let menarche    = obj[i]['menarche'];
   let parity      = obj[i]['parity'];
   let first_birth = obj[i]['first_birth'];
@@ -99,8 +117,19 @@ function textIndex(obj, i){
   if(endo !== undefined)
     msg += ' ' + dico.pronom[sex] + "\n##endo="+endo+".";
 
+  // // add genetic test if positive
+  let tests = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
+  let msg_test=''
+  for (let j = 0; j < tests.length; j++) {
+    if(obj[i].hasOwnProperty(tests[j]+'_gene_test') && obj[i][tests[j]+'_gene_test']['result'] == 'P') {
+      msg_test = (msg_test === '' ? tests[j].toUpperCase() + '+' : msg_test + ' ,'+tests[j].toUpperCase() + '+') ;	
+    }
+  };
+  if(msg_test !== '')
+    msg = msg.slice(0, -1) + ' ('+msg_test+')'+'.'; //remove last char
+
   if(msg !== undefined)
-    result.index += msg;
+    result.index = result.index.slice(0, -1) + msg;
 
   //enfant & conjoint
   let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
@@ -120,7 +149,7 @@ function textline(obj, i){
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
   //nom
-  let name = (keyExist(obj[i],'civil_name') ? ', ' + dico.civil[sex] + ' ' + obj[i].civil_name + ', ' :'')
+  let name = (keyExist(obj[i],'civil_name') ? ', ' + dico.civil[sex] + ' ' + obj[i].civil_name + ',' :'')
   
   //civil
   result.civil = textCivil(obj,i)
@@ -139,7 +168,7 @@ function textline(obj, i){
   return name + result.civil + result.patho  + ' ' + result.fratrie
 }
 
-function textCivil(obj,i){
+function textCivil(obj,i){  //extra space at the end
   let sex = obj[i].sex,
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 

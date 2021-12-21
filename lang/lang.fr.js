@@ -159,7 +159,7 @@ function dicoD () {
         "cancer_ovaire":"cancer de l'ovaire",
         "cancer_pancréas":"cancer du pancréas",
         "cancer_prostate":"cancer de la prostate",
-        "cancer_colon":"cancer du colon",
+        "cancer_colon":"cancer du côlon",
         "cancer_estomac":"cancer de l'estomac",
         "cancer_utérus":"cancer de l'utérus",
         "cancer_rein":"cancer du rein",

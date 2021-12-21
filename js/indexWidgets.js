@@ -95,6 +95,15 @@ $(document).ready(function(){
 		//comment
 		$( "#form_id_comment" ).val(obj[index]['comment']);
 
+		//genetic tests 
+		let tests = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
+		for (let j = 0; j < tests.length; j++) {
+			if(obj[index].hasOwnProperty(tests[j]+'_gene_test')) {
+				$( '#'+tests[j]+'_gene_test' ).val(obj[index][tests[j]+'_gene_test']['type']);
+				$( '#'+tests[j]+'_gene_test'+'_result' ).val(obj[index][tests[j]+'_gene_test']['result']);	
+			}
+		};
+
 		//CanRisk
 		if(sex == 'F') {
 			$( "#menarche" ).val(obj[index]['menarche']);
@@ -150,6 +159,13 @@ $(document).ready(function(){
 			$( "#endo" ).val(obj[index]['endo']);
 			$( "#ovary2" ).val(obj[index]['ovary2']);
 			$( "#mast2" ).val(obj[index]['mast2']);
+
+			//add anapath fields
+			$( "#er_bc_pathology" ).val(obj[index]['er_bc_pathology']);
+			$( "#pr_bc_pathology" ).val(obj[index]['pr_bc_pathology']);
+			$( "#her2_bc_pathology" ).val(obj[index]['her2_bc_pathology']);
+			$( "#ck14_bc_pathology" ).val(obj[index]['ck14_bc_pathology']);
+			$( "#ck56_bc_pathology" ).val(obj[index]['ck56_bc_pathology']);
 		}
 		//title
 		dialog.dialog({
@@ -157,6 +173,25 @@ $(document).ready(function(){
 		})
 		dialog.dialog( "open" );
 	});
+
+	$("#select_all_gene_tests").on('change', function (e) {
+		if(this.value === "S") {
+			// select all mutation search to be negative
+			$("#gene_test").find("select[name$='_gene_test']").val("S").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "T") {
+			// select all direct gene tests to be negative
+			$("#gene_test").find("select[name$='_gene_test']").val("T").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "N") {
+			// select all gene tests to be negative
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "reset") {
+			$("#gene_test").find("select[name$='_gene_test']").val("-").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("-").change();
+		}
+	});
+
 
 	function updateHot() {
 		//update obj
@@ -177,13 +212,36 @@ $(document).ready(function(){
 		//comment
 		addKeyToObject(obj, index, 'comment', 'form_id_comment')
 
+		//genetic tests
+		let tests = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
+		for (let j = 0; j < tests.length; j++) {
+			let key = tests[j]+'_gene_test',
+				test_type = $( "#"+key ).val(),
+				key_result = key+'_result',
+				test_result = $( "#"+key_result ).val();
+			
+			// delete empty field
+			if(test_type=="" || test_type=="-")
+				delete obj[index][key];
+			if(test_result=="" || test_result=="-")
+				delete obj[index][key_result];
+			
+			//update field
+			if((test_type === 'S' || test_type === 'T') && (test_result === 'P' || test_result === 'N'))
+				obj[index][key]= {'type': test_type, 'result': test_result};
+		};
+
 		//CanRisk fields
 		sex = $('input[name="sex"]:checked').val();
 		if(sex == 'F') {
 			let Canriskfield=['menarche','parity','first_birth','oc_use','mht_use','bmi','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2'];
-
 			for (let j = 0; j < Canriskfield.length; j++) {  
 				addKeyToObject(obj, index, Canriskfield[j])
+			};
+
+			let anapath=['er_bc_pathology','pr_bc_pathology','her2_bc_pathology','ck14_bc_pathology','ck56_bc_pathology'];
+			for (let j = 0; j < anapath.length; j++) {  
+				addKeyToObject(obj, index, anapath[j])
 			};
 		}
 
@@ -200,6 +258,10 @@ $(document).ready(function(){
 		} else if($( "#"+jsname ).val()!=null && $( "#"+jsname ).val()!=undefined) {
 			obj[i][key]=$( "#"+jsname ).val();
 		}
+	}
+
+	loadKeyObjectToJSform=function(obj,i, key, jsname=key){
+		$( "#"+jsname ).val(obj[i][key]);
 	}
 
 	//tabs

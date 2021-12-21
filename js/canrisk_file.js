@@ -49,10 +49,11 @@ $(document).ready(function(){
 		return meta;
 	};
 
-	readCanRisk=function(boadicea_lines) {
+	readCanRisk=function(boadicea_lines) {//import CanRisk File
 		let cancers = cancers_canrisk //language dependant
 		let genetic_test1 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
 		let genetic_test2 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'bard1', 'rad51d', 'rad51c', 'brip1'];
+		let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
 
 		let lines = boadicea_lines.trim().split('\n');
 		let ped = [];
@@ -254,7 +255,6 @@ $(document).ready(function(){
 			msg += ('age' in p && p.age!=='' ? p.age : 0)+'\t';								// Age at last follow up or 0 = unspecified
 			msg += ('yob' in p && p.yob!=='' ? p.yob : 0)+'\t';								// YOB or 0 = unspecified
 
-			// bug if fr
 			$.each(cancers, function(cancer, diagnosis_age) {
 				// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
 				if(diagnosis_age in p)
@@ -290,8 +290,7 @@ $(document).ready(function(){
 				if(j<(io.pathology_tests.length-1))
 					msg += ":";
 			}
-			// alert(msg) // bug si pathos non anglais (patho-diagnosis_age)
-			
+		
 		}
 
 		// console.log(msg, RISK_FACTOR_STORE);

@@ -791,6 +791,8 @@
 							return "SB";
 						} else if(label === 'yob' && d.data.hasOwnProperty('dbirth')) { // not return year if full year is specified
 							return
+						// } else if(label === 'comment')
+						// 	return d.data[label] //short : max. 10 char. ?
 						}
 						return d.data[label];
 					}

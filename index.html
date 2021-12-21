@@ -216,9 +216,10 @@
 						<li>
 							<div class="text-center" style="padding:0px 10px;">
 								<label class="btn btn-primary btn-block">
-									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang"><span
-												id="loadFile" class="lang"></span></abbr></i><input id="submitLoad"
-										type="file" hidden>
+									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang">
+										<span id="loadFile" class="lang"></span></abbr>
+									</i>
+									<input id="submitLoad" type="file" hidden>
 								</label>
 							</div>
 						</li>
@@ -419,7 +420,7 @@
 										<li role="tab" tabindex="-1" class="ui-tabs-tab"
 											aria-controls="bc_pathology" aria-labelledby="ui-id-2"
 											aria-selected="false" aria-expanded="false">
-											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button" id="ui-id-2">Pathologie
+											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button" id="ui-id-2">Anapath.
 											</a>
 										</li>
 										<li role="tab" tabindex="-1" class="ui-tabs-tab"
@@ -566,79 +567,79 @@
 											</div>
 										</div>
 
-										<!-- <div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
-											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
-											aria-hidden="true" style="display: none;">
-											<div class="row">
-												<div class="field_label col-md-8 text-md-right"><label
-														for="id_er_bc_pathology">Récepteur d’œstrogènes:</label>
+										<div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+											<div class="row  row-std">
+												<div class="field_label col-md-8 text-md-right">
+													<label for="er_bc_pathology">Récepteur d’œstrogènes:</label>
 												</div>
-												<div class="field col-md-4"><select name="er_bc_pathology"
-														class="form-control valid" id="id_er_bc_pathology"
-														disabled="" aria-invalid="false">
+												<div class="field col-md-4">
+													<select name="er_bc_pathology"
+														class="form-control valid" id="er_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
 													</select></div>
 											</div>
-											<div class="row">
-												<div class="field_label col-md-8 text-md-right"><label
-														for="id_pr_bc_pathology">Récepteurs à la
-														progestérone:</label></div>
-												<div class="field col-md-4"><select name="pr_bc_pathology"
-														class="form-control valid" id="id_pr_bc_pathology"
-														disabled="" aria-invalid="false">
-														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
-													</select></div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-8 text-md-right"><label
-														for="id_her2_bc_pathology">HER2:</label></div>
-												<div class="field col-md-4"><select name="her2_bc_pathology"
-														class="form-control valid" id="id_her2_bc_pathology"
-														disabled="" aria-invalid="false">
-														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
-													</select></div>
-											</div>
-											<div class="row">
-												<div class="field_label col-md-8 text-md-right"><label
-														for="id_ck14_bc_pathology">Cytokératine 14:</label>
+											<div class="row  row-std">
+												<div class="field_label col-md-8 text-md-right">
+													<label for="pr_bc_pathology">Récepteurs à la progestérone:</label>
 												</div>
-												<div class="field col-md-4"><select name="ck14_bc_pathology"
-														class="form-control valid" id="id_ck14_bc_pathology"
-														disabled="" aria-invalid="false">
+												<div class="field col-md-4">
+													<select name="pr_bc_pathology"
+														class="form-control valid" id="pr_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
 													</select></div>
 											</div>
-											<div class="row">
-												<div class="field_label col-md-8 text-md-right"><label
-														for="id_ck56_bc_pathology">Cytokératine 5/6:</label>
+											<div class="row  row-std">
+												<div class="field_label col-md-8 text-md-right">
+													<label for="her2_bc_pathology">HER2:</label>
 												</div>
-												<div class="field col-md-4"><select name="ck56_bc_pathology"
-														class="form-control valid" id="id_ck56_bc_pathology"
-														disabled="" aria-invalid="false">
+												<div class="field col-md-4">
+													<select name="her2_bc_pathology"
+														class="form-control valid" id="her2_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
 													</select></div>
 											</div>
-										</div> -->
+											<div class="row  row-std">
+												<div class="field_label col-md-8 text-md-right">
+													<label for="ck14_bc_pathology">Cytokératine 14:</label>
+												</div>
+												<div class="field col-md-4">
+													<select name="ck14_bc_pathology"
+														class="form-control valid" id="ck14_bc_pathology" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+											<div class="row  row-std">
+												<div class="field_label col-md-8 text-md-right">
+													<label for="ck56_bc_pathology">Cytokératine 5/6:</label>
+												</div>
+												<div class="field col-md-4">
+													<select name="ck56_bc_pathology"
+														class="form-control valid" id="ck56_bc_pathology" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="0">inconnu</option>
+														<option value="P">positif</option>
+														<option value="N">négatif</option>
+													</select></div>
+											</div>
+										</div>
 
-										<!-- <div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
+										<div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
 											aria-hidden="true" style="display: none;">
-											<div class="row bottom5">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right">
 													<label for="select_all_gene_tests">Définir tous les tests&nbsp;:</label>
 												</div>
@@ -652,22 +653,21 @@
 													</select>
 												</div>
 											</div>
-											<div class="row hidden-md">
+											<div class="row row-std">
 												<div class="col-lg-4"></div>
-												<div class="col-lg-4">
+												<div class="col-lg-4 text-center">
 													<a href="https://canrisk.atlassian.net/wiki/spaces/FAQS/pages/30703617/What+is+the+difference+between+a+mutation+search+and+a+direct+gene+test"
 														title="FAQ" target="_blank">Type de test
 													</a>
 												</div>
-												<div class="col-lg-4">Résultat</div>
+												<div class="col-lg-4 text-center">Résultat</div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_brca1_gene_test">BRCA1 test :</label>
+														for="brca1_gene_test">BRCA1 test :</label>
 												</div>
 												<div class="field col-lg-4">
-													<select name="brca1_gene_test"
-														class="form-control valid" id="id_brca1_gene_test"
+													<select name="brca1_gene_test" class="form-control valid" id="brca1_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -678,7 +678,7 @@
 												<div class="field col-lg-4">
 													<select
 														name="brca1_gene_test_result" class="form-control valid"
-														id="id_brca1_gene_test_result" aria-invalid="false">
+														id="brca1_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -686,11 +686,11 @@
 													</select>
 												</div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_brca2_gene_test">BRCA2 test :</label></div>
+														for="brca2_gene_test">BRCA2 test :</label></div>
 												<div class="field col-lg-4"><select name="brca2_gene_test"
-														class="form-control valid" id="id_brca2_gene_test"
+														class="form-control valid" id="brca2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -699,18 +699,17 @@
 													</select></div>
 												<div class="field col-lg-4"><select
 														name="brca2_gene_test_result" class="form-control valid"
-														id="id_brca2_gene_test_result" aria-invalid="false">
+														id="brca2_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_palb2_gene_test">PALB2 test :</label></div>
-												<div class="field col-lg-4"><select name="palb2_gene_test"
-														class="form-control valid" id="id_palb2_gene_test"
+														for="palb2_gene_test">PALB2 test :</label></div>
+												<div class="field col-lg-4"><select name="palb2_gene_test" class="form-control valid" id="palb2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -718,19 +717,17 @@
 														<option value="T">Test génétique direct</option>
 													</select></div>
 												<div class="field col-lg-4"><select
-														name="palb2_gene_test_result" class="form-control valid"
-														id="id_palb2_gene_test_result" aria-invalid="false">
+														name="palb2_gene_test_result" class="form-control valid" id="palb2_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_chek2_gene_test">CHEK2 test :</label></div>
-												<div class="field col-lg-4"><select name="chek2_gene_test"
-														class="form-control valid" id="id_chek2_gene_test"
+														for="chek2_gene_test">CHEK2 test :</label></div>
+												<div class="field col-lg-4"><select name="chek2_gene_test" class="form-control valid" id="chek2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -739,26 +736,25 @@
 													</select></div>
 												<div class="field col-lg-4"><select
 														name="chek2_gene_test_result" class="form-control valid"
-														id="id_chek2_gene_test_result" aria-invalid="false">
+														id="chek2_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_atm_gene_test">ATM test :</label></div>
+														for="atm_gene_test">ATM test :</label></div>
 												<div class="field col-lg-4"><select name="atm_gene_test"
-														class="form-control valid" id="id_atm_gene_test"
-														aria-invalid="false">
+														class="form-control valid" id="atm_gene_test" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="atm_gene_test_result"
-														class="form-control valid" id="id_atm_gene_test_result"
+														class="form-control valid" id="atm_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
@@ -766,11 +762,11 @@
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_rad51d_gene_test">RAD51D test :</label></div>
+														for="rad51d_gene_test">RAD51D test :</label></div>
 												<div class="field col-lg-4"><select name="rad51d_gene_test"
-														class="form-control valid" id="id_rad51d_gene_test"
+														class="form-control valid" id="rad51d_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -780,18 +776,18 @@
 												<div class="field col-lg-4"><select
 														name="rad51d_gene_test_result"
 														class="form-control valid"
-														id="id_rad51d_gene_test_result" aria-invalid="false">
+														id="rad51d_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_rad51c_gene_test">RAD51C test :</label></div>
+														for="rad51c_gene_test">RAD51C test :</label></div>
 												<div class="field col-lg-4"><select name="rad51c_gene_test"
-														class="form-control valid" id="id_rad51c_gene_test"
+														class="form-control valid" id="rad51c_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -799,20 +795,19 @@
 														<option value="T">Test génétique direct</option>
 													</select></div>
 												<div class="field col-lg-4"><select
-														name="rad51c_gene_test_result"
-														class="form-control valid"
-														id="id_rad51c_gene_test_result" aria-invalid="false">
+														name="rad51c_gene_test_result" class="form-control valid"
+														id="rad51c_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-											<div class="row">
+											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
-														for="id_brip1_gene_test">BRIP1 test :</label></div>
+														for="brip1_gene_test">BRIP1 test :</label></div>
 												<div class="field col-lg-4"><select name="brip1_gene_test"
-														class="form-control valid" id="id_brip1_gene_test"
+														class="form-control valid" id="brip1_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
@@ -821,14 +816,14 @@
 													</select></div>
 												<div class="field col-lg-4"><select
 														name="brip1_gene_test_result" class="form-control valid"
-														id="id_brip1_gene_test_result" aria-invalid="false">
+														id="brip1_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
 														<option value="N">Mut-absente</option>
 													</select></div>
 											</div>
-										</div> -->
+										</div>
 									</div>
 								</div>
 							</div>

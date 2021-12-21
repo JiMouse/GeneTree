@@ -189,7 +189,7 @@ $(document).ready(function() {
                     get_risk_factors(content, risk_factors) //add risk_factors as new keys
                     hot.loadData(content);
                     loadFromHot(); //Load pedigreeJS
-        
+                    loadStory(); //load text
                 } else {
                     data = JSON.parse(event.target.result);
                     if (!data[0].hasOwnProperty('FathID')) {
@@ -198,6 +198,7 @@ $(document).ready(function() {
                 }
                 hot.loadData(data);
                 loadFromHot(); //Load pedigreeJS
+                loadStory(); //load text
             };
             reader.readAsText(file);
         } else {
@@ -273,6 +274,8 @@ $(document).ready(function() {
             text: lang.continue,
             click: function () {
                 hot.loadData(JSON.parse(myDataSafe));
+                loadFromHot();
+                loadStory();
                 $(this).dialog( "close" );
             },
         }, {
