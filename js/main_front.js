@@ -156,7 +156,7 @@ var opts = {
     'targetDiv': 'pedigree',
     'btn_target': 'pedigree_history',
     //'nodeclick': pedigree_form.nodeclick,
-    'width': ($(window).width() > 450 ? 1200 : $(window).width()- 30), //900
+    'width': ($(window).width() > 450 ? 1100 : $(window).width()- 30), //900
     'height': 500,
     'symbol_size': 30,
     'edit': true,
@@ -694,9 +694,12 @@ $(document).ready(function() {
     }
 
     // Update dataset from handsontable
-    function loadFromHot() {
+    function loadFromHot(hotTable=hot) {
+        loadFromObj(hotTable.getSourceData());
+    }
+    function loadFromObj(hotData = hot.getSourceData()) {
         // load table and convert it
-        let myDeepClone = JSON.stringify(hot.getSourceData());
+        let myDeepClone = JSON.stringify(hotData);
         var obj = JSON.parse(myDeepClone);
         obj = FormatToPedigreeJS(obj, true); //without
         //TO DO: add clean level update as with Boadicea input.
@@ -744,4 +747,138 @@ $(document).ready(function() {
         loadFromHot();
 		$('#save-canrisk-dialog').modal('show');
 	});
+
+    $( "#createPed" ).click(function() {
+        finalFamObj = createPed();
+        loadFromObj(finalFamObj);
+    });
+
+    function createPed() {
+        //set variables
+        var indexRow = 0;
+        var indexID = 1;
+        var LastIndivID=indexID;
+
+        //get index object
+        var indObj=[
+            {"FamID": "1",
+            "Name": "Index",
+            "IndivID": "1",
+            "FathID": "2",
+            "MothID": "3",
+            "Affected":"1",
+            "Deceased":"0",
+            "proband": true}
+        ];
+
+		addKeyToObject(indObj, indexRow, 'dbirth')
+        addKeyToObject(indObj, indexRow, 'civil_name')
+        indObj[indexRow]['Sex'] = $('input[name="sex"]:checked').val();
+        addKeyToObject(indObj, indexRow, 'comment', 'form_id_comment');
+
+        //year of birth and age
+        let yob = $(dbirth).val().split('/')[2];
+        if(yob!=undefined) {
+            indObj[indexRow]['Yob'] = yob;
+
+            var month = Number($(dbirth).val().split('/')[1]) - 1;
+            var day = Number($(dbirth).val().split('/')[0]);
+            var today = new Date();
+            var age = today.getFullYear() - yob;	
+
+            if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
+                age--;
+            }
+            indObj[indexRow]['Age'] = age;
+        };
+
+        // index cancer
+        let cancerObj = hotCancer.getSourceData();
+        
+        for (let i = 0; i < cancerObj.length; i++) {
+            if(cancerObj[i]['Cancer'] != '' && cancerObj[i]['Cancer'] != null) {
+                indObj[indexRow]['Disease'+(i+1)]=cancerObj[i]['Cancer'];
+                indObj[indexRow]['Age'+(i+1)]=cancerObj[i]['Age'];
+            }
+        }
+        
+        //set index parent object
+        var parentObj = [
+            {"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0"},
+            {"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0"},
+                        ];
+        var famObj = indObj.concat(parentObj);
+
+        //Add grandfather and grand mother
+        let gppObj = hotGpp.getSourceData();
+        let gpmObj = hotGpm.getSourceData();
+        famObj = famObj.concat(gppObj).concat(gpmObj);
+        LastIndivID=7; //numbering start from last IndivID
+
+        //children
+        let childrenObj = hotChildren.getSourceData();
+        if (childrenObj.length>0) {
+            let ind;
+
+            // create husband or wife
+            LastIndivID+=1
+            ind = {"FamID": "1","Name": "Conjoint",
+                "IndivID": LastIndivID,
+                "FathID": "0","MothID": "0",
+                "Sex": (indObj[indexRow]['Sex'] == 'F' ? 'M' : 'F'),
+                "Affected":"1","Deceased":"0"};
+            famObj.push(ind);
+            let partnerID = LastIndivID;
+
+            // add children
+            for (let i = 0; i < childrenObj.length; i++) {
+                LastIndivID+=1
+                childrenObj[i]["IndivID"]=LastIndivID;
+                childrenObj[i]["FathID"]= (indObj[indexRow]['Sex'] == 'F' ? partnerID : '1');
+                childrenObj[i]["MothID"]= (indObj[indexRow]['Sex'] == 'F' ? '1' : partnerID);
+            }
+        }
+        famObj = famObj.concat(childrenObj);
+        
+        //Sibilings
+        let siblingsObj = hotSiblings.getSourceData();
+        if (siblingsObj.length>0) {
+            // add siblings
+            for (let i = 0; i < siblingsObj.length; i++) {
+                LastIndivID+=1
+                siblingsObj[i]["IndivID"]=LastIndivID;
+                siblingsObj[i]["FathID"]= "2";
+                siblingsObj[i]["MothID"]= "3";
+            }
+        }
+        famObj = famObj.concat(siblingsObj);
+
+        //Paternal familly
+        let fatherSiblingsObj = hotFatherSiblings.getSourceData();
+        if (fatherSiblingsObj.length>0) {
+            // add Fathersiblings
+            for (let i = 0; i < fatherSiblingsObj.length; i++) {
+                LastIndivID+=1
+                fatherSiblingsObj[i]["IndivID"]=LastIndivID;
+                fatherSiblingsObj[i]["FathID"] = "4";
+                fatherSiblingsObj[i]["MothID"] = "5";
+            }
+        }
+        famObj = famObj.concat(fatherSiblingsObj);
+
+        //Maternal familly
+        let motherSiblingsObj = hotMotherSiblings.getSourceData();
+        if (motherSiblingsObj.length>0) {
+            // add motherSiblings
+            for (let i = 0; i < motherSiblingsObj.length; i++) {
+                LastIndivID+=1
+                motherSiblingsObj[i]["IndivID"]=LastIndivID;
+                motherSiblingsObj[i]["FathID"] = "6";
+                motherSiblingsObj[i]["MothID"] = "7";
+            }
+        }
+        famObj = famObj.concat(motherSiblingsObj);
+
+        return famObj
+    };  
 });

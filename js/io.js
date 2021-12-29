@@ -176,21 +176,27 @@
 		});
 
 		$('#png_download').click(function(e) {
-			var deferred = io.svg2png($('svg'), "pedigree", utils.isEdge()||utils.isIE());
-		    $.when.apply($,[deferred]).done(function() {
-		    	var obj = getByName(arguments, "pedigree");
-		        if(utils.isEdge() || utils.isIE()) {
-		        	var html="<img src='"+obj.img+"' alt='canvas image'/>";
-			        var newTab = window.open();
-			        newTab.document.write(html);
-		        } else {
-					var a      = document.createElement('a');
-					a.href     = obj.img;
-					a.download = 'GeneTree_'+ lang.pedigree +'_'+ getFormattedTime() +'.jpg';
-					a.target   = '_blank';
-					document.body.appendChild(a); a.click(); document.body.removeChild(a);
-		        }
-		    });
+			//scale to fit
+			pzoom.scale_to_fit(opts, 0);
+
+			setTimeout(function() {
+				//download jpg
+				var deferred = io.svg2png($('svg'), "pedigree", utils.isEdge()||utils.isIE());
+				$.when.apply($,[deferred]).done(function() {
+					var obj = getByName(arguments, "pedigree");
+					if(utils.isEdge() || utils.isIE()) {
+						var html="<img src='"+obj.img+"' alt='canvas image'/>";
+						var newTab = window.open();
+						newTab.document.write(html);
+					} else {
+						var a      = document.createElement('a');
+						a.href     = obj.img;
+						a.download = 'GeneTree_'+ lang.pedigree +'_'+ getFormattedTime() +'.jpg';
+						a.target   = '_blank';
+						document.body.appendChild(a); a.click(); document.body.removeChild(a);
+					}
+				});
+			}, 400);
 		});
 	};
 

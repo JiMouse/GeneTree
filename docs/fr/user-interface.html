@@ -24,6 +24,7 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	
 	<script src="../../package/lodash.js"></script>
+	<script src="../../package/jquery.inputmask.min.js"></script>
 
 	<!-- languages script -->
 	<script>
@@ -53,17 +54,22 @@
     <script src="../../js/undo_redo_refresh.js"></script>
 	<script src="../../js/widgets.js"></script>
 	<script src="../../js/zoom.js"></script>
-	<script src="../../js/table.js"></script>
+	<script src="../../js/canrisk_file.js"></script>
+
 
 	<!-- main script -->
 	<script type="text/javascript" src="../../js/main.js"></script>
 	<script type="text/javascript" src="../../js/main_front.js"></script>
 	<script type="text/javascript" src="../../js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../../js/user-interface.js"></script>
+	<script type="text/javascript" src="../../js/hotTable.js"></script>
+	<script type="text/javascript" src="../../js/indexWidgets.js"></script>
 
 	<!-- main css -->
 	<link rel="stylesheet" type="text/css" href="../../css/main.css">
 	<link rel="stylesheet" type="text/css" href="../../css/handsontable.css">
-	
+	<link rel="stylesheet" type="text/css" href="../../css/pedigreejs.css">
+
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
@@ -148,8 +154,8 @@
 
 	<div class="container">
 		<div class='row text-center'  style="padding-top: 20px;">
-			<p>
-				<i><b>Page en cours de construction.</b></i>
+			<p style="color: red;">
+				<i><b>Page en cours de conception.</b></i>
 			</p>
 		</div>
 
@@ -161,7 +167,7 @@
 				</div>
 			</div>
 			<p>
-				<div id="story" contenteditable="true" style="padding:0px 20px;">
+				<div style="padding:0px 20px;">
 					Cette page a pour but de proposer une interface simplifiée permettant de préparer sa consultation en faisant
 					le recueil de son histoire familiale et personnelle (arbre généalogique) en lien avec des pathologies oncologiques.
 				</div>
@@ -172,77 +178,541 @@
 		<div class="panel-group row" id="accordion" style="padding-top: 20px;">
 			<div class="panel panel-default">
 				<div class="panel-heading header-lightblue">
-				<h3 class="panel-title h3-lightblue">
-					<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-						Votre histoire personnelle
-					</a>
-				</h3>
-				</div>
-				<div id="collapse1" class="panel-collapse collapse in">
-					<div class="panel-body">
-						<ul>
-							<li>Date de naissance</li>
-							<li>Initiale nom et prénom (trois lettres)</li>
-							<li>Cancer ? si oui date ou âge et type (menu) + => ajouter un autre menu</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading header-lightblue">
-				<h3 class="panel-title h3-lightblue">
-					<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-						Vos enfants
-					</a>
-				</h3>
-				</div>
-				<div id="collapse2" class="panel-collapse collapse">
-					<div class="panel-body">
-						<ul>
-							<li>Enfants ? si oui date de naissance</li>
-							<li>créer un tableau ?</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-							Votre famille paternelle
+						<a id ="collapseCancer" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+							Votre histoire personnelle.
 						</a>
 					</h3>
 				</div>
-				<div id="collapse3" class="panel-collapse collapse">
+				<div id="collapse1" class="panel-collapse collapse in">
 					<div class="panel-body">
-						<ul>
-							<li>Père + fraterie + gpp</li>
-							<li>Cancer ?</li>
-							<li>créer un tableau ?</li>
-						</ul>
+						<fieldset>
+							<div class="row">
+								<div class="col-lg-2 text-right field_label">
+									<label for="civil_name">Nom Prénom :</label>
+								</div>
+								<div class="field col-lg-2">
+									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
+										id="civil_name" aria-invalid="false">
+								</div>
+								<div class="col-lg-2 text-right field_label">
+									<label for="dbirth">Date de naissance :</label>
+								</div>
+								<div class="field col-lg-2">
+									<input id="dbirth" class="form-control" type="text" im-insert="false">
+								</div>
+								<div class="col-lg-2 text-center">
+									<label for="id_sex_0">
+										<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
+											Homme
+									</label>
+								</div>
+								<div class="col-lg-1 text-center">
+									<label for="id_sex_1">
+										<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid" checked>
+											Femme
+									</label>
+								</div>
+								<div class="col-lg-1 text-center"></div>	
+							</div>
+							<br>
+							<div class="row" style="padding-left: 20px;padding-right: 20px;">
+									<label for="form_id_comment">Commentaire :</label>
+									<textarea name="form_id_comment" id="form_id_comment" class="form-control valid" rows="2"></textarea>
+							</div>
+						</fieldset>
+						<hr>
+						<div id="acc_Cancer_div">
+							<div class="row" style="padding: 0px 20px;">
+                                <div class="col-lg-3">
+									<p class='question'>Avez-vous eu un cancer ?</p>
+									<label class="radio-inline" for="cancer_Yes"><input type="radio" name="cancer_radio" id="cancer_Yes" value="cancer_Yes">Oui</label>
+									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked>Non</label>
+                                </div>
+                                <div id="cancer_table_div" class="col-lg-9">
+									<p class='question'> Renseigner type et date ou âge du diagnostic</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotCancer" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0"></div> 
+											<!-- ;min-height:100px; -->
+										</div>
+									</div>
+					
+									<script>
+										const containerCancer = document.getElementById('hotCancer');
+
+										var myDataCancer = [
+											{"Cancer": "", "Age":"","Year":""}
+										]
+										let diseasesInd = onco();
+										diseasesInd.push('autre');
+
+										var colCancer = [
+											{data: 'Cancer', type: 'dropdown', source: diseasesInd},
+											{data: 'Age', type: 'numeric'},
+											{data: 'Year', type: 'numeric'}
+										];
+										var colCancer_header = ['Localisation du cancer', 'Âge au diagnostic', 'Année du diagnostic'];
+
+										var hotCancer = new Handsontable(containerCancer, {
+											data: myDataCancer,
+											rowHeaders: false,
+											colHeaders: colCancer_header,
+											columns: colCancer,
+											minSpareRows: 1,
+											manualColumnResize: true,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',//"htCenter",
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											// colWidths: 100,		
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation'
+										});
+
+									</script>
+                                </div>
+                            </div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
-						<a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-							Votre famille maternelle
+						<a id ="collapseChildren" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+							Vos enfants
+						</a>
+					</h3>
+				</div>
+
+				<div id="collapse2" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div id="acc_Child_div">
+                            <div class="row" style="padding: 0px 20px;">
+                                <div class="col-lg-3">
+									<p class='question'>Avez-vous des enfants ?</p>
+									<label class="radio-inline" for="children_Yes"><input type="radio" name="children_radio" id="children_Yes" value="children_Yes">Oui</label>
+									<label class="radio-inline" for="children_No"><input type="radio" name="children_radio" id="children_No" value="children_No" checked>Non</label>
+									<br><br>
+									<div id="children_div">
+										<p class='question'>Combien d'enfants avez-vous?</p>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+											<input id="children_input" name="children_input" type="number" class="form-control"
+											data-decimals="0" placeholder="--" class="fill-space" min="0" max="20" step="1">
+										</div>
+									</div>
+                                </div>
+                                <div id="children_table_div" class="col-lg-9">
+									<p class='question'>Quand sont nés vos enfants ?</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotChildren" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerChildren = document.getElementById('hotChildren');
+
+										var myDataChildren = [
+											// {"Name": "Enfant", "Sex": "", "Deceased":"0","Age":"","Yob":""}
+										]
+
+										colCancer = [
+											{data: 'Disease1', type: 'dropdown', source: diseasesInd},
+											{data: 'Age1', type: 'numeric'},
+											{data: 'Year1', type: 'numeric'},
+											{data: 'comment', type: 'text'}
+										];
+										colCancer_header = ['Localisation<br> du cancer', 'Âge au<br> diagnostic', 'Année du<br> diagnostic', 'Commentaire'];
+									
+										var colChildren = [
+											{data: 'Name'},
+											{data: 'Sex', type: 'dropdown', source: ['Homme','Femme']},
+											{data: 'Deceased', type: 'checkbox', checkedTemplate: '1', uncheckedTemplate: '0'},
+											{data: 'Age', type: 'numeric'},
+											{data: 'Yob', type: 'numeric'}
+											
+										];
+										colChildren = colChildren.concat(colCancer);
+
+										var colChildren_header = ['Nom', 'Genre', 'Décés', 'Âge', 'Année de<br> Naissance'];
+										colChildren_header=colChildren_header.concat(colCancer_header);
+
+										var hotChildren = new Handsontable(containerChildren, {
+											data: myDataChildren,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: false,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading header-lightblue">
+					<h3 class="panel-title h3-lightblue">
+						<a id ="collapseSiblings" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+							Vos frères et sœurs
+						</a>
+					</h3>
+				</div>
+
+				<div id="collapse3" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div id="acc_siblings_div">
+                            <div class="row" style="padding: 0px 20px;">
+                                <div class="col-lg-3">
+									<p class='question'>Avez-vous des frères et sœurs ?</p>
+									<label class="radio-inline" for="siblings_Yes"><input type="radio" name="siblings_radio" id="siblings_Yes" value="siblings_Yes">Oui</label>
+									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked>Non</label>
+									<br><br>
+									<div id="siblings_div">
+										<p class='question'>Combien de frères et sœurs avez-vous?</p>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+											<input id="siblings_input" name="siblings_input" type="number" class="form-control"
+											data-decimals="0" placeholder="--" class="fill-space" min="0" max="20" step="1">
+										</div>
+									</div>
+                                </div>
+                                <div id="siblings_table_div" class="col-lg-9">
+									<p class='question'>Quand sont nés vos frères et sœurs ?</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotSiblings" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerSiblings = document.getElementById('hotSiblings');
+
+										var myDataSiblings = [
+											// {"Name": "FS", "Sex": "", "Deceased":"0","Age":"","Yob":""}
+										]
+
+										var hotSiblings = new Handsontable(containerSiblings, {
+											data: myDataSiblings,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: false,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading header-lightblue">
+					<h3 class="panel-title h3-lightblue">
+						<a id ="collapseGpp" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+							Votre famille paternelle
 						</a>
 					</h3>
 				</div>
 				<div id="collapse4" class="panel-collapse collapse">
 					<div class="panel-body">
-						<ul>
-							<li>Mère + fraterie + gpp</li>
-							<li>Cancer ?</li>
-							<li>créer un tableau ?</li>
-						</ul>
+						<div id="acc_siblings_div">
+							<div class="row" style="padding: 0px 20px;">
+								<div id="gpp_table_div">
+									<p class='question'>Vos grands-parents paternels.</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotGpp" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerGpp = document.getElementById('hotGpp');
+
+										var myDataGpp = [
+										{"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    									{"FamID": "1","Name": "Grand-Mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
+										]
+										var hotGpp = new Handsontable(containerGpp, {
+											data: myDataGpp,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [180, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: true,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+							</div>
+                            <div class="row" style="padding: 0px 20px;">
+                                <div class="col-lg-3">
+									<p class='question'>Est-ce que votre père a des frères et sœurs ?</p>
+									<label class="radio-inline" for="fatherSiblings_Yes"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_Yes" value="fatherSiblings_Yes">Oui</label>
+									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked>Non</label>
+									<br><br>
+									<div id="fatherSiblings_div">
+										<p class='question'>Combien de frères et sœurs a votre père ?</p>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+											<input id="fatherSiblings_input" name="fatherSiblings_input" type="number" class="form-control"
+											data-decimals="0" placeholder="--" class="fill-space" min="0" max="20" step="1">
+										</div>
+									</div>
+                                </div>
+                                <div id="fatherSiblings_table_div" class="col-lg-9">
+									<p class='question'>Quand sont nés les frères et sœurs de votre père ?</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotFatherSiblings" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerFatherSiblings = document.getElementById('hotFatherSiblings');
+
+										var myDataFatherSiblings = [
+											// {"Name": "FS", "Sex": "", "Deceased":"0","Age":"","Yob":""}
+										]
+										var hotFatherSiblings = new Handsontable(containerFatherSiblings, {
+											data: myDataFatherSiblings,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: false,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading header-lightblue">
+					<h3 class="panel-title h3-lightblue">
+						<a id ="collapseGpm" data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+							Votre famille maternelle
+						</a>
+					</h3>
+				</div>
+				<div id="collapse5" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div id="acc_siblings_div">
+							<div class="row" style="padding: 0px 20px;">
+								<div id="gpm_table_div">
+									<p class='question'>Vos grands-parents maternels.</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotGpm" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerGpm = document.getElementById('hotGpm');
+
+										var myDataGpm = [
+										{"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    									{"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
+										]
+										var hotGpm = new Handsontable(containerGpm, {
+											data: myDataGpm,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [180, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: true,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+							</div>
+                            <div class="row" style="padding: 0px 20px;">
+                                <div class="col-lg-3">
+									<p class='question'>Est-ce que votre mère a des frères et sœurs ?</p>
+									<label class="radio-inline" for="motherSiblings_Yes"><input type="radio" name="motherSiblings_radio" id="motherSiblings_Yes" value="motherSiblings_Yes">Oui</label>
+									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked>Non</label>
+									<br><br>
+									<div id="motherSiblings_div">
+										<p class='question'>Combien de frères et sœurs a votre mère ?</p>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+											<input id="motherSiblings_input" name="motherSiblings_input" type="number" class="form-control"
+											data-decimals="0" placeholder="--" class="fill-space" min="0" max="20" step="1">
+										</div>
+									</div>
+                                </div>
+                                <div id="motherSiblings_table_div" class="col-lg-9">
+									<p class='question'>Quand sont nés les frères et sœurs de votre mère ?</p>
+				
+									<div class="text-center">
+										<div class='hotContainer' style="height: 260px;">
+											<div id="hotMotherSiblings" class="hot handsontable-helvetica"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerMotherSiblings = document.getElementById('hotMotherSiblings');
+
+										var myDataMotherSiblings = [
+											// {"Name": "FS", "Sex": "", "Deceased":"0","Age":"","Yob":""}
+										]
+										var hotMotherSiblings = new Handsontable(containerMotherSiblings, {
+											data: myDataMotherSiblings,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											// filters: true,
+											// dropdownMenu: true,
+											className: 'htCenter htMiddle helvetica',
+											// contextMenu: true,
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 30,
+											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
+											manualColumnResize: false,
+											// undo: true,
+											height: '100%',//'auto',
+											width: '100%',//'auto',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
 		</div>
 
+		<!-- Finalisation -->
+		<div class='row'  style="padding-top: 10px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 class='h3-lightblue'>Finalisation</h3>
+				</div>
+			</div>
+			<p>
+				<div style="padding:0px 20px;">
+					Génération de l'arbre.
+				</div>
+			</p>
+			<div class='text-center' style="padding-bottom: 10px;">
+				<button id="createPed" class="btn btn-primary">Créer l'abre généalogique</button>
+			</div>
+
+			<!-- create pedigree -->
+			<div class='text-center' style="padding-bottom: 10px;"> 
+				<div id="pedigrees" style="padding-bottom: 10px;"></div>
+				<div id="node_properties" ></div>
+			</div>
+
+			<div class='text-center'>
+				<button id="save_canrisk" class="btn btn-primary">Télécharger le fichier</button>
+				<div class="btnDivider"></div>
+				<button id="png_download" class="btn btn-primary">Télécharger l'image</button>
+			</div>
+
+			<div id="save-canrisk-dialog" class="modal fade text-center">
+				<div class="modal-dialog" style="width:400px;">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="pleft10">
+								<label>Ajouter un identifiant (Famid) dans le fichier</label>
+								<input type="text" maxlength="13" class="form-control top10" id="famid" placeholder="Ex. : Identifiant la généalogie">
+							</div>
+							<div class="checkbox radio-info radio-circle">
+								<input type="checkbox" name="report-opts" id="pid_fname" checked="">
+								<label for="pid_fname" class="radio-inline">inclure dans le nom du fichier</label>
+							</div>
+						</div>
+						<div class="modal-footer bg-blue rounded-bottom">
+							<button type="button" class="btn btn-primary" data-dismiss="modal" id="cr_file_save">Enregistrer</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<!-- References -->
 		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
@@ -252,6 +722,18 @@
 			</div>
 			
 			<div  style="padding:0px 10px 20px;">
+				<p>
+					<strong>CanRisk Tool—A Web Interface for the Prediction of Breast and Ovarian Cancer Risk
+					and the Likelihood of Carrying Genetic Pathogenic Variants.</strong> Carver, T. et al. 
+					<i>Cancer Epidemiol Biomarkers Prev (2020). <a href="https://cebp.aacrjournals.org/content/30/3/469" target="_blank">
+						doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
+				<p>
+					<strong>BOADICEA: a comprehensive breast cancer risk prediction
+					model incorporating genetic and nongenetic risk factors.</strong> Lee, A. et al. 
+					<i>Genet Med 21, 1708–1718 (2019). <a href="https://www.nature.com/articles/s41436-018-0406-9" target="_blank">
+					doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
 				<p><strong>pedigreejs: a web-based graphical pedigree editor</strong><br>
 					Carver T, Cunningham AP, Babb de Villiers C, Lee A, Hartley S, Tischkowitz M, et al. 
 					<i>Bioinformatics <a href="http://dx.doi.org/10.1093/bioinformatics/btx705" target="_blank">

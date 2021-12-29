@@ -46,7 +46,7 @@
         svg.transition().duration(50).call(zoom.scaleBy, scale);
     }
 
-    pzoom.scale_to_fit=function(opts) {
+    pzoom.scale_to_fit=function(opts, duration=700) {
         let d = get_dimensions(opts);
         let svg = d3.select("#"+opts.targetDiv).select("svg");
         let size = get_svg_size(svg);
@@ -57,7 +57,7 @@
 
         let ped = get_pedigree_center(opts);
         svg.call(zoom.translateTo, ped.x, ped.y);
-        setTimeout(function(){svg.transition().duration(700).call(zoom.scaleTo, k)}, 400);
+        setTimeout(function(){svg.transition().duration(duration).call(zoom.scaleTo, k)}, 400);
     }
 
     function get_pedigree_center(opts) {

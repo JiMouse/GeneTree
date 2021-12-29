@@ -109,10 +109,6 @@ h3 {
   background-color: #dbe9f5 !important;
   margin: 0;
 }
-/* Pulldown can break out of handsontable boundary */
-.htColumnHeaders {
-  overflow: visible !important;
-}
 
 /* Paste this css to your style sheet file or under head tag */
 /* This only works with JavaScript, 

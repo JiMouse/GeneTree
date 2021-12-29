@@ -68,3 +68,31 @@
 .green-dot {
   background: #ccf7a0;
 }
+
+.helvetica {
+  font-family: Helvetica;
+  font-size:14px;
+}
+
+.handsontable-helvetica table thead th{
+  color:#002e5d;
+  background-color: #dbe9f5;
+  font-weight:bold;
+  font-size:14px;
+  font-family: Helvetica;
+  vertical-align: middle;
+}
+
+.handsontable .ht_master {
+  height: 300px;
+  overflow-y: auto !important;
+  width: calc(100% + 2px);
+}
+.handsontable .ht_clone_top {
+  transform: none !important;
+}
+
+/* Pulldown can break out of handsontable boundary */
+.htColumnHeaders {
+  overflow: visible !important;
+}

@@ -82,7 +82,6 @@ $(document).ready(function(){
 			}
 		});
 		
-		
 		//sex
 		var sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
