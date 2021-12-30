@@ -238,8 +238,8 @@ var cols_header = ['Fam.', 'Nom', 'Indiv.', 'Père', 'Mère', 'Genre', 'Atteint'
 var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"]
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
-var onco = function(){
-    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas', 'cancer_colon', 'cancer_estomac'] //
+var onco = function(){//to not be modified: boadicea
+    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas'] //, 'cancer_colon', 'cancer_estomac'
 }
 var diseases = onco();
 

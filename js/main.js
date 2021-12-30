@@ -434,30 +434,27 @@ function Formatboadicea(boadicea_lines) { //import Boadicea file
                 }
 
                 //Add test and hormonal status
-                //To do todo
-                // let genetic_test1 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
-                // let genetic_test2 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'bard1', 'rad51d', 'rad51c', 'brip1'];
-                // let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
-                // let version = 2;
-                // let gt = (version === 1 ? genetic_test1 : genetic_test2);
+                let gt = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
+                let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];               
                 
-                /*
                 if(attr[idx++] !== "0") indi.ashkenazi = 1;
 				// BRCA1, BRCA2, PALB2, ATM, CHEK2, .... genetic tests
 				// genetic test type, 0 = untested, S = mutation search, T = direct gene test
 				// genetic test result, 0 = untested, P = positive, N = negative
+                
 				for(let j=0; j<gt.length; j++) {
-					let gene_test = attr[idx].split(":");
+					let gene_test = [attr[idx], attr[idx+1]];
 					if(gene_test[0] !== '0') {
 						if((gene_test[0] === 'S' || gene_test[0] === 'T') && (gene_test[1] === 'P' || gene_test[1] === 'N'))
 							indi[gt[j] + '_gene_test'] = {'type': gene_test[0], 'result': gene_test[1]};
 						else
 							console.warn('UNRECOGNISED GENE TEST ON LINE '+ (i+1) + ": " + gene_test[0] + " " + gene_test[1]);
 					}
-					idx++;
+					idx+=2;
 				}
+
 				// status, 0 = unspecified, N = negative, P = positive
-				let path_test = attr[idx].split(":");
+                let path_test = [attr[idx], attr[idx+1], attr[idx+2], attr[idx+3], attr[idx+4]];
 				for(let j=0; j<path_test.length; j++) {
 					if(path_test[j] !== '0') {
 						if(path_test[j] === 'N' || path_test[j] === 'P')
@@ -466,8 +463,6 @@ function Formatboadicea(boadicea_lines) { //import Boadicea file
 							console.warn('UNRECOGNISED PATHOLOGY ON LINE '+ (i+1) + ": " +pathology_tests[j] + " " +path_test[j]);
 					}
 				}
-                */
-
                 ped.push(indi);  
             }
         }
@@ -587,18 +582,49 @@ function ExportBOADICEv4(JSONData) {
         let row = rowInit.concat(rowDiseases);
         row.push(KeyStatus(i,'Ashkn',arrData[i]['Ashkn']));
         
+        //tests
         // toDo : update
+        let gt = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
+        let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];               
+
         let rowTest=[],
             test=["BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r"];
         for(let r =0; r < test.length; r++){
             rowTest.push(KeyStatus(i,test[r],arrData[i][test[r]]))
         }
 
+        // receptors
         let rowRecept=[],
             recept=["ER","PR","HER2","CK14","CK56"];
         for(let r =0; r < recept.length; r++){
             rowRecept.push(KeyStatus(i,recept[r],arrData[i][recept[r]]))
         }
+
+        // for(let j=0; j<gt.length; j++) {
+        //     if(gt[j]+'_gene_test' in p &&
+        //     p[gt[j]+'_gene_test']['type'] !== '-' &&
+        //     p[gt[j]+'_gene_test']['result'] !== '-') {
+        //         msg += p[gt[j]+'_gene_test']['type'] + ':';
+        //         msg += p[gt[j]+'_gene_test']['result'] + '\t';
+        //     } else {
+        //         msg += '0:0\t';		// type, 0=untested, S=mutation search, T=direct gene test
+        //                             // result, 0=untested, P=positive, N=negative
+        //     }
+        // }
+        
+
+        // for(let j=0; j<io.pathology_tests.length; j++) {
+        //     // status, 0 = unspecified, N = negative, P = positive
+        //     if(io.pathology_tests[j]+'_bc_pathology' in p) {
+        //         msg += p[io.pathology_tests[j]+'_bc_pathology'];
+        //         console.log('pathology '+p[io.pathology_tests[j]+'_bc_pathology']+' for '+p.display_name);
+        //     } else {
+        //         msg += '0';
+        //     }
+        //     if(j<(io.pathology_tests.length-1))
+        //         msg += ":";
+        // }
+
 
         row = row.concat(rowTest).concat(rowRecept).join('\t');
         CSV += row + '\r\n';
