@@ -390,7 +390,7 @@ function FormatToTable(JSONData) {  //bug with comment and abirth
     return obj;
 }
 
-function Formatboadicea(boadicea_lines) {
+function Formatboadicea(boadicea_lines) { //import Boadicea file
     var lines = boadicea_lines.trim().split('\n'),
         ped = [];
 
@@ -432,6 +432,42 @@ function Formatboadicea(boadicea_lines) {
                     indi[colsDiseases[c]]=patho[c];
                     indi[colsAges[c]]=age[c];
                 }
+
+                //Add test and hormonal status
+                //To do todo
+                // let genetic_test1 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
+                // let genetic_test2 = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'bard1', 'rad51d', 'rad51c', 'brip1'];
+                // let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];
+                // let version = 2;
+                // let gt = (version === 1 ? genetic_test1 : genetic_test2);
+                
+                /*
+                if(attr[idx++] !== "0") indi.ashkenazi = 1;
+				// BRCA1, BRCA2, PALB2, ATM, CHEK2, .... genetic tests
+				// genetic test type, 0 = untested, S = mutation search, T = direct gene test
+				// genetic test result, 0 = untested, P = positive, N = negative
+				for(let j=0; j<gt.length; j++) {
+					let gene_test = attr[idx].split(":");
+					if(gene_test[0] !== '0') {
+						if((gene_test[0] === 'S' || gene_test[0] === 'T') && (gene_test[1] === 'P' || gene_test[1] === 'N'))
+							indi[gt[j] + '_gene_test'] = {'type': gene_test[0], 'result': gene_test[1]};
+						else
+							console.warn('UNRECOGNISED GENE TEST ON LINE '+ (i+1) + ": " + gene_test[0] + " " + gene_test[1]);
+					}
+					idx++;
+				}
+				// status, 0 = unspecified, N = negative, P = positive
+				let path_test = attr[idx].split(":");
+				for(let j=0; j<path_test.length; j++) {
+					if(path_test[j] !== '0') {
+						if(path_test[j] === 'N' || path_test[j] === 'P')
+							indi[pathology_tests[j] + '_bc_pathology'] = path_test[j];
+						else
+							console.warn('UNRECOGNISED PATHOLOGY ON LINE '+ (i+1) + ": " +pathology_tests[j] + " " +path_test[j]);
+					}
+				}
+                */
+
                 ped.push(indi);  
             }
         }
@@ -551,6 +587,7 @@ function ExportBOADICEv4(JSONData) {
         let row = rowInit.concat(rowDiseases);
         row.push(KeyStatus(i,'Ashkn',arrData[i]['Ashkn']));
         
+        // toDo : update
         let rowTest=[],
             test=["BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r"];
         for(let r =0; r < test.length; r++){

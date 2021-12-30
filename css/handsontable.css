@@ -73,7 +73,7 @@
   font-family: Helvetica;
   font-size:14px;
 }
-
+/* 
 .handsontable-helvetica table thead th{
   color:#002e5d;
   background-color: #dbe9f5;
@@ -90,7 +90,7 @@
 }
 .handsontable .ht_clone_top {
   transform: none !important;
-}
+} */
 
 /* Pulldown can break out of handsontable boundary */
 .htColumnHeaders {
