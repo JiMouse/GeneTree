@@ -587,44 +587,48 @@ function ExportBOADICEv4(JSONData) {
         let gt = ['brca1', 'brca2', 'palb2', 'atm', 'chek2'];
         let pathology_tests = ['er', 'pr', 'her2', 'ck14', 'ck56'];               
 
-        let rowTest=[],
-            test=["BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r"];
-        for(let r =0; r < test.length; r++){
-            rowTest.push(KeyStatus(i,test[r],arrData[i][test[r]]))
+        let rowTest=[];
+        //     test=["BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r"];
+        // for(let r =0; r < test.length; r++){
+        //     rowTest.push(KeyStatus(i,test[r],arrData[i][test[r]]))
+        // }
+
+        let p = arrData[i];
+        for(let j=0; j<gt.length; j++) {
+            if(gt[j]+'_gene_test' in p &&
+            p[gt[j]+'_gene_test']['type'] !== '-' &&
+            p[gt[j]+'_gene_test']['result'] !== '-') {
+                rowTest.push(p[gt[j]+'_gene_test']['type']);
+                rowTest.push(p[gt[j]+'_gene_test']['result']);
+                // msg += p[gt[j]+'_gene_test']['type'] + ':';
+                // msg += p[gt[j]+'_gene_test']['result'] + '\t';
+            } else {
+                rowTest.push(0);
+                rowTest.push(0);
+                // msg += '0:0\t';		// type, 0=untested, S=mutation search, T=direct gene test
+                                    // result, 0=untested, P=positive, N=negative
+            }
         }
 
         // receptors
-        let rowRecept=[],
-            recept=["ER","PR","HER2","CK14","CK56"];
-        for(let r =0; r < recept.length; r++){
-            rowRecept.push(KeyStatus(i,recept[r],arrData[i][recept[r]]))
+        let rowRecept=[];
+            // recept=["ER","PR","HER2","CK14","CK56"];
+        // for(let r =0; r < recept.length; r++){
+        //     rowRecept.push(KeyStatus(i,recept[r],arrData[i][recept[r]]))
+        // }
+
+    
+        for(let j=0; j<pathology_tests.length; j++) {
+            // status, 0 = unspecified, N = negative, P = positive
+            if(pathology_tests[j]+'_bc_pathology' in p) {
+                rowRecept.push(p[pathology_tests[j]+'_bc_pathology']);
+                // console.log('pathology '+p[pathology_tests[j]+'_bc_pathology']+' for '+p.display_name);
+            } else {
+                rowRecept.push('0');
+            }
+            // if(j<(pathology_tests.length-1))
+            //     msg += ":";
         }
-
-        // for(let j=0; j<gt.length; j++) {
-        //     if(gt[j]+'_gene_test' in p &&
-        //     p[gt[j]+'_gene_test']['type'] !== '-' &&
-        //     p[gt[j]+'_gene_test']['result'] !== '-') {
-        //         msg += p[gt[j]+'_gene_test']['type'] + ':';
-        //         msg += p[gt[j]+'_gene_test']['result'] + '\t';
-        //     } else {
-        //         msg += '0:0\t';		// type, 0=untested, S=mutation search, T=direct gene test
-        //                             // result, 0=untested, P=positive, N=negative
-        //     }
-        // }
-        
-
-        // for(let j=0; j<io.pathology_tests.length; j++) {
-        //     // status, 0 = unspecified, N = negative, P = positive
-        //     if(io.pathology_tests[j]+'_bc_pathology' in p) {
-        //         msg += p[io.pathology_tests[j]+'_bc_pathology'];
-        //         console.log('pathology '+p[io.pathology_tests[j]+'_bc_pathology']+' for '+p.display_name);
-        //     } else {
-        //         msg += '0';
-        //     }
-        //     if(j<(io.pathology_tests.length-1))
-        //         msg += ":";
-        // }
-
 
         row = row.concat(rowTest).concat(rowRecept).join('\t');
         CSV += row + '\r\n';
