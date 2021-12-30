@@ -99,9 +99,6 @@ $(document).ready(function(){
         syncAgeYob(changes, source, 'Age1', 'Year1', hotMotherSiblings);
     }
 );
-
-
-
     //update age and yob
     function syncAgeYob(changes, source, colAge='Age', colYear='Yob', hotTable, deceasedIndex=2, refDate) {
         if(changes != null) {
@@ -322,4 +319,48 @@ $(document).ready(function(){
 
         });
     }
+
+
+// Set cancerList dialog form
+    var selectedRow;
+    var selectedColumn;
+    var hotTable;
+    hotCancer.addHook('afterSelectionEndByProp', //afterSelectionEnd //afterSelection //afterSelectionByProp
+        function(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
+            let colDisease = "Cancer";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotTable = hotCancer;
+                dialogCancerList.dialog( "open" );
+            }
+            preventScrolling.value = true;
+        }
+    )
+    var dialogCancerList;
+
+	dialogCancerList = $( "#cancerList" ).dialog({
+		autoOpen: false,
+		classes: {
+			"ui-dialog": "custom-background",
+			"ui-dialog-titlebar": "custom-theme",
+			"ui-dialog-title": "custom-theme text-center",
+			"ui-dialog-content": "custom-background",
+			"ui-dialog-buttonpane": "custom-background"
+		},
+		width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+		maxHeight: 700,
+        title: 'Localisation du cancer',
+	})
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+	  
+    function updateDiseasecol(hotTable, row, column) {
+        let cancerType = $('input[name="cancerListradio"]:checked').val();
+        hotTable.setDataAtRowProp(row, column, cancerType);
+        $('input[name="cancerListradio"]:checked').prop('checked', false);
+    }
+    $('input[name="cancerListradio"]').on("click", function(e) {
+        updateDiseasecol(hotTable, selectedRow, selectedColumn);
+        dialogCancerList.dialog( "close" );
+    })
 });

@@ -180,7 +180,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseCancer" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-							Votre histoire personnelle.
+							Votre histoire personnelle
 						</a>
 					</h3>
 				</div>
@@ -233,11 +233,53 @@
 									<p class='question'> Renseigner type et date ou âge du diagnostic</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
+										<div class='hotContainer'> 
+											<!-- style="height: 260px;"> -->
 											<div id="hotCancer" class="hot handsontable htColumnHeaders handsontable-helvetica"
-											style="display:inline-block;z-index: 0"></div> 
-											<!-- ;min-height:100px; -->
+											style="display:inline-block;z-index: 0;min-height:50px	"></div> 
 										</div>
+									</div>
+									<div id="cancerList" style="background-color: white;" class='container'>
+										<form>
+											<fieldset>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_sein"> Cancer du sein
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_sein2"> Cancer du sein controlatéral
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_ovaire"> Cancer de l'ovaire
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_prostate"> Cancer de la prostate
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_pancréas"> Cancer du pancréas
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="autre"> Autre
+													</label>
+												</div>
+											</fieldset>
+										</form>
 									</div>
 					
 									<script>
@@ -272,7 +314,7 @@
 											rowHeights: 30,
 											// colWidths: 100,		
 											// undo: true,
-											height: '100%',//'auto',
+											height: 'auto',//'100%',//'auto',
 											width: '100%',//'auto',
 											licenseKey: 'non-commercial-and-evaluation'
 										});
@@ -687,9 +729,9 @@
 			</div>
 
 			<div class='text-center'>
-				<button id="save_canrisk" class="btn btn-primary">Télécharger le fichier</button>
+				<button id="exportPedigreejsCanRisk" class="btn btn-primary">Télécharger les deux fichiers contenant les données bruts</button>
 				<div class="btnDivider"></div>
-				<button id="png_download" class="btn btn-primary">Télécharger l'image</button>
+				<button id="png_download" class="btn btn-primary">Télécharger l'arbre généalogique (image)</button>
 			</div>
 
 			<div id="save-canrisk-dialog" class="modal fade text-center">

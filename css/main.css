@@ -226,3 +226,7 @@ p.big {
 .table>tbody>tr>th {
   vertical-align: middle;
 }
+
+.font-normal {
+  font-weight: 400;
+}

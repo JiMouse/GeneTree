@@ -452,6 +452,15 @@ $(document).ready(function() {
             rowHeaders: false
         });
     });
+    $( "#exportPedigreejsCanRisk" ).click(function() {
+        //1 export canRisk
+        $('#save-canrisk-dialog').modal('show');
+        let obj = pedcache.current(opts);
+
+        //export pedigreeJS
+        ExportJSON(obj);
+    });
+
 
     $( "#loadStory" ).click(function() {
         loadStory();
