@@ -321,46 +321,49 @@ $(document).ready(function(){
     }
 
 
-// Set cancerList dialog form
-    var selectedRow;
-    var selectedColumn;
-    var hotTable;
-    hotCancer.addHook('afterSelectionEndByProp', //afterSelectionEnd //afterSelection //afterSelectionByProp
-        function(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
-            let colDisease = "Cancer";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotTable = hotCancer;
-                dialogCancerList.dialog( "open" );
-            }
-            preventScrolling.value = true;
-        }
-    )
-    var dialogCancerList;
+    showDialogCancerList(hotCancer, colDisease = "Cancer");
 
-	dialogCancerList = $( "#cancerList" ).dialog({
-		autoOpen: false,
-		classes: {
-			"ui-dialog": "custom-background",
-			"ui-dialog-titlebar": "custom-theme",
-			"ui-dialog-title": "custom-theme text-center",
-			"ui-dialog-content": "custom-background",
-			"ui-dialog-buttonpane": "custom-background"
-		},
-		width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
-		maxHeight: 700,
-        title: 'Localisation du cancer',
-	})
-    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-	  
-    function updateDiseasecol(hotTable, row, column) {
-        let cancerType = $('input[name="cancerListradio"]:checked').val();
-        hotTable.setDataAtRowProp(row, column, cancerType);
-        $('input[name="cancerListradio"]:checked').prop('checked', false);
+    // Set cancerList dialog form
+    function showDialogCancerList(hotTable) {
+        var selectedRow;
+        var selectedColumn;
+        var dialogCancerList;
+
+        hotTable.addHook('afterSelectionEndByProp',
+            function(row, column, preventScrolling) {
+                // let colDisease = "Cancer";
+                selectedRow = row;
+                selectedColumn = column
+                if(selectedColumn == colDisease) {
+                    dialogCancerList.dialog( "open" );
+                }
+                preventScrolling.value = true;
+            }
+        )
+
+        dialogCancerList = $( "#cancerList" ).dialog({
+            autoOpen: false,
+            classes: {
+                "ui-dialog": "custom-background",
+                "ui-dialog-titlebar": "custom-theme",
+                "ui-dialog-title": "custom-theme text-center",
+                "ui-dialog-content": "custom-background",
+                "ui-dialog-buttonpane": "custom-background"
+            },
+            width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+            maxHeight: 700,
+            title: 'Localisation du cancer',
+        })
+        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+        
+        function updateDiseasecol(hotTable, row, column) {
+            let cancerType = $('input[name="cancerListradio"]:checked').val();
+            hotTable.setDataAtRowProp(row, column, cancerType);
+            $('input[name="cancerListradio"]:checked').prop('checked', false);
+        }
+        $('input[name="cancerListradio"]').on("click", function(e) {
+            updateDiseasecol(hotTable, selectedRow, selectedColumn);
+            dialogCancerList.dialog( "close" );
+        })
     }
-    $('input[name="cancerListradio"]').on("click", function(e) {
-        updateDiseasecol(hotTable, selectedRow, selectedColumn);
-        dialogCancerList.dialog( "close" );
-    })
 });
