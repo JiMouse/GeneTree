@@ -320,50 +320,157 @@ $(document).ready(function(){
         });
     }
 
+    //add popup div to select cancer type
+    // define variable
+    var selectedRow;
+    var selectedColumn;
+    var dialogCancerList;
+    var colDisease;
+    var hotSelectedTable;
 
-    showDialogCancerList(hotCancer, colDisease = "Cancer");
+    // define cancerList dialog form
+    dialogCancerList = $( "#cancerList" ).dialog({
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+        width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+        maxHeight: 700,
+        title: 'Localisation du cancer',
+    })
 
-    // Set cancerList dialog form
-    function showDialogCancerList(hotTable) {
-        var selectedRow;
-        var selectedColumn;
-        var dialogCancerList;
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
 
-        hotTable.addHook('afterSelectionEndByProp',
-            function(row, column, preventScrolling) {
-                // let colDisease = "Cancer";
-                selectedRow = row;
-                selectedColumn = column
-                if(selectedColumn == colDisease) {
-                    dialogCancerList.dialog( "open" );
-                }
-                preventScrolling.value = true;
+    $('input[name="cancerListradio"]').on("click", function(e) {
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn);
+        dialogCancerList.dialog( "close" );
+    })
+
+
+    // hotCancer adHook
+    hotCancer.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            colDisease = "Cancer";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotSelectedTable =  this
+                dialogCancerList.dialog( "open" );
             }
-        )
+            preventScrolling.value = true;
+        }
+    )
 
-        dialogCancerList = $( "#cancerList" ).dialog({
-            autoOpen: false,
-            classes: {
-                "ui-dialog": "custom-background",
-                "ui-dialog-titlebar": "custom-theme",
-                "ui-dialog-title": "custom-theme text-center",
-                "ui-dialog-content": "custom-background",
-                "ui-dialog-buttonpane": "custom-background"
-            },
-            width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
-            maxHeight: 700,
-            title: 'Localisation du cancer',
-        })
-        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-        
-        function updateDiseasecol(hotTable, row, column) {
-            let cancerType = $('input[name="cancerListradio"]:checked').val();
-            hotTable.setDataAtRowProp(row, column, cancerType);
+    // hotChildren adHook
+    hotChildren.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            colDisease = "Disease1";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotSelectedTable =  this
+                dialogCancerList.dialog( "open" );
+            }
+            preventScrolling.value = true;
+        }
+    )
+
+    
+    // showDialogCancerList(hotSiblings, "Disease1");
+    hotSiblings.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            colDisease = "Disease1";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotSelectedTable =  this
+                dialogCancerList.dialog( "open" );
+            }
+            preventScrolling.value = true;
+        }
+)
+
+    // showDialogCancerList(hotGpp, "Disease1");
+    hotGpp.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            colDisease = "Disease1";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotSelectedTable =  this
+                dialogCancerList.dialog( "open" );
+            }
+            preventScrolling.value = true;
+        }
+    )
+
+    // showDialogCancerList(hotFatherSiblings, "Disease1");
+    hotFatherSiblings.addHook('afterSelectionEndByProp',
+    function(row, column, preventScrolling) {
+        colDisease = "Disease1";
+        selectedRow = row;
+        selectedColumn = column
+        if(selectedColumn == colDisease) {
+            hotSelectedTable =  this
+            dialogCancerList.dialog( "open" );
+        }
+        preventScrolling.value = true;
+    }
+)
+
+    // showDialogCancerList(hotGpm, "Disease1");
+    hotGpm.addHook('afterSelectionEndByProp',
+    function(row, column, preventScrolling) {
+        colDisease = "Disease1";
+        selectedRow = row;
+        selectedColumn = column
+        if(selectedColumn == colDisease) {
+            hotSelectedTable =  this
+            dialogCancerList.dialog( "open" );
+        }
+        preventScrolling.value = true;
+    }
+)
+
+    // showDialogCancerList(hotMotherSiblings, "Disease1");
+    hotMotherSiblings.addHook('afterSelectionEndByProp',
+    function(row, column, preventScrolling) {
+        colDisease = "Disease1";
+        selectedRow = row;
+        selectedColumn = column
+        if(selectedColumn == colDisease) {
+            hotSelectedTable =  this
+            dialogCancerList.dialog( "open" );
+        }
+        preventScrolling.value = true;
+    }
+)
+
+    // showDialogCancerList = function(hotInstance, colDisease)  { // not working ? how to reference hot instance ?
+    //     hotInstance.addHook('afterSelectionEndByProp',
+    //     function(row, column, preventScrolling) {
+    //         selectedRow = row;
+    //         selectedColumn = column
+    //         if(selectedColumn == colDisease) {
+    //             hotSelectedTable =  this
+    //             dialogCancerList.dialog( "open" );
+    //         }
+    //         preventScrolling.value = true;
+    //     }
+    // )
+    // }
+
+
+
+    function updateDiseasecol(hotSelectedTable, row, column) {
+        let cancerType = $('input[name="cancerListradio"]:checked').val();
+        if(cancerType != undefined) {
+            hotSelectedTable.setDataAtRowProp(row, column, cancerType);
             $('input[name="cancerListradio"]:checked').prop('checked', false);
         }
-        $('input[name="cancerListradio"]').on("click", function(e) {
-            updateDiseasecol(hotTable, selectedRow, selectedColumn);
-            dialogCancerList.dialog( "close" );
-        })
     }
 });

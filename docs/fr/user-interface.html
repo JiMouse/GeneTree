@@ -153,12 +153,6 @@
 	</nav>
 
 	<div class="container">
-		<div class='row text-center'  style="padding-top: 20px;">
-			<p style="color: red;">
-				<i><b>Page en cours de conception.</b></i>
-			</p>
-		</div>
-
 		<!-- Présentation -->
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
@@ -169,7 +163,8 @@
 			<p>
 				<div style="padding:0px 20px;">
 					Cette page a pour but de proposer une interface simplifiée permettant de préparer sa consultation en faisant
-					le recueil de son histoire familiale et personnelle (arbre généalogique) en lien avec des pathologies oncologiques.
+					le recueil de son histoire familiale et personnelle (arbre généalogique) en lien avec des pathologies oncologiques. Il ne se substitut pas à une consultation d'oncogénétique mais 
+					peut vous permettre de la préparer.
 				</div>
 			</p>
 		</div>
@@ -236,7 +231,7 @@
 										<div class='hotContainer'> 
 											<!-- style="height: 260px;"> -->
 											<div id="hotCancer" class="hot handsontable htColumnHeaders handsontable-helvetica"
-											style="display:inline-block;z-index: 0;min-height:50px	"></div> 
+											style="display:inline-block;z-index: 0;min-height:50px"></div> 
 										</div>
 									</div>
 									<div id="cancerList" style="background-color: white;" class='container'>
@@ -275,6 +270,42 @@
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_utérus"> Cancer de l'utérus
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_rein"> Cancer du rein
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_foie"> Cancer du foie
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="mélanome"> Mélanome
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="cancer_ORL"> Cancer ORL
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
+														value="polypes"> Polypes
+													</label>
+												</div>
+												<div class="form-check">
+													<label class="form-check-label font-normal">
+														<input type="radio" class="form-check-input" name="cancerListradio"
 														value="autre"> Autre
 													</label>
 												</div>
@@ -292,7 +323,7 @@
 										diseasesInd.push('autre');
 
 										var colCancer = [
-											{data: 'Cancer'},//, type: 'dropdown', source: diseasesInd},
+											{data: 'Cancer'},
 											{data: 'Age', type: 'numeric'},
 											{data: 'Year', type: 'numeric'}
 										];
@@ -305,17 +336,12 @@
 											columns: colCancer,
 											minSpareRows: 1,
 											manualColumnResize: true,
-											// filters: true,
-											// dropdownMenu: true,
-											className: 'htCenter htMiddle helvetica',//"htCenter",
-											// contextMenu: true,
+											className: 'htCenter htMiddle helvetica',
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
-											// colWidths: 100,		
-											// undo: true,
-											height: 'auto',//'100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation'
 										});
 
@@ -357,8 +383,9 @@
 									<p class='question'>Quand sont nés vos enfants ?</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotChildren" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotChildren" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:60px"></div>
 										</div>
 									</div>
 					
@@ -370,7 +397,7 @@
 										]
 
 										colCancer = [
-											{data: 'Disease1', type: 'dropdown', source: diseasesInd},
+											{data: 'Disease1'},
 											{data: 'Age1', type: 'numeric'},
 											{data: 'Year1', type: 'numeric'},
 											{data: 'comment', type: 'text'}
@@ -395,18 +422,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
-											rowHeights: 30,
-											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
+											rowHeights: 28,
+											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 130],
 											manualColumnResize: false,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
@@ -448,8 +471,9 @@
 									<p class='question'>Quand sont nés vos frères et sœurs ?</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotSiblings" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotSiblings" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:50px"></div>
 										</div>
 									</div>
 					
@@ -465,18 +489,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
 											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
 											manualColumnResize: false,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
@@ -504,8 +524,9 @@
 									<p class='question'>Vos grands-parents paternels.</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotGpp" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotGpp" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:50px"></div>
 										</div>
 									</div>
 					
@@ -521,18 +542,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
 											colWidths: [180, 80, 50, 50, 80, 140, 80, 80, 150],
 											manualColumnResize: true,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
@@ -558,11 +575,11 @@
 									<p class='question'>Quand sont nés les frères et sœurs de votre père ?</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotFatherSiblings" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotFatherSiblings" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:50px"></div>
 										</div>
 									</div>
-					
 									<script>
 										const containerFatherSiblings = document.getElementById('hotFatherSiblings');
 
@@ -574,18 +591,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
 											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
 											manualColumnResize: false,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
@@ -612,8 +625,9 @@
 									<p class='question'>Vos grands-parents maternels.</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotGpm" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotGpm" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:50px"></div>
 										</div>
 									</div>
 					
@@ -629,18 +643,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
 											colWidths: [180, 80, 50, 50, 80, 140, 80, 80, 150],
 											manualColumnResize: true,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
@@ -666,8 +676,9 @@
 									<p class='question'>Quand sont nés les frères et sœurs de votre mère ?</p>
 				
 									<div class="text-center">
-										<div class='hotContainer' style="height: 260px;">
-											<div id="hotMotherSiblings" class="hot handsontable-helvetica"></div>
+										<div class='hotContainer'>
+											<div id="hotMotherSiblings" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:50px"></div>
 										</div>
 									</div>
 					
@@ -682,18 +693,14 @@
 											rowHeaders: false,
 											colHeaders: colChildren_header,
 											columns: colChildren,
-											// filters: true,
-											// dropdownMenu: true,
 											className: 'htCenter htMiddle helvetica',
-											// contextMenu: true,
 											outsideClickDeselects: false,
 											persistentState: true,
 											rowHeights: 30,
 											colWidths: [100, 80, 50, 50, 80, 140, 80, 80, 150],
 											manualColumnResize: false,
-											// undo: true,
-											height: '100%',//'auto',
-											width: '100%',//'auto',
+											height: 'auto',
+											width: '100%',
 											licenseKey: 'non-commercial-and-evaluation',
 										});
 
