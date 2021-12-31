@@ -450,22 +450,6 @@ $(document).ready(function(){
     }
 )
 
-    // showDialogCancerList = function(hotInstance, colDisease)  { // not working ? how to reference hot instance ?
-    //     hotInstance.addHook('afterSelectionEndByProp',
-    //     function(row, column, preventScrolling) {
-    //         selectedRow = row;
-    //         selectedColumn = column
-    //         if(selectedColumn == colDisease) {
-    //             hotSelectedTable =  this
-    //             dialogCancerList.dialog( "open" );
-    //         }
-    //         preventScrolling.value = true;
-    //     }
-    // )
-    // }
-
-
-
     function updateDiseasecol(hotSelectedTable, row, column) {
         let cancerType = $('input[name="cancerListradio"]:checked').val();
         if(cancerType != undefined) {
