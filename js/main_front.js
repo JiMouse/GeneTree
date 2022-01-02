@@ -165,24 +165,26 @@ $(document).ready(function(){
             "ui-dialog-buttonpane": "custom-background"
         },
         width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
-        maxHeight: 700,
-        title: 'Localisation du cancer',
+        maxHeight: 700
     })
 
     $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
     
+    // on radio click
     $(document).on("click","input[name='cancerListradio']", function(){     
         let cancerType = $('input[name="cancerListradio"]:checked').val();        
         updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
         dialogCancerList.dialog( "close" );
     });
 
+    //on 'OK' click, add other value
     $(document).on("click","#validOtherCancer", function() {
         cancerType = $('#other_cancer').val();
         updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
         dialogCancerList.dialog( "close" );
     });
 
+    //if press enter on other input field
     $(document).on("keydown", "input[id='other_cancer']", function search(e) {
         if(e.keyCode == 13) {
             e.preventDefault();
@@ -190,48 +192,86 @@ $(document).ready(function(){
         }
     });
 
+    //HPO list click
+    $(document).on("click","a[name='cancerListradio']", function() {
+        cancerType = $(this).data('val'); 
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    //HPO search
+    $(document).on("keyup", "input[id='HPOInput']", function search(e) {
+        searchInList();
+        if(e.keyCode == 13) {
+            e.preventDefault();
+        }
+    });
+
     hot.addHook('afterSelectionEndByProp',
         function(row, column, preventScrolling) {
             let checkBox = document.getElementById("myCheckHPO");
-            if (checkBox.checked == true) return;
+            let dialogCancerListTitle;
             selectedRow = row;
             selectedColumn = column
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
-                hotSelectedTable =  this
+                hotSelectedTable =  this;
 
-                var html_cancerListDialog =
-                "<form>"
-                +    "<fieldset>"
-                
-                $.each(diseases, function(k) {
-                    disease_name = capitaliseFirstLetter(diseases[k].replace(/_/g , " "))
-                    disease_name = disease_name.replace(/2/g , " controlatéral")
+                if (checkBox.checked == true) { //if HPO mode
+                    var html_cancerListDialog = 
+                    "<form>"
+                        +"<fieldset>"
+                            +'<input type="text" id="HPOInput" autocomplete="off" placeholder="Search for names..">'
+                            + '<ul id="myUL" style="height: 500px; overflow-y: auto">'
+                    
+                    var items = HPOArr//.slice(0,100);
+                    for (let i = 0; i < items.length; i++) {
+                        items[i] = "<li><a name='cancerListradio' data-val='" + items[i]+"'>"+ items[i]+"</li></a>";
+                    }
+                    var list = items.join("");
+
+                    html_cancerListDialog += list;
                     html_cancerListDialog += 
-                            "<div class='form-check'>"
+                             '</ul>'
+                        + "</fieldset>"
+                    + "</form>"
+                    dialogCancerListTitle = 'Termes HPO';               
+                } else {
+                    var html_cancerListDialog =
+                    "<form>"
+                    +    "<fieldset>"
+                    
+                    $.each(diseases, function(k) {
+                        disease_name = capitaliseFirstLetter(diseases[k].replace(/_/g , " "))
+                        disease_name = disease_name.replace(/2/g , " controlatéral")
+                        html_cancerListDialog += 
+                                "<div class='form-check'>"
+                        +            "<label class='form-check-label font-normal'>"
+                        +                "<input type='radio' class='form-check-input' name='cancerListradio'"
+                        +                    "value='" + diseases[k] + "'" + "> " + disease_name
+                        +            "</label>"
+                        +        "</div>"
+                    });
+
+                    html_cancerListDialog += "<br>"
+                    + "<div class='row'>"
+                    +       "<div class='form-check col-md-8'>"
                     +            "<label class='form-check-label font-normal'>"
-                    +                "<input type='radio' class='form-check-input' name='cancerListradio'"
-                    +                    "value='" + diseases[k] + "'" + "> " + disease_name
+                    +               "<input type='text' id='other_cancer' autocomplete='off' class='form-control'"  
+                    +						"aria-invalid='false' placeholder='Autre'>"
                     +            "</label>"
                     +        "</div>"
-                });
-
-                html_cancerListDialog += "<br>"
-                + "<div class='row'>"
-                +       "<div class='form-check col-md-8'>"
-                +            "<label class='form-check-label font-normal'>"
-                +               "<input type='text' id='other_cancer' class='form-control'"  
-				+						"aria-invalid='false' placeholder='Autre'>"
-                +            "</label>"
-                +        "</div>"
-                +        "<div col-md-4>"
-                +           "<label class='btn btn-primary'>"
-                +               "<input id='validOtherCancer' type='button' style='display: none;'/>OK"
-                +           "</label>"
-                +       "</div>"
-                + "</div>"
-                +  "</fieldset>"
-                + "</form>"
-                
+                    +        "<div col-md-4>"
+                    +           "<label class='btn btn-primary'>"
+                    +               "<input id='validOtherCancer' type='button' style='display: none;'/>OK"
+                    +           "</label>"
+                    +       "</div>"
+                    + "</div>"
+                    +  "</fieldset>"
+                    + "</form>"
+                    dialogCancerListTitle = 'Localisation du cancer';    
+                }
+                dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
+                // alert(dialogCancerListTitle);
                 dialogCancerList.html(html_cancerListDialog);
                 dialogCancerList.dialog('open');
             }
@@ -240,10 +280,29 @@ $(document).ready(function(){
     );
 
     function updateDiseasecol(hotSelectedTable, row, column, cancerType) {
-        // let cancerType = $('input[name="cancerListradio"]:checked').val();
         if(cancerType != undefined) {
             hotSelectedTable.setDataAtRowProp(row, column, cancerType);
             $('input[name="cancerListradio"]:checked').prop('checked', false);
+        }
+    }
+    function searchInList() {
+        // Declare variables
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('HPOInput');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName('li');
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+            } else {
+            li[i].style.display = "none";
+            }
         }
     }
 });
@@ -498,8 +557,8 @@ $(document).ready(function() {
                   isDiseaseProp = function(val) {return prop == val};
                   if (colsDiseases.some(isDiseaseProp)) {
                       var cellProperties = {};
-                      cellProperties.type = 'dropdown';
-                      cellProperties.source = HPOArr;
+                    //   cellProperties.type = 'dropdown';
+                    //   cellProperties.source = HPOArr;
                       return cellProperties;
                     }
                   if(prop=="Option") {
