@@ -69,8 +69,9 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/main_front.js"></script>
 	<script type="text/javascript" src="js/hotContextMenu.js"></script>
-	<script src="js/hotTable.js"></script>
-	<script src="js/indexWidgets.js"></script>
+	<script type="text/javascript" src="js/hotTable.js"></script>
+	<script type="text/javascript" src="js/indexWidgets.js"></script>
+	<script type="text/javascript" src="js/user-interface.js"></script>
 
 	<!-- main css -->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
@@ -344,9 +345,6 @@
 				<div id="supp_info" style="background-color: white;" class='container'>
 					<form action="post" novalidate="novalidate">
 						<fieldset>
-							<p class="text-center">
-								<i>Formulaire en cours de construction.</i>
-							</p>
 							<div class="row">
 								<div class="col-sm-4 text-right field_label">
 									<label for="form_id_name">Identifiant :</label>
@@ -863,6 +861,8 @@
 					<div id="dataTable" class="hot handsontable htColumnHeaders"
 						style="display:inline-block;z-index: 0;min-height:100px;"></div>
 				</div>
+				<div id="cancerList" style="background-color: white;" class='container'></div>
+
 				<script>
 					var container = document.getElementById('dataTable');
 
@@ -901,15 +901,15 @@
 					});
 				</script>
 
-				<!-- create export buttons -->
+			<!-- create export buttons -->
 				<div style="padding-top: 15px;">
 					<button id="exportJson" class="btn btn-primary lang">JSON <i
 							class="fa fa-download"></i>
 						</button>
 					<div class="btnDivider"></div>
-					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA <i
-							class="fa fa-download"></i>
-						</button>
+					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA 
+						<i class="fa fa-download"></i>
+					</button>
 					<button id="save_canrisk_fromHot" class='btn btn-primary'>CanRisk <i class="fa fa-download"></i></button>
 
 					<div class="btnDivider"></div>

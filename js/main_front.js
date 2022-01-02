@@ -27,30 +27,30 @@ var cols = [{data: 'FamID'},
             source: optionList()
             }, {
             data: 'Disease1',
-            type: 'autocomplete',
-            source: [],
-            strict: false,
-            filter: true,
+            // type: 'autocomplete',
+            // source: [],
+            // strict: false,
+            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age1',
             type: 'numeric'
             }, {
             data: 'Disease2',
-            type: 'autocomplete',
-            source: [],
-            strict: false,
-            filter: true,
+            // type: 'autocomplete',
+            // source: [],
+            // strict: false,
+            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age2',
             type: 'numeric'
             }, {
             data: 'Disease3',
-            type: 'autocomplete',
-            source: [],
-            strict: false,
-            filter: true,
+            // type: 'autocomplete',
+            // source: [],
+            // strict: false,
+            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age3',
@@ -63,7 +63,7 @@ var cols = [{data: 'FamID'},
 
 //Boadicea supp. cols 
 var colsOnco = [
-    {data: 'Ashkn', type: 'numeric'},
+    /*{data: 'Ashkn', type: 'numeric'},
     {data: 'BRCA1t', type: 'dropdown', source:['T','S']},
     {data: 'BRCA1r', type: 'dropdown', source:['P','N']},
     {data: 'BRCA2t', type: 'dropdown', source:['T','S']},
@@ -78,7 +78,7 @@ var colsOnco = [
     {data: 'PR', type: 'dropdown', source:['P','N', 'U']},
     {data: 'HER2', type: 'dropdown', source:['P','N', 'U']},
     {data: 'CK14', type: 'dropdown', source:['P','N', 'U']},
-    {data: 'CK56', type: 'dropdown', source:['P','N', 'U']}
+    {data: 'CK56', type: 'dropdown', source:['P','N', 'U']}*/
     ];
 colsOnco=cols.concat(colsOnco);
 
@@ -100,10 +100,10 @@ var set = false;
 function autRenderer(instance, td, row, col, prop, value, cellProperties) {
     //add onco diseases (if not included)
     let index;
-    for (var i = 0; i < onco().length; i++) {
-        index = diseases.indexOf(onco()[i]);
+    for (var i = 0; i < onco_full().length; i++) {
+        index = diseases.indexOf(onco_full()[i]);
         if (index == -1) {
-            diseases.push(onco()[i]);
+            diseases.push(onco_full()[i]);
         }
     };
     
@@ -114,17 +114,18 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    cellProperties.type = 'autocomplete';
-    cellProperties.source = diseases
-    Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+    // cellProperties.type = 'autocomplete';
+    // cellProperties.source = diseases
+    // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);  
+    Handsontable.renderers.TextRenderer.apply(this, arguments); 
 };
 
 //autRenderer without onco
 function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     //remove onco diseases (if any)
     let index;
-    for (var i = 0; i < onco().length; i++) {
-        index = diseases.indexOf(onco()[i]);
+    for (var i = 0; i < onco_full().length; i++) {
+        index = diseases.indexOf(onco_full()[i]);
         if (index > -1) {
             diseases.splice(index, 1);
         }
@@ -137,10 +138,115 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    cellProperties.type = 'autocomplete';
-    cellProperties.source = diseases
-    Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+    // cellProperties.type = 'autocomplete';
+    // cellProperties.source = diseases
+    // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+    Handsontable.renderers.TextRenderer.apply(this, arguments); 
 };
+
+//-----------------------------------
+$(document).ready(function(){
+
+    //add popup div to select cancer type
+    // define variable
+    var selectedRow;
+    var selectedColumn;
+    var dialogCancerList;
+    var hotSelectedTable;
+
+    // define cancerList dialog form
+    dialogCancerList = $( "#cancerList" ).dialog({
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+        width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+        maxHeight: 700,
+        title: 'Localisation du cancer',
+    })
+
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+    
+    $(document).on("click","input[name='cancerListradio']", function(){     
+        let cancerType = $('input[name="cancerListradio"]:checked').val();        
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    $(document).on("click","#validOtherCancer", function() {
+        cancerType = $('#other_cancer').val();
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    $(document).on("keydown", "input[id='other_cancer']", function search(e) {
+        if(e.keyCode == 13) {
+            e.preventDefault();
+           $("#validOtherCancer").click();
+        }
+    });
+
+    hot.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            let checkBox = document.getElementById("myCheckHPO");
+            if (checkBox.checked == true) return;
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
+                hotSelectedTable =  this
+
+                var html_cancerListDialog =
+                "<form>"
+                +    "<fieldset>"
+                
+                $.each(diseases, function(k) {
+                    disease_name = capitaliseFirstLetter(diseases[k].replace(/_/g , " "))
+                    disease_name = disease_name.replace(/2/g , " controlatéral")
+                    html_cancerListDialog += 
+                            "<div class='form-check'>"
+                    +            "<label class='form-check-label font-normal'>"
+                    +                "<input type='radio' class='form-check-input' name='cancerListradio'"
+                    +                    "value='" + diseases[k] + "'" + "> " + disease_name
+                    +            "</label>"
+                    +        "</div>"
+                });
+
+                html_cancerListDialog += "<br>"
+                + "<div class='row'>"
+                +       "<div class='form-check col-md-8'>"
+                +            "<label class='form-check-label font-normal'>"
+                +               "<input type='text' id='other_cancer' class='form-control'"  
+				+						"aria-invalid='false' placeholder='Autre'>"
+                +            "</label>"
+                +        "</div>"
+                +        "<div col-md-4>"
+                +           "<label class='btn btn-primary'>"
+                +               "<input id='validOtherCancer' type='button' style='display: none;'/>OK"
+                +           "</label>"
+                +       "</div>"
+                + "</div>"
+                +  "</fieldset>"
+                + "</form>"
+                
+                dialogCancerList.html(html_cancerListDialog);
+                dialogCancerList.dialog('open');
+            }
+            preventScrolling.value = true;
+        }
+    );
+
+    function updateDiseasecol(hotSelectedTable, row, column, cancerType) {
+        // let cancerType = $('input[name="cancerListradio"]:checked').val();
+        if(cancerType != undefined) {
+            hotSelectedTable.setDataAtRowProp(row, column, cancerType);
+            $('input[name="cancerListradio"]:checked').prop('checked', false);
+        }
+    }
+});
 
 //---Pedigreejs variables---
 if(utils.isIE() || utils.isEdge()) {
@@ -273,7 +379,17 @@ $(document).ready(function() {
         buttons: [{
             text: lang.continue,
             click: function () {
+                //reset data
                 hot.loadData(JSON.parse(myDataSafe));
+                
+                //reset disease
+                let checkBox = document.getElementById("myCheckOnco");
+                if(checkBox) {
+                    diseases=onco_full();
+                }else{
+                    diseases=[];
+                }
+                
                 loadFromHot();
                 loadStory();
                 $(this).dialog( "close" );
