@@ -83,16 +83,15 @@
   vertical-align: middle;
 }
 
-/* 
-.handsontable .ht_master {
-  height: 300px;
-  overflow-y: auto !important;
-  width: calc(100% + 2px);
+.handsontable-helvetica2 table thead th{
+  color:#002e5d;
+  background-color: #dbe9f5;
+  /* font-weight:bold; */
+  font-size:13px;
+  font-family: Helvetica;
+  vertical-align: middle;
 }
-.handsontable .ht_clone_top {
-  transform: none !important;
-}
-*/
+
 
 /* Pulldown can break out of handsontable boundary */
 .htColumnHeaders {

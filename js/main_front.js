@@ -5,7 +5,9 @@ var cols = [
     {data: 'IndivID'},
     {data: 'FathID'},
     {data: 'MothID'},
-    {data: 'Sex'}, 
+    {data: 'Sex',
+    type: 'dropdown',
+    source: ['H','F','U']}, 
     // {
     // data: 'Affected',
     // type: 'checkbox',
@@ -268,7 +270,7 @@ $(document).ready(function(){
             itemsFull = HPOArr.slice(1,20);
             return;
         } else {
-            itemsFull = HPOArr;
+            itemsFull = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
         }
 
         var filteredList = [];
@@ -294,6 +296,14 @@ $(document).ready(function(){
         }
     }
 });
+
+//Import Orphadata
+function ImportOrphaData(filePath) {
+    let tsv = loadFile(filePath); //bug importing accents
+    var x = tsv.split('\n');
+    return x;
+}
+OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt');
 
 //---Pedigreejs variables---
 if(utils.isIE() || utils.isEdge()) {

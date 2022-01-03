@@ -859,7 +859,7 @@
 				<!-- create handsontable table -->
 				<div class='hotContainer'>
 					<!-- style="height: 250px;" -->
-					<div id="dataTable" class="hot handsontable htColumnHeaders handsontable-helvetica"
+					<div id="dataTable" class="hot handsontable htColumnHeaders handsontable-helvetica2"
 						style="display:inline-block;z-index: 0;min-height:150px;"></div>
 				</div>
 				<div id="cancerList" style="background-color: white;" class='container'></div>
@@ -880,6 +880,7 @@
 						rowHeaders: true,//false
 						colHeaders: cols_headerOnco,
 						columns: colsOnco,
+						// colWidths: [60,60,60,60,60,65,60,60,65,60,80,60,80,60,80,100],
 						filters: true,
 						dropdownMenu: true,
 						className: 'htCenter htMiddle helvetica',
@@ -890,7 +891,8 @@
 						width: '100%',
 						height: 'auto',
 						manualRowMove: true,
-						rowHeights: 28,
+						rowHeights: 24,
+						rowHeaderWidth: 20,
 						licenseKey: 'non-commercial-and-evaluation',
 						afterChange: function (change, source) {
 							// save all data to local storge if the edit happens

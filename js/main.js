@@ -3,6 +3,7 @@ const { sortedIndex } = require("lodash");
 //set global variables
 var i,
     HPOArr = [];
+var OrphaArr;
 
 function JSONToPEDConvertor(JSONData, toKeep) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
@@ -1088,6 +1089,7 @@ function loadFile(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", filePath, false);
+    // xmlhttp.overrideMimeType('text/xml; charset=iso-8859-1'); //debug accent ?
     xmlhttp.send();
     if (xmlhttp.status==200) {
       result = xmlhttp.responseText;
