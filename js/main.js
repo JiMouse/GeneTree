@@ -1115,7 +1115,7 @@ function ImportHPO(filePath) {
         Arr = [];
 
     for(var i in HPO) {
-        Arr.push(HPO[i].LABEL);
+        if(HPO[i].LABEL!='' & HPO[i].LABEL!='undefined' & HPO[i].LABEL!=null) Arr.push(HPO[i].LABEL);
     }
     return Arr;
 }

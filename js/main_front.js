@@ -188,10 +188,10 @@ $(document).ready(function(){
                     var html_cancerListDialog = 
                     "<form>"
                         +"<fieldset>"
-                            +'<input type="text" id="HPOInput" autocomplete="off" placeholder="Search for names..">'
+                            +'<input type="text" id="HPOInput" autocomplete="off" placeholder="Taper au moins deux lettres">'
                             + '<ul id="myUL" style="height: 500px; overflow-y: auto">'
                     
-                    var items = HPOArr//.slice(0,100);
+                    var items = HPOArr.slice(0,100);
                     for (let i = 0; i < items.length; i++) {
                         items[i] = "<li><a name='cancerListradio' data-val='" + items[i]+"'>"+ items[i]+"</li></a>";
                     }
@@ -257,11 +257,29 @@ $(document).ready(function(){
     }
     function searchInList() {
         // Declare variables
-        var input, filter, ul, li, a, i, txtValue;
+        var input, filter, ul, li, a, i, txtValue, itemsFull;
         input = document.getElementById('HPOInput');
         filter = input.value.toUpperCase();
         ul = document.getElementById("myUL");
         li = ul.getElementsByTagName('li');
+
+        //To improve efficiency : load full list after search of minimum two letters
+        if(filter.length<2) {
+            itemsFull = HPOArr.slice(1,20);
+            return;
+        } else {
+            itemsFull = HPOArr;
+        }
+
+        var filteredList = [];
+        for (let i = 0; i < itemsFull.length; i++) {
+            txtValue=capitaliseFirstLetter(itemsFull[i]);
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                filteredList.push("<li><a name='cancerListradio' data-val='" + txtValue+"'>"+ txtValue+"</li></a>");
+            }
+        }
+        var newList = filteredList.join("");
+        ul.innerHTML = newList;
 
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < li.length; i++) {
