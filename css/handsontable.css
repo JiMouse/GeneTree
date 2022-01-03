@@ -71,13 +71,13 @@
 
 .helvetica {
   font-family: Helvetica;
-  font-size:14px;
+  font-size:13px;
 }
 
 .handsontable-helvetica table thead th{
   color:#002e5d;
   background-color: #dbe9f5;
-  font-weight:bold;
+  /* font-weight:bold; */
   font-size:14px;
   font-family: Helvetica;
   vertical-align: middle;

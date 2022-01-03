@@ -1,53 +1,55 @@
 // define column to display
-var cols = [{data: 'FamID'}, 
-            {data: 'Name'},
-            {data: 'IndivID'},
-            {data: 'FathID'},
-            {data: 'MothID'},
-            {data: 'Sex'}, 
-            {
-            data: 'Affected',
-            type: 'checkbox',
-            checkedTemplate: '2',
-            uncheckedTemplate: '1'
-            },{
-            data: 'Deceased',
-            type: 'checkbox',
-            checkedTemplate: '1',
-            uncheckedTemplate: '0'
-            }, {
-            data: 'Age',
-            type: 'numeric'
-            }, {
-            data: 'Yob',
-            type: 'numeric'
-            }, {
-            data: 'Option',
-            type: 'dropdown',
-            source: optionList()
-            }, {
-            data: 'Disease1',
-            renderer: autRenderer
-            }, {
-            data: 'Age1',
-            type: 'numeric'
-            }, {
-            data: 'Disease2',
-            renderer: autRenderer
-            }, {
-            data: 'Age2',
-            type: 'numeric'
-            }, {
-            data: 'Disease3',
-            renderer: autRenderer
-            }, {
-            data: 'Age3',
-            type: 'numeric'
-            }, {
-            data: 'comment',
-            type: 'text'
-            }
-        ];
+var cols = [
+    // {data: 'FamID'}, 
+    {data: 'Name'},
+    {data: 'IndivID'},
+    {data: 'FathID'},
+    {data: 'MothID'},
+    {data: 'Sex'}, 
+    // {
+    // data: 'Affected',
+    // type: 'checkbox',
+    // checkedTemplate: '2',
+    // uncheckedTemplate: '1'
+    // },
+    {
+    data: 'Deceased',
+    type: 'checkbox',
+    checkedTemplate: '1',
+    uncheckedTemplate: '0'
+    }, {
+    data: 'Age',
+    type: 'numeric'
+    }, {
+    data: 'Yob',
+    type: 'numeric'
+    }, {
+    data: 'Option',
+    type: 'dropdown',
+    source: optionList()
+    }, {
+    data: 'Disease1',
+    renderer: autRenderer
+    }, {
+    data: 'Age1',
+    type: 'numeric'
+    }, {
+    data: 'Disease2',
+    renderer: autRenderer
+    }, {
+    data: 'Age2',
+    type: 'numeric'
+    }, {
+    data: 'Disease3',
+    renderer: autRenderer
+    }, {
+    data: 'Age3',
+    type: 'numeric'
+    }, {
+    data: 'comment',
+    type: 'text'
+    }
+];
 
 //Boadicea supp. cols 
 var colsOnco = [
