@@ -27,30 +27,18 @@ var cols = [{data: 'FamID'},
             source: optionList()
             }, {
             data: 'Disease1',
-            // type: 'autocomplete',
-            // source: [],
-            // strict: false,
-            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age1',
             type: 'numeric'
             }, {
             data: 'Disease2',
-            // type: 'autocomplete',
-            // source: [],
-            // strict: false,
-            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age2',
             type: 'numeric'
             }, {
             data: 'Disease3',
-            // type: 'autocomplete',
-            // source: [],
-            // strict: false,
-            // filter: true,
             renderer: autRenderer
             }, {
             data: 'Age3',
@@ -63,22 +51,7 @@ var cols = [{data: 'FamID'},
 
 //Boadicea supp. cols 
 var colsOnco = [
-    /*{data: 'Ashkn', type: 'numeric'},
-    {data: 'BRCA1t', type: 'dropdown', source:['T','S']},
-    {data: 'BRCA1r', type: 'dropdown', source:['P','N']},
-    {data: 'BRCA2t', type: 'dropdown', source:['T','S']},
-    {data: 'BRCA2r', type: 'dropdown', source:['P','N']},
-    {data: 'PALB2t', type: 'dropdown', source:['T','S']},
-    {data: 'PALB2r', type: 'dropdown', source:['P','N']},
-    {data: 'ATMt', type: 'dropdown', source:['T','S']},
-    {data: 'ATMr', type: 'dropdown', source:['P','N']},
-    {data: 'CHEK2t', type: 'dropdown', source:['T','S']},
-    {data: 'CHEK2r', type: 'dropdown', source:['P','N']},
-    {data: 'ER', type: 'dropdown', source:['P','N', 'U']},
-    {data: 'PR', type: 'dropdown', source:['P','N', 'U']},
-    {data: 'HER2', type: 'dropdown', source:['P','N', 'U']},
-    {data: 'CK14', type: 'dropdown', source:['P','N', 'U']},
-    {data: 'CK56', type: 'dropdown', source:['P','N', 'U']}*/
+    //{data: 'Ashkn', type: 'numeric'},
     ];
 colsOnco=cols.concat(colsOnco);
 
@@ -109,14 +82,11 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
     
     //add new value to disease list
     let val = value;
-    if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
+    if(typeof val != 'undefined' & val != '' & val != null & !diseases.includes(val)) {
         diseases.push(val);
     }
 
     //Update cell properties
-    // cellProperties.type = 'autocomplete';
-    // cellProperties.source = diseases
-    // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);  
     Handsontable.renderers.TextRenderer.apply(this, arguments); 
 };
 
@@ -133,14 +103,11 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
 
     //add new value to disease list
     let val = value;
-    if(typeof val != 'undefined' & val != '' & !diseases.includes(val)) {
+    if(typeof val != 'undefined' & val != '' & val != null & !diseases.includes(val)) {
         diseases.push(val);
     }
 
     //Update cell properties
-    // cellProperties.type = 'autocomplete';
-    // cellProperties.source = diseases
-    // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
     Handsontable.renderers.TextRenderer.apply(this, arguments); 
 };
 
@@ -215,7 +182,6 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
                 hotSelectedTable =  this;
-
                 if (checkBox.checked == true) { //if HPO mode
                     var html_cancerListDialog = 
                     "<form>"
@@ -239,10 +205,11 @@ $(document).ready(function(){
                     var html_cancerListDialog =
                     "<form>"
                     +    "<fieldset>"
-                    
+
                     $.each(diseases, function(k) {
                         disease_name = capitaliseFirstLetter(diseases[k].replace(/_/g , " "))
                         disease_name = disease_name.replace(/2/g , " controlatéral")
+
                         html_cancerListDialog += 
                                 "<div class='form-check'>"
                         +            "<label class='form-check-label font-normal'>"
@@ -270,8 +237,8 @@ $(document).ready(function(){
                     + "</form>"
                     dialogCancerListTitle = 'Localisation du cancer';    
                 }
+                
                 dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
-                // alert(dialogCancerListTitle);
                 dialogCancerList.html(html_cancerListDialog);
                 dialogCancerList.dialog('open');
             }
@@ -283,6 +250,7 @@ $(document).ready(function(){
         if(cancerType != undefined) {
             hotSelectedTable.setDataAtRowProp(row, column, cancerType);
             $('input[name="cancerListradio"]:checked').prop('checked', false);
+            hotSelectedTable.selectCell(row, column);
         }
     }
     function searchInList() {
@@ -557,8 +525,6 @@ $(document).ready(function() {
                   isDiseaseProp = function(val) {return prop == val};
                   if (colsDiseases.some(isDiseaseProp)) {
                       var cellProperties = {};
-                    //   cellProperties.type = 'dropdown';
-                    //   cellProperties.source = HPOArr;
                       return cellProperties;
                     }
                   if(prop=="Option") {

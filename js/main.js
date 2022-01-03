@@ -298,7 +298,7 @@ function getTablePatho(obj) {
     return patho;
 }
 
-function FormatToTable(JSONData) {  //bug with comment and abirth
+function FormatToTable(JSONData) {
     var obj = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         toRep = [];
 
