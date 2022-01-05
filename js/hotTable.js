@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function() {
         function(changes, source) {
             if(changes != null) {
                 col = changes[0][1];
-                var deceasedIndex = 7
+                var deceasedIndex = 5;
                 row = changes[0][0];
-                dead = this.getSourceDataAtCell(row, deceasedIndex)
+                dead = this.getSourceDataAtCell(row, deceasedIndex);
                 if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
                     newValue = changes[0][3];
                     var today = new Date();

@@ -128,6 +128,7 @@ $(document).ready(function(){
     // define cancerList dialog form
     dialogCancerList = $( "#cancerList" ).dialog({
         autoOpen: false,
+        closeOnEscape: true,
         classes: {
             "ui-dialog": "custom-background",
             "ui-dialog-titlebar": "custom-theme",
@@ -243,6 +244,14 @@ $(document).ready(function(){
                 }
                 
                 dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
+                dialogCancerList.dialog("option", "close", function() {
+                    // alert(row)
+                    // alert(column)
+                    dialogCancerList.dialog('close');
+                    // hotSelectedTable.selectCell(row, column);
+                }
+                );
+        
                 dialogCancerList.html(html_cancerListDialog);
                 dialogCancerList.dialog('open');
             }
