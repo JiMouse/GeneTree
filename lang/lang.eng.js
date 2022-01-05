@@ -40,6 +40,7 @@ var lang = {
     add_spouse:" spouse",
     title_pedigree:"Pedigree",
     loadFromHotText:"Load the table ",
+    legend:" Update legend",
     print:"Print",
     exportText:"Export",
     copyToClip:"Copy",

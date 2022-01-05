@@ -983,6 +983,8 @@ function setLanguage(oldLang, newLang){
     //change HPO source
     filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
     HPOArr = ImportHPO(filePath);
+    OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
 function updateLangage(oldLang, newLang) {
@@ -1032,7 +1034,7 @@ function updateLangage(oldLang, newLang) {
                   isDiseaseProp = function(val) {return prop == val};
                   if (colsDiseases.some(isDiseaseProp)) {
                       var cellProperties = {};
-                      cellProperties.type = 'dropdown';
+                    //   cellProperties.type = 'dropdown';
                       cellProperties.source = HPOArr;
                       return cellProperties;
                     }
@@ -1110,7 +1112,7 @@ function tsvJSON(tsv) {
     });
 };
 
-//Upload HPO terms
+//Upload HPO terms and OrphaData
 function ImportHPO(filePath) {
     let tsv = loadFile(filePath),
         HPO = tsvJSON(tsv),
@@ -1120,10 +1122,18 @@ function ImportHPO(filePath) {
         if(HPO[i].LABEL!='' & HPO[i].LABEL!='undefined' & HPO[i].LABEL!=null) Arr.push(HPO[i].LABEL);
     }
     return Arr;
-}
-  
+} 
 var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
 HPOArr = ImportHPO(filePath);
+
+//Import Orphadata and concatenate
+function ImportOrphaData(filePath) {
+    let tsv = loadFile(filePath); //bug importing accents
+    var x = tsv.split('\n');
+    return x;
+}
+OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt');
+HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 
 function loadStory(){
     let myDeepClone = JSON.stringify(hot.getSourceData()),

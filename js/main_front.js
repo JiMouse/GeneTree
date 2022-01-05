@@ -127,7 +127,7 @@ $(document).ready(function(){
 
     // define cancerList dialog form
     dialogCancerList = $( "#cancerList" ).dialog({
-        autoOpen: false,
+        autoOpen: false,        
         closeOnEscape: true,
         classes: {
             "ui-dialog": "custom-background",
@@ -205,7 +205,7 @@ $(document).ready(function(){
                              '</ul>'
                         + "</fieldset>"
                     + "</form>"
-                    dialogCancerListTitle = 'Termes HPO';               
+                    dialogCancerListTitle = 'Termes HPO et Orphanet';               
                 } else {
                     var html_cancerListDialog =
                     "<form>"
@@ -279,7 +279,7 @@ $(document).ready(function(){
             itemsFull = HPOArr.slice(1,20);
             return;
         } else {
-            itemsFull = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+            itemsFull = HPOArr//.concat(OrphaArr); //concatenate HPO and OrphaData
         }
 
         var filteredList = [];
@@ -305,14 +305,6 @@ $(document).ready(function(){
         }
     }
 });
-
-//Import Orphadata
-function ImportOrphaData(filePath) {
-    let tsv = loadFile(filePath); //bug importing accents
-    var x = tsv.split('\n');
-    return x;
-}
-OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt');
 
 //---Pedigreejs variables---
 if(utils.isIE() || utils.isEdge()) {

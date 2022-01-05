@@ -90,9 +90,12 @@
 		$(window).on("load", function (e) {
 			$(".se-pre-con").fadeOut("slow");
 
-			//load HPOArr
-			var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
-			HPOArr = ImportHPO(filePath);
+			//load HPO and OrphaData source
+			// filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+			HPOfilePath = 'data/HPO_fr_CISMeF_1611083.txt';
+			HPOArr = ImportHPO(HPOfilePath);
+			OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+			HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 		});
 	</script>
 </head>
@@ -989,8 +992,10 @@
 				<button id="print" class='btn btn-primary lang'></button>
 				<div class="btnDivider"></div>
 
-				<button id="fh_edit_settings" class='btn btn-primary'><i class="fa fa-cog"
-						aria-hidden="true"></i></button>
+				<button id="fh_edit_settings" class='btn btn-primary'>
+					<i class="fa fa-cog" aria-hidden="true"></i>
+					<span class='lang' id = 'legend'></span>
+				</button>
 				<br></br>
 
 				<!-- create pedigree -->

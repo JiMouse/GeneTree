@@ -233,8 +233,8 @@ p.big {
 
 /* Test */
 #HPOInput {
-  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-  background-position: 10px 6px; /* Position the search icon */
+  background-image: url('/css/searchicon.svg'); /* Add a search icon to input */
+  background-position: 7px 5px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
   font-size: 12px; /* Increase font-size */

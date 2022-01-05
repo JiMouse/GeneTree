@@ -40,6 +40,7 @@ var lang = {
     add_spouse:" conjoint",
     title_pedigree:"Arbre généalogique",
     loadFromHotText:"Charger le tableau ",
+    legend:" Modifier la légende",
     print:"Imprimer",
     exportText:"Exporter",
     copyToClip:"Copier",
