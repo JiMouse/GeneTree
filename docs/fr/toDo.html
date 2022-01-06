@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>GeneTree</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,maximum-scale=2">
+	<meta name="author" content="Jean-Marie Ravel">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- load bootstrap dependencies -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+	<!-- load pedigreejs dependencies : jquery, bootstrap, font-awesome, d3 -->
+		<!-- css -->
+	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+
+		<!-- javascript -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	
+	<script src="../../package/lodash.js"></script>
+	<script src="../../package/jquery.inputmask.min.js"></script>
+
+	<!-- languages script -->
+	<script>
+		//check if one prefered langages is french else set english as default
+		var userLang = navigator.languages || navigator.userLanguage;
+		function isFr(lang) {
+			return /fr/.test(lang)
+		}
+		default_lang=(userLang.some(isFr) ? "fr" : "eng");
+		
+		//define load lang : check if localStorage
+		var local_lang = localStorage.getItem("language");
+		if (local_lang !== undefined && local_lang !== null) {
+			load_lang = local_lang;
+		} else {
+			load_lang = default_lang;
+		}
+		//load languages scripts
+		document.write('<scr'+'ipt type="text/javascript" src="../../lang/lang.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../../lang/story.'+load_lang+'.js"></sc'+'ript>');
+	</script>
+	
+	<!-- load pedigreejs -->
+    <script src="../../js/io.js"></script>
+    <script src="../../js/pedigree_form.js"></script>
+    <script src="../../js/pedigree.js"></script>
+    <script src="../../js/undo_redo_refresh.js"></script>
+	<script src="../../js/widgets.js"></script>
+	<script src="../../js/zoom.js"></script>
+	<script src="../../js/canrisk_file.js"></script>
+
+
+	<!-- main script -->
+	<script type="text/javascript" src="../../js/main.js"></script>
+	<script type="text/javascript" src="../../js/main_front.js"></script>
+	<script type="text/javascript" src="../../js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../../js/user-interface.js"></script>
+	<script type="text/javascript" src="../../js/hotTable.js"></script>
+	<script type="text/javascript" src="../../js/indexWidgets.js"></script>
+
+	<!-- main css -->
+	<link rel="stylesheet" type="text/css" href="../../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../../css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../../css/pedigreejs.css">
+
+	<!-- load handsontable module v10.0 --> 
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+</head>
+<body>
+	<div>
+		<button class='btn btn-primary' id='defineInd_edit'>Test (2 individus)</button>
+	</div>
+	<script>
+		$(document).ready(function(){
+			// Set dialog form
+			var dialogInd, obj, index;
+			dialogInd = $( "#defineInd" ).dialog({
+				autoOpen: false,
+				classes: {
+					"ui-dialog": "custom-background",
+					"ui-dialog-titlebar": "custom-theme",
+					"ui-dialog-title": "custom-theme text-center",
+					// "ui-dialog-titlebar-close":"custom-btn",
+					"ui-dialog-content": "custom-background",
+					"ui-dialog-buttonpane": "custom-background no-margin"
+				},
+				width: ($(window).width() > 800 ? 950 : $(window).width()- 30),
+				maxHeight: 700,
+				modal: true,
+				buttons: {
+					"Sauvegarder": function() {
+						safeInd();
+					}
+				}
+			})
+			$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+			$(".ui-dialog .ui-dialog-buttonpane button").addClass('no-margin-top');
+			defineInd_init();
+
+			//Set div hidding function
+			function defineInd_init() {
+				$("#deathyInd_div").hide();
+				$("#IndDisease1").hide();
+				$("#IndDisease2").hide();
+
+				//décés
+				$('input[type=radio][name=deadStatus]').on('change', function() {
+					switch($(this).val()) {
+						case '1':
+							$("#deathyInd_div").show();
+							break;
+
+						case '0':
+							$("#deathyInd_div").hide();
+							break;
+					}
+				});
+
+				// cancer
+				$('input[type=radio][name=diseaseStatus]').on('change', function() {
+					switch($(this).val()) {
+						case '1':
+							$("#IndDisease1").show();
+							$("#IndDisease2").show();
+							break;
+
+						case '0':
+							$("#IndDisease1").hide();
+							$("#IndDisease2").show();
+							break;
+					}
+				});
+			}
+			
+			var IndObj=[];
+			var Indindex;
+			var nInd;
+
+			// Set onclick action
+			$( "#defineInd_edit" ).on( "click", function() {
+				// load n and create obj: number of row => recurrence
+				nInd = 2;
+				
+				if(!isNaN(nInd)) {
+					Indindex = 1
+					loadInd(Indindex);
+				}
+			})
+
+			loadInd = function(Indindex) {
+				// alert('Enfant ' + Indindex + ' chargé');
+
+				// set title
+				dialogInd.dialog({
+					title: "Enfant "+Indindex
+				})
+
+				// open dialogInd
+				dialogInd.dialog( "open" );
+			}
+
+			safeInd = function() {
+				alert('Enfant ' + Indindex + ' sauvegardé');
+
+				//populate array based on form
+				let ind = {
+					"FamID": "1",
+					"Name": "Enfant"+(Indindex), "Sex": "", "Deceased":"0","Age":"","Yob":""};
+				IndObj.push(ind);
+
+				dialogInd.dialog( "close" );
+
+				if(Indindex < nInd) {
+					Indindex+=1;
+					loadInd(Indindex);
+				} else {
+					alert(JSON.stringify(IndObj));
+				}
+			}
+
+		})
+	</script>
+
+	<div id="defineInd" > 
+		<!-- change id -->
+		<div class="row" style="padding: 0px 20px;">
+			<div class="col-lg-5">
+				<p class='row'>Est-ce un homme (garçon) ou une femme (fille) ?</p>
+				<div id="sexInd_div" class="row">
+					<div class="col-sm-4 text-center">
+						<label for="id_sex_0">
+							<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
+								Homme
+						</label>
+					</div>
+					<div class="col-sm-4 text-center">
+						<label for="id_sex_1">
+							<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid">
+								Femme
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="yobInd_div">
+					<p class='row'>Quelle est son année de naissance ou son âge ?</p>
+					<div id="yobInd" class="col-sm-4">
+						<input type="number" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="yobIndInput" aria-invalid="false" min="1850">
+					</div>
+				</div>
+				<br>
+				<br>
+				
+				<div id="deadInd_div">
+					<p class='row'>Est-il décédé ?</p>
+					<div id="deadInd" class="row">
+						<div class="col-sm-4 text-center">
+							<label for="id_sex_0">
+								<input type="radio" name="deadStatus" value="1" class="valid">
+									Oui
+							</label>
+						</div>
+						<div class="col-sm-4 text-center">
+							<label for="id_sex_1">
+								<input type="radio" name="deadStatus" value="0" class="valid" checked>
+									Non
+							</label>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div id="deathyInd_div">
+					<p class='row'>Quelle est son année de décés ou son âge au décés ?</p>
+					<div id="deathyInd" class="col-sm-4">
+						<input type="number" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="deathyIndInput" aria-invalid="false" min="1850">
+					</div>
+				</div>
+				<br>
+			</div>
+			<div id="IndDisease_div" class="col-lg-7">
+				<p class='question'>Est-ce que cet enfant est (ou a été) atteint par un cancer ?</p>
+				<div id="IndDisease" class="row">
+					<div class="col-sm-6 text-center">
+						<label for="id_sex_0">
+							<input type="radio" name="diseaseStatus" value="1" class="valid">
+								Oui
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for="id_sex_1">
+							<input type="radio" name="diseaseStatus" value="0" class="valid" checked>
+								Non
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="IndDisease1" class="row">
+					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
+						<h3 class="panel-title h3-lightblue">
+							Premier cancer
+						</h3>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease1Input'> Localisation
+							<input type="text" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease1Input" aria-invalid="false">
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease1Age'> Âge ou année du diagnostic
+							<input type="number" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease1Input" aria-invalid="false">
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="IndDisease2" class="row">
+					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
+						<h3 class="panel-title h3-lightblue">
+							Deuxième cancer
+						</h3>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease2Input'> Localisation
+							<input type="text" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease2Input" aria-invalid="false">
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease2Age'> Âge ou année du diagnostic
+							<input type="number" name="display_name" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease2Input" aria-invalid="false">
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" id="IndComment" style="padding: 0px 20px 20px 20px;">
+			<label for="IndCommentInput">Commentaire :</label>
+				<textarea name="IndCommentInput" id="IndCommentInput" class="form-control valid" rows="2"></textarea>
+		</div>					
+	</div>
+</body>

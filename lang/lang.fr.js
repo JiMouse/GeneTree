@@ -2,7 +2,7 @@ var lang = {
     //index.html
     home:"Accueil",
     guide:"Guide",
-    user_friendly:"Interface simplifiée",
+    user_friendly:"Interface patient",
     greeting : "Bonjour",
     title:"GeneTree",
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",

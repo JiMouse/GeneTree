@@ -233,7 +233,7 @@ p.big {
 
 /* Test */
 #HPOInput {
-  background-image: url('/css/searchicon.svg'); /* Add a search icon to input */
+  background-image: url('data/images/searchicon.svg'); /* Add a search icon to input */
   background-position: 7px 5px; /* Position the search icon */
   background-repeat: no-repeat; /* Do not repeat the icon image */
   width: 100%; /* Full-width */
@@ -263,4 +263,15 @@ p.big {
 
 #myUL li a:hover:not(.header) {
   background-color: #eee; /* Add a hover effect to all links, except for headers */
+}
+
+.no-margin {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.no-margin-top {
+  margin-top: 0px !important;
 }
