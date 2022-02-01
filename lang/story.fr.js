@@ -337,6 +337,18 @@ function getFratList(obj,i,text_frat_neg) {
   frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : ';
   frat += fratText(fratpm);
   frat += '.';
+
+  // short text if no other data associated with s
+  let pattern1 = dico.fratrie['M']
+  let replace1 = dico.fratrie['M'].split(" ")[1];
+  let pattern2 = dico.fratrie['F']
+  let replace2 = dico.fratrie['F'].split(" ")[1];
+
+  var addPoint=false;
+  frat=shortFrat(frat, pattern1, replace1);
+  frat=shortFrat(frat, pattern2, replace2);
+  if(frat.slice(-1)!='.')  frat+='.'
+
   if(fratpm == '') frat = text_frat_neg
   frat += ' ' + textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ','.');
   frat += ' ' + textOption(img1,'IMG','IMG','Ses parents ont fait ','.');
@@ -356,7 +368,38 @@ function getFratList(obj,i,text_frat_neg) {
     frat += textOption(fcs3,'fausses-couches','fausse-couche','Ses parents ont eu ','.');
     frat += ' ' + textOption(img3,'IMG','IMG','Ses parents ont fait ','.');
   }
-  
   return frat;
   
+}
+
+shortFrat = function(text, pattern, replace) {
+  addPoint=false;
+  var re = new RegExp(pattern+',|'+pattern+'\\.', "g"); 
+  count = (text.match(re, "regex") || []).length;
+
+  var reFull = new RegExp(pattern, "g"); 
+  countFull = (text.match(reFull, "regex") || []).length 
+  
+  if(count==0) return text;
+
+  //ponctuation : "." ?
+  if(text.match(re, "regex").join().match(/\./g)) addPoint=true;
+
+  text=text.replace(re, "") //remove matched pattern
+  //check if last character is a point
+  if(text.slice(-1)=='.') text=text.replace(/.$/," et ");
+
+  text += inWords (count) + ' ' +   (countFull>count ? (count>1?"autres ":"autre ") : " ") + replace; //add short count
+  if(count>1) text+='s' //plural
+  if(addPoint) text+='.' //ponctuation
+  return text;
+}
+
+var a = ['','un ','deux ','trois ','quatre ', 'cinq ','six ','sept ','huit ','neuf ','dix ',
+'onze ','douze ','treize ','quatorze ','quinze ','seize ','dix-sept ','dix-huit ','dix-neuf ', 'vingt'];
+
+function inWords (num) {
+  if(Number(num)> 20) return num;
+  str = a[Number(num)]
+  return str;
 }

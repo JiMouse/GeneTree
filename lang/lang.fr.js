@@ -166,7 +166,6 @@ function dicoD () {
         "cancer_rein":"cancer du rein",
         "cancer_foie":"cancer du foie",
         "cancer_ORL":"cancer ORL"
-    
     };
 }
 //Defaut datasets
