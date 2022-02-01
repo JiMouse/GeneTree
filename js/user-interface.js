@@ -176,13 +176,9 @@ $(document).ready(function(){
             var nchild = parseFloat($("#children_input").prop("value"));
 
             if(!isNaN(nchild)) {
-                myDataChildren_new=[];
-                for (let i = 0; i < nchild; i++) {
-                    let ind = {"FamID": "1",
-                                "Name": "Enfant"+(i+1), "Sex": "", "Deceased":"0","Age":"","Yob":""}
-                    myDataChildren_new.push(ind)
-                }
-                hotChildren.loadData(myDataChildren_new);
+                Indindex = 1;
+                IndObj=[];  //reset IndObj
+                loadInd(Indindex, nchild, hotChildren.loadData, 'Enfant ');
             }
 
             $("#children_table_div").show();
@@ -217,13 +213,9 @@ $(document).ready(function(){
         $("#siblings_input").on("blur", function () {
             var nSiblings = parseFloat($("#siblings_input").prop("value"));
             if(!isNaN(nSiblings)) {
-                myDataSiblings_new=[];
-                for (let i = 0; i < nSiblings; i++) {
-                    let ind = {"FamID": "1",
-                                "Name": "FS"+(i+1), "Sex": "", "Deceased":"0","Age":"","Yob":""}
-                    myDataSiblings_new.push(ind)
-                }
-                hotSiblings.loadData(myDataSiblings_new);
+                Indindex = 1;
+                IndObj=[];  //reset IndObj
+                loadInd(Indindex, nSiblings, hotSiblings.loadData, 'Frère/Sœur ');
             }
             $("#siblings_table_div").show();
             hotSiblings.render();
@@ -263,19 +255,14 @@ $(document).ready(function(){
         $("#fatherSiblings_input").on("blur", function () {
             var nFatherSiblings = parseFloat($("#fatherSiblings_input").prop("value"));
             if(!isNaN(nFatherSiblings)) {
-                myDataFatherSiblings_new=[];
-                for (let i = 0; i < nFatherSiblings; i++) {
-                    let ind = {"FamID": "1",
-                                "Name": "Ind"+(i+1), "Sex": "", "Deceased":"0","Age":"","Yob":""};
-                    myDataFatherSiblings_new.push(ind);
-                }
-                hotFatherSiblings.loadData(myDataFatherSiblings_new);
+                Indindex = 1;
+                IndObj=[];  //reset IndObj
+                loadInd(Indindex, nFatherSiblings, hotFatherSiblings.loadData, 'Frère/Sœur du père ');
             }
             $("#fatherSiblings_table_div").show();
             hotFatherSiblings.render();
 
         });
-
     }
 
     function gpm_init() {
@@ -306,17 +293,12 @@ $(document).ready(function(){
         $("#motherSiblings_input").on("blur", function () {
             var nMotherSiblings = parseFloat($("#motherSiblings_input").prop("value"));
             if(!isNaN(nMotherSiblings)) {
-                myDataMotherSiblings_new=[];
-                for (let i = 0; i < nMotherSiblings; i++) {
-                    let ind = {"FamID": "1",
-                                "Name": "Ind"+(i+1), "Sex": "", "Deceased":"0","Age":"","Yob":""};
-                    myDataMotherSiblings_new.push(ind);
-                }
-                hotMotherSiblings.loadData(myDataMotherSiblings_new);
+                Indindex = 1;
+                IndObj=[];  //reset IndObj
+                loadInd(Indindex, nMotherSiblings, hotMotherSiblings.loadData, 'Frère/Sœur de la mère ');
             }
             $("#motherSiblings_table_div").show();
             hotMotherSiblings.render();
-
         });
     }
 
@@ -327,6 +309,7 @@ $(document).ready(function(){
     var dialogCancerList;
     var colDisease;
     var hotSelectedTable;
+    var IndDiseaseInput;
 
     // define cancerList dialog form
     dialogCancerList = $( "#cancerList" ).dialog({
@@ -346,10 +329,19 @@ $(document).ready(function(){
     $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
 
     $('input[name="cancerListradio"]').on("click", function(e) {
-        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn);
+        if(IndDiseaseInput != null && IndDiseaseInput != "") { //if in dialog
+            cancerType = $('input[name="cancerListradio"]:checked').val();
+            if(cancerType != undefined) {
+                $( "#"+IndDiseaseInput ).val(cancerType);
+                $('input[name="cancerListradio"]:checked').prop('checked', false);
+                IndDiseaseInput = null;
+            }
+        } else {
+            updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn);
+        }
+
         dialogCancerList.dialog( "close" );
     })
-
 
     // hotCancer adHook
     hotCancer.addHook('afterSelectionEndByProp',
@@ -457,4 +449,160 @@ $(document).ready(function(){
             $('input[name="cancerListradio"]:checked').prop('checked', false);
         }
     }
-});
+
+//pop up dialog
+    // Set dialog form
+    var dialogInd, obj, index;
+    dialogInd = $( "#defineInd" ).dialog({
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            // "ui-dialog-titlebar-close":"custom-btn",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background no-margin"
+        },
+        width: ($(window).width() > 800 ? 950 : $(window).width()- 30),
+        maxHeight: 700,
+        modal: true,
+        show: { effect: "slideDown", duration: 500 },
+        hide: { effect: "slideUp", duration: 300 }
+    })
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+    $(".ui-dialog .ui-dialog-buttonpane button").addClass('no-margin-top');
+    defineInd_init();
+
+    //Set div hidding function
+    function defineInd_init() {
+        $("#deathyInd_div").hide();
+        $("#IndDisease1").hide();
+        $("#IndDisease2").hide();
+
+        //décés
+        $('input[type=radio][name=deadStatus]').on('change', function() {
+            switch($(this).val()) {
+                case '1':
+                    $("#deathyInd_div").show();
+                    break;
+
+                case '0':
+                    $("#deathyInd_div").hide();
+                    break;
+            }
+        });
+
+        // cancer
+        $('input[type=radio][name=diseaseStatus]').on('change', function() {
+            switch($(this).val()) {
+                case '1':
+                    $("#IndDisease1").show();
+                    $("#IndDisease2").show();
+                    break;
+
+                case '0':
+                    $("#IndDisease1").hide();
+                    $("#IndDisease2").hide();
+                    break;
+            }
+        });
+
+        //load disease dialog when click on cancer input
+        $('input[name=IndDisease1Input]').on('click', function() {
+            IndDiseaseInput = "IndDisease1Input"
+            dialogCancerList.dialog( "open" );
+        });
+        $('input[name=IndDisease2Input]').on('click', function() {
+            IndDiseaseInput = "IndDisease2Input"
+            dialogCancerList.dialog( "open" );
+        });
+        
+        //dialog disease
+        // 
+    }
+    
+    var IndObj=[];
+    var Indindex;
+    var nInd;
+
+    loadInd = function(Indindex, nInd, myCallback, label) {
+        // set title
+        dialogInd.dialog({
+            title: label + Indindex
+        })
+        // set button
+        dialogInd.dialog({
+            buttons: {
+                "Sauvegarder": function() {
+                    safeInd(Indindex, nInd, myCallback, label);
+                }
+            }
+        })
+
+        // open dialogInd
+        dialogInd.dialog( "open" );
+    }
+
+    safeInd = function(Indindex, nInd, myCallback, label) {
+        let deadStatus = $('input[name="deadStatus"]:checked').val();
+        
+        let ind = {
+            "FamID": "1",
+            "Name": "Enfant"+(Indindex), 
+            "Sex": $('input[name="sex"]:checked').val(),
+            "Deceased":deadStatus};
+        IndObj.push(ind);
+
+        //Age and year of birth
+        let yobOrAge = $( "#yobIndInput" ).val();
+        var today = new Date();
+
+        if(deadStatus==1) {
+            let deathyIndInput = $( "#deathyIndInput" ).val();
+            if(yobOrAge<200) {alert("L'année de naissance ne peut être inférieure à 200.")}
+            deathyIndInput = (deathyIndInput>200 ? deathyIndInput-yobOrAge: deathyIndInput)
+            IndObj[Indindex-1]["Yob"] = yobOrAge;
+            IndObj[Indindex-1]["Age"] = deathyIndInput;
+        } else {
+            if(yobOrAge>200) {
+                IndObj[Indindex-1]["Yob"] = yobOrAge;
+                IndObj[Indindex-1]["Age"] = today.getFullYear() - yobOrAge;
+            } else {
+                IndObj[Indindex-1]["Yob"] = today.getFullYear() - yobOrAge;
+                IndObj[Indindex-1]["Age"] = yobOrAge;
+            };
+        };
+
+        //Diseases
+        let IndDisease1Input = $( "#IndDisease1Input" ).val();
+        let IndDisease1Age = $( "#IndDisease1Age" ).val();
+        let IndDisease2Input = $( "#IndDisease2Input" ).val();
+        let IndDisease2Age = $( "#IndDisease2Age" ).val();
+        
+        if(IndDisease1Input!="") IndObj[Indindex-1]["Disease1"] = IndDisease1Input;
+        if(IndDisease1Age!="") IndObj[Indindex-1]["Age1"] = IndDisease1Age;
+        if(IndDisease2Input!="") IndObj[Indindex-1]["Disease2"] = IndDisease2Input;
+        if(IndDisease2Age!="") IndObj[Indindex-1]["Age2"] = IndDisease2Age;
+
+        //Comment
+        addKeyToObject(IndObj, Indindex-1, 'comment', 'IndCommentInput')
+
+        // alert(JSON.stringify(IndObj))
+        dialogInd.dialog( "close" );
+        // alert(label + Indindex + ' sauvegardé');
+
+        // load next form
+        if(Indindex < nInd) {
+            Indindex+=1;
+            document.getElementById("defineInd.frm").reset(); //reset form
+            // defineInd_init();
+            $("#deathyInd_div").hide();
+            $("#IndDisease1").hide();
+            $("#IndDisease2").hide();
+    
+            loadInd(Indindex, nInd, myCallback, label);
+        } else {
+            myCallback(IndObj);
+        }
+    }
+})

@@ -809,6 +809,133 @@
 		</div>
 	</div>
 
+	<div id="defineInd" > 
+		<form id="defineInd.frm">
+		<!-- change id -->
+		<div class="row" style="padding: 0px 20px;">
+			<div class="col-lg-5">
+				<p class='row'>Est-ce un homme (garçon) ou une femme (fille) ?</p>
+				<div id="sexInd_div" class="row">
+					<div class="col-sm-4 text-center">
+						<label for="id_sex_0">
+							<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
+								Homme
+						</label>
+					</div>
+					<div class="col-sm-4 text-center">
+						<label for="id_sex_1">
+							<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid">
+								Femme
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="yobInd_div">
+					<p class='row'>Quelle est son année de naissance ou son âge ?</p>
+					<div id="yobInd" class="col-sm-4">
+						<input type="number" name="yobIndInput" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="yobIndInput" aria-invalid="false" min="1850">
+					</div>
+				</div>
+				<br>
+				<br>
+				
+				<div id="deadInd_div">
+					<p class='row'>Est-il décédé ?</p>
+					<div id="deadInd" class="row">
+						<div class="col-sm-4 text-center">
+							<label for="id_sex_0">
+								<input type="radio" name="deadStatus" value="1" class="valid">
+									Oui
+							</label>
+						</div>
+						<div class="col-sm-4 text-center">
+							<label for="id_sex_1">
+								<input type="radio" name="deadStatus" value="0" class="valid" checked>
+									Non
+							</label>
+						</div>
+					</div>
+				</div>
+				<br>
+
+				<div id="deathyInd_div">
+					<p class='row'>Quelle est son année de décés ou son âge au décés ?</p>
+					<div id="deathyInd" class="col-sm-4">
+						<input type="number" name="deathyIndInput" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="deathyIndInput" aria-invalid="false" min="1850">
+					</div>
+				</div>
+				<br>
+			</div>
+			<div id="IndDisease_div" class="col-lg-7">
+				<p class='question'>Est-ce que cet enfant est (ou a été) atteint par un cancer ?</p>
+				<div id="IndDisease" class="row">
+					<div class="col-sm-6 text-center">
+						<label for="id_sex_0">
+							<input type="radio" name="diseaseStatus" value="1" class="valid">
+								Oui
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for="id_sex_1">
+							<input type="radio" name="diseaseStatus" value="0" class="valid" checked>
+								Non
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="IndDisease1" class="row">
+					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
+						<h3 class="panel-title h3-lightblue">
+							Premier cancer
+						</h3>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease1Input'> Localisation
+							<input type="text" name="IndDisease1Input" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease1Input" aria-invalid="false">
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease1Age'> Âge ou année du diagnostic
+							<input type="number" name="IndDisease1Age" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease1Age" aria-invalid="false">
+						</label>
+					</div>
+				</div>
+				<br>
+
+				<div id="IndDisease2" class="row">
+					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
+						<h3 class="panel-title h3-lightblue">
+							Deuxième cancer
+						</h3>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease2Input'> Localisation
+							<input type="text" name="IndDisease2Input" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease2Input" aria-invalid="false">
+						</label>
+					</div>
+					<div class="col-sm-6 text-center">
+						<label for='IndDisease2Age'> Âge ou année du diagnostic
+							<input type="number" name="IndDisease2Age" autocomplete="off" size="17" class="form-control valid" maxlength="60"
+							id="IndDisease2Age" aria-invalid="false">
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" id="IndComment" style="padding: 0px 20px 20px 20px;">
+			<label for="IndCommentInput">Commentaire :</label>
+				<textarea name="IndCommentInput" id="IndCommentInput" class="form-control valid" rows="2"></textarea>
+		</div>
+	</form>					
+	</div>
+
 	<!-- pattern fills //.style('fill', 'url(#circles-1)') --> 
 	<div id="patterns" style="height:0;">
 		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10"><image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSJ3aGl0ZSIgLz4KICA8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0iYmxhY2siLz4KPC9zdmc+" x="0" y="0" width="10" height="10"></image></pattern></defs></svg>

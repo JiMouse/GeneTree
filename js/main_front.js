@@ -929,6 +929,7 @@ $(document).ready(function() {
 		$('#save-canrisk-dialog').modal('show');
 	});
 
+    //create pedigree in user interface
     $( "#createPed" ).click(function() {
         finalFamObj = createPed();
         loadFromObj(finalFamObj);
