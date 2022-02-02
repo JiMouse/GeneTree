@@ -266,7 +266,21 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
   if (obj[i].proband == true && child != ".") {
     // conjoint 1 & 2
   }
-  return child+suffixe;
+  child+=suffixe;
+
+  //short childList
+  // short text if no other data associated with s
+  let pattern1 = dico.enfant['M']
+  let replace1 = dico.enfant['M'].split(" ")[1];
+  let pattern2 = dico.enfant['F']
+  let replace2 = dico.enfant['F'].split(" ")[1];
+  
+  var addPoint=false;
+  child=shortFrat(child, pattern1, replace1);
+  child=shortFrat(child, pattern2, replace2);
+  // if(child.slice(-1)!='.')  child+='.'
+  
+  return child;
 }
 
 function getFratList(obj,i,text_frat_neg) { 
@@ -327,8 +341,8 @@ function getFratList(obj,i,text_frat_neg) {
 
       //child
       let text_child_neg = "";
-      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
-
+      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg) +')'; //str.substring(0, str.length() - 1);
+      // if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
     }
     return result
   }
@@ -344,12 +358,14 @@ function getFratList(obj,i,text_frat_neg) {
   let pattern2 = dico.fratrie['F']
   let replace2 = dico.fratrie['F'].split(" ")[1];
 
+  //short frat
   var addPoint=false;
   frat=shortFrat(frat, pattern1, replace1);
   frat=shortFrat(frat, pattern2, replace2);
   if(frat.slice(-1)!='.')  frat+='.'
 
   if(fratpm == '') frat = text_frat_neg
+
   frat += ' ' + textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ','.');
   frat += ' ' + textOption(img1,'IMG','IMG','Ses parents ont fait ','.');
 
@@ -374,7 +390,7 @@ function getFratList(obj,i,text_frat_neg) {
 
 shortFrat = function(text, pattern, replace) {
   addPoint=false;
-  var re = new RegExp(pattern+',|'+pattern+'\\.', "g"); 
+  var re = new RegExp(pattern+', |'+pattern+'\\.'+'|'+pattern+'\\)', "g"); 
   count = (text.match(re, "regex") || []).length;
 
   var reFull = new RegExp(pattern, "g"); 
@@ -382,21 +398,19 @@ shortFrat = function(text, pattern, replace) {
   
   if(count==0) return text;
 
-  //ponctuation : "." ?
-  if(text.match(re, "regex").join().match(/\./g)) addPoint=true;
+  if(text.match(re, "regex").join().match(/\./g)) addPoint=true; //ponctuation : "." ?
 
   text=text.replace(re, "") //remove matched pattern
-  //check if last character is a point
-  if(text.slice(-1)=='.') text=text.replace(/.$/," et ");
 
-  text += inWords (count) + ' ' +   (countFull>count ? (count>1?"autres ":"autre ") : " ") + replace; //add short count
-  if(count>1) text+='s' //plural
+  if(text.slice(-1)=='.') text=text.replace(/.$/,", "); //check if last character is a point
+  text += inWords(count) + (countFull>count ? (count>1 ? " autres ":" autre ") : " ") + replace; //add short count
+  if(count>1 && text.slice(-1)!='s') text+='s' //plural
   if(addPoint) text+='.' //ponctuation
   return text;
 }
 
-var a = ['','un ','deux ','trois ','quatre ', 'cinq ','six ','sept ','huit ','neuf ','dix ',
-'onze ','douze ','treize ','quatorze ','quinze ','seize ','dix-sept ','dix-huit ','dix-neuf ', 'vingt'];
+var a = ['','un','deux','trois','quatre', 'cinq','six','sept','huit','neuf','dix',
+'onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf', 'vingt'];
 
 function inWords (num) {
   if(Number(num)> 20) return num;
