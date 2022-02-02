@@ -244,17 +244,17 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
   
   // text
   if(child2!="") {
-    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : ";
+    child = (child1.length>0 ? inWords(child1.length) : 'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : ";
     child += childText(child1);
     child += textOption(fcs1,'fausses-couches','fausse-couche');
     child += textOption(img1,'IMG','IMG',' ');
-    child += ' ; ' + (child2.length>0 ? child2.length:'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : ";
+    child += ' ; ' + (child2.length>0 ? inWords(child2.length):'aucun') + (child2.length>1 ? ' enfants' : ' enfant') + " d'une seconde union : ";
     child += childText(child2);
     //child += '.'; //suffixe
     child += textOption(fcs2,'fausses-couches','fausse-couche','.');
     child +=textOption(img2,'IMG','IMG','.');
   } else {
-    child = (child1.length>0 ? child1.length:'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : ';
+    child = (child1.length>0 ? inWords(child1.length):'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : ';
     child += childText(child1);
     //child += '.';
     child += textOption(fcs1,'fausses-couches','fausse-couche','.');
@@ -340,13 +340,13 @@ function getFratList(obj,i,text_frat_neg) {
 
       //child
       let text_child_neg = "";
-      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
+      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')';
     }
     return result
   }
   
   //text
-  frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + (fratpm.length+1) + ' enfants' + ' : ';
+  frat = dico.pronom[sex] + ' ' + dico.etre[status] + ' ' + dico.issu[sex] + " d'une fratrie de " + inWords(fratpm.length+1) + ' enfants' + ' : ';
   frat += fratText(fratpm);
   frat += '.';
 
@@ -402,8 +402,9 @@ shortFrat = function(text, pattern, replace) {
     text=text.replace(/.$/,", ");
     addPoint=true;
   }
-
-  text += inWords(count) + (countFull>count ? (count>1 ? " autres ":" autre ") : " ") + replace; //add short count
+  text += inWords(count) 
+  text += (count==1 && (pattern==dico.fratrie['F'] || pattern==dico.enfant['F']) ? 'e' :'')
+  text += (countFull>count ? (count>1 ? " autres ":" autre ") : " ") + replace; //add short count
   if(count>1 && text.slice(-1)!='s') text+='s' //plural
   if(addPoint) text+='.' //ponctuation
   return text;
