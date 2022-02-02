@@ -278,7 +278,6 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
   var addPoint=false;
   child=shortFrat(child, pattern1, replace1);
   child=shortFrat(child, pattern2, replace2);
-  // if(child.slice(-1)!='.')  child+='.'
   
   return child;
 }
@@ -341,8 +340,7 @@ function getFratList(obj,i,text_frat_neg) {
 
       //child
       let text_child_neg = "";
-      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg) +')'; //str.substring(0, str.length() - 1);
-      // if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
+      if(getChildList(obj,k,text_child_neg) != "") result += ' (' + getChildList(obj,k,text_child_neg,'') +')'; //str.substring(0, str.length() - 1);
     }
     return result
   }
@@ -390,19 +388,21 @@ function getFratList(obj,i,text_frat_neg) {
 
 shortFrat = function(text, pattern, replace) {
   addPoint=false;
-  var re = new RegExp(pattern+', |'+pattern+'\\.'+'|'+pattern+'\\)', "g"); 
+  var re = new RegExp(pattern+', |'+pattern+'\\.'+'|'+pattern+'$', "g");
   count = (text.match(re, "regex") || []).length;
-
   var reFull = new RegExp(pattern, "g"); 
   countFull = (text.match(reFull, "regex") || []).length 
   
   if(count==0) return text;
 
   if(text.match(re, "regex").join().match(/\./g)) addPoint=true; //ponctuation : "." ?
-
   text=text.replace(re, "") //remove matched pattern
+  if(text.slice(-1)!=' ' & text.slice(-1)!='.') text+=', '; //add coma if last character before replacement is not a ponctuation
+  if(text.slice(-1)=='.') { //add coma if last character before replacement is a point
+    text=text.replace(/.$/,", ");
+    addPoint=true;
+  }
 
-  if(text.slice(-1)=='.') text=text.replace(/.$/,", "); //check if last character is a point
   text += inWords(count) + (countFull>count ? (count>1 ? " autres ":" autre ") : " ") + replace; //add short count
   if(count>1 && text.slice(-1)!='s') text+='s' //plural
   if(addPoint) text+='.' //ponctuation
