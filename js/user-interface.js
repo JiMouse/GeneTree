@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    /* actualisation de l'arbre au fur et à mesure */
     //dbirth placeholder
     $("#dbirth").inputmask({
         alias: "datetime", inputFormat: "dd/mm/yyyy", placeholder: "jj/mm/aaaa"

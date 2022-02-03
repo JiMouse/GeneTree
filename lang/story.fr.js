@@ -12,7 +12,7 @@ function getPatho(obj, i,text_neg, text_pos) {
           a = obj[i][keys[j]],
           y = Number(obj[i].yob) + Number(a);
       result = (result != '' ? result + " et d'un " : text_pos);
-      result += t(out);
+      result += cleanDiseaseText(out);
       if(a != "" && a != null) {
         result += " diagnostiqué";
         if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y; 
@@ -125,19 +125,19 @@ function textIndex(obj, i){
       msg_test = (msg_test === '' ? tests[j].toUpperCase() + '+' : msg_test + ' ,'+tests[j].toUpperCase() + '+') ;	
     }
   };
-  if(msg_test !== '')
+  if(msg_test != '')
     msg = msg.slice(0, -1) + ' ('+msg_test+')'+'.'; //remove last char
 
-  if(msg !== undefined)
+  if(msg !== undefined && msg != '')
     result.index = result.index.slice(0, -1) + msg;
 
-  //enfant & conjoint
-  let text_child_neg = " " + dico.pronom[sex] + " n'a pas d'enfant.";
-  result.child = getChildList(obj,i,text_child_neg);
-
   //fratrie
-  let text_frat_neg = " " + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
+  let text_frat_neg = "" + dico.pronom[sex] + ' ' + dico.etre[status] + " enfant unique.";
   result.fratrie = getFratList(obj,i,text_frat_neg);
+
+  //enfant & conjoint
+  let text_child_neg = "" + dico.pronom[sex] + " n'a pas d'enfant.";
+  result.child = getChildList(obj,i,text_child_neg);  
 
   //final
   return result.index + '<br>' + result.fratrie + '<br>' + result.child
@@ -173,11 +173,10 @@ function textCivil(obj,i){  //extra space at the end
       status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
 
   let out = (obj[i].proband == true ? 
-    dico.civil[sex] + ' '
-    // add name
-    + (keyExist(obj[i],'civil_name') ? obj[i].civil_name + ' ' :'')
-    + (obj[i].yob != ''||keyExist(obj[i],'dbirth') ? dico.etre[status] + ' '
-    : '')
+      dico.civil[sex] + ' '
+      // add name
+      + (keyExist(obj[i],'civil_name') ? obj[i].civil_name + ' ' :'')
+      + (obj[i].yob != ''||keyExist(obj[i],'dbirth') ? dico.etre[status] + '': '')
     :'');
   if(keyExist(obj[i],'dbirth')) {
     out += ' ' + dico.naissance[sex] + ' le ' + obj[i].dbirth;
@@ -241,7 +240,6 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
     }
     return result
   }
-  
   // text
   if(child2!="") {
     child = (child1.length>0 ? inWords(child1.length) : 'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + " d'une première union : ";
@@ -256,8 +254,7 @@ function getChildList(obj,i,text_child_neg, suffixe='.') {
   } else {
     child = (child1.length>0 ? inWords(child1.length):'aucun') + (child1.length>1 ? ' enfants' : ' enfant') + ' : ';
     child += childText(child1);
-    //child += '.';
-    child += textOption(fcs1,'fausses-couches','fausse-couche','.');
+    child += textOption(fcs1,'fausses-couches','fausse-couche',''); //'.'
     child += textOption(img1,'IMG','IMG','.');
   }
   if(obj[i].proband == true) child = dico.pronom[sex]+ " a " + child
@@ -363,9 +360,8 @@ function getFratList(obj,i,text_frat_neg) {
   if(frat.slice(-1)!='.')  frat+='.'
 
   if(fratpm == '') frat = text_frat_neg
-
-  frat += ' ' + textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ','.');
-  frat += ' ' + textOption(img1,'IMG','IMG','Ses parents ont fait ','.');
+  frat += '' + textOption(fcs1,'fausses-couches','fausse-couche','Ses parents ont eu ','.');
+  frat += '' + textOption(img1,'IMG','IMG','Ses parents ont fait ','.');
 
   if(fratp != ''){
     frat += ' ' + dico.pronom[sex] + " a ";
@@ -383,7 +379,6 @@ function getFratList(obj,i,text_frat_neg) {
     frat += ' ' + textOption(img3,'IMG','IMG','Ses parents ont fait ','.');
   }
   return frat;
-  
 }
 
 shortFrat = function(text, pattern, replace) {

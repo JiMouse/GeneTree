@@ -264,7 +264,15 @@ $(document).ready(function(){
 	}
 
 	//tabs
-	$( '#bc_pathology #gene_test' ).hide(); //#cancer #bc_pathology #gene_test
+	let sex=$('input[name="sex"]:checked').val();
+	if(sex == 'F') {
+		$( '#bc_pathology #gene_test' ).hide();
+	} else {
+		$( '#cancer #bc_pathology' ).hide();
+		$( '#gene_test' ).show();
+	}
+	// $( '#cancer' ).show();
+	// Bug supp. Info si switch homme => femme : canRisk non visible
 
 	$('#tablist li').click(function(e) {
 		let sex=$('input[name="sex"]:checked').val();

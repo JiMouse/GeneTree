@@ -1150,7 +1150,7 @@ function textOption(opt,textOption1, textOption2,prefixe,suffixe) {
         return (typeof(prefixe)!='undefined' ? prefixe : '') + opt + ' ' + (opt>1 ? textOption1 : textOption2)
         + (typeof(suffixe)!='undefined' ? suffixe : '');
     } else {
-        return ''
+        return '';
     }
 }
 
@@ -1170,9 +1170,9 @@ function isMotherPedigreeJS(obj, i, index) {
     return(obj[i].name == obj[index].mother);
 }
 
-function t(patho) {
+function cleanDiseaseText(patho) {
     if(dicoD().hasOwnProperty(patho.toLowerCase())) {
-        return dicoD()[patho]
+        return dicoD()[patho].replace(/_/g , " ")
     } else {
         return lowerFirstLetter(patho);
     }

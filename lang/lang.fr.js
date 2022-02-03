@@ -38,6 +38,7 @@ var lang = {
     add_son:" fils",
     add_daughter:" fille",
     add_spouse:" conjoint",
+    add_miscarriage:" fausse-couche",
     title_pedigree:"Arbre généalogique",
     loadFromHotText:"Charger le tableau ",
     legend:" Modifier la légende",
@@ -123,6 +124,7 @@ var title = {
     add_son:"Ajouter un fils",
     add_daughter:"Ajouter une fille",
     add_spouse:"Ajouter un nouveau conjoint avec un enfant",
+    add_miscarriage:"Ajouter une fausse-couche",
     reset_dialog:"Confirmation de la réinitialisation des maladies",
     clearFam:"Vider les champs",
     undo:"Défaire",
@@ -165,7 +167,7 @@ function dicoD () {
         "cancer_utérus":"cancer de l'utérus",
         "cancer_rein":"cancer du rein",
         "cancer_foie":"cancer du foie",
-        "cancer_ORL":"cancer ORL"
+        "cancer_orl":"cancer ORL"
     };
 }
 //Defaut datasets
@@ -218,7 +220,7 @@ var DEFAULT_DISEASES = [
     {'type': 'cancer_rein', 'colour': '#FFA500'},
     {'type': 'cancer_foie', 'colour': '#01D758'},
     {'type': 'mélanome', 'colour': '#808080'},
-    {'type': 'cancer_ORL', 'colour': '#808080'},
+    {'type': 'cancer_orl', 'colour': '#808080'},
     {'type': 'polypes', 'colour': 'croisé'}
 ];
 
@@ -235,19 +237,19 @@ var optionList = function(){
 }
 
 var cols_header = ['Nom', 'Id.', 'Père', 'Mère', 'Sexe', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3','Comment.'];
-var cols_headerOnco = []//["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"]
+var cols_headerOnco = [];
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
-var onco = function(){//to not be modified: boadicea
-    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas'] //, 'cancer_colon', 'cancer_estomac'
+var onco = function(){//to not be modified: boadicea/canRisk export
+    return ['cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas'];
 }
 var diseases = onco();
 
-var onco_full = function(){//to not be modified: boadicea
+var onco_full = function(){
     return [
         'cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas',
         'cancer_colon', 'cancer_estomac', 'cancer_utérus', 'cancer_rein', 'cancer_foie',
-        'mélanome','cancer_ORL','polypes'
+        'mélanome','cancer_orl','polypes'
     ]
 }
 var diseases_full = onco_full();

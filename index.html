@@ -852,19 +852,24 @@
 				<button id="add-partner" class="btn btn-primary">
 					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_spouse" class="lang"></span>
 				</button>
+				<button id="add-miscarriage" class="btn btn-primary">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i><span id="add_miscarriage" class="lang"></span>
+				</button>
 			</div>
 
 		</div>
 
 		<!-- hot table and export buttons -->
-		<div class="row" style="padding:0px 30px;">
+		<!-- To do : min-height:100px; max-height:400px -->
+		<div class="row" style="padding:0px 30px">
 			<div class="text-center">
 				<!-- create handsontable table -->
 				<div class='hotContainer'>
-					<!-- style="height: 250px;" -->
+					<!--  style="max-height: 250px;" -->
 					<div id="dataTable" class="hot handsontable htColumnHeaders handsontable-helvetica2"
-						style="display:inline-block;z-index: 0;min-height:150px"></div>
-						<!-- ;max-height:500px; -->
+						style="display:inline-block;z-index: 0;min-height:100px;max-height: 400px;">
+						<!--;min-height:100px;overflow: hidden; max-height: 400px; 150-->
+					</div>
 				</div>
 				<div id="cancerList" style="background-color: white;" class='container'></div>
 
@@ -891,9 +896,10 @@
 						contextMenu: true,
 						outsideClickDeselects: false,
 						persistentState: true,
+						preventOverflow:'vertical',
 						undo: true,
 						width: '100%',
-						height: 'auto',
+						height: '400px', //auto 400px 100%
 						manualRowMove: true,
 						rowHeights: 24,
 						rowHeaderWidth: 20,

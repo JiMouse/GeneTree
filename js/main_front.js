@@ -181,13 +181,14 @@ $(document).ready(function(){
 
     hot.addHook('afterSelectionEndByProp',
         function(row, column, preventScrolling) {
-            let checkBox = document.getElementById("myCheckHPO");
+            let checkBoxHPO = document.getElementById("myCheckHPO");
+            let checkBoxOnco = document.getElementById("myCheckOnco");
             let dialogCancerListTitle;
             selectedRow = row;
             selectedColumn = column
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
                 hotSelectedTable =  this;
-                if (checkBox.checked == true) { //if HPO mode
+                if (checkBoxHPO.checked == true) { //if HPO mode
                     var html_cancerListDialog = 
                     "<form>"
                         +"<fieldset>"
@@ -205,15 +206,15 @@ $(document).ready(function(){
                              '</ul>'
                         + "</fieldset>"
                     + "</form>"
-                    dialogCancerListTitle = 'Termes HPO et Orphanet';               
+                    dialogCancerListTitle = 'Termes HPO et Orphanet'; 
+                    dialogWidth = '400';
                 } else {
                     var html_cancerListDialog =
                     "<form>"
                     +    "<fieldset>"
 
                     $.each(diseases, function(k) {
-                        disease_name = capitaliseFirstLetter(diseases[k].replace(/_/g , " "))
-                        disease_name = disease_name.replace(/2/g , " controlatéral")
+                        disease_name = capitaliseFirstLetter(cleanDiseaseText(diseases[k]));
 
                         html_cancerListDialog += 
                                 "<div class='form-check'>"
@@ -240,10 +241,12 @@ $(document).ready(function(){
                     + "</div>"
                     +  "</fieldset>"
                     + "</form>"
-                    dialogCancerListTitle = 'Localisation du cancer';    
+                    dialogCancerListTitle = 'Localisation du cancer';
+                    dialogWidth = '260';
                 }
-                
+                if(checkBoxOnco) dialogCancerListTitle = 'Pathologie';
                 dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
+                dialogCancerList.dialog( "option", "width", dialogWidth);
                 dialogCancerList.dialog("option", "close", function() {
                     // alert(row)
                     // alert(column)
@@ -488,6 +491,12 @@ $(document).ready(function() {
     $( "#add-partner" ).click(function() {
         famObj = {spouse:1};
         createFamily(famObj,hot);
+    });
+    $( "#add-miscarriage" ).click(function() {
+        famObj = {son:1};
+        createFamily(famObj,hot);
+        let selectedRow = hot.getSelectedLast()[0];
+        hot.setDataAtRowProp([[selectedRow+1, 'Name', 'FCS'],[selectedRow+1, 'Sex', 'U'],[selectedRow+1, 'Option', optionList()[0]]]);
     });
     
     $( "#myCheckOnco" ).click(function() {
