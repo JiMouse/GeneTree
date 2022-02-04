@@ -3,6 +3,7 @@ $(document).ready(function(){
 	
 	// Set dialog form
 	var dialog, obj, index;
+	var sex;
 	dialog = $( "#supp_info" ).dialog({
 		autoOpen: false,
 		classes: {
@@ -46,7 +47,7 @@ $(document).ready(function(){
 		var name = obj[index]['Name'];
 		$( "#form_id_name" ).val(name);
 
-		//proband 
+		//proband //to do => switch proband
 		//obj[i].proband
 		// if ($( "#proband" ).checked == true)
 
@@ -78,19 +79,24 @@ $(document).ready(function(){
 				}
 				obj[index]['Age'] = age
 
-				// obj[index]['first_birth'] =
+				//update age at first birth
+				let first_birth = getOlderChild(obj,index)
+				if(first_birth!= undefined) {
+					first_birth=first_birth-Number(obj[index].Yob);
+					$( "#first_birth" ).val(first_birth);
+				}
 			}
 		});
 		
 		//sex
-		var sex = obj[index]['Sex'];
+		sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
-		// hide can risk tab if not F
-		if (sex != 'F') {
+		if(sex == undefined || sex == 'F') {
+			$( '#bc_pathology #gene_test' ).hide();
+		} else {
 			$( '#canrisk' ).hide();
-			//disable
 		}
-		
+
 		//comment
 		$( "#form_id_comment" ).val(obj[index]['comment']);
 
@@ -129,7 +135,8 @@ $(document).ready(function(){
 				if(getChildNumber(obj, index).parity>0) {
 					//find older child ?
 					let child = getChildNumber(obj, index).index;
-					for (var k = 0; k < child.length; k++) {
+					for (var i = 0; i < child.length; i++) {
+						k = child[i];
 						if(obj[k].Yob == '' || obj[k].Yob == undefined) continue;
 						if(typeof older_child == 'undefined'){
 							var older_child = obj[k].Yob;
@@ -141,9 +148,10 @@ $(document).ready(function(){
 				}
 			}	
 
+			//update first birth
 			let first_birth = getOlderChild(obj,index)
 			if(first_birth!= undefined) {
-				first_birth=first_birth-Number(obj[index].Yob)
+				first_birth=first_birth-Number(obj[index].Yob);
 				$( "#first_birth" ).val(first_birth);
 			}
 
@@ -154,6 +162,7 @@ $(document).ready(function(){
 			$( "#menopause" ).val(obj[index]['menopause']);
 			$( "#mdensity" ).val(obj[index]['mdensity']);
 			$( "#hgt" ).val(obj[index]['hgt']);
+			loadKeyObjectToJSform(obj,index, 'wgt');
 			$( "#tl" ).val(obj[index]['tl']);
 			$( "#endo" ).val(obj[index]['endo']);
 			$( "#ovary2" ).val(obj[index]['ovary2']);
@@ -209,8 +218,19 @@ $(document).ready(function(){
 		obj[index]['Sex'] = $('input[name="sex"]:checked').val();
 
 		//comment
-		addKeyToObject(obj, index, 'comment', 'form_id_comment')
+		addKeyToObject(obj, index, 'comment', 'form_id_comment');
 
+		//height, weight and BMI
+		// addKeyToObject(obj, index, 'hgt');
+		// addKeyToObject(obj, index, 'wgt');
+		
+		//calculate BMI
+		let bmi;
+		if(obj[index].hasOwnProperty('wgt') && obj[index].hasOwnProperty('hgt')) {
+			bmi = Number(obj[index].wgt) / ((obj[index].hgt/100)*(obj[index].hgt/100));
+			obj[index]['bmi'] = bmi.toFixed(2);
+		}
+		
 		//genetic tests
 		let tests = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];
 		for (let j = 0; j < tests.length; j++) {
@@ -233,7 +253,7 @@ $(document).ready(function(){
 		//CanRisk fields
 		sex = $('input[name="sex"]:checked').val();
 		if(sex == 'F') {
-			let Canriskfield=['menarche','parity','first_birth','oc_use','mht_use','bmi','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2'];
+			let Canriskfield=['menarche','parity','first_birth','oc_use','mht_use','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi
 			for (let j = 0; j < Canriskfield.length; j++) {  
 				addKeyToObject(obj, index, Canriskfield[j])
 			};
@@ -264,18 +284,17 @@ $(document).ready(function(){
 	}
 
 	//tabs
-	let sex=$('input[name="sex"]:checked').val();
-	if(sex == 'F') {
-		$( '#bc_pathology #gene_test' ).hide();
-	} else {
-		$( '#cancer #bc_pathology' ).hide();
-		$( '#gene_test' ).show();
-	}
-	// $( '#cancer' ).show();
-	// Bug supp. Info si switch homme => femme : canRisk non visible
+	// $( '#bc_pathology #gene_test' ).hide();
+	// alert(sex)
+	// if(sex == undefined || sex == 'F') {
+	// 	$( '#bc_pathology #gene_test' ).hide();
+	// } else {
+	// 	$( '#cancer #bc_pathology' ).hide();
+	// 	$( '#gene_test' ).show();
+	// }
 
 	$('#tablist li').click(function(e) {
-		let sex=$('input[name="sex"]:checked').val();
+		// let sex=$('input[name="sex"]:checked').val();
 		var clicked = $(this).find('a:first').attr('href');
 
 		//avoid canrisk appearance if not woman

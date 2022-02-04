@@ -89,6 +89,7 @@ function textIndex(obj, i){
   let menopause   = obj[i]['menopause'];
   let mdensity    = obj[i]['mdensity'];
   let hgt         = obj[i]['hgt'];
+  let wgt         = obj[i]['wgt'];
   let tl          = obj[i]['tl'];
   let endo        = obj[i]['endo'];
 
@@ -103,9 +104,11 @@ function textIndex(obj, i){
   if(mht_use !== undefined)
     msg += " Traitement hormonal substitutif"+mht_use+".";
   if(bmi !== undefined)
-    msg += " Son BMI est calculé à "+bmi+"kg/m².";
+    msg += " Son IMC est calculé à "+bmi.replace('.',',') +" kg/m².";
   if(hgt !== undefined)
-    msg += " Sa taille est de "+hgt+"m.";
+    msg += " Sa taille est de "+hgt+" cm.";
+  if(wgt !== undefined)
+    msg += " Son poids est de "+wgt+" kg.";
   if(alcohol !== undefined)
     msg += " Sa consommation alcoolique quotidienne moyenne est de "+alcohol+" g/j.";
   if(menopause !== undefined)
