@@ -99,8 +99,20 @@ function textIndex(obj, i){
   //   msg += dico.pronom[sex] + "\n##parity="+parity+".";
   if(first_birth !== undefined)
     msg += ' ' + dico.pronom[sex] + " avait "+first_birth+" ans lors de la naissance de son premier enfant.";
-  if(oc_use !== undefined)
-    msg += ' ' + dico.pronom[sex] + "\n##oc_use="+oc_use+".";
+  if(oc_use !== undefined) {
+    let oc_use_msg = '. ' + dico.pronom[sex];
+    if(oc_use == 'N') {
+      oc_use_msg += " n'a pas pris de pillule contraceptive oestroprogestative"
+    } else {
+      oc_use_msg += " a pris une pillule contraceptive oestroprogestative"
+      let oc_use_yrs = oc_use.replace("<","").split(':');
+      if(oc_use_yrs[0] == 'C') {
+        oc_use_msg += " (au cours de ces deux derniers années)"
+      }
+      oc_use_msg += " pendant " + lang["OC_yrs_radio"+oc_use_yrs[1]] + "."
+    }
+    msg += oc_use_msg;
+  }
   if(mht_use !== undefined)
     msg += " Traitement hormonal substitutif"+mht_use+".";
   if(bmi !== undefined)

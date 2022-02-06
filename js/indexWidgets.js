@@ -179,15 +179,19 @@ $(document).ready(function(){
 
 		//oc use
 		oc_use = obj[index]['oc_use'];
-		if(oc_use == 'N') {
-			$("#oc_use").val('N');
+		if(oc_use == undefined) {
+			$("#oc_use").val('-');
 		} else {
-			$("#oc_use").val('Y');
-			$("input[name=oc_usage][value=Yes]").prop("checked",true)
-			if(oc_use.replace("<","").split(':')[0] == 'C') {
-				$('input[name="oc_usage"]:checked').val()=='Yes'
-				$("input[name=oc_usage][value="+oc_use.replace("<","").split(':')[0]+"]").prop("checked",true)
-			} else {$('input[name="oc_usage"]:checked').val()=='No'}
+			if(oc_use == 'N') {
+				$("#oc_use").val('N');
+			} else {
+				$("#oc_use").val('Y');
+				$("input[name=oc_usage][value=Yes]").prop("checked",true)
+				if(oc_use.replace("<","").split(':')[0] == 'C') {
+					$('input[name=oc_use_2_radio][value=Yes]').prop("checked",true)
+				} else {$('input[name=oc_use_2_radio][value=No]').prop("checked",true)}
+				$("input[name=OC_yrs_radio][value="+oc_use.replace("<","").split(':')[1]+"]").prop("checked",true)
+			}
 		}
 
 		//title
@@ -341,7 +345,7 @@ $(document).ready(function(){
 		title: "Usage d'une contraception orale (pilule)",
 		buttons: {
 			"Sauvegarder": function() {
-				if($('input[name="oc_usage"]:checked').val()=='Yes') {
+				if($('input[name="oc_use_2_radio"]:checked').val()=='Yes') {
 					oc_use = "C"
 				} else {
 					oc_use = "F"

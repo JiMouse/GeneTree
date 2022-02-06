@@ -55,6 +55,13 @@ var lang = {
     pregnancy:"Grossesse",
     Acknowledgment: "Outil initié pour satisfaire une certaine paresse et éprouvé par les membres de l'équipe du service de génétique clinique du CHRU de Nancy que je remercie.",
 
+    //oc_use
+    OC_yrs_radio1: " moins d'un an",
+    OC_yrs_radio2: " 1-4 ans",
+    OC_yrs_radio7: " 5-9 ans",
+    OC_yrs_radio12: " 10-14 ans",
+    OC_yrs_radio15: " 15 ans ou plus",
+
     //io.js
     pedigree:"arbre",
 
