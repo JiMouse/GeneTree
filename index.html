@@ -167,14 +167,16 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5">
-						<i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span>
-					</a></li>
-					<li><a class="headerlink" id="userLink" style="color:#dbe9f5" onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
-						<span id="user_friendly" class="lang"></span>
-					</a></li>
+							<i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span>
+						</a></li>
+					<li><a class="headerlink" id="userLink" style="color:#dbe9f5"
+							onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
+							<span id="user_friendly" class="lang"></span>
+						</a></li>
 					<li><a class="headerlink" id="guideLink" style="color:#dbe9f5">
-						<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang"></span>
-					</a></li>
+							<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide"
+								class="lang"></span>
+						</a></li>
 				</ul>
 			</div>
 		</div>
@@ -204,7 +206,7 @@
 	<div class="container">
 		<div>
 			<p style="color:darkred;">
-				<i>Une vidéo tutorielle de présentation de cet outil est en cours de conception 
+				<i>Une vidéo tutorielle de présentation de cet outil est en cours de conception
 					et devrais être disponible dans les prochaines semaines.
 					En cas de question ou remarque, n'hésitez pas à me contacter par courriel.
 				</i>
@@ -233,7 +235,7 @@
 							<div class="text-center" style="padding:0px 10px;">
 								<label class="btn btn-primary btn-block">
 									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang">
-										<span id="loadFile" class="lang"></span></abbr>
+											<span id="loadFile" class="lang"></span></abbr>
 									</i>
 									<input id="submitLoad" type="file" hidden>
 								</label>
@@ -257,8 +259,7 @@
 							<div class="row text-center">
 								<b><span id="AddFam" class="lang"></span></b>
 								<div class="btnDivider"></div>
-								<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true"
-									style="color: grey;"></i>
+								<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true" style="color: grey;"></i>
 							</div>
 							<p>
 							<div class="row" style='padding-bottom: 5px;'>
@@ -353,10 +354,11 @@
 
 			<div class="col-sm-4 text-center">
 				<!-- To do : internationalisation -->
-				<button id="supp_edit_info" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+				<button id="supp_edit_info" type="button" class="btn btn-primary" data-toggle="modal"
+					data-target="#exampleModalLong">
 					Ajouter des informations à un individu
 				</button>
-				
+
 				<div id="supp_info" style="background-color: white;" class='container'>
 					<form action="post" novalidate="novalidate">
 						<fieldset>
@@ -365,8 +367,8 @@
 									<label for="form_id_name">Identifiant :</label>
 								</div>
 								<div class="field col-sm-4">
-									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
-										id="form_id_name" aria-invalid="false">
+									<input type="text" name="display_name" size="17" class="form-control valid"
+										maxlength="60" id="form_id_name" aria-invalid="false">
 								</div>
 								<div class="field col-sm-4">
 									<!-- To do -->
@@ -381,8 +383,8 @@
 									<label for="civil_name">Nom Prénom :</label>
 								</div>
 								<div class="field col-sm-7">
-									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
-										id="civil_name" aria-invalid="false">
+									<input type="text" name="display_name" size="17" class="form-control valid"
+										maxlength="60" id="civil_name" aria-invalid="false">
 								</div>
 							</div>
 							<div class="row">
@@ -396,63 +398,70 @@
 							<div class="row">
 								<div class="col-sm-4 text-center">
 									<label for="id_sex_0">
-										<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
-											Homme
+										<input type="radio" name="sex" value="M" required="" id="id_sex_0"
+											class="valid">
+										Homme
 									</label>
 								</div>
 								<div class="col-sm-4 text-center">
 									<label for="id_sex_1">
-										<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid">
-											Femme
+										<input type="radio" name="sex" value="F" required="" id="id_sex_1"
+											class="valid">
+										Femme
 									</label>
 								</div>
 								<div class="col-sm-4 text-center">
 									<label for="id_sex_2">
-										<input type="radio" name="sex" value="U" required="" id="id_sex_2" class="valid">
-											Inconnu
+										<input type="radio" name="sex" value="U" required="" id="id_sex_2"
+											class="valid">
+										Inconnu
 									</label>
 								</div>
 							</div>
 							<hr>
 							<div class="row" style="padding-left: 20px;padding-right: 20px;">
-									<label for="form_id_comment">Commentaire :</label>
-									<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
+								<label for="form_id_comment">Commentaire :</label>
+								<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
 									rows="4"></textarea>
 							</div>
 							<hr>
 							<div class="row" style="padding-left: 5px;padding-right: 5px;">
 								<div id="tabs" class="ui-tabs ui-widget ui-widget-content custom-background-white">
-									<ul id="tablist" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header custom-background-white">
-										<li role="tab" tabindex="0" class="ui-tabs-tab"
-											aria-controls="cancer" aria-labelledby="ui-id-1"
-											aria-selected="true" aria-expanded="true">
-											<a href="#canrisk" class="btn btn-light current custom-btn-light" role="button" tabindex="-1" class="ui-tabs-anchor custom-btn"
+									<ul id="tablist"
+										class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header custom-background-white">
+										<li role="tab" tabindex="0" class="ui-tabs-tab" aria-controls="cancer"
+											aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true">
+											<a href="#canrisk" class="btn btn-light current custom-btn-light"
+												role="button" tabindex="-1" class="ui-tabs-anchor custom-btn"
 												id="ui-id-1">Info. CanRisk
 											</a>
 										</li>
-										<li role="tab" tabindex="-1" class="ui-tabs-tab"
-											aria-controls="bc_pathology" aria-labelledby="ui-id-2"
-											aria-selected="false" aria-expanded="false">
-											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button" id="ui-id-2">Anapath.
+										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="bc_pathology"
+											aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false">
+											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button"
+												id="ui-id-2">Anapath.
 											</a>
 										</li>
-										<li role="tab" tabindex="-1" class="ui-tabs-tab"
-											aria-controls="gene_test" aria-labelledby="ui-id-3"
-											aria-selected="false" aria-expanded="false">
-											<a href="#gene_test" class="btn btn-light" role="button" tabindex="-1" id="ui-id-3">Tests génétiques
+										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="gene_test"
+											aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false">
+											<a href="#gene_test" class="btn btn-light" role="button" tabindex="-1"
+												id="ui-id-3">Tests génétiques
 											</a>
 										</li>
 									</ul>
 									<div id="info" style="margin-top: 0.8em;">
 										<div id="canrisk" class="hideTab" aria-labelledby="ui-id-1" role="tabpanel"
-											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">								
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
+											aria-hidden="false">
 											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
-													<label for="menarche" title="âge des premières règles">Ménarche :</label>
+													<label for="menarche" title="âge des premières règles">Ménarche
+														:</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="menarche" size="17" class="form-control valid" maxlength="60"
-														id="menarche" aria-invalid="false" min="8" max="14" placeholder="(âge)">
+													<input type="number" name="menarche" size="17"
+														class="form-control valid" maxlength="60" id="menarche"
+														aria-invalid="false" min="8" max="14" placeholder="(âge)">
 												</div>
 											</div>
 											<div class="row row-std">
@@ -460,97 +469,124 @@
 													<label for="parity" title="nombre d'enfants">Parité :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="parity" size="17" class="form-control valid" maxlength="60"
-														id="parity" aria-invalid="false" min="0" max="15" disabled>
+													<input type="number" name="parity" size="17"
+														class="form-control valid" maxlength="60" id="parity"
+														aria-invalid="false" min="0" max="15" disabled>
 												</div>
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
-													<label for="first_birth" title="âge lors de la naissance du premier-né"> Âge lors du premier né :</label>
+													<label for="first_birth"
+														title="âge lors de la naissance du premier-né"> Âge lors du
+														premier né :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="first_birth" size="17" class="form-control valid" maxlength="60"
-														id="first_birth" aria-invalid="false" min="15" max="55" disabled>
+													<input type="number" name="first_birth" size="17"
+														class="form-control valid" maxlength="60" id="first_birth"
+														aria-invalid="false" min="15" max="55" disabled>
 												</div>
 											</div>
 											<div class="row row-std">
+												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
-													<label for="oc_use" title="usage de contraception orale">Contraception :</label>
+													<label for="oc_use"
+														title="usage de contraception orale">Contraception :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="oc_use" size="17" class="form-control valid" maxlength="60"
-														id="oc_use" aria-invalid="false" min="10" max="55" disabled>
+													<select name="oc_use" class="form-control valid" id="oc_use"
+														aria-invalid="false">
+														<option value="-">-</option>
+														<option value="Y">oui</option>
+														<option value="N">non</option>
+													</select>
 												</div>
 											</div>
-											<div class="row row-std"> <!--à faire-->
+											<div class="row row-std">
+												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
-													<label for="mht_use" title="traitement hormonal substitutif">THS :</label>
+													<label for="mht_use" title="traitement hormonal substitutif">THS
+														:</label>
 												</div>
 												<div class="field col-sm-7">
-													<input name="mht_use" size="17" class="form-control valid" maxlength="60"
-														id="mht_use" aria-invalid="false" disabled>
+													<input name="mht_use" size="17" class="form-control valid"
+														maxlength="60" id="mht_use" aria-invalid="false"
+														placeholder="à venir" disabled>
 												</div>
 											</div>
-											<div class="row row-std"> <!--à faire : calcul du BMI ? demande du poids ?-->
+											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
 													<label for="bmi">IMC :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="bmi" size="17" class="form-control valid" maxlength="60"
-														id="bmi" aria-invalid="false" min="10" max="60" disabled>
+													<input type="number" name="bmi" size="17" class="form-control valid"
+														maxlength="60" id="bmi" aria-invalid="false" min="10" max="60"
+														disabled>
 												</div>
 											</div>
-											<div class="row row-std"> <!--à faire-->
+											<div class="row row-std">
+												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
-													<label for="alcohol" title="consomation alcolique (en g/j)">Alcool :</label>
+													<label for="alcohol" title="consomation alcolique (en g/j)">Alcool
+														:</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="alcohol" size="17" class="form-control valid" maxlength="60"
-														id="alcohol" aria-invalid="false" min="0" max="10" disabled>
+													<input type="number" name="alcohol" size="17"
+														class="form-control valid" maxlength="60" id="alcohol"
+														aria-invalid="false" min="0" max="10" placeholder="à venir"
+														disabled>
 												</div>
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
-													<label for="menopause" title="âge de la ménopause">Ménopause :</label>
+													<label for="menopause" title="âge de la ménopause">Ménopause
+														:</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="menopause" size="17" class="form-control valid" maxlength="60"
-														id="menopause" aria-invalid="false" min="30" max="60" placeholder="(âge)">
+													<input type="number" name="menopause" size="17"
+														class="form-control valid" maxlength="60" id="menopause"
+														aria-invalid="false" min="30" max="60" placeholder="(âge)">
 												</div>
 											</div>
-											<div class="row row-std"> <!--à faire-->
+											<div class="row row-std">
+												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
-													<label for="mdensity" title="densité mammaire">Densité mammaire :</label>
+													<label for="mdensity" title="densité mammaire">Densité mammaire
+														:</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="mdensity" size="17" class="form-control valid" maxlength="60"
-														id="mdensity" aria-invalid="false" min="8" max="14" disabled>
+													<input type="number" name="mdensity" size="17"
+														class="form-control valid" maxlength="60" id="mdensity"
+														aria-invalid="false" min="8" max="14" placeholder="à venir"
+														disabled>
 												</div>
 											</div>
-											<div class="row row-std"> 
+											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
 													<label for="hgt">Taille (cm) :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input type="number" name="hgt" size="17" class="form-control valid" maxlength="60"
-														id="hgt" aria-invalid="false" min="100" max="230">
-												</div>
-											</div>
-											<div class="row row-std"> 
-												<div class="col-sm-5 text-right field_label">
-													<label for="wgt">Poids (kg) :</label>
-												</div>
-												<div class="field col-sm-7">
-													<input type="number" name="wgt" size="17" class="form-control valid" maxlength="60"
-														id="wgt" aria-invalid="false" min="40" max="200">
+													<input type="number" name="hgt" size="17" class="form-control valid"
+														maxlength="60" id="hgt" aria-invalid="false" min="100"
+														max="230">
 												</div>
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-5 text-right field_label">
-													<label for="tl" title="âge de la ligature des trompes">Ligature des trompes :</label>
+													<label for="wgt">Poids (kg) :</label>
 												</div>
 												<div class="field col-sm-7">
-													<select name="tl" class="form-control valid" id="tl" aria-invalid="false">
+													<input type="number" name="wgt" size="17" class="form-control valid"
+														maxlength="60" id="wgt" aria-invalid="false" min="40" max="200">
+												</div>
+											</div>
+											<div class="row row-std">
+												<div class="col-sm-5 text-right field_label">
+													<label for="tl" title="âge de la ligature des trompes">Ligature des
+														trompes :</label>
+												</div>
+												<div class="field col-sm-7">
+													<select name="tl" class="form-control valid" id="tl"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
 														<option value="N">non</option>
@@ -562,7 +598,8 @@
 													<label for="endo" title="endométriose">Endométriose :</label>
 												</div>
 												<div class="field col-sm-7">
-													<select name="endo" class="form-control valid" id="endo" aria-invalid="false">
+													<select name="endo" class="form-control valid" id="endo"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
 														<option value="N">non</option>
@@ -572,7 +609,8 @@
 											<div class="row">
 												<div class="col-sm-6 text-center">
 													<label for="ovary2">Ovariectomie
-														<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false">
+														<select name="ovary2" class="form-control valid" id="ovary2"
+															aria-invalid="false">
 															<option value="Y">oui</option>
 															<option value="N" selected>non</option>
 														</select>
@@ -580,7 +618,8 @@
 												</div>
 												<div class="col-sm-6 text-center">
 													<label for="mast2">Mastectomie
-														<select name="mast2" class="form-control valid" id="mast2" aria-invalid="false">
+														<select name="mast2" class="form-control valid" id="mast2"
+															aria-invalid="false">
 															<option value="Y">oui</option>
 															<option value="N" selected>non</option>
 														</select>
@@ -590,84 +629,90 @@
 										</div>
 
 										<div id="bc_pathology" class="hideTab" aria-labelledby="ui-id-2" role="tabpanel"
-											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true"
+											style="display: none;">
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-md-right">
 													<label for="er_bc_pathology">Récepteur d’œstrogènes:</label>
 												</div>
 												<div class="field col-md-4">
-													<select name="er_bc_pathology"
-														class="form-control valid" id="er_bc_pathology" aria-invalid="false">
+													<select name="er_bc_pathology" class="form-control valid"
+														id="er_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
-													</select></div>
+													</select>
+												</div>
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-md-right">
 													<label for="pr_bc_pathology">Récepteurs à la progestérone:</label>
 												</div>
 												<div class="field col-md-4">
-													<select name="pr_bc_pathology"
-														class="form-control valid" id="pr_bc_pathology" aria-invalid="false">
+													<select name="pr_bc_pathology" class="form-control valid"
+														id="pr_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
-													</select></div>
+													</select>
+												</div>
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-md-right">
 													<label for="her2_bc_pathology">HER2:</label>
 												</div>
 												<div class="field col-md-4">
-													<select name="her2_bc_pathology"
-														class="form-control valid" id="her2_bc_pathology" aria-invalid="false">
+													<select name="her2_bc_pathology" class="form-control valid"
+														id="her2_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
-													</select></div>
+													</select>
+												</div>
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-md-right">
 													<label for="ck14_bc_pathology">Cytokératine 14:</label>
 												</div>
 												<div class="field col-md-4">
-													<select name="ck14_bc_pathology"
-														class="form-control valid" id="ck14_bc_pathology" aria-invalid="false">
+													<select name="ck14_bc_pathology" class="form-control valid"
+														id="ck14_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
-													</select></div>
+													</select>
+												</div>
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-md-right">
 													<label for="ck56_bc_pathology">Cytokératine 5/6:</label>
 												</div>
 												<div class="field col-md-4">
-													<select name="ck56_bc_pathology"
-														class="form-control valid" id="ck56_bc_pathology" aria-invalid="false">
+													<select name="ck56_bc_pathology" class="form-control valid"
+														id="ck56_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">positif</option>
 														<option value="N">négatif</option>
-													</select></div>
+													</select>
+												</div>
 											</div>
 										</div>
 
 										<div id="gene_test" class="hideTab" aria-labelledby="ui-id-3" role="tabpanel"
-											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
-											aria-hidden="true" style="display: none;">
+											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true"
+											style="display: none;">
 											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right">
-													<label for="select_all_gene_tests">Définir tous les tests&nbsp;:</label>
+													<label for="select_all_gene_tests">Définir tous les
+														tests&nbsp;:</label>
 												</div>
 												<div class="field col-lg-6">
-													<select class="form-control"
-														id="select_all_gene_tests">
+													<select class="form-control" id="select_all_gene_tests">
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 														<option value="N">Absent</option>
@@ -689,8 +734,8 @@
 														for="brca1_gene_test">BRCA1 test :</label>
 												</div>
 												<div class="field col-lg-4">
-													<select name="brca1_gene_test" class="form-control valid" id="brca1_gene_test"
-														aria-invalid="false">
+													<select name="brca1_gene_test" class="form-control valid"
+														id="brca1_gene_test" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
 														<option value="S">Recherche de mutation</option>
@@ -698,8 +743,7 @@
 													</select>
 												</div>
 												<div class="field col-lg-4">
-													<select
-														name="brca1_gene_test_result" class="form-control valid"
+													<select name="brca1_gene_test_result" class="form-control valid"
 														id="brca1_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
@@ -719,9 +763,9 @@
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="brca2_gene_test_result" class="form-control valid"
-														id="brca2_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="brca2_gene_test_result"
+														class="form-control valid" id="brca2_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -731,15 +775,17 @@
 											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
 														for="palb2_gene_test">PALB2 test :</label></div>
-												<div class="field col-lg-4"><select name="palb2_gene_test" class="form-control valid" id="palb2_gene_test"
+												<div class="field col-lg-4"><select name="palb2_gene_test"
+														class="form-control valid" id="palb2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="palb2_gene_test_result" class="form-control valid" id="palb2_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="palb2_gene_test_result"
+														class="form-control valid" id="palb2_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -749,16 +795,17 @@
 											<div class="row row-std">
 												<div class="field_label col-lg-4 text-lg-right"><label
 														for="chek2_gene_test">CHEK2 test :</label></div>
-												<div class="field col-lg-4"><select name="chek2_gene_test" class="form-control valid" id="chek2_gene_test"
+												<div class="field col-lg-4"><select name="chek2_gene_test"
+														class="form-control valid" id="chek2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="chek2_gene_test_result" class="form-control valid"
-														id="chek2_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="chek2_gene_test_result"
+														class="form-control valid" id="chek2_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -769,7 +816,8 @@
 												<div class="field_label col-lg-4 text-lg-right"><label
 														for="atm_gene_test">ATM test :</label></div>
 												<div class="field col-lg-4"><select name="atm_gene_test"
-														class="form-control valid" id="atm_gene_test" aria-invalid="false">
+														class="form-control valid" id="atm_gene_test"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
 														<option value="S">Recherche de mutation</option>
@@ -795,10 +843,9 @@
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="rad51d_gene_test_result"
-														class="form-control valid"
-														id="rad51d_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="rad51d_gene_test_result"
+														class="form-control valid" id="rad51d_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -816,9 +863,9 @@
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="rad51c_gene_test_result" class="form-control valid"
-														id="rad51c_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="rad51c_gene_test_result"
+														class="form-control valid" id="rad51c_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -836,9 +883,9 @@
 														<option value="S">Recherche de mutation</option>
 														<option value="T">Test génétique direct</option>
 													</select></div>
-												<div class="field col-lg-4"><select
-														name="brip1_gene_test_result" class="form-control valid"
-														id="brip1_gene_test_result" aria-invalid="false">
+												<div class="field col-lg-4"><select name="brip1_gene_test_result"
+														class="form-control valid" id="brip1_gene_test_result"
+														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
 														<option value="P">Mut-présente</option>
@@ -904,7 +951,7 @@
 					} else {
 						load_hotData = myData;
 					}
-					
+
 					var hot = new Handsontable(container, {
 						data: load_hotData,
 						rowHeaders: true,//false
@@ -917,7 +964,7 @@
 						contextMenu: true,
 						outsideClickDeselects: false,
 						persistentState: true,
-						preventOverflow:'vertical',
+						preventOverflow: 'vertical',
 						undo: true,
 						width: '100%',
 						height: '400px', //auto 400px 100%
@@ -932,16 +979,16 @@
 					});
 				</script>
 
-			<!-- create export buttons -->
+				<!-- create export buttons -->
 				<div style="padding-top: 15px;">
-					<button id="exportJson" class="btn btn-primary lang">JSON <i
-							class="fa fa-download"></i>
-						</button>
+					<button id="exportJson" class="btn btn-primary lang">JSON <i class="fa fa-download"></i>
+					</button>
 					<div class="btnDivider"></div>
-					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA 
+					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA
 						<i class="fa fa-download"></i>
 					</button>
-					<button id="save_canrisk_fromHot" class='btn btn-primary'>CanRisk <i class="fa fa-download"></i></button>
+					<button id="save_canrisk_fromHot" class='btn btn-primary'>CanRisk <i
+							class="fa fa-download"></i></button>
 
 					<div class="btnDivider"></div>
 
@@ -1001,7 +1048,8 @@
 							<div class="modal-body">
 								<div class="pleft10">
 									<label>Ajouter un identifiant (Famid) dans le fichier</label>
-									<input type="text" maxlength="13" class="form-control top10" id="famid" placeholder="Ex. : Identifiant la généalogie">
+									<input type="text" maxlength="13" class="form-control top10" id="famid"
+										placeholder="Ex. : Identifiant la généalogie">
 								</div>
 								<div class="checkbox radio-info radio-circle">
 									<input type="checkbox" name="report-opts" id="pid_fname" checked="">
@@ -1009,7 +1057,8 @@
 								</div>
 							</div>
 							<div class="modal-footer bg-blue rounded-bottom">
-								<button type="button" class="btn btn-primary" data-dismiss="modal" id="cr_file_save">Enregistrer</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal"
+									id="cr_file_save">Enregistrer</button>
 							</div>
 						</div>
 					</div>
@@ -1022,7 +1071,7 @@
 
 				<button id="fh_edit_settings" class='btn btn-primary'>
 					<i class="fa fa-cog" aria-hidden="true"></i>
-					<span class='lang' id = 'legend'></span>
+					<span class='lang' id='legend'></span>
 				</button>
 				<br></br>
 
@@ -1064,15 +1113,17 @@
 			<div style="padding:0px 10px 20px;">
 				<p>
 					<strong>CanRisk Tool—A Web Interface for the Prediction of Breast and Ovarian Cancer Risk
-					and the Likelihood of Carrying Genetic Pathogenic Variants.</strong> Carver, T. et al. 
-					<i>Cancer Epidemiol Biomarkers Prev (2020). <a href="https://cebp.aacrjournals.org/content/30/3/469" target="_blank">
-						doi:10.1093/bioinformatics/btx705</a></i>
+						and the Likelihood of Carrying Genetic Pathogenic Variants.</strong> Carver, T. et al.
+					<i>Cancer Epidemiol Biomarkers Prev (2020). <a href="https://cebp.aacrjournals.org/content/30/3/469"
+							target="_blank">
+							doi:10.1093/bioinformatics/btx705</a></i>
 				</p>
 				<p>
 					<strong>BOADICEA: a comprehensive breast cancer risk prediction
-					model incorporating genetic and nongenetic risk factors.</strong> Lee, A. et al. 
-					<i>Genet Med 21, 1708–1718 (2019). <a href="https://www.nature.com/articles/s41436-018-0406-9" target="_blank">
-					doi:10.1093/bioinformatics/btx705</a></i>
+						model incorporating genetic and nongenetic risk factors.</strong> Lee, A. et al.
+					<i>Genet Med 21, 1708–1718 (2019). <a href="https://www.nature.com/articles/s41436-018-0406-9"
+							target="_blank">
+							doi:10.1093/bioinformatics/btx705</a></i>
 				</p>
 				<p>
 					<strong>pedigreejs: a web-based graphical pedigree editor</strong><br>
@@ -1096,6 +1147,72 @@
 
 			</div>
 		</div>
+	</div>
+
+	<!-- OC use dialog -->
+	<div id="oc_use_div" style="background-color: white" class='container'>
+		<!-- ;padding:0px 20px 15px; -->
+		<form>
+			<fieldset>
+				<div class="row">
+					<div class="col-sm-12">
+						Avez-vous pris un jour une pillule contraceptive ?
+					</div>
+				</div>
+
+				<div class="row text-center">
+					<div class="col-sm-3">
+						<label class="radio-inline">
+							<input type="radio" name="oc_usage" id="oc_usage" value="Yes">
+						Oui</label>
+					</div>
+					<div class="col-sm-3">
+						<label class="radio-inline">
+							<input type="radio" name="oc_usage" id="oc_usage" value="No">
+						Non</label>
+					</div>
+				</div>
+
+				<div class="row" style="padding-top: 10px;">
+					<div class="col-sm-12">
+						Combien de temps au total ?
+					</div>
+				</div>
+
+				<div class="row" style="padding-left: 30px;">
+					<label class="font-normal"><input type="radio" name="OC_yrs_radio" value="1"> moins d'un an</label>
+				</div>
+				<div class="row" style="padding-left: 30px;">
+					<label class="font-normal"><input type="radio" name="OC_yrs_radio" value="2"> 1-4 ans</label>
+				</div>
+				<div class="row" style="padding-left: 30px;">
+					<label class="font-normal"><input type="radio" name="OC_yrs_radio" value="7"> 5-9 ans</label>
+				</div>
+				<div class="row" style="padding-left: 30px;">
+					<label class="font-normal"><input type="radio" name="OC_yrs_radio" value="12"> 10-14 ans</label>
+				</div>
+				<div class="row" style="padding-left: 30px;">
+					<label class="font-normal"><input type="radio" name="OC_yrs_radio" value="15"> 15 ans ou plus</label>
+				</div>
+
+				<div class="row">
+					<div class="radio col-sm-12">
+						Avez-vous pris la pillule au cours des deux dernières années ?
+					</div>
+				</div>
+
+				<div class="row text-center">
+					<div class="col-sm-3">
+						<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="Yes">
+						Oui</label>
+					</div>
+					<div class="col-sm-3">
+						<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="No">
+						Non</label>
+					</div>
+				</div>
+			</fieldset>
+		</form>
 	</div>
 
 	<!-- pattern fills //.style('fill', 'url(#circles-1)') -->

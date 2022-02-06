@@ -275,3 +275,10 @@ p.big {
 .no-margin-top {
   margin-top: 0px !important;
 }
+
+.row-no-padding {
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-bottom: 0px !important;
+  margin-bottom: 0px !important;
+}

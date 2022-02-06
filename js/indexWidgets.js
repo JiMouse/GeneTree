@@ -155,7 +155,8 @@ $(document).ready(function(){
 				$( "#first_birth" ).val(first_birth);
 			}
 
-			$( "#oc_use" ).val(obj[index]['oc_use']);
+			// CanRisk env. factors
+			// $( "#oc_use" ).val(obj[index]['oc_use']);
 			$( "#mht_use" ).val(obj[index]['mht_use']);
 			$( "#bmi" ).val(obj[index]['bmi']);
 			$( "#alcohol" ).val(obj[index]['alcohol']);
@@ -168,13 +169,27 @@ $(document).ready(function(){
 			$( "#ovary2" ).val(obj[index]['ovary2']);
 			$( "#mast2" ).val(obj[index]['mast2']);
 
-			//add anapath fields
+			//Anapath fields
 			$( "#er_bc_pathology" ).val(obj[index]['er_bc_pathology']);
 			$( "#pr_bc_pathology" ).val(obj[index]['pr_bc_pathology']);
 			$( "#her2_bc_pathology" ).val(obj[index]['her2_bc_pathology']);
 			$( "#ck14_bc_pathology" ).val(obj[index]['ck14_bc_pathology']);
 			$( "#ck56_bc_pathology" ).val(obj[index]['ck56_bc_pathology']);
 		}
+
+		//oc use
+		oc_use = obj[index]['oc_use'];
+		if(oc_use == 'N') {
+			$("#oc_use").val('N');
+		} else {
+			$("#oc_use").val('Y');
+			$("input[name=oc_usage][value=Yes]").prop("checked",true)
+			if(oc_use.replace("<","").split(':')[0] == 'C') {
+				$('input[name="oc_usage"]:checked').val()=='Yes'
+				$("input[name=oc_usage][value="+oc_use.replace("<","").split(':')[0]+"]").prop("checked",true)
+			} else {$('input[name="oc_usage"]:checked').val()=='No'}
+		}
+
 		//title
 		dialog.dialog({
 			title: name
@@ -253,7 +268,7 @@ $(document).ready(function(){
 		//CanRisk fields
 		sex = $('input[name="sex"]:checked').val();
 		if(sex == 'F') {
-			let Canriskfield=['menarche','parity','first_birth','oc_use','mht_use','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi
+			let Canriskfield=['menarche','parity','first_birth','mht_use','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi ,'oc_use'
 			for (let j = 0; j < Canriskfield.length; j++) {  
 				addKeyToObject(obj, index, Canriskfield[j])
 			};
@@ -263,6 +278,8 @@ $(document).ready(function(){
 				addKeyToObject(obj, index, anapath[j])
 			};
 		}
+
+		//Contraception
 
 		//reinject in hot (whole table)
 		hot.loadData(obj);
@@ -306,5 +323,62 @@ $(document).ready(function(){
 	  	$('#info ' + clicked).fadeIn('fast');
 	  	e.preventDefault();
 	}).eq(0).addClass('current');
+
+	// oc_use
+	dialogOc_use = $("#oc_use_div").dialog({
+		autoOpen: false,
+		classes: {
+			"ui-dialog": "custom-background",
+			"ui-dialog-titlebar": "custom-theme",
+			"ui-dialog-title": "custom-theme text-center",
+			// "ui-dialog-titlebar-close":"custom-btn",
+			"ui-dialog-content": "custom-background",
+			"ui-dialog-buttonpane": "custom-background"
+		},
+		width: ($(window).width() > 400 ? 420 : $(window).width()- 30),
+		height: 440,
+		modal: true,
+		title: "Usage d'une contraception orale (pilule)",
+		buttons: {
+			"Sauvegarder": function() {
+				if($('input[name="oc_usage"]:checked').val()=='Yes') {
+					oc_use = "C"
+				} else {
+					oc_use = "F"
+				}
+				oc_use_tmp=$('input[name="OC_yrs_radio"]:checked').val();
+				oc_use+=':' + (oc_use_tmp=='1' ? '<' : '') + oc_use_tmp
+				obj[index]['oc_use']=oc_use;
+				$( this ).dialog( "close" );
+			},
+			"Annuler": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	})
+	$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+
+	let oc_use;
+	$("#oc_use").on("change", function () { 
+		let oc_use_cat =$("#oc_use").val();
+		if(oc_use_cat == "Y") {
+			$("input[name=oc_usage][value=Yes]").prop("checked",true)
+			dialogOc_use.dialog( "open" );
+		} else {
+			oc_use="N";
+			obj[index]['oc_use']=oc_use;
+		}
+	});
 	
+	// function oral_contraception_category(used, current, years){
+	// 	if(used === false)
+	// 		return "N";
+	
+	// 	var cat = (current ? "C" : "F");
+	// 	if(years !== undefined && years !== '') {
+	// 		cat += ":"+years;
+	// 	}
+	// 	return cat;
+	// }
+
 });
