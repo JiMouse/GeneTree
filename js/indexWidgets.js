@@ -159,7 +159,7 @@ $(document).ready(function(){
 			// $( "#oc_use" ).val(obj[index]['oc_use']);
 			$( "#mht_use" ).val(obj[index]['mht_use']);
 			$( "#bmi" ).val(obj[index]['bmi']);
-			$( "#alcohol" ).val(obj[index]['alcohol']);
+			// $( "#alcohol" ).val(obj[index]['alcohol']);
 			$( "#menopause" ).val(obj[index]['menopause']);
 			$( "#mdensity" ).val(obj[index]['mdensity']);
 			$( "#hgt" ).val(obj[index]['hgt']);
@@ -193,6 +193,10 @@ $(document).ready(function(){
 				$("input[name=OC_yrs_radio][value="+oc_use.replace("<","").split(':')[1]+"]").prop("checked",true)
 			}
 		}
+
+		//alcohol
+		alcohol = obj[index]['alcohol'];
+		if(alcohol>0) $("#alcohol").val('Y');
 
 		//title
 		dialog.dialog({
@@ -272,7 +276,7 @@ $(document).ready(function(){
 		//CanRisk fields
 		sex = $('input[name="sex"]:checked').val();
 		if(sex == 'F') {
-			let Canriskfield=['menarche','parity','first_birth','mht_use','alcohol','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi ,'oc_use'
+			let Canriskfield=['menarche','parity','first_birth','mht_use','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi ,'oc_use','alcohol'
 			for (let j = 0; j < Canriskfield.length; j++) {  
 				addKeyToObject(obj, index, Canriskfield[j])
 			};
@@ -282,8 +286,6 @@ $(document).ready(function(){
 				addKeyToObject(obj, index, anapath[j])
 			};
 		}
-
-		//Contraception
 
 		//reinject in hot (whole table)
 		hot.loadData(obj);
@@ -303,16 +305,6 @@ $(document).ready(function(){
 	loadKeyObjectToJSform=function(obj,i, key, jsname=key){
 		$( "#"+jsname ).val(obj[i][key]);
 	}
-
-	//tabs
-	// $( '#bc_pathology #gene_test' ).hide();
-	// alert(sex)
-	// if(sex == undefined || sex == 'F') {
-	// 	$( '#bc_pathology #gene_test' ).hide();
-	// } else {
-	// 	$( '#cancer #bc_pathology' ).hide();
-	// 	$( '#gene_test' ).show();
-	// }
 
 	$('#tablist li').click(function(e) {
 		// let sex=$('input[name="sex"]:checked').val();
@@ -373,16 +365,54 @@ $(document).ready(function(){
 			obj[index]['oc_use']=oc_use;
 		}
 	});
-	
-	// function oral_contraception_category(used, current, years){
-	// 	if(used === false)
-	// 		return "N";
-	
-	// 	var cat = (current ? "C" : "F");
-	// 	if(years !== undefined && years !== '') {
-	// 		cat += ":"+years;
-	// 	}
-	// 	return cat;
-	// }
+
+	// alcohol
+	dialogAlcohol = $("#alcohol_div").dialog({
+		autoOpen: false,
+		classes: {
+			"ui-dialog": "custom-background",
+			"ui-dialog-titlebar": "custom-theme",
+			"ui-dialog-title": "custom-theme text-center",
+			// "ui-dialog-titlebar-close":"custom-btn",
+			"ui-dialog-content": "custom-background",
+			"ui-dialog-buttonpane": "custom-background"
+		},
+		width: ($(window).width() > 400 ? 400 : $(window).width()- 30),
+		height: 440,
+		modal: true,
+		title: "Consommation alcoolique",
+		buttons: {
+			"Sauvegarder": function() {
+				let wine = $("#wine").prop("value");
+				if(!isNaN(wine)) alcohol += wine*(15.40)
+
+				let pint = $("#pint").prop("value");
+				if(!isNaN(pint)) alcohol += pint*(15.40)
+
+				let beer = $("#beer").prop("value");
+				if(!isNaN(beer)) alcohol += beer*(15.40)
+
+				let shots = $("#shots").prop("value");
+				if(!isNaN(shots)) alcohol += shots*(15.40)
+
+				obj[index]['alcohol']=alcohol;
+				$( this ).dialog( "close" );
+			},
+			"Annuler": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	})
+
+	let alcohol=0;
+	$("#alcohol").on("change", function () { 
+		let alcohol_cat =$("#alcohol").val();
+		if(alcohol_cat == "Y") {
+			dialogAlcohol.dialog( "open" );
+		} else {
+			alcohol=0;
+			obj[index]['alcohol']=alcohol;
+		}
+	});
 
 });

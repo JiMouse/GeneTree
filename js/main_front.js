@@ -926,7 +926,6 @@ $(document).ready(function() {
         opts.diseases = new_diseases;
         sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
         update_diseases();
-
     }
 
     $('#loadFromHot').click(function() {
