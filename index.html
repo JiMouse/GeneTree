@@ -359,7 +359,7 @@
 					Ajouter des informations à un individu
 				</button>
 
-				<div id="supp_info" style="background-color: white;" class='container'>
+				<div id="supp_info" style="background-color: white; overflow-y:auto; overflow-x:hidden" class='container'>
 					<form action="post" novalidate="novalidate">
 						<fieldset>
 							<div class="row">
@@ -492,8 +492,7 @@
 														title="usage de contraception orale">Contraception :</label>
 												</div>
 												<div class="field col-sm-7">
-													<select name="oc_use" class="form-control valid" id="oc_use"
-														aria-invalid="false">
+													<select name="oc_use" class="form-control valid" id="oc_use" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
 														<option value="N">non</option>
@@ -503,13 +502,14 @@
 											<div class="row row-std">
 												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
-													<label for="mht_use" title="traitement hormonal substitutif">THS
-														:</label>
+													<label for="mht_use" title="traitement hormonal substitutif">THS :</label>
 												</div>
 												<div class="field col-sm-7">
-													<input name="mht_use" size="17" class="form-control valid"
-														maxlength="60" id="mht_use" aria-invalid="false"
-														placeholder="à venir" disabled>
+													<select name="oc_use" class="form-control valid" id="mht_use" aria-invalid="false">
+														<option value="-">-</option>
+														<option value="Y">oui</option>
+														<option value="N">non</option>
+													</select>
 												</div>
 											</div>
 											<div class="row row-std">
@@ -1260,6 +1260,72 @@
 			</form>
 		</div>
 	
+		<!-- hormone replacement therapy (HRT) for the menopause -->
+		<div id="mht_use_div" style="background-color: white" class='container'>
+			<!-- ;padding:0px 20px 15px; -->
+			<form>
+				<fieldset>
+					<div class="row">
+						<div class="col-sm-12">
+							Depuis environ combien d’années au total avez-vous recours à un THS ?
+							Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.
+						</div>
+					</div>
+					<div class="row" style="padding: 10px 10px 10px 10px;">
+						<div class="col-sm-1"></div>
+						<div class="input-group col-sm-5">
+							<span class="input-group-addon">Années:</span>
+							<input id="mht_use_yrs" name="mht_use_yrs" type="number" class="form-control"
+							data-decimals="0" placeholder="--" min="0" max="40" step="1">
+						</div>
+					</div>
+
+					<div class="row" style="padding-top: 20px;">
+						<div class="col-sm-12">
+							Avez-vous eu recours à un THS au cours des 5 dernières années ?
+						</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-sm-3">
+							<label class="radio-inline">
+								<input type="radio" name="mht_use_5" id="mht_use_5" value="Yes">
+							Oui</label>
+						</div>
+						<div class="col-sm-3">
+							<label class="radio-inline">
+								<input type="radio" name="mht_use_5" id="mht_use_5" value="No">
+							Non</label>
+						</div>
+					</div>
+	
+					<div id="mhc_use_type">
+						<div class="row" style="padding-top: 20px;">
+							<div class="col-sm-12">
+								A quel type de THS avez-vous eu recours ?
+							</div>
+						</div>
+		
+						<div class="row" style="padding-left: 30px;">
+							<!-- A3_4_3_KnownEtype -->
+							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownEtype" id="mht_use_radio1"> Monothérapie à base d’œstrogènes connue</label>
+						</div>
+						<div class="row" style="padding-left: 30px;">
+							<!-- A3_4_3_KnownCtype -->
+							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownCtype" id="mht_use_radio2"> THS combinée connue</label>
+						</div>
+						<div class="row" style="padding-left: 30px;">
+							<!-- A3_4_3_KnownOthertype -->
+							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownOthertype" id="mht_use_radio7"> Autre type de THS</label>
+						</div>
+						<div class="row" style="padding-left: 30px;">
+							<!-- A3_4_3_Unknown -->
+							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="Unknown" id="mht_use_radio12"> Type de THS inconnu</label>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+
 
 	<!-- pattern fills //.style('fill', 'url(#circles-1)') -->
 	<div id="patterns" style="height:0;">

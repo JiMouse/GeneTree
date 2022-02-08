@@ -157,7 +157,7 @@ $(document).ready(function(){
 
 			// CanRisk env. factors
 			// $( "#oc_use" ).val(obj[index]['oc_use']);
-			$( "#mht_use" ).val(obj[index]['mht_use']);
+			// $( "#mht_use" ).val(obj[index]['mht_use']);
 			$( "#bmi" ).val(obj[index]['bmi']);
 			// $( "#alcohol" ).val(obj[index]['alcohol']);
 			$( "#menopause" ).val(obj[index]['menopause']);
@@ -198,10 +198,17 @@ $(document).ready(function(){
 		alcohol = obj[index]['alcohol'];
 		if(alcohol>0) $("#alcohol").val('Y');
 
+		//mht_use
+		mht_use = obj[index]['mht_use'];
+		if(mht_use>0) $("#mht_use").val('Y');
+
+		let n =0;
+		n = obj[index]['mht_use_yrs'];
+		if(n>0) $("#mht_use_yrs").val(n);
+
 		//title
-		dialog.dialog({
-			title: name
-		})
+		dialog.dialog({title: name})
+		dialog.dialog( "option", "width", ($(window).width() > 400 ? 420 : $(window).width()- 30));
 		dialog.dialog( "open" );
 	});
 
@@ -276,7 +283,7 @@ $(document).ready(function(){
 		//CanRisk fields
 		sex = $('input[name="sex"]:checked').val();
 		if(sex == 'F') {
-			let Canriskfield=['menarche','parity','first_birth','mht_use','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi ,'oc_use','alcohol'
+			let Canriskfield=['menarche','parity','first_birth','menopause','mdensity','hgt','tl','endo', 'ovary2','mast2']; //except bmi ,'oc_use','alcohol','mht_use'
 			for (let j = 0; j < Canriskfield.length; j++) {  
 				addKeyToObject(obj, index, Canriskfield[j])
 			};
@@ -414,5 +421,80 @@ $(document).ready(function(){
 			obj[index]['alcohol']=alcohol;
 		}
 	});
+
+	// mht_use
+	dialogMht_use = $("#mht_use_div").dialog({
+		autoOpen: false,
+		classes: {
+			"ui-dialog": "custom-background",
+			"ui-dialog-titlebar": "custom-theme",
+			"ui-dialog-title": "custom-theme text-center",
+			// "ui-dialog-titlebar-close":"custom-btn",
+			"ui-dialog-content": "custom-background",
+			"ui-dialog-buttonpane": "custom-background"
+		},
+		width: ($(window).width() > 400 ? 600 : $(window).width()- 30),
+		maxHeight: 500,
+		modal: true,
+		title: "Traitement hormonal substitutif (THS)",
+		buttons: {
+			"Sauvegarder": function() {
+				mht_use_section();		
+				obj[index]['mht_use']=mht_use;
+				$( this ).dialog( "close" );
+			},
+			"Annuler": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	})
+
+	let mht_use;
+	$("#mht_use").on("change", function () { 
+		let mht_use_cat =$("#mht_use").val();
+		if(mht_use_cat == "Y") {
+			mht_use_section();
+			dialogMht_use.dialog( "open" );
+		} else {
+			mht_use="N";
+			obj[index]['mht_use']=mht_use;
+		}
+	});
+	function mht_use_section(){
+		$('#mhc_use_type').hide()
+		// use in the last five years ?
+		$('input[type=radio][name=mht_use_5]').on('change', function() {
+			switch($(this).val()) {
+				case 'No':
+					mht_use="E";
+					$('#mhc_use_type').hide()
+				break;
+				default:  // KnownCtype, KnownOthertype, Unknown
+					$('#mhc_use_type').show()
+					mht_use= "C";
+				break;
+			}
+		});
+
+		$('input[type=radio][name=A3_4_3_radio]').on('change', function() {
+			//type ?
+			switch($(this).val()) {
+				case 'KnownEtype':
+					mht_use="E";
+				break;
+				default:  // KnownCtype, KnownOthertype, Unknown
+					mht_use= "C";
+				break;
+			}
+		});
+
+		$("#mht_use_yrs").on("blur", function () {
+            var n = parseFloat($("#mht_use_yrs").prop("value"));
+            if(!isNaN(n)) {
+				obj[index]['mht_use_yrs']=n;
+            }
+        });
+
+	}
 
 });

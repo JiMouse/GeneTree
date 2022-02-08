@@ -114,7 +114,8 @@ function textIndex(obj, i){
     msg += oc_use_msg;
   }
   if(mht_use !== undefined)
-    msg += " Traitement hormonal substitutif"+mht_use+".";
+    msg += '. ' + dico.pronom[sex] + " a bénéficié d'un traitement hormonal substitutif";
+    msg += (obj[i]['mht_use_yrs'] !== undefined ? ' pendant une durée cumulée de '+obj[i]['mht_use_yrs']+' ans.':'.')
   if(bmi !== undefined)
     msg += " Son IMC est calculé à "+bmi.replace('.',',') +" kg/m².";
   if(hgt !== undefined)
