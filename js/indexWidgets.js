@@ -4,6 +4,8 @@ $(document).ready(function(){
 	// Set dialog form
 	var dialog, obj, index;
 	var sex;
+	var width;
+	width = ($(window).width() > 400 ? 480 : $(window).width()- 30)
 	dialog = $( "#supp_info" ).dialog({
 		autoOpen: false,
 		classes: {
@@ -14,7 +16,7 @@ $(document).ready(function(){
 			"ui-dialog-content": "custom-background",
 			"ui-dialog-buttonpane": "custom-background"
 		},
-		width: ($(window).width() > 400 ? 420 : $(window).width()- 30),
+		width: width,
 		maxHeight: 700,
 		// modal: true,
 		buttons: {
@@ -208,7 +210,7 @@ $(document).ready(function(){
 
 		//title
 		dialog.dialog({title: name})
-		dialog.dialog( "option", "width", ($(window).width() > 400 ? 420 : $(window).width()- 30));
+		dialog.dialog( "option", "width", width);
 		dialog.dialog( "open" );
 	});
 

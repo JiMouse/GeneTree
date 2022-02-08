@@ -207,8 +207,8 @@
 		<div>
 			<p style="color:darkred;">
 				<i>Une vidéo tutorielle de présentation de cet outil est en cours de conception
-					et devrais être disponible dans les prochaines semaines.
-					En cas de question ou remarque, n'hésitez pas à me contacter par courriel.
+					et devrait être disponible dans les prochaines semaines.
+					En cas de questions ou remarques, n'hésitez pas à me contacter par courriel.
 				</i>
 				<hr>
 			</p>
@@ -363,32 +363,32 @@
 					<form action="post" novalidate="novalidate">
 						<fieldset>
 							<div class="row">
-								<div class="col-sm-4 text-right field_label">
+								<div class="col-sm-5 text-right field_label">
 									<label for="form_id_name">Identifiant :</label>
 								</div>
 								<div class="field col-sm-4">
 									<input type="text" name="display_name" size="17" class="form-control valid"
 										maxlength="60" id="form_id_name" aria-invalid="false">
 								</div>
-								<div class="field col-sm-4">
+								<!-- <div class="field col-sm-4"> -->
 									<!-- To do -->
 									<!-- <label for="proband">
 										<input type="checkbox" name="proband" value="proband" required="" id="proband" class="valid">
 											Propositus
 									</label> -->
-								</div>
+								<!-- </div> -->
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">
 									<label for="civil_name">Nom Prénom :</label>
 								</div>
-								<div class="field col-sm-7">
+								<div class="field col-sm-6">
 									<input type="text" name="display_name" size="17" class="form-control valid"
 										maxlength="60" id="civil_name" aria-invalid="false">
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-6 text-right field_label">
+								<div class="col-sm-5 text-right field_label">
 									<label for="dbirth">Date de naissance :</label>
 								</div>
 								<div class="field col-sm-6">
@@ -396,35 +396,40 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-4 text-center">
-									<label for="id_sex_0">
+								<div class="col-sm-3 text-center">
+									<label for="id_sex">
+										Sexe :
+									</label>
+								</div>
+								<div class="col-sm-3 text-center">
+									<label for="id_sex_0" class="font-normal">
 										<input type="radio" name="sex" value="M" required="" id="id_sex_0"
-											class="valid">
+											class="radio-inline">
 										Homme
 									</label>
 								</div>
-								<div class="col-sm-4 text-center">
-									<label for="id_sex_1">
+								<div class="col-sm-3 text-center">
+									<label for="id_sex_1" class="font-normal">
 										<input type="radio" name="sex" value="F" required="" id="id_sex_1"
-											class="valid">
+											class="radio-inline">
 										Femme
 									</label>
 								</div>
-								<div class="col-sm-4 text-center">
-									<label for="id_sex_2">
+								<div class="col-sm-3 text-center">
+									<label for="id_sex_2" class="font-normal">
 										<input type="radio" name="sex" value="U" required="" id="id_sex_2"
-											class="valid">
+											class="radio-inline">
 										Inconnu
 									</label>
 								</div>
 							</div>
-							<hr>
+							<br>
 							<div class="row" style="padding-left: 20px;padding-right: 20px;">
 								<label for="form_id_comment">Commentaire :</label>
 								<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
-									rows="4"></textarea>
+									rows="2"></textarea>
 							</div>
-							<hr>
+							<br>
 							<div class="row" style="padding-left: 5px;padding-right: 5px;">
 								<div id="tabs" class="ui-tabs ui-widget ui-widget-content custom-background-white">
 									<ul id="tablist"
@@ -500,7 +505,6 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
 													<label for="mht_use" title="traitement hormonal substitutif">THS :</label>
 												</div>
@@ -546,7 +550,6 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<!--à faire-->
 												<div class="col-sm-5 text-right field_label">
 													<label for="mdensity" title="densité mammaire">BI-RADS :</label>
 												</div>
@@ -707,14 +710,13 @@
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true"
 											style="display: none;">
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right">
-													<label for="select_all_gene_tests">Définir tous les
-														tests&nbsp;:</label>
+												<div class="field_label col-lg-7 text-lg-right">
+													<label for="select_all_gene_tests">Définir le test pour tous &nbsp;:</label>
 												</div>
-												<div class="field col-lg-6">
+												<div class="field col-lg-5">
 													<select class="form-control" id="select_all_gene_tests">
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 														<option value="N">Absent</option>
 														<option value="reset">Réinitialiser</option>
 													</select>
@@ -738,8 +740,8 @@
 														id="brca1_gene_test" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select>
 												</div>
 												<div class="field col-lg-4">
@@ -747,8 +749,8 @@
 														id="brca1_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select>
 												</div>
 											</div>
@@ -760,16 +762,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="brca2_gene_test_result"
 														class="form-control valid" id="brca2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -780,16 +782,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="palb2_gene_test_result"
 														class="form-control valid" id="palb2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -800,16 +802,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="chek2_gene_test_result"
 														class="form-control valid" id="chek2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -820,16 +822,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="atm_gene_test_result"
 														class="form-control valid" id="atm_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -840,16 +842,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="rad51d_gene_test_result"
 														class="form-control valid" id="rad51d_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -860,16 +862,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="rad51c_gene_test_result"
 														class="form-control valid" id="rad51c_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -880,16 +882,16 @@
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">Non testé</option>
-														<option value="S">Recherche de mutation</option>
-														<option value="T">Test génétique direct</option>
+														<option value="S">Complet</option>
+														<option value="T">Ciblé</option>
 													</select></div>
 												<div class="field col-lg-4"><select name="brip1_gene_test_result"
 														class="form-control valid" id="brip1_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
 														<option value="0">inconnu</option>
-														<option value="P">Mut-présente</option>
-														<option value="N">Mut-absente</option>
+														<option value="P">Positif</option>
+														<option value="N">Négatif</option>
 													</select></div>
 											</div>
 										</div>
