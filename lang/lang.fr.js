@@ -62,6 +62,14 @@ var lang = {
     OC_yrs_radio12: " 10-14 ans",
     OC_yrs_radio15: " 15 ans ou plus",
 
+    //mdensity
+    mdensity: {
+        a: "presque entièrement gras",
+        b: "densités fibroglandulaires dispersées",
+        c: "densité hétérogène",
+        d: "extrêmement dense",
+    },
+
     //io.js
     pedigree:"arbre",
 

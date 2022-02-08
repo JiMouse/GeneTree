@@ -127,7 +127,7 @@ function textIndex(obj, i){
   if(menopause !== undefined)
     msg += ' ' + dico.pronom[sex] + " avait "+menopause+" ans à l'âge de la ménopause.";
   if(mdensity !== undefined)
-    msg += " Son score BiRads (densité mamaire) est"+mdensity+".";
+    msg += ' Son score BiRads (densité mamaire) est «'+mdensity+'» (' + lang.mdensity[mdensity] + ').';
   if(tl !== undefined)
     msg += ' ' + dico.pronom[sex] + "\n##tl="+tl+".";
   if(endo !== undefined)
