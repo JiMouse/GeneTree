@@ -362,9 +362,9 @@
 				<div id="supp_info" style="background-color: white; overflow-y:auto; overflow-x:hidden" class='container'>
 					<form action="post" novalidate="novalidate">
 						<fieldset>
-							<div class="row">
+							<div class="row" style="padding-top: 10px">
 								<div class="col-sm-5 text-right field_label">
-									<label for="form_id_name">Identifiant :</label>
+									<label for="form_id_name">Identifiant</label>
 								</div>
 								<div class="field col-sm-4">
 									<input type="text" name="display_name" size="17" class="form-control valid"
@@ -380,7 +380,7 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">
-									<label for="civil_name">Nom Prénom :</label>
+									<label for="civil_name">Nom Prénom</label>
 								</div>
 								<div class="field col-sm-6">
 									<input type="text" name="display_name" size="17" class="form-control valid"
@@ -389,43 +389,43 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">
-									<label for="dbirth">Date de naissance :</label>
+									<label for="dbirth">Date de naissance</label>
 								</div>
 								<div class="field col-sm-6">
 									<input id="dbirth" class="form-control" type="text" im-insert="false">
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-3 text-center">
+								<div class="col-sm-5 text-right">
 									<label for="id_sex">
-										Sexe :
+										Sexe
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
 									<label for="id_sex_0" class="font-normal">
 										<input type="radio" name="sex" value="M" required="" id="id_sex_0"
-											class="radio-inline">
+											class="radio-inline" style="margin:0px">
 										Homme
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
 									<label for="id_sex_1" class="font-normal">
 										<input type="radio" name="sex" value="F" required="" id="id_sex_1"
-											class="radio-inline">
+											class="radio-inline" style="margin:0px">
 										Femme
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
-									<label for="id_sex_2" class="font-normal">
+									<!-- <label for="id_sex_2" class="font-normal">
 										<input type="radio" name="sex" value="U" required="" id="id_sex_2"
-											class="radio-inline">
+											class="radio-inline" style="margin:0px">
 										Inconnu
-									</label>
+									</label> -->
 								</div>
 							</div>
-							<br>
-							<div class="row" style="padding-left: 20px;padding-right: 20px;">
-								<label for="form_id_comment">Commentaire :</label>
+							<!-- <br> -->
+							<div class="row" style="padding: 10px 20px 0px 20px;">
+								<label for="form_id_comment">Commentaire</label>
 								<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
 									rows="2"></textarea>
 							</div>
@@ -444,7 +444,7 @@
 										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="bc_pathology"
 											aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false">
 											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button"
-												id="ui-id-2">Anapath.
+												id="ui-id-2">Anatomopathologie
 											</a>
 										</li>
 										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="gene_test"
@@ -459,44 +459,42 @@
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
 											aria-hidden="false">
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="menarche" title="âge des premières règles">Ménarche
-														:</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="menarche" title="âge des premières règles">Ménarche</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="menarche" size="17"
 														class="form-control valid" maxlength="60" id="menarche"
 														aria-invalid="false" min="8" max="14" placeholder="(âge)">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="parity" title="nombre d'enfants">Parité :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="parity" title="nombre d'enfants">Parité</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="parity" size="17"
 														class="form-control valid" maxlength="60" id="parity"
 														aria-invalid="false" min="0" max="15" disabled>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
+												<div class="col-sm-6 text-right field_label">
 													<label for="first_birth"
-														title="âge lors de la naissance du premier-né"> Âge lors du
-														premier né :</label>
+														title="âge lors de la naissance du premier-né"> Âge lors du premier né</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="first_birth" size="17"
 														class="form-control valid" maxlength="60" id="first_birth"
 														aria-invalid="false" min="15" max="55" disabled>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
+												<div class="col-sm-6 text-right field_label">
 													<label for="oc_use"
-														title="usage de contraception orale">Contraception :</label>
+														title="usage de contraception orale">Contraception</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<select name="oc_use" class="form-control valid" id="oc_use" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
@@ -505,11 +503,11 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="mht_use" title="traitement hormonal substitutif">THS :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="mht_use" title="traitement hormonal substitutif">T. hormonale substitutif</label>
 												</div>
-												<div class="field col-sm-7">
-													<select name="oc_use" class="form-control valid" id="mht_use" aria-invalid="false">
+												<div class="field col-sm-6">
+													<select name="mht_use" class="form-control valid" id="mht_use" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
 														<option value="N">non</option>
@@ -517,20 +515,20 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="bmi">IMC :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="bmi">IMC</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="bmi" size="17" class="form-control valid"
 														maxlength="60" id="bmi" aria-invalid="false" min="10" max="60"
 														disabled>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="alcohol" title="consomation alcolique (en g/j)">Alcool :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="alcohol" title="consomation alcolique (en g/j)">Alcool</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<select name="alcohol" class="form-control valid" id="alcohol" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
@@ -539,21 +537,20 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="menopause" title="âge de la ménopause">Ménopause
-														:</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="menopause" title="âge de la ménopause">Ménopause</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="menopause" size="17"
 														class="form-control valid" maxlength="60" id="menopause"
 														aria-invalid="false" min="30" max="60" placeholder="(âge)">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="mdensity" title="densité mammaire">BI-RADS :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="mdensity" title="densité mammaire">Score BI-RADS</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<select name="mdensity" class="form-control valid" id="mdensity" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="a">BI-RADS A</option>
@@ -564,30 +561,29 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="hgt">Taille (cm) :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="hgt">Taille (cm)</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="hgt" size="17" class="form-control valid"
 														maxlength="60" id="hgt" aria-invalid="false" min="100"
 														max="230">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="wgt">Poids (kg) :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="wgt">Poids (kg)</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<input type="number" name="wgt" size="17" class="form-control valid"
 														maxlength="60" id="wgt" aria-invalid="false" min="40" max="200">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="tl" title="âge de la ligature des trompes">Ligature des
-														trompes :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="tl" title="âge de la ligature des trompes">Ligature des trompes</label>
 												</div>
-												<div class="field col-sm-7">
+												<div class="field col-sm-6">
 													<select name="tl" class="form-control valid" id="tl"
 														aria-invalid="false">
 														<option value="-">-</option>
@@ -597,12 +593,11 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-5 text-right field_label">
-													<label for="endo" title="endométriose">Endométriose :</label>
+												<div class="col-sm-6 text-right field_label">
+													<label for="endo" title="endométriose">Endométriose</label>
 												</div>
-												<div class="field col-sm-7">
-													<select name="endo" class="form-control valid" id="endo"
-														aria-invalid="false">
+												<div class="field col-sm-6">
+													<select name="endo" class="form-control valid" id="endo" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
 														<option value="N">non</option>
@@ -612,8 +607,7 @@
 											<div class="row">
 												<div class="col-sm-6 text-center">
 													<label for="ovary2">Ovariectomie
-														<select name="ovary2" class="form-control valid" id="ovary2"
-															aria-invalid="false">
+														<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false">
 															<option value="Y">oui</option>
 															<option value="N" selected>non</option>
 														</select>
@@ -711,13 +705,13 @@
 											style="display: none;">
 											<div class="row row-std">
 												<div class="field_label col-lg-7 text-lg-right">
-													<label for="select_all_gene_tests">Définir le test pour tous &nbsp;:</label>
+													<label for="select_all_gene_tests">Définir le test pour tous les gènes&nbsp;:</label>
 												</div>
 												<div class="field col-lg-5">
 													<select class="form-control" id="select_all_gene_tests">
 														<option value="S">Complet</option>
 														<option value="T">Ciblé</option>
-														<option value="N">Absent</option>
+														<option value="N">Négatif</option>
 														<option value="reset">Réinitialiser</option>
 													</select>
 												</div>
