@@ -387,7 +387,7 @@ $(document).ready(function(){
 			"ui-dialog-buttonpane": "custom-background"
 		},
 		width: ($(window).width() > 400 ? 400 : $(window).width()- 30),
-		height: 440,
+		height: 340,
 		modal: true,
 		title: "Consommation alcoolique",
 		buttons: {

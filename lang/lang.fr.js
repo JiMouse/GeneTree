@@ -93,10 +93,10 @@ var lang = {
 
     // Alcohol
     alcohol_cons: "Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?",
-    wine: "Verre de vin",
-    pint:"Pinte",
-    bier:"Bouteille de bière",
-    liq:"Liqueur, spiritueux",
+    wine_txt: "Verre de vin",
+    pint_txt:"Pinte",
+    beer_txt:"Bouteille de bière",
+    shots_txt:"Liqueur, spiritueux",
 
     //oc_use
     oc_use_txt:"Avez-vous pris un jour une pillule contraceptive ?",
@@ -121,7 +121,7 @@ var lang = {
     },
 
     // mht_use
-    mht_use_txt:"Depuis environ combien d’années au total avez-vous recours à un THS ? Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.",
+    mht_use_q_txt:"Depuis environ combien d’années au total avez-vous recours à un THS ? Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.",
     mht_use_yes:"Yes",
     mht_use_no:"No",
     years: "Années",
