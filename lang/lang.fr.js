@@ -1,3 +1,4 @@
+/* <span id="loadFromHotText" class="lang"></span> */
 var lang = {
     //index.html
     home:"Accueil",
@@ -55,12 +56,61 @@ var lang = {
     pregnancy:"Grossesse",
     Acknowledgment: "Outil initié pour satisfaire une certaine paresse et éprouvé par les membres de l'équipe du service de génétique clinique du CHRU de Nancy que je remercie.",
 
+    // addInfo
+    canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
+    pid_fnameTxt: "inclure dans le nom du fichier",
+    addInfo: "Ajouter des informations à un individu",
+    id: "Identifiant",
+    save:"Enregistrer",
+    canRiskInfo: "Info. CanRisk",
+    name_surname: "Nom Prénom",
+    dbirth_txt: "Date de naissance",
+    sex_txt:"Sexe",
+    man_txt:"Homme",
+    woman_txt:"Femme",
+    comment_txt: "Commentaire",
+    anapath:"Anatomopathologie",
+    tests:"Tests génétiques",
+    menarche_txt:"Ménarche",
+    parity_txt: "Parité",
+    first_birth_txt: " Âge lors du premier né",
+    oc_use_label_txt: "Contraception",
+    mht_use_txt: "T. hormonale substitutif",
+    bmi_txt:"IMC",
+    alcohol_txt:"Alcool",
+    menopause_txt:"Ménopause",
+    mdensity_txt: "Score BI-RADS",
+    hgt_txt:"Taille (cm)",
+    wgt_txt:"Poids (kg)",
+    tl_txt:"Ligature des trompes",
+    endo_txt:"Endométriose",
+    ovary2_txt:"Ovariectomie",
+    mast2_txt:"Mastectomie",
+    er_bc_pathology_txt:"Récepteur d’œstrogènes",
+    pr_bc_pathology_txt:"Récepteurs à la progestérone",
+    ck14_bc_pathology_txt:"Cytokératine 14",
+    ck56_bc_pathology_txt:"Cytokératine 5/6",
+
+    // Alcohol
+    alcohol_cons: "Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?",
+    wine: "Verre de vin",
+    pint:"Pinte",
+    bier:"Bouteille de bière",
+    liq:"Liqueur, spiritueux",
+
     //oc_use
-    OC_yrs_radio1: " moins d'un an",
-    OC_yrs_radio2: " 1-4 ans",
-    OC_yrs_radio7: " 5-9 ans",
-    OC_yrs_radio12: " 10-14 ans",
-    OC_yrs_radio15: " 15 ans ou plus",
+    oc_use_txt:"Avez-vous pris un jour une pillule contraceptive ?",
+    oc_use_yes_txt: "Combien de temps au total ?",
+    oc_use_yes:"Yes",
+    oc_use_no:"No",
+    oc_use_yes2:"Yes",
+    oc_use_no2:"No",
+    OC_yrs_radio1_txt: " moins d'un an",
+    OC_yrs_radio2_txt: " 1-4 ans",
+    OC_yrs_radio7_txt: " 5-9 ans",
+    OC_yrs_radio12_txt: " 10-14 ans",
+    OC_yrs_radio15_txt: " 15 ans ou plus",
+    oc_use_5_txt: "Avez-vous pris la pillule au cours des deux dernières années ?",
 
     //mdensity
     mdensity: {
@@ -69,6 +119,19 @@ var lang = {
         c: "densité hétérogène",
         d: "extrêmement dense",
     },
+
+    // mht_use
+    mht_use_txt:"Depuis environ combien d’années au total avez-vous recours à un THS ? Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.",
+    mht_use_yes:"Yes",
+    mht_use_no:"No",
+    years: "Années",
+    mht_use_5_txt: "Avez-vous eu recours à un THS au cours des 5 dernières années ?",
+    mht_use_type_txt: "A quel type de THS avez-vous eu recours ?",
+    mht_use_radio1_txt:" Monothérapie à base d’œstrogènes connue",
+    mht_use_radio2_txt:" THS combinée connue",
+    mht_use_radio3_txt:" Autre type de THS",
+    mht_use_radio4_txt:" Type de THS inconnu",
+
 
     //io.js
     pedigree:"arbre",
@@ -155,6 +218,7 @@ var title = {
     pattern:"Motifs",
     switchToPatterns:"Réinitialiser les couleurs et utiliser des motifs ?",
     help: "Les pathologies sont représentées sur le graphique par des couleurs ou des motifs. Les couleurs peuvent être renseignées par un code HEX ou en toute lettre anglais. Les motifs possibles sont : ",
+    // first_birth_title: "âge lors de la naissance du premier-né",
 
     //undo_redo_refresh.js
     center:"Centrer l'arbre",

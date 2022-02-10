@@ -356,7 +356,7 @@
 				<!-- To do : internationalisation -->
 				<button id="supp_edit_info" type="button" class="btn btn-primary" data-toggle="modal"
 					data-target="#exampleModalLong">
-					Ajouter des informations à un individu
+					<span id="addInfo" class="lang"></span>
 				</button>
 
 				<div id="supp_info" style="background-color: white; overflow-y:auto; overflow-x:hidden" class='container'>
@@ -364,7 +364,9 @@
 						<fieldset>
 							<div class="row" style="padding-top: 10px">
 								<div class="col-sm-5 text-right field_label">
-									<label for="form_id_name">Identifiant</label>
+									<label for="form_id_name">
+										<span id="id" class="lang"></span>
+									</label>
 								</div>
 								<div class="field col-sm-4">
 									<input type="text" name="display_name" size="17" class="form-control valid"
@@ -380,7 +382,9 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">
-									<label for="civil_name">Nom Prénom</label>
+									<label for="civil_name">
+										<span id="name_surname" class="lang"></span>
+									</label>
 								</div>
 								<div class="field col-sm-6">
 									<input type="text" name="display_name" size="17" class="form-control valid"
@@ -389,7 +393,9 @@
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">
-									<label for="dbirth">Date de naissance</label>
+									<label for="dbirth">
+										<span id="dbirth_txt" class="lang"></span>
+									</label>
 								</div>
 								<div class="field col-sm-6">
 									<input id="dbirth" class="form-control" type="text" im-insert="false">
@@ -398,21 +404,21 @@
 							<div class="row">
 								<div class="col-sm-5 text-right">
 									<label for="id_sex">
-										Sexe
+										<span id="sex_txt" class="lang"></span>
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
 									<label for="id_sex_0" class="font-normal">
 										<input type="radio" name="sex" value="M" required="" id="id_sex_0"
 											class="radio-inline" style="margin:0px">
-										Homme
+										<span id="man_txt" class="lang"></span>
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
 									<label for="id_sex_1" class="font-normal">
 										<input type="radio" name="sex" value="F" required="" id="id_sex_1"
 											class="radio-inline" style="margin:0px">
-										Femme
+										<span id="woman_txt" class="lang"></span>
 									</label>
 								</div>
 								<div class="col-sm-3 text-center">
@@ -425,7 +431,9 @@
 							</div>
 							<!-- <br> -->
 							<div class="row" style="padding: 10px 20px 0px 20px;">
-								<label for="form_id_comment">Commentaire</label>
+								<label for="form_id_comment">
+									<span id="comment_txt" class="lang"></span>
+								</label>
 								<textarea name="form_id_comment" id="form_id_comment" class="form-control valid"
 									rows="2"></textarea>
 							</div>
@@ -438,19 +446,22 @@
 											aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true">
 											<a href="#canrisk" class="btn btn-light current custom-btn-light"
 												role="button" tabindex="-1" class="ui-tabs-anchor custom-btn"
-												id="ui-id-1">Info. CanRisk
+												id="ui-id-1">
+												<span id="canRiskInfo" class="lang"></span>
 											</a>
 										</li>
 										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="bc_pathology"
 											aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false">
 											<a href="#bc_pathology" tabindex="-1" class="btn btn-light" role="button"
-												id="ui-id-2">Anatomopathologie
+												id="ui-id-2">
+												<span id="anapath" class="lang"></span>
 											</a>
 										</li>
 										<li role="tab" tabindex="-1" class="ui-tabs-tab" aria-controls="gene_test"
 											aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false">
 											<a href="#gene_test" class="btn btn-light" role="button" tabindex="-1"
-												id="ui-id-3">Tests génétiques
+												id="ui-id-3">
+												<span id="tests" class="lang"></span>
 											</a>
 										</li>
 									</ul>
@@ -460,28 +471,33 @@
 											aria-hidden="false">
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="menarche" title="âge des premières règles">Ménarche</label>
+													<label for="menarche" title="âge des premières règles">
+														<span id="menarche_txt" class="lang"></span>
+													</label>
 												</div>
-												<div class="field col-sm-6">
-													<input type="number" name="menarche" size="17"
+												<div class="field col-sm-4">
+													<input type="number" name="menarche" size="17" style="text-align: center;"
 														class="form-control valid" maxlength="60" id="menarche"
 														aria-invalid="false" min="8" max="14" placeholder="(âge)">
 												</div>
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="parity" title="nombre d'enfants">Parité</label>
+													<label for="parity" title="nombre d'enfants">
+														<span id="parity_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
-													<input type="number" name="parity" size="17"
+													<input type="number" name="parity" size="17"  style="text-align: center;"
 														class="form-control valid" maxlength="60" id="parity"
 														aria-invalid="false" min="0" max="15" disabled>
 												</div>
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="first_birth"
-														title="âge lors de la naissance du premier-né"> Âge lors du premier né</label>
+													<label for="first_birth" id="first_birth_title" class="lang">
+														<span id="first_birth_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<input type="number" name="first_birth" size="17"
@@ -492,7 +508,9 @@
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
 													<label for="oc_use"
-														title="usage de contraception orale">Contraception</label>
+														title="usage de contraception orale">
+														<span id="oc_use_label_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="oc_use" class="form-control valid" id="oc_use" aria-invalid="false">
@@ -504,7 +522,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="mht_use" title="traitement hormonal substitutif">T. hormonale substitutif</label>
+													<label for="mht_use" title="traitement hormonal substitutif">
+														<span id="mht_use_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="mht_use" class="form-control valid" id="mht_use" aria-invalid="false">
@@ -516,7 +536,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="bmi">IMC</label>
+													<label for="bmi">
+														<span id="bmi_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<input type="number" name="bmi" size="17" class="form-control valid"
@@ -526,7 +548,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="alcohol" title="consomation alcolique (en g/j)">Alcool</label>
+													<label for="alcohol" title="consomation alcolique (en g/j)">
+														<span id="alcohol_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="alcohol" class="form-control valid" id="alcohol" aria-invalid="false">
@@ -538,7 +562,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="menopause" title="âge de la ménopause">Ménopause</label>
+													<label for="menopause" title="âge de la ménopause">
+														<span id="menopause_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<input type="number" name="menopause" size="17"
@@ -548,7 +574,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="mdensity" title="densité mammaire">Score BI-RADS</label>
+													<label for="mdensity" title="densité mammaire">
+														<span id="mdensity_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="mdensity" class="form-control valid" id="mdensity" aria-invalid="false">
@@ -562,7 +590,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="hgt">Taille (cm)</label>
+													<label for="hgt">
+														<span id="hgt_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<input type="number" name="hgt" size="17" class="form-control valid"
@@ -572,7 +602,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="wgt">Poids (kg)</label>
+													<label for="wgt">
+														<span id="wgt_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<input type="number" name="wgt" size="17" class="form-control valid"
@@ -581,7 +613,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="tl" title="âge de la ligature des trompes">Ligature des trompes</label>
+													<label for="tl" title="âge de la ligature des trompes">
+														<span id="tl_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="tl" class="form-control valid" id="tl"
@@ -594,7 +628,9 @@
 											</div>
 											<div class="row row-std">
 												<div class="col-sm-6 text-right field_label">
-													<label for="endo" title="endométriose">Endométriose</label>
+													<label for="endo" title="endométriose">
+														<span id="endo_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-sm-6">
 													<select name="endo" class="form-control valid" id="endo" aria-invalid="false">
@@ -607,19 +643,22 @@
 											<div class="row row-std" style="padding-bottom: 10px;">
 												<div class="col-sm-1 text-center"></div>
 												<div class="col-sm-5 text-center">
-													<label for="ovary2">Ovariectomie</label>
-														<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false" style="text-align:center;">
-															<option value="Y">oui</option>
-															<option value="N" selected>non</option>
-														</select>
+													<label for="ovary2">
+														<span id="ovary2_txt" class="lang"></span>
+													</label>
+													<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false" style="text-align:center;">
+														<option value="Y">oui</option>
+														<option value="N" selected>non</option>
+													</select>
 												</div>
 												<div class="col-sm-5 text-center">
-													<label for="mast2">Mastectomie</label>
-														<select name="mast2" class="form-control valid" id="mast2"  style="text-align:center;"
-															aria-invalid="false">
-															<option value="Y">oui</option>
-															<option value="N" selected>non</option>
-														</select>
+													<label for="mast2"><span id="mast2_txt" class="lang"></span>
+													</label>
+													<select name="mast2" class="form-control valid" id="mast2"  style="text-align:center;"
+														aria-invalid="false">
+														<option value="Y">oui</option>
+														<option value="N" selected>non</option>
+													</select>
 												</div>
 												<div class="col-sm-1 text-center"></div>
 											</div>
@@ -630,7 +669,9 @@
 											style="display: none;">
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-right field_label">
-													<label for="er_bc_pathology">Récepteur d’œstrogènes</label>
+													<label for="er_bc_pathology">
+														<span id="er_bc_pathology_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="er_bc_pathology" class="form-control valid"
@@ -644,7 +685,9 @@
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-right field_label">
-													<label for="pr_bc_pathology">Récepteurs à la progestérone</label>
+													<label for="pr_bc_pathology">
+														<span id="pr_bc_pathology_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="pr_bc_pathology" class="form-control valid"
@@ -672,7 +715,9 @@
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-right field_label">
-													<label for="ck14_bc_pathology">Cytokératine 14</label>
+													<label for="ck14_bc_pathology">
+														<span id="ck14_bc_pathology_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="ck14_bc_pathology" class="form-control valid"
@@ -686,7 +731,9 @@
 											</div>
 											<div class="row  row-std">
 												<div class="field_label col-md-8 text-right field_label">
-													<label for="ck56_bc_pathology">Cytokératine 5/6</label>
+													<label for="ck56_bc_pathology">
+														<span id="ck56_bc_pathology_txt" class="lang"></span>
+													</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="ck56_bc_pathology" class="form-control valid"
@@ -1043,18 +1090,18 @@
 						<div class="modal-content">
 							<div class="modal-body">
 								<div class="pleft10">
-									<label>Ajouter un identifiant (Famid) dans le fichier</label>
+									<label><span id="addInfo" class="lang"></span></label>
 									<input type="text" maxlength="13" class="form-control top10" id="famid"
 										placeholder="Ex. : Identifiant la généalogie">
 								</div>
 								<div class="checkbox radio-info radio-circle">
 									<input type="checkbox" name="report-opts" id="pid_fname" checked="">
-									<label for="pid_fname" class="radio-inline">inclure dans le nom du fichier</label>
+									<label for="pid_fname" class="radio-inline"><span id="pid_fnameTxt" class="lang"></span></label>
 								</div>
 							</div>
 							<div class="modal-footer bg-blue rounded-bottom">
 								<button type="button" class="btn btn-primary" data-dismiss="modal"
-									id="cr_file_save">Enregistrer</button>
+									id="cr_file_save"><span id="save" class="lang"></span></button>
 							</div>
 						</div>
 					</div>
@@ -1145,14 +1192,14 @@
 		</div>
 	</div>
 
-	<!-- OC use dialog -->
+	<!-- Alcohol dialog -->
 	<div id="alcohol_div" style="background-color: white" class='container'>
 		<!-- ;padding:0px 20px 15px; -->
 		<form>
 			<fieldset>
 				<div class="row">
 					<div class="col-sm-12" style="padding-bottom: 10px;">
-						Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?
+						<span id="alcohol_cons" class="lang"></span>
 					</div>
 				</div>				
 				<div class="row text-center" style="padding-bottom: 10px;">
@@ -1160,7 +1207,7 @@
 						<input type="number" id="wine" name="wine" min="0" max="20">
 					</div>
 					<div class="col-sm-6 text-left">
-						<label style='font-weight: normal;'>Verre de vin</label>
+						<label style='font-weight: normal;'><span id="wine" class="lang"></span></label>
 					</div>
 				</div>
 				<div class="row text-center" style="padding-bottom: 10px;">
@@ -1168,7 +1215,7 @@
 						<input type="number" id="pint" name="pint" min="0" max="20">
 					</div>
 					<div class="col-sm-6 text-left">
-						<label style='font-weight: normal;'>Pinte</label>
+						<label style='font-weight: normal;'><span id="pint" class="lang"></span></label>
 					</div>
 				</div>
 				<div class="row text-center" style="padding-bottom: 10px;">
@@ -1176,7 +1223,7 @@
 						<input type="number" id="beer" name="beer" min="0" max="20">
 					</div>
 					<div class="col-sm-6 text-left">
-						<label style='font-weight: normal;'>Bouteille de bière</label>
+						<label style='font-weight: normal;'><span id="bier" class="lang"></span></label>
 					</div>
 				</div>
 				<div class="row text-center" style="padding-bottom: 10px;">
@@ -1184,7 +1231,7 @@
 						<input type="number" id="shots" name="shots" min="0" max="20">
 					</div>
 					<div class="col-sm-6 text-left">
-						<label style='font-weight: normal;'>Liqueur, spiritueux</label>
+						<label style='font-weight: normal;'><span id="liq" class="lang"></span></label>
 					</div>
 				</div>
 			</fieldset>
@@ -1198,59 +1245,73 @@
 				<fieldset>
 					<div class="row">
 						<div class="col-sm-12">
-							Avez-vous pris un jour une pillule contraceptive ?
+							<span id="oc_use_txt" class="lang"></span>
 						</div>
 					</div>
 	
 					<div class="row text-center">
-						<div class="col-sm-3">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-3" class="text-center">
 							<label class="radio-inline">
 								<input type="radio" name="oc_usage" id="oc_usage" value="Yes">
-							Oui</label>
+								<span id="oc_use_yes2" class="lang"></span></label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="oc_usage" id="oc_usage" value="No">
-							Non</label>
+								<span id="oc_use_no2" class="lang"></span></label>
 						</div>
+						<!-- <div class="col-sm-3"></div> -->
 					</div>
 	
 					<div class="row" style="padding-top: 10px;">
 						<div class="col-sm-12">
-							Combien de temps au total ?
+							<span id="oc_use_yes_txt" class="lang"></span>
 						</div>
 					</div>
 	
 					<div class="row" style="padding-left: 30px;">
-						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="1" id="OC_yrs_radio1"> moins d'un an</label>
+						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="1" id="OC_yrs_radio1">
+							<span id="OC_yrs_radio1_txt" class="lang"></span>
+						</label>
 					</div>
 					<div class="row" style="padding-left: 30px;">
-						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="2" id="OC_yrs_radio2"> 1-4 ans</label>
+						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="2" id="OC_yrs_radio2">
+							<span id="OC_yrs_radio2_txt" class="lang"></span>
+						</label>
 					</div>
 					<div class="row" style="padding-left: 30px;">
-						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="7" id="OC_yrs_radio7"> 5-9 ans</label>
+						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="7" id="OC_yrs_radio7">
+							<span id="OC_yrs_radio7_txt" class="lang"></span>
+						</label>
 					</div>
 					<div class="row" style="padding-left: 30px;">
-						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="12" id="OC_yrs_radio12"> 10-14 ans</label>
+						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="12" id="OC_yrs_radio12">
+							<span id="OC_yrs_radio12_txt" class="lang"></span>
+						</label>
 					</div>
 					<div class="row" style="padding-left: 30px;">
-						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="15" id="OC_yrs_radio15"> 15 ans ou plus</label>
+						<label class="font-normal lang"><input type="radio" name="OC_yrs_radio" value="15" id="OC_yrs_radio15">
+							<span id="OC_yrs_radio15_txt" class="lang"></span>
+						</label>
 					</div>
 	
 					<div class="row">
 						<div class="radio col-sm-12">
-							Avez-vous pris la pillule au cours des deux dernières années ?
+							<span id="oc_use_5_txt" class="lang"></span>
 						</div>
 					</div>
 	
 					<div class="row text-center">
 						<div class="col-sm-3">
 							<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="Yes">
-							Oui</label>
+								<span id="oc_use_yes" class="lang"></span>
+							</label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="No">
-							Non</label>
+								<span id="oc_use_no" class="lang"></span>
+							</label>
 						</div>
 					</div>
 				</fieldset>
@@ -1264,14 +1325,13 @@
 				<fieldset>
 					<div class="row">
 						<div class="col-sm-12">
-							Depuis environ combien d’années au total avez-vous recours à un THS ?
-							Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.
+							<span id="mht_use_txt" class="lang"></span>
 						</div>
 					</div>
 					<div class="row" style="padding: 10px 10px 10px 10px;">
 						<div class="col-sm-1"></div>
 						<div class="input-group col-sm-5">
-							<span class="input-group-addon">Années:</span>
+							<span id="years" class="input-group-addon lang"></span>
 							<input id="mht_use_yrs" name="mht_use_yrs" type="number" class="form-control"
 							data-decimals="0" placeholder="--" min="0" max="40" step="1">
 						</div>
@@ -1279,50 +1339,63 @@
 
 					<div class="row" style="padding-top: 20px;">
 						<div class="col-sm-12">
-							Avez-vous eu recours à un THS au cours des 5 dernières années ?
+							<span id="mht_use_5_txt" class="lang"></span>
 						</div>
 					</div>
 					<div class="row text-center">
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="mht_use_5" id="mht_use_5" value="Yes">
-							Oui</label>
+								<span id="mht_use_yes" class="lang"></span>
+							</label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="mht_use_5" id="mht_use_5" value="No">
-							Non</label>
+								<span id="mht_use_no" class="lang"></span>
+							</label>
 						</div>
 					</div>
 	
 					<div id="mhc_use_type">
 						<div class="row" style="padding-top: 20px;">
 							<div class="col-sm-12">
-								A quel type de THS avez-vous eu recours ?
+								<span id="mht_use_type_txt" class="lang"></span>
 							</div>
 						</div>
 		
 						<div class="row" style="padding-left: 30px;">
 							<!-- A3_4_3_KnownEtype -->
-							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownEtype" id="mht_use_radio1"> Monothérapie à base d’œstrogènes connue</label>
+							<label class="font-normal lang">
+								<input type="radio" name="mht_use_radio" value="KnownEtype" id="mht_use_radio1">
+								<span id="mht_use_radio1_txt" class="lang"></span>
+							</label>
 						</div>
 						<div class="row" style="padding-left: 30px;">
 							<!-- A3_4_3_KnownCtype -->
-							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownCtype" id="mht_use_radio2"> THS combinée connue</label>
+							<label class="font-normal lang">
+								<input type="radio" name="mht_use_radio" value="KnownCtype" id="mht_use_radio2">
+								<span id="mht_use_radio2_txt" class="lang"></span>
+							</label>
 						</div>
 						<div class="row" style="padding-left: 30px;">
 							<!-- A3_4_3_KnownOthertype -->
-							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="KnownOthertype" id="mht_use_radio7"> Autre type de THS</label>
+							<label class="font-normal lang">
+								<input type="radio" name="mht_use_radio" value="KnownOthertype" id="mht_use_radio3">
+								<span id="mht_use_radio3_txt" class="lang"></span>
+							</label>
 						</div>
 						<div class="row" style="padding-left: 30px;">
 							<!-- A3_4_3_Unknown -->
-							<label class="font-normal lang"><input type="radio" name="mht_use_radio" value="Unknown" id="mht_use_radio12"> Type de THS inconnu</label>
+							<label class="font-normal lang">
+								<input type="radio" name="mht_use_radio" value="Unknown" id="mht_use_radio4">
+								<span id="mht_use_radio4_txt" class="lang"></span>
+							</label>
 						</div>
 					</div>
 				</fieldset>
 			</form>
 		</div>
-
 
 	<!-- pattern fills //.style('fill', 'url(#circles-1)') -->
 	<div id="patterns" style="height:0;">

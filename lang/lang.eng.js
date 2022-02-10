@@ -55,6 +55,25 @@ var lang = {
     pregnancy:"pregnancy",
     Acknowledgment: "Tool initiated to satisfy a certain laziness and tested by the members of the team of the clinical genetics service of the CHRU of Nancy, whom I thank.",
 
+    // addInfo
+    addInfo: "Add informations to individual",
+    id: "Identifiant",
+    
+    //oc_use
+    OC_yrs_radio1: " less than a year",
+    OC_yrs_radio2: " 1-4 years",
+    OC_yrs_radio7: " 5-9 years",
+    OC_yrs_radio12: " 10-14 years",
+    OC_yrs_radio15: " 15 years or more",
+
+    //mdensity
+    mdensity: {
+        a: "almost entirely fat",
+        b: "scattered fibroglandular densities",
+        c: "heterogeneously dense",
+        d: "extremely dense"
+    },
+
     //io.js
     pedigree:"pedigree",
 

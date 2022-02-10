@@ -109,7 +109,7 @@ function textIndex(obj, i){
       if(oc_use_yrs[0] == 'C') {
         oc_use_msg += " (au cours de ces deux derniers années)"
       }
-      oc_use_msg += " pendant " + lang["OC_yrs_radio"+oc_use_yrs[1]] + "."
+      oc_use_msg += " pendant " + lang["OC_yrs_radio"+oc_use_yrs[1]+"_txt"] + "."
     }
     msg += oc_use_msg;
   }

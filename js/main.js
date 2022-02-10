@@ -1181,18 +1181,3 @@ function cleanDiseaseText(patho) {
 function lowerFirstLetter(string) {
     return string.charAt(0).toLowerCase() + string.slice(1);
 }
-
-
-$(document).ready(function () {
-    // Function to populate text on page
-    populateText=function() {
-        $('.lang').each(function () {
-        var value = $(this).attr('id');
-        //add text
-        if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]);
-
-        //add title
-        if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]);
-        })
-    }
-})
