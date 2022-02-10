@@ -360,7 +360,7 @@
 				</button>
 
 				<div id="supp_info" style="background-color: white; overflow-y:auto; overflow-x:hidden" class='container'>
-					<form action="post" novalidate="novalidate">
+					<form action="post" novalidate="novalidate" class="text-align:center">
 						<fieldset>
 							<div class="row" style="padding-top: 10px">
 								<div class="col-sm-5 text-right field_label">
@@ -532,7 +532,7 @@
 													<select name="alcohol" class="form-control valid" id="alcohol" aria-invalid="false">
 														<option value="-">-</option>
 														<option value="Y">oui</option>
-														<option value="N">non</option>
+														<option value="0">non</option>
 													</select>
 												</div>
 											</div>
@@ -604,24 +604,24 @@
 													</select>
 												</div>
 											</div>
-											<div class="row">
-												<div class="col-sm-6 text-center">
-													<label for="ovary2">Ovariectomie
-														<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false">
+											<div class="row row-std" style="padding-bottom: 10px;">
+												<div class="col-sm-1 text-center"></div>
+												<div class="col-sm-5 text-center">
+													<label for="ovary2">Ovariectomie</label>
+														<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false" style="text-align:center;">
 															<option value="Y">oui</option>
 															<option value="N" selected>non</option>
 														</select>
-													</label>
 												</div>
-												<div class="col-sm-6 text-center">
-													<label for="mast2">Mastectomie
-														<select name="mast2" class="form-control valid" id="mast2"
+												<div class="col-sm-5 text-center">
+													<label for="mast2">Mastectomie</label>
+														<select name="mast2" class="form-control valid" id="mast2"  style="text-align:center;"
 															aria-invalid="false">
 															<option value="Y">oui</option>
 															<option value="N" selected>non</option>
 														</select>
-													</label>
 												</div>
+												<div class="col-sm-1 text-center"></div>
 											</div>
 										</div>
 
@@ -629,8 +629,8 @@
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true"
 											style="display: none;">
 											<div class="row  row-std">
-												<div class="field_label col-md-8 text-md-right">
-													<label for="er_bc_pathology">Récepteur d’œstrogènes:</label>
+												<div class="field_label col-md-8 text-right field_label">
+													<label for="er_bc_pathology">Récepteur d’œstrogènes</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="er_bc_pathology" class="form-control valid"
@@ -643,8 +643,8 @@
 												</div>
 											</div>
 											<div class="row  row-std">
-												<div class="field_label col-md-8 text-md-right">
-													<label for="pr_bc_pathology">Récepteurs à la progestérone:</label>
+												<div class="field_label col-md-8 text-right field_label">
+													<label for="pr_bc_pathology">Récepteurs à la progestérone</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="pr_bc_pathology" class="form-control valid"
@@ -657,8 +657,8 @@
 												</div>
 											</div>
 											<div class="row  row-std">
-												<div class="field_label col-md-8 text-md-right">
-													<label for="her2_bc_pathology">HER2:</label>
+												<div class="field_label col-md-8 text-right field_label">
+													<label for="her2_bc_pathology">HER2</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="her2_bc_pathology" class="form-control valid"
@@ -671,8 +671,8 @@
 												</div>
 											</div>
 											<div class="row  row-std">
-												<div class="field_label col-md-8 text-md-right">
-													<label for="ck14_bc_pathology">Cytokératine 14:</label>
+												<div class="field_label col-md-8 text-right field_label">
+													<label for="ck14_bc_pathology">Cytokératine 14</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="ck14_bc_pathology" class="form-control valid"
@@ -685,8 +685,8 @@
 												</div>
 											</div>
 											<div class="row  row-std">
-												<div class="field_label col-md-8 text-md-right">
-													<label for="ck56_bc_pathology">Cytokératine 5/6:</label>
+												<div class="field_label col-md-8 text-right field_label">
+													<label for="ck56_bc_pathology">Cytokératine 5/6</label>
 												</div>
 												<div class="field col-md-4">
 													<select name="ck56_bc_pathology" class="form-control valid"
@@ -705,7 +705,7 @@
 											style="display: none;">
 											<div class="row row-std">
 												<div class="field_label col-lg-7 text-lg-right">
-													<label for="select_all_gene_tests">Définir le test pour tous les gènes&nbsp;:</label>
+													<label for="select_all_gene_tests">Définir le test pour les gènes&nbsp;:</label>
 												</div>
 												<div class="field col-lg-5">
 													<select class="form-control" id="select_all_gene_tests">
@@ -716,7 +716,7 @@
 													</select>
 												</div>
 											</div>
-											<div class="row row-std">
+											<div class="row row-std" style="padding-bottom: 10px;">
 												<div class="col-lg-4"></div>
 												<div class="col-lg-4 text-center">
 													<a href="https://canrisk.atlassian.net/wiki/spaces/FAQS/pages/30703617/What+is+the+difference+between+a+mutation+search+and+a+direct+gene+test"
@@ -726,8 +726,8 @@
 												<div class="col-lg-4 text-center">Résultat</div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="brca1_gene_test">BRCA1 test :</label>
+												<div class="field_label col-lg-4 text-right"><label
+														for="brca1_gene_test">BRCA1</label>
 												</div>
 												<div class="field col-lg-4">
 													<select name="brca1_gene_test" class="form-control valid"
@@ -749,8 +749,8 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="brca2_gene_test">BRCA2 test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="brca2_gene_test">BRCA2</label></div>
 												<div class="field col-lg-4"><select name="brca2_gene_test"
 														class="form-control valid" id="brca2_gene_test"
 														aria-invalid="false">
@@ -769,8 +769,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="palb2_gene_test">PALB2 test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="palb2_gene_test">PALB2</label></div>
 												<div class="field col-lg-4"><select name="palb2_gene_test"
 														class="form-control valid" id="palb2_gene_test"
 														aria-invalid="false">
@@ -789,8 +789,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="chek2_gene_test">CHEK2 test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="chek2_gene_test">CHEK2</label></div>
 												<div class="field col-lg-4"><select name="chek2_gene_test"
 														class="form-control valid" id="chek2_gene_test"
 														aria-invalid="false">
@@ -809,8 +809,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="atm_gene_test">ATM test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="atm_gene_test">ATM</label></div>
 												<div class="field col-lg-4"><select name="atm_gene_test"
 														class="form-control valid" id="atm_gene_test"
 														aria-invalid="false">
@@ -829,8 +829,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="rad51d_gene_test">RAD51D test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="rad51d_gene_test">RAD51D</label></div>
 												<div class="field col-lg-4"><select name="rad51d_gene_test"
 														class="form-control valid" id="rad51d_gene_test"
 														aria-invalid="false">
@@ -849,8 +849,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="rad51c_gene_test">RAD51C test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="rad51c_gene_test">RAD51C</label></div>
 												<div class="field col-lg-4"><select name="rad51c_gene_test"
 														class="form-control valid" id="rad51c_gene_test"
 														aria-invalid="false">
@@ -869,8 +869,8 @@
 													</select></div>
 											</div>
 											<div class="row row-std">
-												<div class="field_label col-lg-4 text-lg-right"><label
-														for="brip1_gene_test">BRIP1 test :</label></div>
+												<div class="field_label col-lg-4 text-right"><label
+														for="brip1_gene_test">BRIP1</label></div>
 												<div class="field col-lg-4"><select name="brip1_gene_test"
 														class="form-control valid" id="brip1_gene_test"
 														aria-invalid="false">

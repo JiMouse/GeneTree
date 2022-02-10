@@ -392,6 +392,7 @@ $(document).ready(function(){
 		title: "Consommation alcoolique",
 		buttons: {
 			"Sauvegarder": function() {
+				alcohol=0;
 				let wine = $("#wine").prop("value");
 				if(!isNaN(wine)) alcohol += wine*(15.40)
 
@@ -405,9 +406,12 @@ $(document).ready(function(){
 				if(!isNaN(shots)) alcohol += shots*(15.40)
 
 				obj[index]['alcohol']=alcohol;
+				if(alcohol==0) $("#alcohol").val("0")
 				$( this ).dialog( "close" );
 			},
 			"Annuler": function() {
+				obj[index]['alcohol']=0;
+				$("#alcohol").val("0")
 				$( this ).dialog( "close" );
 			}
 		}
@@ -446,6 +450,8 @@ $(document).ready(function(){
 				$( this ).dialog( "close" );
 			},
 			"Annuler": function() {
+				obj[index]['mht_use']='N';
+				$("#mht_use").val("N");
 				$( this ).dialog( "close" );
 			}
 		}
