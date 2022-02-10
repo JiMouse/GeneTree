@@ -104,14 +104,14 @@
 	<div class="se-pre-con"></div>
 	<script>
 		$(document).ready(function () {
-			$('.lang').each(function () {
-				var value = $(this).attr('id');
-				//add text
-				if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]);
-
-				//add title
-				if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]);
-			});
+			populateText=function() {
+				$('.lang').each(function () {
+					var value = $(this).attr('id');
+					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
+					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
+				})
+			}
+			populateText();
 
 			//Load load_lang
 			setSetterLanguage(load_lang);
