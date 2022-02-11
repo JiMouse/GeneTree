@@ -55,6 +55,12 @@ var lang = {
     dztwin:"JumDZ",
     pregnancy:"Grossesse",
     Acknowledgment: "Outil initié pour satisfaire une certaine paresse et éprouvé par les membres de l'équipe du service de génétique clinique du CHRU de Nancy que je remercie.",
+    unknown: "Inconnu",
+    pos:"Positif",
+    neg:"Négatif",
+    full:"Complet",
+    untested:"Non testé",
+    targeted:"Ciblé",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
@@ -90,6 +96,10 @@ var lang = {
     pr_bc_pathology_txt:"Récepteurs à la progestérone",
     ck14_bc_pathology_txt:"Cytokératine 14",
     ck56_bc_pathology_txt:"Cytokératine 5/6",
+    select_all_gene_tests_txt:"Définir le test pour les gènes",
+    test_type:"Type de test",
+    result: "Résultat",
+    reset_txt:"Réinitialiser",
 
     // Alcohol
     alcohol_cons: "Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?",
@@ -101,10 +111,6 @@ var lang = {
     //oc_use
     oc_use_txt:"Avez-vous pris un jour une pillule contraceptive ?",
     oc_use_yes_txt: "Combien de temps au total ?",
-    oc_use_yes:"Yes",
-    oc_use_no:"No",
-    oc_use_yes2:"Yes",
-    oc_use_no2:"No",
     OC_yrs_radio1_txt: " moins d'un an",
     OC_yrs_radio2_txt: " 1-4 ans",
     OC_yrs_radio7_txt: " 5-9 ans",

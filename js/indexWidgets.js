@@ -214,25 +214,6 @@ $(document).ready(function(){
 		dialog.dialog( "open" );
 	});
 
-	$("#select_all_gene_tests").on('change', function (e) {
-		if(this.value === "S") {
-			// select all mutation search to be negative
-			$("#gene_test").find("select[name$='_gene_test']").val("S").change();
-			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
-		} else if(this.value === "T") {
-			// select all direct gene tests to be negative
-			$("#gene_test").find("select[name$='_gene_test']").val("T").change();
-			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
-		} else if(this.value === "N") {
-			// select all gene tests to be negative
-			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
-		} else if(this.value === "reset") {
-			$("#gene_test").find("select[name$='_gene_test']").val("-").change();
-			$("#gene_test").find("select[name$='_gene_test_result']").val("-").change();
-		}
-	});
-
-
 	function updateHot() {
 		//update obj
 		//name
@@ -504,5 +485,24 @@ $(document).ready(function(){
         });
 
 	}
+
+	$("#select_all_gene_tests").on('change', function (e) {
+		if(this.value === "S") {
+			// select all mutation search to be negative
+			$("#gene_test").find("select[name$='_gene_test']").val("S").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "T") {
+			// select all direct gene tests to be negative
+			$("#gene_test").find("select[name$='_gene_test']").val("T").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "N") {
+			// select all gene tests to be negative
+			$("#gene_test").find("select[name$='_gene_test_result']").val("N").change();
+		} else if(this.value === "reset") {
+			$("#gene_test").find("select[name$='_gene_test']").val("-").change();
+			$("#gene_test").find("select[name$='_gene_test_result']").val("-").change();
+		}
+	});
+
 
 });

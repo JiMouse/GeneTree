@@ -109,6 +109,17 @@
 					var value = $(this).attr('id');
 					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
 					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
+
+					// class yes and no
+					$('.lang.lang-yes').text(lang["yes"]);
+					$('.lang.lang-no').text(lang["no"]);
+					$('.lang.lang-unknown').text(lang["unknown"]);
+					$('.lang.lang-pos').text(lang["pos"]);
+					$('.lang.lang-neg').text(lang["neg"]);
+					$('.lang.lang-full').text(lang["full"]);
+					$('.lang.lang-untested').text(lang["untested"]);
+					$('.lang.lang-targeted').text(lang["targeted"]);
+
 				})
 			}
 			populateText();
@@ -368,7 +379,7 @@
 										<span id="id" class="lang"></span>
 									</label>
 								</div>
-								<div class="field col-sm-4">
+								<div class="field col-sm-6">
 									<input type="text" name="display_name" size="17" class="form-control valid"
 										maxlength="60" id="form_id_name" aria-invalid="false">
 								</div>
@@ -470,7 +481,7 @@
 											class="ui-tabs-panel ui-corner-bottom ui-widget-content"
 											aria-hidden="false">
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="menarche" title="âge des premières règles">
 														<span id="menarche_txt" class="lang"></span>
 													</label>
@@ -481,105 +492,107 @@
 														aria-invalid="false" min="8" max="14" placeholder="(âge)">
 												</div>
 											</div>
+
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="parity" title="nombre d'enfants">
 														<span id="parity_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
+												<div class="field col-sm-4">
 													<input type="number" name="parity" size="17"  style="text-align: center;"
 														class="form-control valid" maxlength="60" id="parity"
 														aria-invalid="false" min="0" max="15" disabled>
 												</div>
 											</div>
+
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="first_birth" id="first_birth_title" class="lang">
 														<span id="first_birth_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<input type="number" name="first_birth" size="17"
+												<div class="field col-sm-4">
+													<input type="number" name="first_birth" size="17" style="text-align: center;"
 														class="form-control valid" maxlength="60" id="first_birth"
 														aria-invalid="false" min="15" max="55" disabled>
 												</div>
 											</div>
+
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
-													<label for="oc_use"
-														title="usage de contraception orale">
+												<div class="col-sm-8 text-right field_label">
+													<label for="oc_use" title="usage de contraception orale">
 														<span id="oc_use_label_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="oc_use" class="form-control valid" id="oc_use" aria-invalid="false">
+												<div class="field col-sm-4">
+													<select name="oc_use" class="form-control valid" id="oc_use" aria-invalid="false" style="text-align: center;">
 														<option value="-">-</option>
-														<option value="Y">oui</option>
-														<option value="N">non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no"></option>
 													</select>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="mht_use" title="traitement hormonal substitutif">
 														<span id="mht_use_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="mht_use" class="form-control valid" id="mht_use" aria-invalid="false">
+												<div class="field col-sm-4">
+													<select name="mht_use" class="form-control valid" id="mht_use" aria-invalid="false" style="text-align: center;">
 														<option value="-">-</option>
-														<option value="Y">oui</option>
-														<option value="N">non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no"></option>
 													</select>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="bmi">
 														<span id="bmi_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<input type="number" name="bmi" size="17" class="form-control valid"
+												<div class="field col-sm-4">
+													<input type="number" name="bmi" size="17" class="form-control valid"  style="text-align: center;"
 														maxlength="60" id="bmi" aria-invalid="false" min="10" max="60"
 														disabled>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="alcohol" title="consomation alcolique (en g/j)">
 														<span id="alcohol_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="alcohol" class="form-control valid" id="alcohol" aria-invalid="false">
+												<div class="field col-sm-4">
+													<select name="alcohol" class="form-control valid" id="alcohol" aria-invalid="false"  style="text-align: center;">
 														<option value="-">-</option>
-														<option value="Y">oui</option>
-														<option value="0">non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no"></option>
 													</select>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="menopause" title="âge de la ménopause">
 														<span id="menopause_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
+												<div class="field col-sm-4">
 													<input type="number" name="menopause" size="17"
-														class="form-control valid" maxlength="60" id="menopause"
+														class="form-control valid" maxlength="60" id="menopause"  style="text-align: center;"
 														aria-invalid="false" min="30" max="60" placeholder="(âge)">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="mdensity" title="densité mammaire">
 														<span id="mdensity_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="mdensity" class="form-control valid" id="mdensity" aria-invalid="false">
+												<div class="field col-sm-4">
+													<select name="mdensity" class="form-control valid" id="mdensity" aria-invalid="false" style="text-align: center;">
 														<option value="-">-</option>
 														<option value="a">BI-RADS A</option>
 														<option value="b">BI-RADS B</option>
@@ -589,54 +602,54 @@
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="hgt">
 														<span id="hgt_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<input type="number" name="hgt" size="17" class="form-control valid"
+												<div class="field col-sm-4">
+													<input type="number" name="hgt" size="17" class="form-control valid"  style="text-align: center;"
 														maxlength="60" id="hgt" aria-invalid="false" min="100"
 														max="230">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="wgt">
 														<span id="wgt_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<input type="number" name="wgt" size="17" class="form-control valid"
+												<div class="field col-sm-4">
+													<input type="number" name="wgt" size="17" class="form-control valid"  style="text-align: center;"
 														maxlength="60" id="wgt" aria-invalid="false" min="40" max="200">
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="tl" title="âge de la ligature des trompes">
 														<span id="tl_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="tl" class="form-control valid" id="tl"
+												<div class="field col-sm-4">
+													<select name="tl" class="form-control valid" id="tl"  style="text-align: center;"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="Y">oui</option>
-														<option value="N">non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no"></option>
 													</select>
 												</div>
 											</div>
 											<div class="row row-std">
-												<div class="col-sm-6 text-right field_label">
+												<div class="col-sm-8 text-right field_label">
 													<label for="endo" title="endométriose">
 														<span id="endo_txt" class="lang"></span>
 													</label>
 												</div>
-												<div class="field col-sm-6">
-													<select name="endo" class="form-control valid" id="endo" aria-invalid="false">
+												<div class="field col-sm-4">
+													<select name="endo" class="form-control valid" id="endo" aria-invalid="false" style="text-align: center;">
 														<option value="-">-</option>
-														<option value="Y">oui</option>
-														<option value="N">non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no"></option>
 													</select>
 												</div>
 											</div>
@@ -647,8 +660,8 @@
 														<span id="ovary2_txt" class="lang"></span>
 													</label>
 													<select name="ovary2" class="form-control valid" id="ovary2" aria-invalid="false" style="text-align:center;">
-														<option value="Y">oui</option>
-														<option value="N" selected>non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no" selected></option>
 													</select>
 												</div>
 												<div class="col-sm-5 text-center">
@@ -656,8 +669,8 @@
 													</label>
 													<select name="mast2" class="form-control valid" id="mast2"  style="text-align:center;"
 														aria-invalid="false">
-														<option value="Y">oui</option>
-														<option value="N" selected>non</option>
+														<option value="Y" class="lang lang-yes"></option>
+														<option value="N" class="lang lang-no" selected></option>
 													</select>
 												</div>
 												<div class="col-sm-1 text-center"></div>
@@ -677,9 +690,9 @@
 													<select name="er_bc_pathology" class="form-control valid"
 														id="er_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -693,9 +706,9 @@
 													<select name="pr_bc_pathology" class="form-control valid"
 														id="pr_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -707,9 +720,9 @@
 													<select name="her2_bc_pathology" class="form-control valid"
 														id="her2_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -723,9 +736,9 @@
 													<select name="ck14_bc_pathology" class="form-control valid"
 														id="ck14_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -739,9 +752,9 @@
 													<select name="ck56_bc_pathology" class="form-control valid"
 														id="ck56_bc_pathology" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">positif</option>
-														<option value="N">négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -752,14 +765,16 @@
 											style="display: none;">
 											<div class="row row-std">
 												<div class="field_label col-lg-7 text-lg-right">
-													<label for="select_all_gene_tests">Définir le test pour les gènes&nbsp;:</label>
+													<label for="select_all_gene_tests">
+														<span class="lang" id="select_all_gene_tests_txt"></span>
+													</label>
 												</div>
 												<div class="field col-lg-5">
 													<select class="form-control" id="select_all_gene_tests">
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
-														<option value="N">Négatif</option>
-														<option value="reset">Réinitialiser</option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
+														<option value="N" class="lang lang-neg"></option>
+														<option value="reset" id = reset_txt class="lang" selected></option>
 													</select>
 												</div>
 											</div>
@@ -767,10 +782,13 @@
 												<div class="col-lg-4"></div>
 												<div class="col-lg-4 text-center">
 													<a href="https://canrisk.atlassian.net/wiki/spaces/FAQS/pages/30703617/What+is+the+difference+between+a+mutation+search+and+a+direct+gene+test"
-														title="FAQ" target="_blank">Type de test
+														title="FAQ" target="_blank">
+														<span class="lang" id="test_type"></span>
 													</a>
 												</div>
-												<div class="col-lg-4 text-center">Résultat</div>
+												<div class="col-lg-4 text-center">
+													<span class="lang" id="result"></span>
+												</div>
 											</div>
 											<div class="row row-std">
 												<div class="field_label col-lg-4 text-right"><label
@@ -780,18 +798,18 @@
 													<select name="brca1_gene_test" class="form-control valid"
 														id="brca1_gene_test" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select>
 												</div>
 												<div class="field col-lg-4">
 													<select name="brca1_gene_test_result" class="form-control valid"
 														id="brca1_gene_test_result" aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select>
 												</div>
 											</div>
@@ -802,17 +820,17 @@
 														class="form-control valid" id="brca2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="brca2_gene_test_result"
 														class="form-control valid" id="brca2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -822,17 +840,17 @@
 														class="form-control valid" id="palb2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="palb2_gene_test_result"
 														class="form-control valid" id="palb2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -842,17 +860,17 @@
 														class="form-control valid" id="chek2_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="chek2_gene_test_result"
 														class="form-control valid" id="chek2_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -862,17 +880,17 @@
 														class="form-control valid" id="atm_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="atm_gene_test_result"
 														class="form-control valid" id="atm_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -882,17 +900,17 @@
 														class="form-control valid" id="rad51d_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="rad51d_gene_test_result"
 														class="form-control valid" id="rad51d_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -902,17 +920,17 @@
 														class="form-control valid" id="rad51c_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="rad51c_gene_test_result"
 														class="form-control valid" id="rad51c_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 											<div class="row row-std">
@@ -922,17 +940,17 @@
 														class="form-control valid" id="brip1_gene_test"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">Non testé</option>
-														<option value="S">Complet</option>
-														<option value="T">Ciblé</option>
+														<option value="0" class="lang lang-untested"></option>
+														<option value="S" class="lang lang-full"></option>
+														<option value="T" class="lang lang-targeted"></option>
 													</select></div>
 												<div class="field col-lg-4"><select name="brip1_gene_test_result"
 														class="form-control valid" id="brip1_gene_test_result"
 														aria-invalid="false">
 														<option value="-">-</option>
-														<option value="0">inconnu</option>
-														<option value="P">Positif</option>
-														<option value="N">Négatif</option>
+														<option value="0" class="lang lang-unknown"></option>
+														<option value="P" class="lang lang-pos"></option>
+														<option value="N" class="lang lang-neg"></option>
 													</select></div>
 											</div>
 										</div>
@@ -1183,7 +1201,7 @@
 				<p>
 					<span id="Acknowledgment" class="lang"></span>
 					<br>
-					Copyright : Jean-Marie Ravel, 2020
+					Copyright : Jean-Marie Ravel, 2022
 					<br>
 					<a href="mailto:jmravel.dev@gmail.com?	subject=GeneTree">Contact : jmravel.dev@gmail.com</a>
 				</p>
@@ -1254,12 +1272,12 @@
 						<div class="col-sm-3" class="text-center">
 							<label class="radio-inline">
 								<input type="radio" name="oc_usage" id="oc_usage" value="Yes">
-								<span id="oc_use_yes2" class="lang"></span></label>
+								<span class="lang lang-yes"></span></label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="oc_usage" id="oc_usage" value="No">
-								<span id="oc_use_no2" class="lang"></span></label>
+								<span class="lang lang-no"></span></label>
 						</div>
 						<!-- <div class="col-sm-3"></div> -->
 					</div>
@@ -1305,12 +1323,12 @@
 					<div class="row text-center">
 						<div class="col-sm-3">
 							<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="Yes">
-								<span id="oc_use_yes" class="lang"></span>
+								<span class="lang lang-yes"></span>
 							</label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline"><input type="radio" name="oc_use_2_radio" id="oc_use_2_radio" value="No">
-								<span id="oc_use_no" class="lang"></span>
+								<span class="lang lang-no"></span>
 							</label>
 						</div>
 					</div>
@@ -1346,13 +1364,13 @@
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="mht_use_5" id="mht_use_5" value="Yes">
-								<span id="mht_use_yes" class="lang"></span>
+								<span class="lang lang-yes"></span>
 							</label>
 						</div>
 						<div class="col-sm-3">
 							<label class="radio-inline">
 								<input type="radio" name="mht_use_5" id="mht_use_5" value="No">
-								<span id="mht_use_no" class="lang"></span>
+								<span class="lang lang-no"></span>
 							</label>
 						</div>
 					</div>
