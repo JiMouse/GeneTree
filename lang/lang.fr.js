@@ -96,7 +96,7 @@ var lang = {
     pr_bc_pathology_txt:"Récepteurs à la progestérone",
     ck14_bc_pathology_txt:"Cytokératine 14",
     ck56_bc_pathology_txt:"Cytokératine 5/6",
-    select_all_gene_tests_txt:"Définir le test pour les gènes",
+    select_all_gene_tests_txt:"Définir pour tous les gènes",
     test_type:"Type de test",
     result: "Résultat",
     reset_txt:"Réinitialiser",
