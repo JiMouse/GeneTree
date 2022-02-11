@@ -23,8 +23,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	
-	<script src="../../package/lodash.js"></script>
-	<script src="../../package/jquery.inputmask.min.js"></script>
+	<script src="../package/lodash.js"></script>
+	<script src="../package/jquery.inputmask.min.js"></script>
 
 	<!-- languages script -->
 	<script>
@@ -43,32 +43,32 @@
 			load_lang = default_lang;
 		}
 		//load languages scripts
-		document.write('<scr'+'ipt type="text/javascript" src="../../lang/lang.'+load_lang+'.js"></sc'+'ript>');
-		document.write('<scr'+'ipt type="text/javascript" src="../../lang/story.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/lang.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/story.'+load_lang+'.js"></sc'+'ript>');
 	</script>
 	
 	<!-- load pedigreejs -->
-    <script src="../../js/io.js"></script>
-    <script src="../../js/pedigree_form.js"></script>
-    <script src="../../js/pedigree.js"></script>
-    <script src="../../js/undo_redo_refresh.js"></script>
-	<script src="../../js/widgets.js"></script>
-	<script src="../../js/zoom.js"></script>
-	<script src="../../js/canrisk_file.js"></script>
+    <script src="../js/io.js"></script>
+    <script src="../js/pedigree_form.js"></script>
+    <script src="../js/pedigree.js"></script>
+    <script src="../js/undo_redo_refresh.js"></script>
+	<script src="../js/widgets.js"></script>
+	<script src="../js/zoom.js"></script>
+	<script src="../js/canrisk_file.js"></script>
 
 
 	<!-- main script -->
-	<script type="text/javascript" src="../../js/main.js"></script>
-	<script type="text/javascript" src="../../js/main_front.js"></script>
-	<script type="text/javascript" src="../../js/hotContextMenu.js"></script>
-	<script type="text/javascript" src="../../js/user-interface.js"></script>
-	<script type="text/javascript" src="../../js/hotTable.js"></script>
-	<script type="text/javascript" src="../../js/indexWidgets.js"></script>
+	<script type="text/javascript" src="../js/main.js"></script>
+	<script type="text/javascript" src="../js/main_front.js"></script>
+	<script type="text/javascript" src="../js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../js/user-interface.js"></script>
+	<script type="text/javascript" src="../js/hotTable.js"></script>
+	<script type="text/javascript" src="../js/indexWidgets.js"></script>
 
 	<!-- main css -->
-	<link rel="stylesheet" type="text/css" href="../../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../../css/handsontable.css">
-	<link rel="stylesheet" type="text/css" href="../../css/pedigreejs.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../css/pedigreejs.css">
 
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -81,7 +81,7 @@
 			$(".se-pre-con").fadeOut("slow");
 
 			//load HPOArr
-			var filePath = '../../data/HPO_fr_CISMeF_1611083.txt';
+			var filePath = '../data/HPO_fr_CISMeF_1611083.txt';
 			HPOArr = ImportHPO(filePath);
 		});
 	</script>
@@ -125,22 +125,8 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
 				<ul class="nav navbar-nav navbar-left">
-					<!-- <li class="dropdown" style="display:inline;">
-						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
-							<span id="LangSetterText" class="lang"></span>
-							<span class="caret"></span>
-						</button>
-						<div class="dropdown-menu" aria-labelledby="export" style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
-							<button class="btn btn-block" type='button' id="LangSetterFr" style="background-color: #002e5d;color: #dbe9f5">
-								<span>Fr</span>
-							</button>
-							<button class="btn btn-block" type='button' id="LangSetterEng"  style="background-color: #002e5d;color: #dbe9f5">
-								<span>Eng</span>
-							</button>
-						</div>
-					</li> -->
 					<li>
-			            <a data-lang="en" href="/GeneTree/docs/eng/user-interface.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
+			            <a data-lang="en" href="/GeneTree/docs/user-interface.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
 			        </li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
