@@ -103,7 +103,7 @@
 			setSetterLanguage(load_lang);
 
 			(function () {
-				var strLink = '/GeneTree/docs/' + load_lang + '/user-interface.html'
+				var strLink = '/GeneTree/docs/'+ 'user-interface.html'
 				document.getElementById("userLink").setAttribute("href", strLink);
 				var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
 				document.getElementById("guideLink").setAttribute("href", strLink2);
@@ -125,15 +125,56 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
 				<ul class="nav navbar-nav navbar-left">
-					<li>
+					<!-- <li>
 			            <a data-lang="en" href="/GeneTree/docs/user-interface.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
-			        </li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Accueil</span></a> </li>
-					<li><a class="headerlink" href="/GeneTree/docs/fr/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang">Interface simplifiée</span></a></li>
-					<li><a class="headerlink" href="/GeneTree/docs/fr/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a></li>
+			        </li> -->
+					<li class="dropdown" style="display:inline;">
+						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false"
+							style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
+							<img id="LangSetterImg" alt="Français" src="../data/images/fr.svg">
+							<span id="LangSetterText" class="lang"></span>
+							<span class="caret"></span>
+						</button>
+						<div class="dropdown-menu" aria-labelledby="export"
+							style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
+							<button class="btn btn-block" type='button' id="LangSetterFr"
+								style="background-color: #002e5d;color: #dbe9f5">
+								<img alt="Français" src="../data/images/fr.svg">
+								<span>Fr</span>
+							</button>
+							<button class="btn btn-block" type='button' id="LangSetterEng"
+								style="background-color: #002e5d;color: #dbe9f5">
+								<img alt="Anglais" src="../data/images/eng.svg">
+								<span>Eng</span>
+							</button>
+						</div>
+					</li>
 				</ul>
+				<!-- <ul class="nav navbar-nav navbar-right">
+					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Accueil</span></a> </li>
+					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang">Interface simplifiée</span></a></li>
+					<li><a class="headerlink" href="/GeneTree/docs/fr/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a></li>
+				</ul> -->
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a class="headerlink" href="/GeneTree/" style="color:#dbe9f5">
+							<i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span>
+						</a>
+					</li>
+					<li>
+						<a class="headerlink" id="userLink" style="color:#dbe9f5" onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
+							<span id="user_friendly" class="lang"></span>
+						</a>
+					</li>
+					<li>
+						<a class="headerlink" id="guideLink" style="color:#dbe9f5">
+							<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;
+							<span id="guide" class="lang"></span>
+						</a>
+					</li>
+				</ul>
+
 			</div>
 		</div>
 	</nav>

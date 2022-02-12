@@ -962,11 +962,11 @@ function replacejscssfile(oldfilename, newfilename, filetype){
     }
 }
 
-function setSetterLanguage(newLang){
+function setSetterLanguage(newLang, src=''){
     let fullLang = (newLang=="fr" ? "Français" : "English");
     let shortLang = (newLang=="fr" ? "Fr" : "Eng");
 
-    $( "#LangSetterImg" ).attr("src", "data/images/"+newLang+".svg");
+    $( "#LangSetterImg" ).attr("src", src+"data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
     $( "#LangSetterText" ).text(shortLang);
 
@@ -992,6 +992,7 @@ function updateLangage(oldLang, newLang) {
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
     setTimeout(function() {
+        // to update
         $('.lang').each(function() {
             var value = $(this).attr('id');
             //add text
