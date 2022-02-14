@@ -962,11 +962,11 @@ function replacejscssfile(oldfilename, newfilename, filetype){
     }
 }
 
-function setSetterLanguage(newLang, src=''){
+function setSetterLanguage(newLang){
     let fullLang = (newLang=="fr" ? "Français" : "English");
     let shortLang = (newLang=="fr" ? "Fr" : "Eng");
 
-    $( "#LangSetterImg" ).attr("src", src+"data/images/"+newLang+".svg");
+    $( "#LangSetterImg" ).attr("src", "/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
     $( "#LangSetterText" ).text(shortLang);
 
