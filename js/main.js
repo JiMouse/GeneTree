@@ -966,7 +966,7 @@ function setSetterLanguage(newLang){
     let fullLang = (newLang=="fr" ? "Français" : "English");
     let shortLang = (newLang=="fr" ? "Fr" : "Eng");
 
-    $( "#LangSetterImg" ).attr("src", "/data/images/"+newLang+".svg");
+    $( "#LangSetterImg" ).attr("src", "/GeneTree/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
     $( "#LangSetterText" ).text(shortLang);
 
@@ -977,13 +977,13 @@ function setLanguage(oldLang, newLang){
     setSetterLanguage(newLang);
 
     //Replace all occurences of "oldscript.js" with "newscript.js"
-    replacejscssfile("lang/lang."+oldLang+".js", "lang/lang."+newLang+".js", "js")
-    replacejscssfile("lang/story."+oldLang+".js", "lang/story."+newLang+".js", "js")
+    replacejscssfile("/GeneTree/lang/lang."+oldLang+".js", "/GeneTree/lang/lang."+newLang+".js", "js")
+    replacejscssfile("/GeneTree/lang/story."+oldLang+".js", "/GeneTree/lang/story."+newLang+".js", "js")
 
     //change HPO source
-    filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    filePath = (newLang=="fr" ? '/GeneTree/data/HPO_fr_CISMeF_1611083.txt' : '/GeneTree/data/HPO_eng_20200726.txt');
     HPOArr = ImportHPO(filePath);
-    OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    OrphaArr = ImportOrphaData('/GeneTree/data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
