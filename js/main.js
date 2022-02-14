@@ -974,20 +974,30 @@ function setSetterLanguage(newLang){
 }
 
 function setLanguage(oldLang, newLang){
+    alert("clicked")
+
     setSetterLanguage(newLang);
+    alert("setSetterLanguage done")
 
     //Replace all occurences of "oldscript.js" with "newscript.js"
     replacejscssfile("/GeneTree/lang/lang."+oldLang+".js", "/GeneTree/lang/lang."+newLang+".js", "js")
     replacejscssfile("/GeneTree/lang/story."+oldLang+".js", "/GeneTree/lang/story."+newLang+".js", "js")
+    alert("Replace js done")
 
     //change HPO source
-    filePath = (newLang=="fr" ? '/GeneTree/data/HPO_fr_CISMeF_1611083.txt' : '/GeneTree/data/HPO_eng_20200726.txt');
+    filePath = (newLang=="fr" ? '/data/HPO_fr_CISMeF_1611083.txt' : '/data/HPO_eng_20200726.txt');
     HPOArr = ImportHPO(filePath);
-    OrphaArr = ImportOrphaData('/GeneTree/data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    alert("HPO done")
+
+    OrphaArr = ImportOrphaData('/data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+    alert("ORPHA done")
+
+    alert("setLanguage done")
+
 }
 
-function updateLangage(oldLang, newLang) {
+function updateLangage(oldLang, newLang) { //launch on click
     setLanguage(oldLang, newLang);
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
