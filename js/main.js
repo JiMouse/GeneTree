@@ -968,7 +968,7 @@ function setSetterLanguage(newLang){
 
     $( "#LangSetterImg" ).attr("src", "/GeneTree/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
-    $( "#LangSetterText" ).text(shortLang);
+    $( "#LangSetterText" ).text("shortLang");
 
     localStorage.setItem("language", newLang);
 }
