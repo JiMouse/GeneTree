@@ -652,15 +652,15 @@ $(document).ready(function() {
     });
     
     $( "#LangSetterFr" ).click(function() {
-        // $(".se-pre-con").show();
+        // $(".se-pre-con").show(); //bug ?
         updateLangage("eng", "fr");
-        // $(".se-pre-con").fadeOut("slow");
+        // $(".se-pre-con").fadeOut("slow");  //bug ?
     });
 
     $( "#LangSetterEng" ).click(function() {
-        // $(".se-pre-con").show();
+        // $(".se-pre-con").show(); //bug ?
         updateLangage("fr", "eng");
-        // $(".se-pre-con").fadeOut("slow");
+        // $(".se-pre-con").fadeOut("slow");  //bug ?
     });
 
 //---Pedigreejs script---

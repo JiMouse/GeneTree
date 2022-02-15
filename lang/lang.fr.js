@@ -1,4 +1,3 @@
-/* <span id="loadFromHotText" class="lang"></span> */
 var lang = {
     //index.html
     home:"Accueil",
@@ -138,7 +137,6 @@ var lang = {
     mht_use_radio3_txt:" Autre type de THS",
     mht_use_radio4_txt:" Type de THS inconnu",
 
-
     //io.js
     pedigree:"arbre",
 
@@ -182,6 +180,7 @@ var lang = {
     addSiblings:"Ajouter frère/sœur",
     addSpouse:"Ajouter conjoint",
     addParents:"Ajouter parents",
+    add_miscarriage:"Ajouter Fausses couches",
     delete:"Supprimer",
     parameters:"Paramètres",
     addConsang:"étendre pour créer un conjoint consanguin",
@@ -255,6 +254,7 @@ function dicoD () {
         "cancer_orl":"cancer ORL"
     };
 }
+
 //Defaut datasets
 var myData = [
     {"FamID": "1","Name": "Index","IndivID": "1","FathID": "2","MothID": "3","Sex": "F","Affected":"1","Deceased":"0","Age":"","Yob":"","Disease1":"","Age1":"","Disease2":"","Age2":"","Disease3":"","Age3":"","proband": true},
@@ -362,6 +362,10 @@ var dico = {
         'M':'Son',
         'F':'Sa'
     },
+    'pronom3':{
+        'M':'il',
+        'F':'elle'
+    },
     'civil':{
         'M':'Monsieur',
         'F':'Madame'
@@ -399,5 +403,3 @@ var dico = {
         'F':'e'
     }
   };
-
-

@@ -54,17 +54,68 @@ var lang = {
     dztwin:"dztwin",
     pregnancy:"pregnancy",
     Acknowledgment: "Tool initiated to satisfy a certain laziness and tested by the members of the team of the clinical genetics service of the CHRU of Nancy, whom I thank.",
+    unknown: "unknown",
+    pos:"Positive",
+    neg:"Negative",
+    full:"Full",
+    untested:"Untested",
+    targeted:"Targeted",
 
     // addInfo
+    canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
+    pid_fnameTxt: "inclure dans le nom du fichier",
     addInfo: "Add informations to individual",
     id: "Identifiant",
-    
+    save:"Enregistrer",
+    canRiskInfo: "Info. CanRisk",
+    name_surname: "Nom Prénom",
+    dbirth_txt: "Date de naissance",
+    sex_txt:"Sexe",
+    man_txt:"Homme",
+    woman_txt:"Femme",
+    comment_txt: "Commentaire",
+    anapath:"Anatomopathologie",
+    tests:"Tests génétiques",
+    menarche_txt:"Ménarche",
+    parity_txt: "Parité",
+    first_birth_txt: " Âge lors du premier né",
+    oc_use_label_txt: "Contraception",
+    mht_use_txt: "T. hormonale substitutif",
+    bmi_txt:"IMC",
+    alcohol_txt:"Alcool",
+    menopause_txt:"Ménopause",
+    mdensity_txt: "Score BI-RADS",
+    hgt_txt:"Taille (cm)",
+    wgt_txt:"Poids (kg)",
+    tl_txt:"Ligature des trompes",
+    endo_txt:"Endométriose",
+    ovary2_txt:"Ovariectomie",
+    mast2_txt:"Mastectomie",
+    er_bc_pathology_txt:"Récepteur d’œstrogènes",
+    pr_bc_pathology_txt:"Récepteurs à la progestérone",
+    ck14_bc_pathology_txt:"Cytokératine 14",
+    ck56_bc_pathology_txt:"Cytokératine 5/6",
+    select_all_gene_tests_txt:"Définir pour tous les gènes",
+    test_type:"Type de test",
+    result: "Résultat",
+    reset_txt:"Réinitialiser",
+
+    // Alcohol
+    alcohol_cons: "Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?",
+    wine_txt: "Verre de vin",
+    pint_txt:"Pinte",
+    beer_txt:"Bouteille de bière",
+    shots_txt:"Liqueur, spiritueux",
+
     //oc_use
-    OC_yrs_radio1: " less than a year",
-    OC_yrs_radio2: " 1-4 years",
-    OC_yrs_radio7: " 5-9 years",
-    OC_yrs_radio12: " 10-14 years",
-    OC_yrs_radio15: " 15 years or more",
+    oc_use_txt:"Avez-vous pris un jour une pillule contraceptive ?",
+    oc_use_yes_txt: "Combien de temps au total ?",
+    OC_yrs_radio1_txt: " less than a year",
+    OC_yrs_radio2_txt: " 1-4 years",
+    OC_yrs_radio7_txt: " 5-9 years",
+    OC_yrs_radio12_txt: " 10-14 years",
+    OC_yrs_radio15_txt: " 15 years or more",
+    oc_use_5_txt: "Avez-vous pris la pillule au cours des deux dernières années ?",
 
     //mdensity
     mdensity: {
@@ -73,6 +124,18 @@ var lang = {
         c: "heterogeneously dense",
         d: "extremely dense"
     },
+
+    // mht_use
+    mht_use_q_txt:"Depuis environ combien d’années au total avez-vous recours à un THS ? Indiquez 0 si vous avez eu recours à un THS pendant moins d’un an au total.",
+    mht_use_yes:"Yes",
+    mht_use_no:"No",
+    years: "Années",
+    mht_use_5_txt: "Avez-vous eu recours à un THS au cours des 5 dernières années ?",
+    mht_use_type_txt: "A quel type de THS avez-vous eu recours ?",
+    mht_use_radio1_txt:" Monothérapie à base d’œstrogènes connue",
+    mht_use_radio2_txt:" THS combinée connue",
+    mht_use_radio3_txt:" Autre type de THS",
+    mht_use_radio4_txt:" Type de THS inconnu",
 
     //io.js
     pedigree:"pedigree",
@@ -144,6 +207,7 @@ var title = {
     add_son:"Add a son",
     add_daughter:"Add a daughter",
     add_spouse:"Adding a new spouse with a child",
+    add_miscarriage:"Add a miscarriage",
     reset_dialog:"Confirmation of disease reset",
     clearFam:"Clear the fields",
     undo:"Undo",
@@ -159,6 +223,7 @@ var title = {
     pattern:"Patterns",
     switchToPatterns:"Reset colours and use patterns",
     help: "Pathologies are represented on the graph by colours or patterns. The colours can be filled in with a HEX code or in English. The possible patterns are: ",
+    // first_birth_title: "âge lors de la naissance du premier-né",
 
     //undo_redo_refresh.js
     center:"Center the pedigree",
@@ -251,6 +316,7 @@ var dataset = [
 ];
 
 var switches_fr = ["Adopted (in)", "Adopted (out)", "Miscarriage", "Stillbirth", "Termination"];
+
 var optionList = function(){
     return ['miscarriage', 'termination', 'pregnancy','mztwin', 'dztwin', 'Adopted'];
 }
@@ -260,9 +326,18 @@ var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PAL
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
 var onco = function(){
-    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer', 'colon_cancer', 'stomach_cancer'];
+    return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer'];
 }
 var diseases = onco()
+
+var onco_full = function(){
+    return [
+        'breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer',
+        'cancer_colon', 'cancer_estomac', 'cancer_utérus', 'cancer_rein', 'cancer_foie',
+        'mélanome','cancer_orl','polypes'
+    ]
+}
+var diseases_full = onco_full();
 
 var cancers_canrisk = {
     'breast_cancer': 'breast_cancer_diagnosis_age',
@@ -322,5 +397,9 @@ var dico = {
     'presenter':{
       'vie':'have',
       'décés':'had'
+    },
+    'accord':{
+        'M':'',
+        'F':'e'
     }
   };
