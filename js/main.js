@@ -962,13 +962,13 @@ function replacejscssfile(oldfilename, newfilename, filetype){
     }
 }
 
-function setSetterLanguage(newLang){
+function setSetterLanguage(newLang, src=''){
     let fullLang = (newLang=="fr" ? "Français" : "English");
     let shortLang = (newLang=="fr" ? "Fr" : "Eng");
 
-    $( "#LangSetterImg" ).attr("src", "/GeneTree/data/images/"+newLang+".svg");
+    $( "#LangSetterImg" ).attr("src", src+"/GeneTree/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
-    $( "#LangSetterText" ).text("shortLang");
+    $( "#LangSetterText" ).text(shortLang);
 
     localStorage.setItem("language", newLang);
 }
@@ -976,115 +976,113 @@ function setSetterLanguage(newLang){
 function setLanguage(oldLang, newLang){
     setSetterLanguage(newLang);
 
-    // //Replace all occurences of "oldscript.js" with "newscript.js"
-    // replacejscssfile("/GeneTree/lang/lang."+oldLang+".js", "/GeneTree/lang/lang."+newLang+".js", "js")
-    // replacejscssfile("/GeneTree/lang/story."+oldLang+".js", "/GeneTree/lang/story."+newLang+".js", "js")
+    //Replace all occurences of "oldscript.js" with "newscript.js"
+    replacejscssfile("lang/lang."+oldLang+".js", "lang/lang."+newLang+".js", "js")
+    replacejscssfile("lang/story."+oldLang+".js", "lang/story."+newLang+".js", "js")
 
-    // //change HPO source
-    // filePath = (newLang=="fr" ? '/GeneTree/data/HPO_fr_CISMeF_1611083.txt' : '/GeneTree/data/HPO_eng_20200726.txt');
-    // HPOArr = ImportHPO(filePath);
-
-    // OrphaArr = ImportOrphaData('/GeneTree/data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
-    // HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
-
+    //change HPO source
+    filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    HPOArr = ImportHPO(filePath);
+    OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
-function updateLangage(oldLang, newLang) { //launch on click
+function updateLangage(oldLang, newLang) {
     setLanguage(oldLang, newLang);
 
-    // var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
-    // setTimeout(function() {
-    //     // to update
-    //     $('.lang').each(function() {
-    //         var value = $(this).attr('id');
-    //         //add text
-    //         if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
+    var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
+    setTimeout(function() {
+        // to update
+        $('.lang').each(function() {
+            var value = $(this).attr('id');
+            //add text
+            if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
 
-    //         //add title
-    //         if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
-    //     });
+            //add title
+            if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
+        });
 
-    //     //update hot settings
-    //     let checkBox = document.getElementById("myCheckOnco"),
-    //         checkBoxHPO = document.getElementById("myCheckHPO");
+        //update hot settings
+        let checkBox = document.getElementById("myCheckOnco"),
+            checkBoxHPO = document.getElementById("myCheckHPO");
 
-    //     if (checkBox.checked == true){
-    //         document.getElementById('myCheckHPO').checked = false;
+        if (checkBox.checked == true){
+            document.getElementById('myCheckHPO').checked = false;
             
-    //         hot.updateSettings({
-    //             cells: function (row, col, prop) {
+            hot.updateSettings({
+                cells: function (row, col, prop) {
                     
-    //                 isDiseaseProp = function(val) {return prop == val};
-    //                 if (colsDiseases.some(isDiseaseProp)) {
-    //                     var cellProperties = {};
-    //                     cellProperties.renderer = autRenderer;
-    //                     return cellProperties;
-    //                 }
-    //                 if(prop=="Option") {
-    //                     var cellProperties = {};
-    //                     cellProperties.source = optionList();
-    //                     return cellProperties;
-    //                 }
-    //             },
-    //             columns: colsOnco,
-    //             colHeaders: cols_headerOnco
-    //         });
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) {
+                        var cellProperties = {};
+                        cellProperties.renderer = autRenderer;
+                        return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                },
+                columns: colsOnco,
+                colHeaders: cols_headerOnco
+            });
             
-    //     } else if (checkBoxHPO.checked == true){
-    //       document.getElementById('myCheckOnco').checked = false;
-    //       hot.updateSettings({
-    //           cells: function (row, col, prop) {
-    //               isDiseaseProp = function(val) {return prop == val};
-    //               if (colsDiseases.some(isDiseaseProp)) {
-    //                   var cellProperties = {};
-    //                 //   cellProperties.type = 'dropdown';
-    //                   cellProperties.source = HPOArr;
-    //                   return cellProperties;
-    //                 }
-    //                 if(prop=="Option") {
-    //                     var cellProperties = {};
-    //                     cellProperties.source = optionList();
-    //                     return cellProperties;
-    //                 }
-    //               },
-    //               columns: cols,
-    //               colHeaders: cols_header
-    //       });
-    //     } else { 
-    //         hot.updateSettings({
-    //             cells: function (row, col, prop) {
-    //                 isDiseaseProp = function(val) {return prop == val};
-    //                 if (colsDiseases.some(isDiseaseProp)) {
-    //                     var cellProperties = {};
-    //                     cellProperties.renderer = autRenderer2;
-    //                     return cellProperties;
-    //                 }
-    //                 if(prop=="Option") {
-    //                     var cellProperties = {};
-    //                     cellProperties.source = optionList();
-    //                     return cellProperties;
-    //                 }
-    //             },
-    //             columns: cols,
-    //             colHeaders: cols_header
-    //         });
-    //     }
+        } else if (checkBoxHPO.checked == true){
+          document.getElementById('myCheckOnco').checked = false;
+          hot.updateSettings({
+              cells: function (row, col, prop) {
+                  isDiseaseProp = function(val) {return prop == val};
+                  if (colsDiseases.some(isDiseaseProp)) {
+                      var cellProperties = {};
+                    //   cellProperties.type = 'dropdown';
+                      cellProperties.source = HPOArr;
+                      return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                  },
+                  columns: cols,
+                  colHeaders: cols_header
+          });
+        } else { 
+            hot.updateSettings({
+                cells: function (row, col, prop) {
+                    isDiseaseProp = function(val) {return prop == val};
+                    if (colsDiseases.some(isDiseaseProp)) {
+                        var cellProperties = {};
+                        cellProperties.renderer = autRenderer2;
+                        return cellProperties;
+                    }
+                    if(prop=="Option") {
+                        var cellProperties = {};
+                        cellProperties.source = optionList();
+                        return cellProperties;
+                    }
+                },
+                columns: cols,
+                colHeaders: cols_header
+            });
+        }
 
-    //     if (checkBox.checked == true){
-    //         opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
-    //     } else {
-    //         opts.diseases = $.extend(true, [], []);
-    //     }
-    //     sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
+        if (checkBox.checked == true){
+            opts.diseases = $.extend(true, [], DEFAULT_DISEASES);
+        } else {
+            opts.diseases = $.extend(true, [], []);
+        }
+        sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
 
-    //     //reset tree
-    //     pbuttons.reset(opts, opts.keep_proband_on_reset);
+        //reset tree
+        pbuttons.reset(opts, opts.keep_proband_on_reset);
 
-    //     //load new table
-    //     hot.loadData(JSON.parse(myDataSafe));
-    //     loadFromHot(); //not working
+        //load new table
+        hot.loadData(JSON.parse(myDataSafe));
+        loadFromHot(); //not working
 
-    // }, delayInMilliseconds);
+    }, delayInMilliseconds);
 }
 
 // Synchronously read a text file from the web server with Ajax

@@ -23,8 +23,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	
-	<script type="text/javascript" src="/GeneTree/package/lodash.js"></script>
-	<script type="text/javascript" src="/GeneTree/package/jquery.inputmask.min.js"></script>
+	<script src="../package/lodash.js"></script>
+	<script src="../package/jquery.inputmask.min.js"></script>
 
 	<!-- languages script -->
 	<script>
@@ -43,32 +43,32 @@
 			load_lang = default_lang;
 		}
 		//load languages scripts
-		document.write('<scr'+'ipt type="text/javascript" src="/GeneTree/lang/lang.'+load_lang+'.js"></sc'+'ript>');
-		document.write('<scr'+'ipt type="text/javascript" src="/GeneTree/lang/story.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/lang.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/story.'+load_lang+'.js"></sc'+'ript>');
 	</script>
 	
 	<!-- load pedigreejs -->
-    <script src="/GeneTree/js/io.js" type="text/javascript"></script>
-    <script src="/GeneTree/js/pedigree_form.js" type="text/javascript"></script>
-    <script src="/GeneTree/js/pedigree.js" type="text/javascript"></script>
-    <script src="/GeneTree/js/undo_redo_refresh.js" type="text/javascript"></script>
-	<script src="/GeneTree/js/widgets.js" type="text/javascript"></script>
-	<script src="/GeneTree/js/zoom.js" type="text/javascript"></script>
-	<script src="/GeneTree/js/canrisk_file.js" type="text/javascript"></script>
+    <script src="../js/io.js"></script>
+    <script src="../js/pedigree_form.js"></script>
+    <script src="../js/pedigree.js"></script>
+    <script src="../js/undo_redo_refresh.js"></script>
+	<script src="../js/widgets.js"></script>
+	<script src="../js/zoom.js"></script>
+	<script src="../js/canrisk_file.js"></script>
 
 
 	<!-- main script -->
-	<script type="text/javascript" src="/GeneTree/js/main.js"></script>
-	<script type="text/javascript" src="/GeneTree/js/main_front.js"></script>
-	<script type="text/javascript" src="/GeneTree/js/hotContextMenu.js"></script>
-	<script type="text/javascript" src="/GeneTree/js/user-interface.js"></script>
-	<script type="text/javascript" src="/GeneTree/js/hotTable.js"></script>
-	<script type="text/javascript" src="/GeneTree/js/indexWidgets.js"></script>
+	<script type="text/javascript" src="../js/main.js"></script>
+	<script type="text/javascript" src="../js/main_front.js"></script>
+	<script type="text/javascript" src="../js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../js/user-interface.js"></script>
+	<script type="text/javascript" src="../js/hotTable.js"></script>
+	<script type="text/javascript" src="../js/indexWidgets.js"></script>
 
 	<!-- main css -->
-	<link rel="stylesheet" type="text/css" href="/GeneTree/css/main.css">
-	<link rel="stylesheet" type="text/css" href="/GeneTree/css/handsontable.css">
-	<link rel="stylesheet" type="text/css" href="/GeneTree/css/pedigreejs.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../css/pedigreejs.css">
 
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
@@ -81,7 +81,7 @@
 			$(".se-pre-con").fadeOut("slow");
 
 			//load HPOArr
-			var filePath = '/GeneTree/data/HPO_fr_CISMeF_1611083.txt';
+			var filePath = '../data/HPO_fr_CISMeF_1611083.txt';
 			HPOArr = ImportHPO(filePath);
 		});
 	</script>
@@ -132,7 +132,7 @@
 						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"
 							style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
-							<img id="LangSetterImg" alt="Français" src="/GeneTree/data/images/fr.svg">
+							<img id="LangSetterImg" alt="Français" src="../data/images/fr.svg">
 							<span id="LangSetterText" class="lang"></span>
 							<span class="caret"></span>
 						</button>
@@ -140,12 +140,12 @@
 							style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
 							<button class="btn btn-block" type='button' id="LangSetterFr"
 								style="background-color: #002e5d;color: #dbe9f5">
-								<img alt="Français" src="/GeneTree/data/images/fr.svg">
+								<img alt="Français" src="../data/images/fr.svg">
 								<span>Fr</span>
 							</button>
 							<button class="btn btn-block" type='button' id="LangSetterEng"
 								style="background-color: #002e5d;color: #dbe9f5">
-								<img alt="Anglais" src="/GeneTree/data/images/eng.svg">
+								<img alt="Anglais" src="../data/images/eng.svg">
 								<span>Eng</span>
 							</button>
 						</div>
