@@ -993,14 +993,17 @@ function updateLangage(oldLang, newLang) {
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
     setTimeout(function() {
         // to update
-        $('.lang').each(function() {
-            var value = $(this).attr('id');
-            //add text
-            if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
+        // $('.lang').each(function() {
+        //     var value = $(this).attr('id');
+        //     //add text
+        //     if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
 
-            //add title
-            if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
-        });
+        //     //add title
+        //     if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
+        // });
+
+        populateText();
+
 
         //update hot settings
         let checkBox = document.getElementById("myCheckOnco"),
