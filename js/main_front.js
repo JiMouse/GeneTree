@@ -7,7 +7,7 @@ var cols = [
     {data: 'MothID'},
     {data: 'Sex',
     type: 'dropdown',
-    source: ['H','F','U']}, 
+    source: ['M','F','U']}, 
     // {
     // data: 'Affected',
     // type: 'checkbox',
