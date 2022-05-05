@@ -21,6 +21,10 @@
   background: #fff;
 }
 
+.handsontable .red {
+  background: red;
+}
+
 .handsontable .yellow {
   background: #f7ecb7;
 }

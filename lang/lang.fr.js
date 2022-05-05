@@ -60,6 +60,7 @@ var lang = {
     full:"Complet",
     untested:"Non testé",
     targeted:"Ciblé",
+    alert_noAge:"date de naissance non renseignée",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",

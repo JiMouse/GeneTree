@@ -7,22 +7,46 @@ document.addEventListener("DOMContentLoaded", function() {
                 var deceasedIndex = 5;
                 row = changes[0][0];
                 dead = this.getSourceDataAtCell(row, deceasedIndex);
-                if((source == 'edit') && (changes.length == 1) && (col == 'Age' || col == 'Yob') && (dead != 1)) {
-                    newValue = changes[0][3];
-                    var today = new Date();
-                    var y = today.getFullYear();
-                    if (!setter) {
-                            setter = true;
-                        if(col == 'Age'){
-                            let value = y-newValue
-                            this.setDataAtRowProp(row, 'Yob', value)
+                if((source == 'edit') && (changes.length == 1)) {
+                    if ((col == 'Age' || col == 'Yob') && (dead != 1)) {
+                        newValue = changes[0][3];
+                        if(newValue=="" || newValue==null) {return;}
+                        var today = new Date();
+                        var y = today.getFullYear();
+                        if (!setter) {
+                                setter = true;
+                            if(col == 'Age'){
+                                let value = y-newValue
+                                this.setDataAtRowProp(row, 'Yob', value)
 
-                        }else {
-                            let value = y-newValue
-                            this.setDataAtRowProp(row, 'Age', value)
+                            }else {
+                                let value = y-newValue
+                                this.setDataAtRowProp(row, 'Age', value)
+                            }
+                        } else {
+                            setter = false;
                         }
-                    } else {
-                        setter = false;
+                    }
+                    if (col == "Age1" || col == "Age2" || col == "Age3") {
+                        //add Setter
+                        let c=(col == "Age1" ? 10 : (col == "Age2" ? 12 : 14))
+                        newValue = changes[0][3];
+                        let y = this.getDataAtRowProp(row, 'Yob');
+                        if (parseInt(newValue) > 150) {
+                            if(y!="") {
+                                let value = newValue-y;
+                                this.setDataAtRowProp(row, col, value);
+                                hot.setCellMeta(row, c, 'className', 'white');
+                                hot.render()
+                            } else {
+                                // alert(lang.alert_noAge);
+                                hot.setCellMeta(row, c, 'className', 'red');
+                                hot.render()
+                            }
+                        } else {
+                            hot.setCellMeta(row, c, 'className', 'white');
+                            hot.render()
+                        }                    
                     }
                 }
             }
