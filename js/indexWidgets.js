@@ -93,8 +93,10 @@ $(document).ready(function(){
 		//sex
 		sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
+		alert(sex);
 		if(sex == undefined || sex == 'F') {
 			$( '#bc_pathology #gene_test' ).hide();
+			$( '#canrisk' ).show()
 		} else {
 			$( '#canrisk' ).hide();
 		}
