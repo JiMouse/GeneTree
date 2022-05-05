@@ -44,6 +44,7 @@ function buildStoryText(obj) {
 
   // Final polishing
   text = text.replace(/ \) \(/g, '');
+  text = text.replace(/  /g, ' ');
   return text;
 }
 
