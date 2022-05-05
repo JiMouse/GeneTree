@@ -34,17 +34,17 @@ document.addEventListener("DOMContentLoaded", function() {
                         let y = this.getDataAtRowProp(row, 'Yob');
                         if (parseInt(newValue) > 150) {
                             if(y!="") {
-                                let value = newValue-y;
+                                let value = String(newValue-y);
                                 this.setDataAtRowProp(row, col, value);
-                                hot.setCellMeta(row, c, 'className', 'white');
+                                hot.setCellMeta(row, c, 'className', 'htCenter htMiddle helvetica white');
                                 hot.render()
                             } else {
                                 // alert(lang.alert_noAge);
-                                hot.setCellMeta(row, c, 'className', 'red');
+                                hot.setCellMeta(row, c, 'className', 'htCenter htMiddle helvetica red');
                                 hot.render()
                             }
                         } else {
-                            hot.setCellMeta(row, c, 'className', 'white');
+                            hot.setCellMeta(row, c, 'className', 'htCenter htMiddle helvetica white');
                             hot.render()
                         }                    
                     }
