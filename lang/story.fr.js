@@ -22,7 +22,7 @@ function getPatho(obj, i,text_neg, text_pos) {
   }; return result + comment
 }
 
-function histoire(obj) {
+function buildStoryText(obj) {
   let text,
       indexID = getRowPedigreeJS(obj,1),
       father = getRowPedigreeJS(obj, obj[indexID].father),

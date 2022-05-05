@@ -1142,7 +1142,7 @@ HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 function loadStory(){
     let myDeepClone = JSON.stringify(hot.getSourceData()),
         obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
-    document.getElementById('story').innerHTML = histoire(obj);
+    document.getElementById('story').innerHTML = buildStoryText(obj);
 }
 
 function checkOption(obj,k,key) {
