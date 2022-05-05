@@ -42,6 +42,8 @@ function buildStoryText(obj) {
   if(typeof(gpm) !== 'undefined') text += '<br>' + "Son grand-père maternel" + textline(obj, gpm);
   if(typeof(gmm) !== 'undefined') text += '<br>' + "Sa grand-mère maternelle" + textline(obj, gmm);
 
+  // Final polishing
+  text = text.replace(/ \) \(/g, '');
   return text;
 }
 
