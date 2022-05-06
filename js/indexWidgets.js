@@ -49,9 +49,10 @@ $(document).ready(function(){
 		var name = obj[index]['Name'];
 		$( "#form_id_name" ).val(name);
 
-		//proband //to do => switch proband
-		//obj[i].proband
-		// if ($( "#proband" ).checked == true)
+		//proband
+		let proband = obj[index].hasOwnProperty("proband");
+		$("#proband").prop("checked", proband);
+		//to do => switch proband
 
 		//civil_name
 		$( "#civil_name" ).val(obj[index]['civil_name']);
@@ -93,10 +94,10 @@ $(document).ready(function(){
 		//sex
 		sex = obj[index]['Sex'];
 		$("input[name=sex][value="+sex+"]").prop("checked",true);
-		alert(sex);
 		if(sex == undefined || sex == 'F') {
 			$( '#bc_pathology #gene_test' ).hide();
-			$( '#canrisk' ).show()
+			let clicked = $(this).find('a:first').attr('href');
+			if(clicked == '#canrisk' || clicked == undefined) $( '#canrisk' ).show()
 		} else {
 			$( '#canrisk' ).hide();
 		}

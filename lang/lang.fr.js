@@ -61,6 +61,7 @@ var lang = {
     untested:"Non testé",
     targeted:"Ciblé",
     alert_noAge:"date de naissance non renseignée",
+    probandLabel:"propositus",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",

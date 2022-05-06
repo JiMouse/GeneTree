@@ -382,22 +382,22 @@
 					<form action="post" novalidate="novalidate" class="text-align:center">
 						<fieldset>
 							<div class="row" style="padding-top: 10px">
-								<div class="col-sm-5 text-right field_label">
+								<div class="col-sm-4 text-right field_label">
 									<label for="form_id_name">
 										<span id="id" class="lang"></span>
 									</label>
 								</div>
-								<div class="field col-sm-6">
+								<div class="field col-sm-3">
 									<input type="text" name="display_name" size="17" class="form-control valid"
 										maxlength="60" id="form_id_name" aria-invalid="false">
 								</div>
-								<!-- <div class="field col-sm-4"> -->
-									<!-- To do -->
-									<!-- <label for="proband">
-										<input type="checkbox" name="proband" value="proband" required="" id="proband" class="valid">
-											Propositus
-									</label> -->
-								<!-- </div> -->
+								
+								<div class="col-sm-5 field_label">
+									<label for="proband" class="font-normal">
+										<input type="checkbox" name="proband" value="proband" required="" id="proband" class="valid" disabled>
+										<span id="probandLabel" class="lang"></span>
+									</label>
+								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-5 text-right field_label">

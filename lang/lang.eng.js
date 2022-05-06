@@ -61,7 +61,7 @@ var lang = {
     untested:"Untested",
     targeted:"Targeted",
     alert_noAge:"year of birth not given",
-
+    probandLabel:"proband",
 
     // addInfo
     canRiskDialog: "Add an identifier (Famid) in the file",
