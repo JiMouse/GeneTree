@@ -9,18 +9,19 @@ $(document).ready(function(){
     cancer_init();
     children_init();
     siblings_init();
+    parents_init();
     gpp_init();
     fatherSiblings_init();
     gpm_init();
     motherSiblings_init();
-
-    //To do afterSelectionEnd in disease column : for disease dropdown ? => modal.show based on $('#fh_settings').dialog in main_front.js
 
     //set variables
     var myDataChildren_new = [];
 
     // Add hooks to update age and yob
     var setter = false;
+    var setterDisease = false;
+
     hotCancer.addHook('afterChange',
         function(changes, source) {
             let dbirth = $( "#dbirth" ).val();
@@ -34,12 +35,12 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotChildren);
         }
     );
-    //hotChildren diseases
-    hotChildren.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age1', 'Year1', hotChildren);
-        }
-    );
+    // //hotChildren
+    // hotChildren.addHook('afterChange',
+    //     function(changes, source) {
+    //         syncAgeYob(changes, source, 'Age1', 'Year1', hotChildren);
+    //     }
+    // );
 
     // hotSiblings
     hotSiblings.addHook('afterChange',
@@ -47,11 +48,23 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotSiblings);
         }
     );
-    hotSiblings.addHook('afterChange',
+    // hotSiblings.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotSiblings);
+    // }
+    // );
+
+    // hotParents
+    hotParents.addHook('afterChange',
     function(changes, source) {
-        syncAgeYob(changes, source, 'Age1', 'Year1', hotSiblings);
+        syncAgeYob(changes, source, 'Age', 'Yob', hotParents);
     }
-);
+    );
+    // hotParents.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotParents);
+    // }
+    // );
 
     // hotGpp
     hotGpp.addHook('afterChange',
@@ -59,11 +72,11 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotGpp);
         }
     );
-    hotGpp.addHook('afterChange',
-    function(changes, source) {
-        syncAgeYob(changes, source, 'Age1', 'Year1', hotGpp);
-    }
-);
+    // hotGpp.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotGpp);
+    // }
+    // );
 
     // hotGpm
     hotGpm.addHook('afterChange',
@@ -71,11 +84,11 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotGpm);
         }
     );
-    hotGpm.addHook('afterChange',
-    function(changes, source) {
-        syncAgeYob(changes, source, 'Age1', 'Year1', hotGpm);
-    }
-);
+    // hotGpm.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotGpm);
+    // }
+    // );
 
     // hotFatherSiblings
     hotFatherSiblings.addHook('afterChange',
@@ -83,11 +96,11 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotFatherSiblings);
         }
     );
-    hotFatherSiblings.addHook('afterChange',
-    function(changes, source) {
-        syncAgeYob(changes, source, 'Age1', 'Year1', hotFatherSiblings);
-    }
-);
+    // hotFatherSiblings.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotFatherSiblings);
+    // }
+    // );
 
     // hotMotherSiblings
     hotMotherSiblings.addHook('afterChange',
@@ -95,37 +108,67 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotMotherSiblings);
         }
     );
-    hotMotherSiblings.addHook('afterChange',
-    function(changes, source) {
-        syncAgeYob(changes, source, 'Age1', 'Year1', hotMotherSiblings);
-    }
-);
+    // hotMotherSiblings.addHook('afterChange',
+    // function(changes, source) {
+    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotMotherSiblings);
+    // }
+    // );
+
     //update age and yob
     function syncAgeYob(changes, source, colAge='Age', colYear='Yob', hotTable, deceasedIndex=2, refDate) {
         if(changes != null) {
             col = changes[0][1];
             row = changes[0][0];
             dead = hotTable.getSourceDataAtCell(row, deceasedIndex)
-            if((source == 'edit') && (changes.length == 1) && (col == colAge || col == colYear) && (dead != 1)) {
-                newValue = changes[0][3];
-                if(refDate==undefined) {
-                    var today = new Date();
-                    var y = today.getFullYear();
-                }else{
-                    let d = refDate.split('/')[0],
-                        m = refDate.split('/')[1],
-                        year = refDate.split('/')[2];
-                    var refYear=new Date(year, m, d);
-                    var y = refYear.getFullYear();
-                    if(year==undefined) return;
+            if((source == 'edit') && (changes.length == 1)) {
+                let newValue = changes[0][3];
+                if ((col == colAge || col == colYear) && (dead != 1)) {
+                    if(refDate==undefined) {
+                        var today = new Date();
+                        var y = today.getFullYear();
+                    }else{
+                        let d = refDate.split('/')[0],
+                            m = refDate.split('/')[1],
+                            year = refDate.split('/')[2];
+                        var refYear=new Date(year, m, d);
+                        var y = refYear.getFullYear();
+                        if(year==undefined) return;
+                    }
+                    if (!setter) {
+                        setter = true;
+                        let colSync = (col == colAge ? colYear : colAge);
+                        let value = (refDate==undefined ? y-newValue : (col == colAge ? newValue+y : newValue-y));
+                        hotTable.setDataAtRowProp(row, colSync, value);
+                    } else {
+                        setter = false;
+                    }
                 }
-                if (!setter) {
-                    setter = true;
-                    let colSync = (col == colAge ? colYear : colAge);
-                    let value = (refDate==undefined ? y-newValue : (col == colAge ? newValue+y : newValue-y));
-                    hotTable.setDataAtRowProp(row, colSync, value);
-                } else {
-                    setter = false;
+                if(newValue == "" || newValue == null) return
+                if (col == "Age1") {
+                    //add Setter?
+                    let y = hotTable.getDataAtRowProp(row, 'Yob');
+                    if(y != "" && y != null) {
+                        if (!setterDisease) {
+                            setterDisease = true;
+                            let value = String(y+newValue);
+                            hotTable.setDataAtRowProp(row, 'Year1', value);
+                        } else {
+                            setterDisease = false;
+                        }
+                    }
+                }
+                if (col == "Year1") {
+                    //add Setter?
+                    let y = hotTable.getDataAtRowProp(row, 'Yob');
+                    if(y != "" && y != null) {
+                        if (!setterDisease) {
+                            setterDisease = true;
+                            let value = String(y-newValue);
+                            hotTable.setDataAtRowProp(row, 'Age1', value);
+                        } else {
+                            setterDisease = false;
+                        }
+                    }
                 }
             }
         }
@@ -227,7 +270,12 @@ $(document).ready(function(){
         });
 
     }
-    
+    function parents_init() {
+        $("#collapseParents").click(function () {
+            window.setTimeout(()=>{hotParents.render();});
+        });
+    }
+
     function gpp_init() {
         $("#collapseGpp").click(function () {
             window.setTimeout(()=>{hotGpp.render();});
@@ -385,7 +433,21 @@ $(document).ready(function(){
             }
             preventScrolling.value = true;
         }
-)
+    )
+
+    // showDialogCancerList(hotParents, "Disease1");
+    hotParents.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            colDisease = "Disease1";
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == colDisease) {
+                hotSelectedTable =  this
+                dialogCancerList.dialog( "open" );
+            }
+            preventScrolling.value = true;
+        }
+    )
 
     // showDialogCancerList(hotGpp, "Disease1");
     hotGpp.addHook('afterSelectionEndByProp',
@@ -413,7 +475,7 @@ $(document).ready(function(){
         }
         preventScrolling.value = true;
     }
-)
+    )
 
     // showDialogCancerList(hotGpm, "Disease1");
     hotGpm.addHook('afterSelectionEndByProp',
@@ -427,7 +489,7 @@ $(document).ready(function(){
         }
         preventScrolling.value = true;
     }
-)
+    )
 
     // showDialogCancerList(hotMotherSiblings, "Disease1");
     hotMotherSiblings.addHook('afterSelectionEndByProp',
@@ -441,7 +503,7 @@ $(document).ready(function(){
         }
         preventScrolling.value = true;
     }
-)
+    )
 
     function updateDiseasecol(hotSelectedTable, row, column) {
         let cancerType = $('input[name="cancerListradio"]:checked').val();

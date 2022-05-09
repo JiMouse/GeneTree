@@ -78,6 +78,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     );
+    // hot.addHook('afterChange',  //update age and yob if alive
+    // function(changes, source) {
+    // }
+    // )
 
     //create reset_dialog
     var updatePartnersAndChildren_dialog;

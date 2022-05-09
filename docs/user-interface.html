@@ -541,6 +541,59 @@
 			<div class="panel panel-default">
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
+						<a id ="collapseParents" data-toggle="collapse" data-parent="#accordion" href="#collapseP">
+							Vos parents
+						</a>
+					</h3>
+				</div>
+				<div id="collapseP" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div id="acc_parents_div">
+							<div class="row" style="padding: 0px 20px;">
+								<div id="parents_table_div">
+									<p class='question'>Vos parents.</p>
+				
+									<div class="text-center">
+										<div class='hotContainer'>
+											<div id="hotParents" class="hot handsontable htColumnHeaders handsontable-helvetica"
+											style="display:inline-block;z-index: 0;min-height:60px"></div>
+										</div>
+									</div>
+					
+									<script>
+										const containerParents = document.getElementById('hotParents');
+
+										var myDataParents = [
+										{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "6","Sex": "M","Affected":"1","Deceased":"0"},
+    									{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "7","MothID": "8","Sex": "F","Affected":"1","Deceased":"0"},
+										]
+										var hotParents = new Handsontable(containerParents, {
+											data: myDataParents,
+											rowHeaders: false,
+											colHeaders: colChildren_header,
+											columns: colChildren,
+											className: 'htCenter htMiddle helvetica',
+											outsideClickDeselects: false,
+											persistentState: true,
+											rowHeights: 28,
+											colWidths: [180, 80, 50, 50, 80, 140, 80, 80, 130],
+											manualColumnResize: true,
+											height: 'auto',
+											width: '100%',
+											licenseKey: 'non-commercial-and-evaluation',
+										});
+
+									</script>
+                                </div>
+							</div>
+                        </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading header-lightblue">
+					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseGpp" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
 							Votre famille paternelle
 						</a>
