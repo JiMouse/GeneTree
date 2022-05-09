@@ -888,8 +888,8 @@ function createFamily(famObj, hotObj){
     function newParents(obj,i){ //i=row index
         if(hasParents(obj[i])) return
         //create parent and replace index row content
-        addNewInd(0, 0, 'M', obj, i, true);
         addNewInd(0, 0, 'F', obj, i, true);
+        addNewInd(0, 0, 'M', obj, i, true);
     }
 
     function partner(obj,i) {
