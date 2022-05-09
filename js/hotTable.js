@@ -48,10 +48,70 @@ document.addEventListener("DOMContentLoaded", function() {
                             hot.render()
                         }                    
                     }
+                    if (col == "Sex") {//check after change that partner has opposite sex if not update partner sex and children's parents 
+                        // load data
+                        let myDeepClone = JSON.stringify(hot.getSourceData());
+                        obj = JSON.parse(myDeepClone)
+
+                        //update partner(s)
+                        let partnersID = getPartnersFromHot(obj, row);
+                        if (partnersID == [] || partnersID == '' || partnersID == undefined) return
+                        for(let i = 0; i < partnersID.length; i++) {
+                            let partnerRow = getRow(obj, partnersID[i]);
+                            if (obj[partnerRow].Sex != obj[row].Sex) return
+                            obj[partnerRow].Sex = (obj[row].Sex == "M" ? "F" : "M") // change partner sex
+                        }
+                        
+                        // get all children and change children parents
+                        for (let k = 0; k < obj.length; k++) {
+                            if (obj[k]['FathID'] == obj[row]['IndivID'] || obj[k]['MothID'] == obj[row]['IndivID']) {
+                                let MothID = obj[k]['MothID'];
+                                obj[k]['MothID'] = obj[k]['FathID'];
+                                obj[k]['FathID'] = MothID;
+                            };
+                        };
+
+                        //load data back
+                        updatePartnersAndChildren_dialog.dialog( "open" );
+                    }
                 }
             }
         }
     );
+
+    //create reset_dialog
+    var updatePartnersAndChildren_dialog;
+    updatePartnersAndChildren_dialog = $('<div id="msgDialog">'+lang.updatePartnersAndChildren_dialog+'</div>').dialog({
+        autoOpen: false,
+        title: lang.updatePartnersAndChildren_title,
+        resizable: false,
+        height: "auto",
+        width: 420,
+        modal: true,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            // "ui-dialog-titlebar-close":"custom-btn",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+        buttons: [{
+            text: lang.continue,
+            click: function () {
+                hot.loadData(obj);
+                // loadFromHot();
+                $(this).dialog( "close" );
+            },
+        }, {
+            text: lang.cancel,
+            click: function () {
+                $(this).dialog( "close" );
+                return;
+            },
+        }],
+    });
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
 
     //add hook before row manual moving to let index in the first row
     hot.addHook('beforeRowMove',  //update dataset

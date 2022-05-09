@@ -167,6 +167,11 @@ var lang = {
     no:"Non",
     addDisease:"Ajouter une maladie",
 
+    //updatePartnersAndChildren_dialog
+    updatePartnersAndChildren_title:'Mise à jour des conjoints et enfants',
+    updatePartnersAndChildren_dialog:"Le genre d'un individu vient d'être modifié. Souhaitez-vous mettre à jour les informations des conjoints et enfants ?",
+
+
     //undo_redo_refresh.js
     confirmReset:"Réinitialiser entraînera une perte de données.",
     continue:"Continuer",

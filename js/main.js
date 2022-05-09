@@ -483,8 +483,6 @@ function ExportJSON(obj) {
     document.body.removeChild(a);
 }
 
-
-
 function GetChild(o,i) {
     var j
     for (var j = 0; j < o.length; j++) {
@@ -504,6 +502,69 @@ function getPartner(o,i) {
         parent = (o[child]['father']==o[i]['name'] ? 'mother' : 'father' );
     
     return o[child][parent];
+}
+
+function getChildFromHot(obj,row) { //IndivID FathID MothID Sex
+    for (let j = 0; j < obj.length; j++) {
+        if (obj[j]['FathID']==obj[row]['IndivID'] | obj[j]['MothID']==obj[row]['IndivID']) {
+            let result = [{'index':j,
+                            'name':obj[j]['IndivID']
+                        }];
+            return result;
+        };
+    };
+}
+
+function getPartnerFromHot(obj,row) {
+    if (typeof getChildFromHot(obj,row) === 'undefined') return 'undefined';
+    let child = getChildFromHot(obj,row)[0].index,
+        parent = (obj[child]['FathID']==obj[row]['IndivID'] ? 'MothID' : 'FathID' );
+    
+    return obj[child][parent];
+}
+
+function getPartnersFromHot(obj, row) {
+    let children = [];
+    for (let j = 0; j < obj.length; j++) {
+        if (obj[j]['FathID']==obj[row]['IndivID'] | obj[j]['MothID']==obj[row]['IndivID']) {
+            children.push(j);
+        };
+    };
+
+    if (children == []) return 'undefined';
+    let partners = [];
+    for (let c = 0; c < children.length; c++) {
+        let child = children[c];
+        let parent = (obj[child]['FathID']==obj[row]['IndivID'] ? 'MothID' : 'FathID' );
+        if(!partners.includes(obj[child][parent])) partners.push(obj[child][parent])
+    }
+    return partners
+}
+
+
+function getChildListFromHot(obj,row) { //to do
+    let child,
+        child1 = [],
+        child2 = [],
+        fath,
+        moth,
+        sex = obj[row].sex;
+    var fcs1=0, fcs2=0; //miscarriage
+    var img1=0, img2=0; //termination
+    //grossesse : obj[k].sex == "U"
+  
+    for (var k = 0; k < obj.length; k++) {
+      if (obj[k].sex == "U" || obj[k].hasOwnProperty('noparents')) continue
+      if (obj[k]['FathID'] == obj[row]['IndivID'] || obj[k]['MothID'] == obj[row]['name']) {
+        if (typeof fath === 'undefined') {
+            let fath = obj[k]['father'],
+                moth = obj[k]['mother'];
+            child1.push(k);
+        } else if(fath != obj[k]['father'] || moth != obj[k]['mother']) { //si 2ième union
+          child1.push(k);
+        } else child1.push(k)
+      };
+    };
 }
 
 function getFormattedTime() {

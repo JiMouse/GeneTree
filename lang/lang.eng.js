@@ -167,6 +167,10 @@ var lang = {
     no:"No",
     addDisease:"Add a disease",
 
+    //updatePartnersAndChildren_dialog
+    updatePartnersAndChildren_title:'Update of children and partners',
+    updatePartnersAndChildren_dialog:'Would you like to update children and partners?',
+
     //undo_redo_refresh.js
     confirmReset:"Resetting will result in loss of data.",
     continue:"Continue",
