@@ -78,9 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     );
-    // hot.addHook('afterChange',  //update age and yob if alive
-    // function(changes, source) {
-    // }
+    // hot.addHook('afterRemoveRow',  //Fonction debug si une personne est supprimée : vérifier si enfants +/- conjoint avec warning si vrai avant délétion
+        // function(changes, source) {
+        // }
     // )
 
     //create reset_dialog

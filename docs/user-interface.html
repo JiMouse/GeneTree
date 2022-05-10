@@ -564,8 +564,8 @@
 										const containerParents = document.getElementById('hotParents');
 
 										var myDataParents = [
-										{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "6","Sex": "M","Affected":"1","Deceased":"0"},
-    									{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "7","MothID": "8","Sex": "F","Affected":"1","Deceased":"0"},
+											{"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0"},
+            								{"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0"},
 										]
 										var hotParents = new Handsontable(containerParents, {
 											data: myDataParents,
@@ -800,7 +800,7 @@
 		<div class='row'  style="padding-top: 10px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class='h3-lightblue'>Finalisation</h3>
+					<h3 class='h3-lightblue'><span id="ui_finalisation" class="lang"></span></h3>
 				</div>
 			</div>
 			<p>

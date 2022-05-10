@@ -35,12 +35,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotChildren);
         }
     );
-    // //hotChildren
-    // hotChildren.addHook('afterChange',
-    //     function(changes, source) {
-    //         syncAgeYob(changes, source, 'Age1', 'Year1', hotChildren);
-    //     }
-    // );
 
     // hotSiblings
     hotSiblings.addHook('afterChange',
@@ -48,11 +42,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotSiblings);
         }
     );
-    // hotSiblings.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotSiblings);
-    // }
-    // );
 
     // hotParents
     hotParents.addHook('afterChange',
@@ -60,11 +49,6 @@ $(document).ready(function(){
         syncAgeYob(changes, source, 'Age', 'Yob', hotParents);
     }
     );
-    // hotParents.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotParents);
-    // }
-    // );
 
     // hotGpp
     hotGpp.addHook('afterChange',
@@ -72,11 +56,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotGpp);
         }
     );
-    // hotGpp.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotGpp);
-    // }
-    // );
 
     // hotGpm
     hotGpm.addHook('afterChange',
@@ -84,11 +63,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotGpm);
         }
     );
-    // hotGpm.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotGpm);
-    // }
-    // );
 
     // hotFatherSiblings
     hotFatherSiblings.addHook('afterChange',
@@ -96,11 +70,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotFatherSiblings);
         }
     );
-    // hotFatherSiblings.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotFatherSiblings);
-    // }
-    // );
 
     // hotMotherSiblings
     hotMotherSiblings.addHook('afterChange',
@@ -108,11 +77,6 @@ $(document).ready(function(){
             syncAgeYob(changes, source, 'Age', 'Yob', hotMotherSiblings);
         }
     );
-    // hotMotherSiblings.addHook('afterChange',
-    // function(changes, source) {
-    //     syncAgeYob(changes, source, 'Age1', 'Year1', hotMotherSiblings);
-    // }
-    // );
 
     //update age and yob
     function syncAgeYob(changes, source, colAge='Age', colYear='Yob', hotTable, deceasedIndex=2, refDate) {

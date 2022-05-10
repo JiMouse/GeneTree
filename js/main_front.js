@@ -943,7 +943,7 @@ $(document).ready(function() {
         loadFromObj(finalFamObj);
     });
 
-    function createPed() {
+    function createPed() {//build pedigree object for user-interface
         //set variables
         var indexRow = 0;
         var indexID = 1;
@@ -992,12 +992,9 @@ $(document).ready(function() {
             }
         }
         
-        //set index parent object
-        var parentObj = [
-            {"FamID": "1","Name": "Père","IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0"},
-            {"FamID": "1","Name": "Mère","IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0"},
-                        ];
-        var famObj = indObj.concat(parentObj);
+        //Add parents
+        let parentsObj = hotParents.getSourceData();
+        var famObj = indObj.concat(parentsObj);
 
         //Add grandfather and grand mother
         let gppObj = hotGpp.getSourceData();

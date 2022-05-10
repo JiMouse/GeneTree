@@ -200,7 +200,10 @@ var lang = {
     unknown:"Inconnu",
     alive:"en vie",
     dead:"décédé",
-    diagnosticAge:"Âge au diagnostic"
+    diagnosticAge:"Âge au diagnostic",
+
+    //user-interface.html
+    ui_finalisation:"Finalisation"
 };
 
 var title = {
