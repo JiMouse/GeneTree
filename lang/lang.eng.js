@@ -208,7 +208,10 @@ var lang = {
     unknown:"Unknown",
     alive:"alive",
     dead:"deceased",
-    diagnosticAge:"Age at diagnosis"
+    diagnosticAge:"Age at diagnosis",
+
+    //user-interface.html
+    ui_finalisation:"Finalisation"
 };
 
 var title = {
