@@ -66,6 +66,8 @@ var lang = {
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
     pid_fnameTxt: "inclure dans le nom du fichier",
+    canrisk_save : "Sauvegarder",
+    canrisk_addInfo: "Sauvegarder : ajout d'un identifiant ?",
     addInfo: "Ajouter des informations à un individu",
     id: "Identifiant",
     save:"Enregistrer",
