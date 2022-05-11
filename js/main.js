@@ -582,7 +582,7 @@ function ExportBOADICEv4(JSONData) {
         mainHeader = ["FamID","Name","Target","IndivID","FathID","MothID","Sex","MZTwin","Dead","Age","Yob","1stBrCa","2ndBrCa","OvCa","ProCa","PanCa"].join('\t'),
         otherHeader = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"].join('\t'),
         fileName = 'Boadicea_'+ getFormattedTime() +'.txt';
-
+        
     // Put the header
     header = mainHeader + ' \t' + otherHeader;
     row += '\r\n' + header;
@@ -611,8 +611,8 @@ function ExportBOADICEv4(JSONData) {
             name=name.replace(/-/g," ")//split words
             name = name.replace(/[^a-zA-Z0-9 ]/g, "") //replace non alpha-numeric characters
             if (name.length >8) { //max length in boadicea
-                name = name.match(/\b(\w)/g).join('');
-            };
+                name = name.match(/\b(\w)/g).join(''); // \b : “word boundary” \w : word characters, a-z, A-Z, 0-9, _
+            } else { name = name.replace(/ /g, "_")};
         } else {
             name = arrData[i]['name']; 
         };
