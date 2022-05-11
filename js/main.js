@@ -1042,8 +1042,9 @@ function setLanguage(oldLang, newLang){
     // alert(window.location.href);
     // root = (window.location.pathname == "/docs/user-interface.html" ? '../' : '');
     // alert(window.location.pathname);
-    replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js");
-    replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js");
+
+    replacejscssfile(root+"/GeneTree/lang/lang."+oldLang+".js", root+"/GeneTree/lang/lang."+newLang+".js", "js");
+    replacejscssfile(root+"/GeneTree/lang/story."+oldLang+".js", root+"/GeneTree/lang/story."+newLang+".js", "js");
 
     //change HPO source
     if(window.location.pathname == "/docs/user-interface.html") return; //not load for user-interface
