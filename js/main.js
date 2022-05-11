@@ -1037,9 +1037,11 @@ function setSetterLanguage(newLang, src=''){
 function setLanguage(oldLang, newLang){
     setSetterLanguage(newLang);
 
-    //Replace all occurences of "oldscript.js" with "newscript.js"
-    replacejscssfile("lang/lang."+oldLang+".js", "lang/lang."+newLang+".js", "js")
-    replacejscssfile("lang/story."+oldLang+".js", "lang/story."+newLang+".js", "js")
+    //Replace all occurences of "oldscript.js" with "newscript.js" //relative path
+    let root='';
+    //https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
+    replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js")
+    replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
 
     //change HPO source
     filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
@@ -1053,23 +1055,13 @@ function updateLangage(oldLang, newLang) {
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
     setTimeout(function() {
-        // to update
-        // $('.lang').each(function() {
-        //     var value = $(this).attr('id');
-        //     //add text
-        //     if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
-
-        //     //add title
-        //     if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
-        // });
-
         populateText();
-
 
         //update hot settings
         let checkBox = document.getElementById("myCheckOnco"),
             checkBoxHPO = document.getElementById("myCheckHPO");
 
+        if(checkBox == null || checkBoxHPO == null) return;
         if (checkBox.checked == true){
             document.getElementById('myCheckHPO').checked = false;
             
@@ -1144,7 +1136,6 @@ function updateLangage(oldLang, newLang) {
 
         //load new table
         hot.loadData(JSON.parse(myDataSafe));
-        loadFromHot(); //not working
 
     }, delayInMilliseconds);
 }
