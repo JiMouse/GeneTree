@@ -6,6 +6,9 @@ var lang = {
     greeting : "Hello",
     title:"GeneTree",
     subtitle:"An integrated tool to build a family tree, downloadable as a BOADICEA file, and the clinical history of a family.",
+
+    introduction_txt:'Note: the year of the disease can be entered in the "Age" columns of the diseases if the date of birth is entered',
+
     title_table:"Table",
     LangSetterText:"Eng",
     LangSetterTextFr:"Fr",

@@ -182,7 +182,6 @@ var lang = {
     removePartnersAndChildren_title:'Mise à jour des conjoints et enfants',
     removePartnersAndChildren_dialog:"Un individu qui a des enfants vient d'être supprimé. Les conjoints et enfants concernés vont être supprimés.",
 
-
     //undo_redo_refresh.js
     confirmReset:"Réinitialiser entraînera une perte de données.",
     continue:"Continuer",
