@@ -22,18 +22,18 @@ function getPatho(obj, i,text_neg, text_pos) {
   }; return result + comment
 }
 
-function buildStoryText(obj) {
+function buildStoryText(obj) { //Meta function to build story
+  let indexRow = getIndexRow(obj);  
   let text,
-      indexID = getRowPedigreeJS(obj,1),
-      father = getRowPedigreeJS(obj, obj[indexID].father),
-      mother = getRowPedigreeJS(obj, obj[indexID].mother);
+      father = getRowPedigreeJS(obj, obj[indexRow].father),
+      mother = getRowPedigreeJS(obj, obj[indexRow].mother);
 
   if(!obj[father].hasOwnProperty('noparents')) var gpp = getRowPedigreeJS(obj, obj[father].father);
   if(!obj[father].hasOwnProperty('noparents')) var gmp = getRowPedigreeJS(obj, obj[father].mother);
   if(!obj[mother].hasOwnProperty('noparents')) var gpm = getRowPedigreeJS(obj, obj[mother].father);
   if(!obj[mother].hasOwnProperty('noparents')) var gmm = getRowPedigreeJS(obj, obj[mother].mother);
   
-  text = textIndex(obj, 0) + '<br>';
+  text = textIndex(obj, indexRow) + '<br>';
   text += '<br>' + "Son père" + textline(obj, father);
   text += '<br>' + "Sa mère" + textline(obj, mother);
 
@@ -96,14 +96,15 @@ function textIndex(obj, i){
   let tl          = obj[i]['tl'];
   let endo        = obj[i]['endo'];
 
-  if(menarche !== undefined)
-    msg += ' ' + dico.pronom[sex] + " avait "+menarche+" ans à l'âge de la ménarche.";
+  if(menarche !== undefined) {
+    msg += '. ' + dico.pronom[sex] + " avait "+menarche+" ans à l'âge de la ménarche.";
+  } else {msg += '.'}
   // if(parity !== undefined)
   //   msg += dico.pronom[sex] + "\n##parity="+parity+".";
   if(first_birth !== undefined)
     msg += ' ' + dico.pronom[sex] + " avait "+first_birth+" ans lors de la naissance de son premier enfant.";
   if(oc_use !== undefined) {
-    let oc_use_msg = '. ' + dico.pronom[sex];
+    let oc_use_msg = ' ' + dico.pronom[sex];
     if(oc_use == 'N') {
       oc_use_msg += " n'a pas pris de pillule contraceptive oestroprogestative"
     } else {
@@ -117,7 +118,7 @@ function textIndex(obj, i){
     msg += oc_use_msg;
   }
   if(mht_use !== undefined)
-    msg += '. ' + dico.pronom[sex] + " a bénéficié d'un traitement hormonal substitutif";
+    msg += ' ' + dico.pronom[sex] + " a bénéficié d'un traitement hormonal substitutif";
     msg += (obj[i]['mht_use_yrs'] !== undefined ? ' pendant une durée cumulée de '+obj[i]['mht_use_yrs']+' ans.':'.')
   if(bmi !== undefined)
     msg += " Son IMC est calculé à "+bmi.replace('.',',') +" kg/m².";
@@ -135,6 +136,8 @@ function textIndex(obj, i){
     msg += ' ' + dico.pronom[sex] + "\n##tl="+tl+".";
   if(endo !== undefined)
     msg += ' ' + dico.pronom[sex] + "\n##endo="+endo+".";
+
+  msg=msg.slice(0,-1)   //remove last dot
 
   // // add genetic test if positive
   let tests = ['brca1', 'brca2', 'palb2', 'atm', 'chek2', 'rad51d', 'rad51c', 'brip1'];

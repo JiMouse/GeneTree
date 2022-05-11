@@ -71,6 +71,10 @@ var lang = {
     addInfo: "Ajouter des informations à un individu",
     id: "Identifiant",
     save:"Enregistrer",
+    probandSwith_dialog:"Souhaitez-vous utiliser cet individu comme cas index ?",
+    probandSwith_title:"Changement du propositus",
+    probandSwith_cancel:"Non",
+
     canRiskInfo: "Info. CanRisk",
     name_surname: "Nom Prénom",
     dbirth_txt: "Date de naissance",

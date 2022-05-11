@@ -52,7 +52,53 @@ $(document).ready(function(){
 		//proband
 		let proband = obj[index].hasOwnProperty("proband");
 		$("#proband").prop("checked", proband);
-		//to do => switch proband
+		$("#proband").prop("disabled", proband);
+
+		//switch proband
+		var probandSwith_dialog;
+		probandSwith_dialog = $('<div id="msgDialog">' + lang.probandSwith_dialog + '</div>').dialog({
+			autoOpen: false,
+			title: lang.probandSwith_title,
+			width: 350,
+			classes: {
+				"ui-dialog": "custom-background",
+				"ui-dialog-titlebar": "custom-theme",
+				"ui-dialog-title": "custom-theme text-center",
+				// "ui-dialog-titlebar-close":"custom-btn",
+				"ui-dialog-content": "custom-background",
+				"ui-dialog-buttonpane": "custom-background"
+			},	
+			buttons: [{
+					text: "OK",
+					click: function() {
+						function setProband(dataset, display_name, is_proband) {
+							$.each(dataset, function(_i, p) {
+								if (display_name === p.Name)
+									p.proband = is_proband;
+								else
+									delete p.proband;
+							});
+						}
+						setProband(obj, name, true);
+						$('#id_proband').prop("disabled", true);
+						probandSwith_dialog.dialog( "close" );
+					}
+				},{
+					text: lang.probandSwith_cancel,
+					click: function() {
+						$("#proband").prop('checked', false);
+						$("#proband").prop("disabled", false);
+						probandSwith_dialog.dialog( "close" );
+					}
+				}]
+		});
+		$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+
+		$("#proband").on('click', function() {
+			if($(this).is(':checked')) {
+				probandSwith_dialog.dialog( "open" );
+			}
+		});
 
 		//civil_name
 		$( "#civil_name" ).val(obj[index]['civil_name']);

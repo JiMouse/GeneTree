@@ -71,6 +71,10 @@ var lang = {
     addInfo: "Add informations to individual",
     id: "Identifier",
     save:"Save",
+    probandSwith_dialog:"Do you want to use this individual as proband?",
+    probandSwith_title:"Proband modification",
+    probandSwith_cancel:"cancel",
+
     canRiskInfo: "CanRisk Info. ",
     name_surname: "Name Surname",
     dbirth_txt: "Date of birth",
