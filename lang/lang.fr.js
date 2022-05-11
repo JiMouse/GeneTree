@@ -169,7 +169,9 @@ var lang = {
 
     //updatePartnersAndChildren_dialog
     updatePartnersAndChildren_title:'Mise à jour des conjoints et enfants',
-    updatePartnersAndChildren_dialog:"Le genre d'un individu vient d'être modifié. Souhaitez-vous mettre à jour les informations des conjoints et enfants ?",
+    updatePartnersAndChildren_dialog:"Le genre d'un individu vient d'être modifié. Le genre des conjoints et enfants concernés va être mis à jour.",
+    removePartnersAndChildren_title:'Mise à jour des conjoints et enfants',
+    removePartnersAndChildren_dialog:"Un individu qui a des enfants vient d'être supprimé. Les conjoints et enfants concernés vont être supprimés.",
 
 
     //undo_redo_refresh.js
