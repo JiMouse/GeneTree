@@ -1029,7 +1029,7 @@ function setSetterLanguage(newLang, src=''){
 
     $( "#LangSetterImg" ).attr("src", src+"/GeneTree/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
-    $( "#LangSetterText" ).text(shortLang); //bug
+    $( "#LangSetterText" ).text(shortLang);
 
     localStorage.setItem("language", newLang);
 }
@@ -1039,6 +1039,7 @@ function setLanguage(oldLang, newLang){
 
     //Replace all occurences of "oldscript.js" with "newscript.js" (relative path)
     let root = (window.location.pathname == "/docs/user-interface.html" ? '../' : '');
+    alert(window.location.pathname);
     replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js");
     replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js");
 
