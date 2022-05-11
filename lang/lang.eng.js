@@ -345,11 +345,11 @@ var optionList = function(){
     return ['miscarriage', 'termination', 'pregnancy','mztwin', 'dztwin', 'Adopted'];
 }
 
-var cols_header = ['Fam.', 'Name', 'Indiv.', 'Father', 'Mother', 'Gender', 'Affected', 'Deceased', 'Age', 'Yob', 'Option', 'Disease1', 'Age1', 'Disease2', 'Age2', 'Disease3', 'Age3','Comment.'];
-var cols_headerOnco = ["Ashkn","BRCA1t","BRCA1r","BRCA2t","BRCA2r","PALB2t","PALB2r","ATMt","ATMr","CHEK2t","CHEK2r","ER","PR","HER2","CK14","CK56"]
+var cols_header = ['Name', 'Id.', 'Father', 'Mother', 'Gender', 'Deceased', 'Age', 'Yob', 'Option', 'Disease1', 'Age1', 'Disease2', 'Age2', 'Disease3', 'Age3','Comment.'];
+var cols_headerOnco = [];
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
-var onco = function(){
+var onco = function(){//to not be modified: boadicea/canRisk export
     return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer'];
 }
 var diseases = onco()
@@ -357,8 +357,8 @@ var diseases = onco()
 var onco_full = function(){
     return [
         'breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer',
-        'cancer_colon', 'cancer_estomac', 'cancer_utérus', 'cancer_rein', 'cancer_foie',
-        'mélanome','cancer_orl','polypes'
+        'colon_cancer', 'stomach_cancer', 'uterus_cancer', 'kidney_cancer', 'liver_cancer',
+        'melanoma','head_cancer','polypes'
     ]
 }
 var diseases_full = onco_full();
@@ -372,7 +372,7 @@ var cancers_canrisk = {
 };
 
 var patterns = function(){//all id selected by user
-    return ['circles', 'diagonal', 'dots', 'horizontal', 'vertical', 'crosshatch', 'diagonal'];
+    return ['circles', 'diagonal', 'dots', 'horizontal', 'vertical', 'crosshatch', 'diagonal2'];
 }  
 
 //Story
