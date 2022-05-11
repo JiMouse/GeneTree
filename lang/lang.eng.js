@@ -347,7 +347,7 @@ var optionList = function(){
 
 var cols_header = ['Name', 'Id.', 'Father', 'Mother', 'Gender', 'Deceased', 'Age', 'Yob', 'Option', 'Disease1', 'Age1', 'Disease2', 'Age2', 'Disease3', 'Age3','Comment.'];
 var cols_headerOnco = [];
-cols_headerOnco=cols_header.concat(cols_headerOnco)
+cols_headerOnco=cols_header.concat(cols_headerOnco);
 
 var onco = function(){//to not be modified: boadicea/canRisk export
     return ['breast_cancer', 'breast_cancer2','ovarian_cancer','prostate_cancer','pancreatic_cancer'];
