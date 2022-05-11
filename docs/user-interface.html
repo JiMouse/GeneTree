@@ -56,7 +56,6 @@
 	<script src="../js/zoom.js"></script>
 	<script src="../js/canrisk_file.js"></script>
 
-
 	<!-- main script -->
 	<script type="text/javascript" src="../js/main.js"></script>
 	<script type="text/javascript" src="../js/main_front.js"></script>
@@ -90,14 +89,25 @@
 	<div class="se-pre-con"></div>
 	<script>
 		$(document).ready(function () {
-			$('.lang').each(function () {
-				var value = $(this).attr('id');
-				//add text
-				if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]);
+			populateText=function() {
+				$('.lang').each(function () {
+					var value = $(this).attr('id');
+					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
+					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
 
-				//add title
-				if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]);
-			});
+					// class yes and no
+					$('.lang.lang-yes').text(lang["yes"]);
+					$('.lang.lang-no').text(lang["no"]);
+					$('.lang.lang-unknown').text(lang["unknown"]);
+					$('.lang.lang-pos').text(lang["pos"]);
+					$('.lang.lang-neg').text(lang["neg"]);
+					$('.lang.lang-full').text(lang["full"]);
+					$('.lang.lang-untested').text(lang["untested"]);
+					$('.lang.lang-targeted').text(lang["targeted"]);
+
+				})
+			}
+			populateText();
 
 			//Load load_lang
 			setSetterLanguage(load_lang);
@@ -125,9 +135,6 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
 				<ul class="nav navbar-nav navbar-left">
-					<!-- <li>
-			            <a data-lang="en" href="/GeneTree/docs/user-interface.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
-			        </li> -->
 					<li class="dropdown" style="display:inline;">
 						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false"
@@ -151,11 +158,6 @@
 						</div>
 					</li>
 				</ul>
-				<!-- <ul class="nav navbar-nav navbar-right">
-					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Accueil</span></a> </li>
-					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang">Interface simplifiée</span></a></li>
-					<li><a class="headerlink" href="/GeneTree/docs/fr/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a></li>
-				</ul> -->
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a class="headerlink" href="/GeneTree/" style="color:#dbe9f5">

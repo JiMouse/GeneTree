@@ -1029,7 +1029,7 @@ function setSetterLanguage(newLang, src=''){
 
     $( "#LangSetterImg" ).attr("src", src+"/GeneTree/data/images/"+newLang+".svg");
     $( "#LangSetterImg" ).prop("alt", fullLang);
-    $( "#LangSetterText" ).text(shortLang);
+    $( "#LangSetterText" ).text(shortLang); //bug
 
     localStorage.setItem("language", newLang);
 }
@@ -1037,39 +1037,31 @@ function setSetterLanguage(newLang, src=''){
 function setLanguage(oldLang, newLang){
     setSetterLanguage(newLang);
 
-    //Replace all occurences of "oldscript.js" with "newscript.js"
-    replacejscssfile("lang/lang."+oldLang+".js", "lang/lang."+newLang+".js", "js")
-    replacejscssfile("lang/story."+oldLang+".js", "lang/story."+newLang+".js", "js")
+    //Replace all occurences of "oldscript.js" with "newscript.js" (relative path)
+    let root = (window.location.pathname == "/docs/user-interface.html" ? '../' : '');
+    replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js");
+    replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js");
 
     //change HPO source
-    filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    if(window.location.pathname == "/docs/user-interface.html") return; //not load for user-interface
+    filePath = (newLang=="fr" ? '/data/HPO_fr_CISMeF_1611083.txt' : '/data/HPO_eng_20200726.txt');
     HPOArr = ImportHPO(filePath);
-    OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    OrphaArr = ImportOrphaData('/data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
 function updateLangage(oldLang, newLang) {
     setLanguage(oldLang, newLang);
 
-    var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
+    var delayInMilliseconds = 100;  //ugly hack, need to use async / awate ?
     setTimeout(function() {
-        // to update
-        // $('.lang').each(function() {
-        //     var value = $(this).attr('id');
-        //     //add text
-        //     if(typeof(lang[value])!='undefined') $('#'+value).text(lang[value]);
-
-        //     //add title
-        //     if(typeof(title[value])!='undefined') $('#'+value).prop('title', title[value]);
-        // });
-
         populateText();
-
 
         //update hot settings
         let checkBox = document.getElementById("myCheckOnco"),
             checkBoxHPO = document.getElementById("myCheckHPO");
 
+        if(checkBox == null || checkBoxHPO == null) return
         if (checkBox.checked == true){
             document.getElementById('myCheckHPO').checked = false;
             
@@ -1144,7 +1136,6 @@ function updateLangage(oldLang, newLang) {
 
         //load new table
         hot.loadData(JSON.parse(myDataSafe));
-        loadFromHot(); //not working
 
     }, delayInMilliseconds);
 }
@@ -1152,7 +1143,7 @@ function updateLangage(oldLang, newLang) {
 // Synchronously read a text file from the web server with Ajax
 // from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
 
-function loadFile(filePath) {
+function loadFile(filePath) { //relative path
     var result = null;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", filePath, false);
@@ -1179,16 +1170,16 @@ function tsvJSON(tsv) {
 
 //Upload HPO terms and OrphaData
 function ImportHPO(filePath) {
-    let tsv = loadFile(filePath),
-        HPO = tsvJSON(tsv),
-        Arr = [];
+    let tsv = loadFile(filePath);
+    let HPO = tsvJSON(tsv);
 
+    let Arr = [];
     for(var i in HPO) {
         if(HPO[i].LABEL!='' & HPO[i].LABEL!='undefined' & HPO[i].LABEL!=null) Arr.push(HPO[i].LABEL);
     }
     return Arr;
 } 
-var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
+var filePath = '/data/HPO_fr_CISMeF_1611083.txt';
 HPOArr = ImportHPO(filePath);
 
 //Import Orphadata and concatenate
@@ -1197,7 +1188,7 @@ function ImportOrphaData(filePath) {
     var x = tsv.split('\n');
     return x;
 }
-OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt');
+OrphaArr = ImportOrphaData('/data/ORPHAnomenclature_fr.xml.txt');
 HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 
 function loadStory(){
