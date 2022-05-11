@@ -211,6 +211,12 @@ var lang = {
     diagnosticAge:"Age at diagnosis",
 
     //user-interface.html
+    ui_introduction_txt: "The aim of this page is to provide a simplified interface to prepare for a consultation by" 
+    + ' the collection of your family and personal history (family tree) in relation to oncological pathologies.' 
+    + " It is not a substitute for an oncogenetic consultation but can help you prepare for it."
+    + " You can save the tree as images or the raw data in the last section of this page."
+    + ' In each section you can fill in the ages or dates of birth and symmetrically the years or dates of diagnosis'
+    + ' of the relevant diseases',
     ui_finalisation:"Finalisation"
 };
 

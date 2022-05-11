@@ -213,6 +213,12 @@ var lang = {
     diagnosticAge:"Âge au diagnostic",
 
     //user-interface.html
+    ui_introduction_txt: 'Cette page a pour but de proposer une interface simplifiée permettant de préparer sa consultation en faisant' 
+    + ' le recueil de son histoire familiale et personnelle (arbre généalogique) en lien avec des pathologies oncologiques.' 
+    + " Il ne se substitut pas à une consultation d'oncogénétique mais peut vous permettre de la préparer."
+    + " Vous pouvez sauvegarder l'arbre sous forme d'images ou les données bruts dans la dernière section de cette page."
+    + ' A chaque section, vous pouvez remplir les âges ou les dates de naissance et symétriquement les années ou dates de diagnostics'
+    + ' des pathologies concernées.',
     ui_finalisation:"Finalisation"
 };
 
