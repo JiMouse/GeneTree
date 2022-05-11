@@ -6,6 +6,9 @@ var lang = {
     greeting : "Bonjour",
     title:"GeneTree",
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",
+    
+    introduction_txt:"Note : l'année de la pathologie peut être renseigné dans les colonnes 'Âge' des pathologies si la date de naissance est renseignée",
+    
     title_table:"Tableau",
     LangSetterText:"Fr",
     LangSetterTextFr:"Fr",
