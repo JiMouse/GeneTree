@@ -219,6 +219,67 @@ var lang = {
     + " Vous pouvez sauvegarder l'arbre sous forme d'images ou les données bruts dans la dernière section de cette page."
     + ' A chaque section, vous pouvez remplir les âges ou les dates de naissance et symétriquement les années ou dates de diagnostics'
     + ' des pathologies concernées.',
+    ui_history: 'Votre histoire personnelle',
+    ui_name:'Nom Prénom :',
+    ui_dbirth:'Date de naissance :',
+    ui_man:'Homme',
+    ui_woman:'Femme',
+    ui_comment:'Commentaire :',
+    ui_cancer:'Avez-vous eu un cancer ?',
+    ui_cancer_type:'Renseigner type et date ou âge du diagnostic',
+    ui_breast_cancer:' Cancer du sein',
+    ui_breast_cancer2:'Cancer du sein controlatéral',
+    ui_ov_cancer: " Cancer de l'ovaire",
+    ui_prostate_cancer: " Cancer de la prostate",
+    ui_pan_cancer: " Cancer du pancréas",
+    ui_uterus_cancer: " Cancer de l'utérus",
+    ui_rein_cancer: " Cancer du rein",
+    ui_foie_cancer: " Cancer du foie",
+    ui_melanome: " Mélanome",
+    ui_cancer_orl: " Cancer ORL",
+    ui_polypes: " Polypes",
+    ui_other: " Autre",
+    ui_children: "Vos enfants",
+    ui_children_q: "Avez-vous des enfants ?",
+    ui_children_cb:"Combien d'enfants avez-vous?",
+    ui_children_qd:"Quand sont nés vos enfants ?",
+    ui_siblings: "Vos frères et sœurs",
+    ui_siblings_q:"Avez-vous des frères et sœurs ?",
+    ui_siblings_cb: "Combien de frères et sœurs avez-vous?",
+    ui_siblings_qd: "Quand sont nés vos frères et sœurs ?",
+    ui_parents: "Vos parents",
+    ui_parents_q: "Vos parents.",
+    ui_patFam:"Votre famille paternelle",
+    ui_gpp:"Vos grands-parents paternels.",
+    ui_sib:"Est-ce que votre père a des frères et sœurs ?",
+    ui_sib_cb:"Combien de frères et sœurs a votre père ?",
+    ui_sib_cb_pm: "Quand sont nés les frères et sœurs de votre père ?",
+    ui_gpm:"Votre famille maternelle",
+    ui_gpm_q:"Vos grands-parents maternels.",
+    ui_m_sib: "Est-ce que votre mère a des frères et sœurs ?",
+    ui_m_sib_cb: "Combien de frères et sœurs a votre mère ?",
+    ui_m_sib_cb_qd:"Quand sont nés les frères et sœurs de votre mère ?",
+    ui_click:"Cliquer sur le bouton ci-dessous afin de générer l'arbre à partir des données que vous avez entré.",
+    ui_build_pedigree : "Créer l'abre généalogique",
+    ui_dl: "Télécharger les deux fichiers à envoyer à votre médecin",
+    ui_dl_png: "Télécharger l'arbre généalogique (image)",
+    ui_add_id:"Ajouter un identifiant (Famid) dans le fichier",
+    ui_add_id_file:"inclure dans le nom du fichier",
+    ui_dl:"Enregistrer",
+    ui_ind_sex:"Est-ce un homme (garçon) ou une femme (fille) ?",
+    ui_ind_sex_M:"Homme",
+    ui_ind_sex_F:"Femme",
+    ui_ind_bd:"Quelle est son année de naissance ou son âge ?",
+    ui_ind_dcd:"Est-il décédé ?",
+    ui_ind_dcd_yrs:"Quelle est son année de décés ou son âge au décés ?",
+    ui_ind_cancer: "Est-ce que cet enfant est (ou a été) atteint par un cancer ?",
+    ui_ind_cancer1:"Premier cancer",
+    ui_ind_cancer1_loc:" Localisation",
+    ui_ind_cancer1_age: " Âge ou année du diagnostic",
+    ui_ind_cancer2:"Deuxième cancer",
+    ui_ind_cancer2_loc:" Localisation",
+    ui_ind_cancer2_age: " Âge ou année du diagnostic",
+    ui_ind_comment: "Commentaire :",
     ui_finalisation:"Finalisation"
 };
 
@@ -429,3 +490,17 @@ var dico = {
         'F':'e'
     }
   };
+
+  //user-interface.html
+  var colCancer_header = ['Localisation du cancer', 'Âge au diagnostic', 'Année du diagnostic'];
+  var colCancer_header2 = ['Localisation<br> du cancer', 'Âge au<br> diagnostic', 'Année du<br> diagnostic', 'Commentaire'];
+  var colChildren_header = ['Nom', 'Genre', 'Décés', 'Âge', 'Année de<br> Naissance'];
+
+  var myDataGpp = [
+    {"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    {"FamID": "1","Name": "Grand-Mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
+    ]
+    var myDataGpm = [
+        {"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+        {"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
+        ]

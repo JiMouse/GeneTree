@@ -202,7 +202,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseCancer" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-							Votre histoire personnelle
+							<span class="lang" id="ui_history"></span>
 						</a>
 					</h3>
 				</div>
@@ -211,14 +211,14 @@
 						<fieldset>
 							<div class="row">
 								<div class="col-lg-2 text-right field_label">
-									<label for="civil_name">Nom Prénom :</label>
+									<label for="civil_name"><span class="lang" id="ui_name"></span></label>
 								</div>
 								<div class="field col-lg-2">
 									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
 										id="civil_name" aria-invalid="false">
 								</div>
 								<div class="col-lg-2 text-right field_label">
-									<label for="dbirth">Date de naissance :</label>
+									<label for="dbirth"><span class="lang" id="ui_dbirth"></span></label>
 								</div>
 								<div class="field col-lg-2">
 									<input id="dbirth" class="form-control" type="text" im-insert="false">
@@ -226,20 +226,20 @@
 								<div class="col-lg-2 text-center">
 									<label for="id_sex_0">
 										<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
-											Homme
+										<span class="lang" id="ui_man"></span>
 									</label>
 								</div>
 								<div class="col-lg-1 text-center">
 									<label for="id_sex_1">
 										<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid" checked>
-											Femme
+										<span class="lang" id="ui_woman"></span>
 									</label>
 								</div>
 								<div class="col-lg-1 text-center"></div>	
 							</div>
 							<br>
 							<div class="row" style="padding-left: 20px;padding-right: 20px;">
-									<label for="form_id_comment">Commentaire :</label>
+									<label for="form_id_comment"><span class="lang" id="ui_comment"></span></label>
 									<textarea name="form_id_comment" id="form_id_comment" class="form-control valid" rows="2"></textarea>
 							</div>
 						</fieldset>
@@ -247,12 +247,12 @@
 						<div id="acc_Cancer_div">
 							<div class="row" style="padding: 0px 20px;">
                                 <div class="col-lg-3">
-									<p class='question'>Avez-vous eu un cancer ?</p>
+									<p class='question'><span class="lang" id="ui_cancer"></span></p>
 									<label class="radio-inline" for="cancer_Yes"><input type="radio" name="cancer_radio" id="cancer_Yes" value="cancer_Yes">Oui</label>
 									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked>Non</label>
                                 </div>
                                 <div id="cancer_table_div" class="col-lg-9">
-									<p class='question'> Renseigner type et date ou âge du diagnostic</p>
+									<p class='question'><span class="lang" id="ui_cancer_type"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'> 
@@ -267,73 +267,73 @@
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_sein"> Cancer du sein
+														value="cancer_sein"><span class="lang" id="ui_breast_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_sein2"> Cancer du sein controlatéral
+														value="cancer_sein2"><span class="lang" id="ui_breast_cancer2"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_ovaire"> Cancer de l'ovaire
+														value="cancer_ovaire"><span class="lang" id="ui_ov_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_prostate"> Cancer de la prostate
+														value="cancer_prostate"><span class="lang" id="ui_prostate_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_pancréas"> Cancer du pancréas
+														value="cancer_pancréas"><span class="lang" id="ui_pan_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_utérus"> Cancer de l'utérus
+														value="cancer_utérus"><span class="lang" id="ui_uterus_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_rein"> Cancer du rein
+														value="cancer_rein"><span class="lang" id="ui_rein_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_foie"> Cancer du foie
+														value="cancer_foie"><span class="lang" id="ui_foie_cancer"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="mélanome"> Mélanome
+														value="mélanome"><span class="lang" id="ui_melanome"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="cancer_ORL"> Cancer ORL
+														value="cancer_ORL"><span class="lang" id="ui_cancer_orl"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="polypes"> Polypes
+														value="polypes"><span class="lang" id="ui_polypes"></span>
 													</label>
 												</div>
 												<div class="form-check">
 													<label class="form-check-label font-normal">
 														<input type="radio" class="form-check-input" name="cancerListradio"
-														value="autre"> Autre
+														value="autre"><span class="lang" id="ui_other"></span>
 													</label>
 												</div>
 											</fieldset>
@@ -354,7 +354,7 @@
 											{data: 'Age', type: 'numeric'},
 											{data: 'Year', type: 'numeric'}
 										];
-										var colCancer_header = ['Localisation du cancer', 'Âge au diagnostic', 'Année du diagnostic'];
+										// var colCancer_header = ['Localisation du cancer', 'Âge au diagnostic', 'Année du diagnostic'];
 
 										var hotCancer = new Handsontable(containerCancer, {
 											data: myDataCancer,
@@ -383,7 +383,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseChildren" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-							Vos enfants
+							<span class="lang" id="ui_children"></span>
 						</a>
 					</h3>
 				</div>
@@ -393,12 +393,12 @@
 						<div id="acc_Child_div">
                             <div class="row" style="padding: 0px 20px;">
                                 <div class="col-lg-3">
-									<p class='question'>Avez-vous des enfants ?</p>
-									<label class="radio-inline" for="children_Yes"><input type="radio" name="children_radio" id="children_Yes" value="children_Yes">Oui</label>
-									<label class="radio-inline" for="children_No"><input type="radio" name="children_radio" id="children_No" value="children_No" checked>Non</label>
+									<p class='question'><span class="lang" id="ui_children_q"></span></p>
+									<label class="radio-inline" for="children_Yes"><input type="radio" name="children_radio" id="children_Yes" value="children_Yes"><span class="lang lang-yes"></span></label>
+									<label class="radio-inline" for="children_No"><input type="radio" name="children_radio" id="children_No" value="children_No" checked><span class="lang lang-no"></span></label>
 									<br><br>
 									<div id="children_div">
-										<p class='question'>Combien d'enfants avez-vous?</p>
+										<p class='question'><span class="lang" id="ui_children_cb"></span></p>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 											<input id="children_input" name="children_input" type="number" class="form-control"
@@ -407,7 +407,7 @@
 									</div>
                                 </div>
                                 <div id="children_table_div" class="col-lg-9">
-									<p class='question'>Quand sont nés vos enfants ?</p>
+									<p class='question'><span class="lang" id="ui_children_qd"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -429,7 +429,7 @@
 											{data: 'Year1', type: 'numeric'},
 											{data: 'comment', type: 'text'}
 										];
-										colCancer_header = ['Localisation<br> du cancer', 'Âge au<br> diagnostic', 'Année du<br> diagnostic', 'Commentaire'];
+										colCancer_header = colCancer_header2;
 									
 										var colChildren = [
 											{data: 'Name'},
@@ -441,7 +441,7 @@
 										];
 										colChildren = colChildren.concat(colCancer);
 
-										var colChildren_header = ['Nom', 'Genre', 'Décés', 'Âge', 'Année de<br> Naissance'];
+										// var colChildren_header = ['Nom', 'Genre', 'Décés', 'Âge', 'Année de<br> Naissance'];
 										colChildren_header=colChildren_header.concat(colCancer_header);
 
 										var hotChildren = new Handsontable(containerChildren, {
@@ -471,7 +471,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseSiblings" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-							Vos frères et sœurs
+							<span class="lang" id="ui_siblings"></span>
 						</a>
 					</h3>
 				</div>
@@ -481,12 +481,12 @@
 						<div id="acc_siblings_div">
                             <div class="row" style="padding: 0px 20px;">
                                 <div class="col-lg-3">
-									<p class='question'>Avez-vous des frères et sœurs ?</p>
+									<p class='question'><span class="lang" id="ui_siblings_q"></span></p>
 									<label class="radio-inline" for="siblings_Yes"><input type="radio" name="siblings_radio" id="siblings_Yes" value="siblings_Yes">Oui</label>
 									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked>Non</label>
 									<br><br>
 									<div id="siblings_div">
-										<p class='question'>Combien de frères et sœurs avez-vous?</p>
+										<p class='question'><span class="lang" id="ui_siblings_cb"></span></p>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 											<input id="siblings_input" name="siblings_input" type="number" class="form-control"
@@ -495,7 +495,7 @@
 									</div>
                                 </div>
                                 <div id="siblings_table_div" class="col-lg-9">
-									<p class='question'>Quand sont nés vos frères et sœurs ?</p>
+									<p class='question'><span class="lang" id="ui_siblings_qd"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -539,7 +539,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseParents" data-toggle="collapse" data-parent="#accordion" href="#collapseP">
-							Vos parents
+							<span class="lang" id="ui_parents"></span>
 						</a>
 					</h3>
 				</div>
@@ -548,7 +548,7 @@
 						<div id="acc_parents_div">
 							<div class="row" style="padding: 0px 20px;">
 								<div id="parents_table_div">
-									<p class='question'>Vos parents.</p>
+									<p class='question'><span class="lang" id="ui_parents_q"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -592,7 +592,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseGpp" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-							Votre famille paternelle
+							<span class="lang" id="ui_patFam"></span>
 						</a>
 					</h3>
 				</div>
@@ -601,7 +601,7 @@
 						<div id="acc_siblings_div">
 							<div class="row" style="padding: 0px 20px;">
 								<div id="gpp_table_div">
-									<p class='question'>Vos grands-parents paternels.</p>
+									<p class='question'><span class="lang" id="ui_gpp"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -613,10 +613,10 @@
 									<script>
 										const containerGpp = document.getElementById('hotGpp');
 
-										var myDataGpp = [
-										{"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
-    									{"FamID": "1","Name": "Grand-Mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
-										]
+										// var myDataGpp = [
+										// {"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    									// {"FamID": "1","Name": "Grand-Mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
+										// ]
 										var hotGpp = new Handsontable(containerGpp, {
 											data: myDataGpp,
 											rowHeaders: false,
@@ -638,12 +638,12 @@
 							</div>
                             <div class="row" style="padding: 20px 20px;">
                                 <div class="col-lg-3">
-									<p class='question'>Est-ce que votre père a des frères et sœurs ?</p>
+									<p class='question'><span class="lang" id="ui_sib"></span></p>
 									<label class="radio-inline" for="fatherSiblings_Yes"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_Yes" value="fatherSiblings_Yes">Oui</label>
 									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked>Non</label>
 									<br><br>
 									<div id="fatherSiblings_div">
-										<p class='question'>Combien de frères et sœurs a votre père ?</p>
+										<p class='question'><span class="lang" id="ui_sib_cb"></span></p>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 											<input id="fatherSiblings_input" name="fatherSiblings_input" type="number" class="form-control"
@@ -652,7 +652,7 @@
 									</div>
                                 </div>
                                 <div id="fatherSiblings_table_div" class="col-lg-9">
-									<p class='question'>Quand sont nés les frères et sœurs de votre père ?</p>
+									<p class='question'><span class="lang" id="ui_sib_cb_pm"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -693,7 +693,7 @@
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
 						<a id ="collapseGpm" data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-							Votre famille maternelle
+							<span class="lang" id="ui_gpm"></span>
 						</a>
 					</h3>
 				</div>
@@ -702,7 +702,7 @@
 						<div id="acc_siblings_div">
 							<div class="row" style="padding: 0px 20px;">
 								<div id="gpm_table_div">
-									<p class='question'>Vos grands-parents maternels.</p>
+									<p class='question'><span class="lang" id="ui_gpm_q"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -714,10 +714,10 @@
 									<script>
 										const containerGpm = document.getElementById('hotGpm');
 
-										var myDataGpm = [
-										{"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
-    									{"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
-										]
+										// var myDataGpm = [
+										// {"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    									// {"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
+										// ]
 										var hotGpm = new Handsontable(containerGpm, {
 											data: myDataGpm,
 											rowHeaders: false,
@@ -739,12 +739,12 @@
 							</div>
                             <div class="row" style="padding: 20px 20px;">
                                 <div class="col-lg-3">
-									<p class='question'>Est-ce que votre mère a des frères et sœurs ?</p>
+									<p class='question'><span class="lang" id="ui_m_sib"></span></p>
 									<label class="radio-inline" for="motherSiblings_Yes"><input type="radio" name="motherSiblings_radio" id="motherSiblings_Yes" value="motherSiblings_Yes">Oui</label>
 									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked>Non</label>
 									<br><br>
 									<div id="motherSiblings_div">
-										<p class='question'>Combien de frères et sœurs a votre mère ?</p>
+										<p class='question'><span class="lang" id="ui_m_sib_cb"></span></p>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 											<input id="motherSiblings_input" name="motherSiblings_input" type="number" class="form-control"
@@ -753,7 +753,7 @@
 									</div>
                                 </div>
                                 <div id="motherSiblings_table_div" class="col-lg-9">
-									<p class='question'>Quand sont nés les frères et sœurs de votre mère ?</p>
+									<p class='question'><span class="lang" id="ui_m_sib_cb_qd"></span></p>
 				
 									<div class="text-center">
 										<div class='hotContainer'>
@@ -802,11 +802,11 @@
 			</div>
 			<p>
 				<div style="padding:0px 20px;">
-					Cliquer sur le bouton ci-dessous afin de générer l'arbre à partir des données que vous avez entré.
+					<span class="lang" id="ui_click"></span>
 				</div>
 			</p>
 			<div class='text-center' style="padding-bottom: 10px;">
-				<button id="createPed" class="btn btn-primary">Créer l'abre généalogique</button>
+				<button id="createPed" class="btn btn-primary"><span class="lang" id="ui_build_pedigree"></span></button>
 			</div>
 
 			<!-- create pedigree -->
@@ -816,9 +816,9 @@
 			</div>
 
 			<div class='text-center'>
-				<button id="exportPedigreejsCanRisk" class="btn btn-primary">Télécharger les deux fichiers à envoyer à votre médecin</button>
+				<button id="exportPedigreejsCanRisk" class="btn btn-primary"><span class="lang" id="ui_dl"></span></button>
 				<div class="btnDivider"></div>
-				<button id="png_download" class="btn btn-primary">Télécharger l'arbre généalogique (image)</button>
+				<button id="png_download" class="btn btn-primary"><span class="lang" id="ui_dl_png"></span></button>
 			</div>
 
 			<div id="save-canrisk-dialog" class="modal fade text-center">
@@ -826,16 +826,16 @@
 					<div class="modal-content">
 						<div class="modal-body">
 							<div class="pleft10">
-								<label>Ajouter un identifiant (Famid) dans le fichier</label>
+								<label><span class="lang" id="ui_add_id"></span></label>
 								<input type="text" maxlength="13" class="form-control top10" id="famid" placeholder="Ex. : Identifiant la généalogie">
 							</div>
 							<div class="checkbox radio-info radio-circle">
 								<input type="checkbox" name="report-opts" id="pid_fname" checked="">
-								<label for="pid_fname" class="radio-inline">inclure dans le nom du fichier</label>
+								<label for="pid_fname" class="radio-inline"><span class="lang" id="ui_add_id_file"></span></label>
 							</div>
 						</div>
 						<div class="modal-footer bg-blue rounded-bottom">
-							<button type="button" class="btn btn-primary" data-dismiss="modal" id="cr_file_save">Enregistrer</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" id="cr_file_save"><span class="lang" id="ui_add_id_file"></span></button>
 						</div>
 					</div>
 				</div>
@@ -877,7 +877,7 @@
 				<p>
 					<span id="Acknowledgment" class="lang"></span>
 					<br>
-					Copyright : Jean-Marie Ravel, 2020
+					Copyright : Jean-Marie Ravel, 2019-2022
 					<br>
 					<a href="mailto:jmravel.dev@gmail.com?	subject=GeneTree">Contact : jmravel.dev@gmail.com</a>
 				</p>
@@ -891,25 +891,25 @@
 		<!-- change id -->
 		<div class="row" style="padding: 0px 20px;">
 			<div class="col-lg-5">
-				<p class='row'>Est-ce un homme (garçon) ou une femme (fille) ?</p>
+				<p class='row'><span class="lang" id="ui_ind_sex"></span></p>
 				<div id="sexInd_div" class="row">
 					<div class="col-sm-4 text-center">
 						<label for="id_sex_0">
 							<input type="radio" name="sex" value="M" required="" id="id_sex_0" class="valid">
-								Homme
+							<span class="lang" id="ui_ind_sex_M"></span>
 						</label>
 					</div>
 					<div class="col-sm-4 text-center">
 						<label for="id_sex_1">
 							<input type="radio" name="sex" value="F" required="" id="id_sex_1" class="valid">
-								Femme
+							<span class="lang" id="ui_ind_sex_F"></span>
 						</label>
 					</div>
 				</div>
 				<br>
 
 				<div id="yobInd_div">
-					<p class='row'>Quelle est son année de naissance ou son âge ?</p>
+					<p class='row'><span class="lang" id="ui_ind_bd"></span></p>
 					<div id="yobInd" class="col-sm-4">
 						<input type="number" name="yobIndInput" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="yobIndInput" aria-invalid="false" min="1850">
@@ -919,18 +919,18 @@
 				<br>
 				
 				<div id="deadInd_div">
-					<p class='row'>Est-il décédé ?</p>
+					<p class='row'><span class="lang" id="ui_ind_dcd"></span></p>
 					<div id="deadInd" class="row">
 						<div class="col-sm-4 text-center">
 							<label for="id_sex_0">
 								<input type="radio" name="deadStatus" value="1" class="valid">
-									Oui
+								<span class="lang lang-yes"></span>
 							</label>
 						</div>
 						<div class="col-sm-4 text-center">
 							<label for="id_sex_1">
 								<input type="radio" name="deadStatus" value="0" class="valid" checked>
-									Non
+								<span class="lang lang-no"></span>
 							</label>
 						</div>
 					</div>
@@ -938,7 +938,7 @@
 				<br>
 
 				<div id="deathyInd_div">
-					<p class='row'>Quelle est son année de décés ou son âge au décés ?</p>
+					<p class='row'><span class="lang" id="ui_ind_dcd_yrs"></span></p>
 					<div id="deathyInd" class="col-sm-4">
 						<input type="number" name="deathyIndInput" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="deathyIndInput" aria-invalid="false" min="1850">
@@ -947,18 +947,18 @@
 				<br>
 			</div>
 			<div id="IndDisease_div" class="col-lg-7">
-				<p class='question'>Est-ce que cet enfant est (ou a été) atteint par un cancer ?</p>
+				<p class='question'><span class="lang" id="ui_ind_cancer"></span></p>
 				<div id="IndDisease" class="row">
 					<div class="col-sm-6 text-center">
 						<label for="id_sex_0">
 							<input type="radio" name="diseaseStatus" value="1" class="valid">
-								Oui
+							<span class="lang lang-yes"></span>
 						</label>
 					</div>
 					<div class="col-sm-6 text-center">
 						<label for="id_sex_1">
 							<input type="radio" name="diseaseStatus" value="0" class="valid" checked>
-								Non
+							<span class="lang lang-no"></span>
 						</label>
 					</div>
 				</div>
@@ -967,17 +967,17 @@
 				<div id="IndDisease1" class="row">
 					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
 						<h3 class="panel-title h3-lightblue">
-							Premier cancer
+							<span class="lang" id="ui_ind_cancer1"></span>
 						</h3>
 					</div>
 					<div class="col-sm-6 text-center">
-						<label for='IndDisease1Input'> Localisation
+						<label for='IndDisease1Input'><span class="lang" id="ui_ind_cancer1_loc"></span>
 							<input type="text" name="IndDisease1Input" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="IndDisease1Input" aria-invalid="false">
 						</label>
 					</div>
 					<div class="col-sm-6 text-center">
-						<label for='IndDisease1Age'> Âge ou année du diagnostic
+						<label for='IndDisease1Age'><span class="lang" id="ui_ind_cancer1_age"></span>
 							<input type="number" name="IndDisease1Age" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="IndDisease1Age" aria-invalid="false">
 						</label>
@@ -988,17 +988,17 @@
 				<div id="IndDisease2" class="row">
 					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
 						<h3 class="panel-title h3-lightblue">
-							Deuxième cancer
+							<span class="lang" id="ui_ind_cancer1"></span>
 						</h3>
 					</div>
 					<div class="col-sm-6 text-center">
-						<label for='IndDisease2Input'> Localisation
+						<label for='IndDisease2Input'><span class="lang" id="ui_ind_cancer2_loc"></span>
 							<input type="text" name="IndDisease2Input" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="IndDisease2Input" aria-invalid="false">
 						</label>
 					</div>
 					<div class="col-sm-6 text-center">
-						<label for='IndDisease2Age'> Âge ou année du diagnostic
+						<label for='IndDisease2Age'><span class="lang" id="ui_ind_cancer2_age"></span>
 							<input type="number" name="IndDisease2Age" autocomplete="off" size="17" class="form-control valid" maxlength="60"
 							id="IndDisease2Age" aria-invalid="false">
 						</label>
@@ -1007,7 +1007,7 @@
 			</div>
 		</div>
 		<div class="row" id="IndComment" style="padding: 0px 20px 20px 20px;">
-			<label for="IndCommentInput">Commentaire :</label>
+			<label for="IndCommentInput"><span class="lang" id="ui_ind_comment"></span></label>
 				<textarea name="IndCommentInput" id="IndCommentInput" class="form-control valid" rows="2"></textarea>
 		</div>
 	</form>					

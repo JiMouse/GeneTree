@@ -217,6 +217,67 @@ var lang = {
     + " You can save the tree as images or the raw data in the last section of this page."
     + ' In each section you can fill in the ages or dates of birth and symmetrically the years or dates of diagnosis'
     + ' of the relevant diseases',
+    ui_history: 'Your personal story',
+    ui_name:'Name Firstname :',
+    ui_dbirth:'Birthday :',
+    ui_man:'Man',
+    ui_woman:'Woman',
+    ui_comment:'Comment :',
+    ui_cancer:'Did you developp cancer ?',
+    ui_cancer_type:'Fill type and diagnostic year or age',
+    ui_breast_cancer:' Breast cancer',
+    ui_breast_cancer2:'Controlateral breast cancer',
+    ui_ov_cancer: " Ovarian cancer",
+    ui_prostate_cancer: " Prostate cancer",
+    ui_pan_cancer: " Pancreatic cancer",
+    ui_uterus_cancer: " Uterus cancer",
+    ui_rein_cancer: " Kidney cancer",
+    ui_foie_cancer: " Liver cancer",
+    ui_melanome: " Melanoma",
+    ui_cancer_orl: " Head cancer",
+    ui_polypes: " Polyposis",
+    ui_other: " Other",
+    ui_children: "Your children",
+    ui_children_q: "Do you have children?",
+    ui_children_cb:"How many children do you have?",
+    ui_children_qd:"When were your children born?",
+    ui_siblings: "Your siblings.",
+    ui_siblings_q:"Do you have any brothers or sisters?",
+    ui_siblings_cb: "How many brothers and sisters do you have?",
+    ui_siblings_qd: "When were your brothers and sisters born?",
+    ui_parents: "Your parents",
+    ui_parents_q: "Your parents.",
+    ui_patFam:"Your paternal family",
+    ui_gpp:"Your paternal grandparents.",
+    ui_sib:"Does your father have any brothers or sisters?",
+    ui_sib_cb:"How many brothers and sisters does your father have?",
+    ui_sib_cb_pm: "When were your father's brothers and sisters born?",
+    ui_gpm:"Your maternal family",
+    ui_gpm_q:"Your maternal grandparents.",
+    ui_m_sib: "Does your mother have any brothers or sisters?",
+    ui_m_sib_cb: "How many brothers and sisters does your mother have?",
+    ui_m_sib_cb_qd:"When were your mother's brothers and sisters born?",
+    ui_click:"Click on the button below to generate the tree from the data you have entered.",
+    ui_build_pedigree : "Create the family pedigree",
+    ui_dl: "Download the two files to send to your doctor",
+    ui_dl_png: "Download the pedigree (image)",
+    ui_add_id:"Add an identifier (Famid) to the file",
+    ui_add_id_file:"include in the file name",
+    ui_dl:"Save",
+    ui_ind_sex:"Is it a man (boy) or a woman (girl)?",
+    ui_ind_sex_M:"Male",
+    ui_ind_sex_F:"Female",
+    ui_ind_bd:"What is its year of birth or age?",
+    ui_ind_dcd:"Is he dead?",
+    ui_ind_dcd_yrs:"What is the year of death or age at death?",
+    ui_ind_cancer: "Does this child have (or have had) cancer?",
+    ui_ind_cancer1:"First cancer",
+    ui_ind_cancer1_loc:" Localisation",
+    ui_ind_cancer1_age: " Age or year of diagnosis",
+    ui_ind_cancer2:"Second cancer",
+    ui_ind_cancer2_loc:" Localisation",
+    ui_ind_cancer2_age: " Age or year of diagnosis",
+    ui_ind_comment: "Comment:",
     ui_finalisation:"Finalisation"
 };
 
@@ -427,3 +488,17 @@ var dico = {
         'F':'e'
     }
   };
+  
+  //user-interface.html
+  var colCancer_header = ['Cancer location', 'Age at diagnosis', 'Year of diagnosis'];
+  var colCancer_header2 = ['Cancer<br> localisation', 'Diagnostic<br> age', 'Diagnostic<br> year', 'Comment'];
+  var colChildren_header = ['Name', 'Gender', 'Death', 'Age', 'Year of<br> birth'];
+
+var myDataGpp = [
+    {"FamID": "1","Name": "Paternal grandfather","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    {"FamID": "1","Name": "Paternal grandmother","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
+]
+var myDataGpm = [
+    {"FamID": "1","Name": "Maternal grandfather","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    {"FamID": "1","Name": "Maternal grandmother","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
+]
