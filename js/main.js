@@ -1039,6 +1039,7 @@ function setLanguage(oldLang, newLang){
 
     //Replace all occurences of "oldscript.js" with "newscript.js" //relative path
     let root='';
+    if(window.location.pathname == "/GeneTree/docs/user-interface.html") root='../'
     //https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
     replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js")
     replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
