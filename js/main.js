@@ -1044,9 +1044,11 @@ function setLanguage(oldLang, newLang){
     replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
 
     //change HPO source
-    filePath = (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
+    let rootPath='';
+    filePath = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
     HPOArr = ImportHPO(filePath);
-    OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
+    OrphaArr = ImportOrphaData(rootPath + 'data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
