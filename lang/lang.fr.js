@@ -265,7 +265,7 @@ var lang = {
     ui_dl_png: "Télécharger l'arbre généalogique (image)",
     ui_add_id:"Ajouter un identifiant (Famid) dans le fichier",
     ui_add_id_file:"inclure dans le nom du fichier",
-    ui_dl:"Enregistrer",
+    ui_dl:"Télécharger les deux fichiers à envoyer à votre médecin",
     ui_ind_sex:"Est-ce un homme (garçon) ou une femme (fille) ?",
     ui_ind_sex_M:"Homme",
     ui_ind_sex_F:"Femme",
