@@ -116,44 +116,73 @@ $(document).ready(function(){
   function gedCom_to_GeneTree (input) { //To do
     let JSONdata = parse(input);
     let obj =[];
+    var numberPattern = /\d+/g;
 
-    for (const row of JSONdata) {
-      let ind = {};
-      ind["Name"] = row.NAME
-      ind["IndivID"] = row.INDI
-      ind["Sex"] = row.SEX
-      obj.push(ind)
+    // get parents
+    let objParents = {};
+    for(const row of JSONdata) {
+      if(row.hasOwnProperty("INDI")) continue;
+      let parents = {HUSB:"", WIFE:""}
+      parents.FathID=row.HUSB.match(numberPattern)[0]
+      parents.MothID=row.WIFE.match(numberPattern)[0]
+      objParents[row.FAM] = parents
     }
 
-    //How to get family properly ?
-  
-    /* GeneTree template
-    var myDataGpm = [
-      {"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
-      {"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
-    ]
-    */
-
+    //get individuals
+    for (const row of JSONdata) {
+      if(!row.hasOwnProperty("INDI")) continue;
+      let ind = {};
+      ind["Name"] = row.NAME
+      ind["IndivID"] = row.INDI.match(numberPattern)[0]
+      ind["Sex"] = row.SEX
+      if(row.hasOwnProperty("FAMC")) {
+        ind["FathID"] = objParents[row.FAMC].FathID
+        ind["MothID"] = objParents[row.FAMC].MothID
+      } else {
+        ind["FathID"] = "0"
+        ind["MothID"] = "0"
+      }
+      ind["Affected"]="1"
+      ind["Deceased"] = "0"
+      obj.push(ind)
+    }
+    // "proband": true => set proband
     return obj;
   }
 
   // TEST
   const records = gedCom_to_GeneTree(`
-  0 @U1@ SUBM
-  1 NAME gedcom.org
-  1 ADDR
-  2 CITY Leiden 
-  1 WWW www.gedcom.org
   0 @I1@ INDI
-  1 NAME Peter /Sweet/
-  2 SURN Sweet
-  2 GIVN Peter
-  1 SEX M
-  1 BIRT
-  2 DATE 7 Jul 1877
+  1 NAME Sarah //
+  1 SEX F
   1 FAMS @F1@
-  1 FAMS @F3@
-  `	)
+  1 BIRT  
+  2 DATE ABT 1723
+  0 @I19@ INDI
+  1 NAME Robert /Shipley/
+  1 SEX M
+  1 FAMS @F1@
+  1 BIRT  
+  2 DATE ABT 1719
+  0 @I18@ INDI
+  1 NAME Nancy /Shipley/
+  1 SEX F
+  1 BIRT  
+  2 DATE ABT 1745
+  2 PLAC Pembroke, Wash, ME
+  1 FAMC @F1@
+  1 FAMS @F5@
+  1 DEAT  
+  2 PLAC Amelia, Amelia, VA
+  0 @F1@ FAM
+  1 HUSB @I19@
+  1 WIFE @I1@
+  1 MARR Y
+  1 CHIL @I18@
+  `	
+  )
+
   // alert(JSON.stringify(records));
+  // hot.loadData(records);
 
 });

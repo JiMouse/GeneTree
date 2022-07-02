@@ -357,6 +357,9 @@ $(document).ready(function() {
                     hot.loadData(content);
                     loadFromHot(); //Load pedigreeJS
                     loadStory(); //load text
+                } else if(event.target.result.startsWith("0 HEAD")) { //GEDCOM
+                    data=gedCom_to_GeneTree(data);
+
                 } else {
                     data = JSON.parse(event.target.result);
                     if (!data[0].hasOwnProperty('FathID')) {
