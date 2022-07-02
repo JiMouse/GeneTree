@@ -344,7 +344,6 @@ $(document).ready(function() {
         if(file) {
             var reader = new FileReader();
             reader.onload = function(event) {
-
                 if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
                     data = Formatboadicea(event.target.result);
                 } else if(event.target.result.indexOf("##") === 0 && event.target.result.indexOf("CanRisk") !== -1) {
@@ -358,8 +357,7 @@ $(document).ready(function() {
                     loadFromHot(); //Load pedigreeJS
                     loadStory(); //load text
                 } else if(event.target.result.startsWith("0 HEAD")) { //GEDCOM
-                    data=gedCom_to_GeneTree(data);
-
+                    data = gedCom_to_GeneTree(event.target.result);
                 } else {
                     data = JSON.parse(event.target.result);
                     if (!data[0].hasOwnProperty('FathID')) {
