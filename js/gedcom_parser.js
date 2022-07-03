@@ -166,7 +166,24 @@
     let warning='',
         warningAge=false;
 
-    let previousFAM=0
+    // populate parents obj
+    let objFam = {};
+    let FAMid = 1
+    let FAMtree = '';
+
+    for (var i = 0; i < arrData.length; i++) {
+      // for each ind => create row with parents
+      let father = (arrData[i].hasOwnProperty('father') && !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'father' ] : '0'),
+          mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0');
+
+      if(objFam.hasOwnProperty(father+"/"+mother)) {continue;}
+      objFam[father+"/"+mother] = FAMid
+      //add fam to object
+      FAMtree += `0 @F${FAMid} FAM`+ '\r\n' +
+                  `1 HUSB @I${father}@` + '\r\n' +
+                  `1 WIFE @I${mother}@`+ '\r\n' 
+      FAMid +=1
+    }
 
     // Adding each ind
     for (var i = 0; i < arrData.length; i++) {
@@ -181,12 +198,14 @@
       ind=['1', `@${ind}@`, "INDI"].join(' ')
       name=['1', "NAME", name].join(' ')
       sex=['1', "SEX", sex].join(' ')
+      row = [ind, name, sex].join('\r\n')
 
       //if parents
-      // fam=['1', "FAMS", "?"].join('\t')
+      if(objFam.hasOwnProperty(father+"/"+mother)) {
+        FAMid = ['1', "FAMS", "@" + objFam[father+"/"+mother] + "@"].join(' ')
+      }
 
       //if children
-
 
 
       /*
@@ -204,11 +223,12 @@
       1 CHIL @I6@
       */
 
-      row = [ind, name, sex].join('\r\n')
 
       tree += row + '\r\n';
         
     }
+
+    tree += FAMtree
 
         // Adding each familiy
 
