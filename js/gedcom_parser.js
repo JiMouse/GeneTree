@@ -151,3 +151,88 @@
     // "proband": true => set proband
     return obj;
   }
+
+  function ExportGEDCOM(JSONData) {
+    alert('Fonction en cours de création.');
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
+        tree = '',   
+        row = "0 HEAD",
+        fileName = 'GEDCOM_'+ getFormattedTime() +'.ged';
+        
+    // Put the header
+    tree += row + '\r\n';
+
+    //Set warning
+    let warning='',
+        warningAge=false;
+
+    let previousFAM=0
+
+    // Adding each ind
+    for (var i = 0; i < arrData.length; i++) {
+        
+      let name= arrData[i]['display_name'];
+      let ind = arrData[i]['name'];
+      let sex = arrData[i]['sex'];
+
+      let father = (arrData[i].hasOwnProperty('father') && !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'father' ] : '0'),
+          mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0');
+       
+      ind=['1', `@${ind}@`, "INDI"].join(' ')
+      name=['1', "NAME", name].join(' ')
+      sex=['1', "SEX", sex].join(' ')
+
+      //if parents
+      // fam=['1', "FAMS", "?"].join('\t')
+
+      //if children
+
+
+
+      /*
+      0 @I1@ INDI
+      1 NAME Sarah //
+      1 SEX F
+      1 FAMS @F1@
+
+      0 @F5@ FAM
+      1 HUSB @I5@
+      1 WIFE @I18@
+      1 MARR  
+      2 DATE ABT 1772
+      2 PLAC Pembroke, Wash, ME
+      1 CHIL @I6@
+      */
+
+      row = [ind, name, sex].join('\r\n')
+
+      tree += row + '\r\n';
+        
+    }
+
+        // Adding each familiy
+
+
+    if(warning!='') {
+        alert('Fichier GEDCOM non conforme : '+ warning);
+        return;
+    }
+
+    // Downloading the new generated tree.
+    // For IE >= 9
+    if(window.navigator.msSaveOrOpenBlob) {
+    var fileData = [tree];
+    blobObject = new Blob(fileData);
+    window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+    } else { 
+    // For Chome/Firefox/Opera
+    var uri = 'data:text/csv;charset=utf-8,' + escape(tree);
+    var link = document.createElement("a");    
+    link.href = uri;
+    link.style = "visibility:hidden";
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    }
+}

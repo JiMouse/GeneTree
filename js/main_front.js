@@ -615,6 +615,11 @@ $(document).ready(function() {
             obj = FormatToPedigreeJS(JSON.parse(myDeepClone));
         ExportJSON(obj);
     });
+    $( "#exportGEDCOM" ).click(function() {
+        let myDeepClone = JSON.stringify(hot.getSourceData()),
+            Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone));
+        ExportGEDCOM(Tdata);
+    });
     $( "#savePed" ).click(function() {
         let toKeep = ['FamID','IndivID','FathID','MothID','Sex','Affected'];
         JSONToPEDConvertor(hot.getSourceData(), toKeep);
