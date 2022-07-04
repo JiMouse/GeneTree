@@ -162,10 +162,20 @@
     }
   }
 
+  function cleanString(input) {
+    var output = "";
+    for (var i=0; i<input.length; i++) {
+        if (input.charCodeAt(i) <= 127) {
+            output += input.charAt(i);
+        }
+    }
+    return output;
+}
+
   function ExportGEDCOM(JSONData) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         tree = '',   
-        row = "0 HEAD\r\n1 GEDC\r\n2 VERS 5.5.5\r\n2 FORM LINEAGE-LINKED\r\n3 VERS 5.5.5\r\n1 CHAR UTF-8\r\n1 SOUR gedcom.org"
+        row = "0 HEAD\r\n1 GEDC\r\n2 VERS 5.5.5\r\n2 FORM LINEAGE-LINKED\r\n3 VERS 5.5.5\r\n1 CHAR UTF-8\r\n1 SOUR GeneTree"
         +"\r\n0 @U@ SUBM\r\n1 NAME gedcom.org",
         fileName = 'GEDCOM_'+ getFormattedTime() +'.ged';
         
@@ -190,11 +200,12 @@
       objFam[father+"/"+mother] = FAMid
       
       //add fam to object
-      FAMtree +='\r\n' + `0 @F${FAMid} FAM`
+      FAMtree +='\r\n' + `0 @F${FAMid}@ FAM`
               + '\r\n' + `1 HUSB @I${father}@`
               + '\r\n' + `1 WIFE @I${mother}@`;
       //add children //to do ?
-
+      // The FAMC tag provides a pointer to a family where this person is a child.
+      // The FAMS tag provides a pointer to a family where this person is a spouse or parent
       FAMid +=1;
     }
 
@@ -209,19 +220,19 @@
           mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0');
        
       indRow=['0', `@I${ind}@`, "INDI"].join(' ');
-      nameRow=['1', "NAME", name].join(' ');
+      nameRow=['1', "NAME", name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")].join(' '); //remove accent
       sexRow=['1', "SEX", sex].join(' ');
       row = [indRow, nameRow, sexRow].join('\r\n');
 
       //if parents
       if(objFam.hasOwnProperty(father+"/"+mother)) {
-        FAMCid = ['1', "FAMC", "@F" + objFam[father+"/"+mother] + "@"].join(' ');
+        FAMCid = ['1', "FAMC", `@F${objFam[father+"/"+mother]}@`].join(' ');
         row += '\r\n' + FAMCid;
       }
 
       let fullKey = searchKey(ind, objFam);
       if(fullKey!=undefined && fullKey!="" && fullKey!=false) {
-        FAMSid = ['1', "FAMS", "@F" + objFam[fullKey] + "@"].join(' ');
+        FAMSid = ['1', "FAMS", `@F${objFam[fullKey]}@`].join(' ');
         row += '\r\n' + FAMSid;
       }
       
