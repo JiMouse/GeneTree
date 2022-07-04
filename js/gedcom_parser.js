@@ -151,20 +151,29 @@
     // "proband": true => set proband
     return obj;
   }
+  function searchKey(nameKey, obj) {
+    if (obj.hasOwnProperty(nameKey)) {
+      return nameKey;
+    } else {
+      var res = Object.keys(obj).filter(function(k) {
+        return (k.toLowerCase().indexOf(nameKey.toLowerCase()) > -1) || (nameKey.toLowerCase().indexOf(k.toLowerCase()) > -1);
+      });
+      return res ? res : false;
+    }
+  }
 
   function ExportGEDCOM(JSONData) {
-    alert('Fonction en cours de création.');
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         tree = '',   
-        row = "0 HEAD",
+        row = "0 HEAD\r\n1 GEDC\r\n2 VERS 5.5.5\r\n2 FORM LINEAGE-LINKED\r\n3 VERS 5.5.5\r\n1 CHAR UTF-8\r\n1 SOUR gedcom.org"
+        +"\r\n0 @U@ SUBM\r\n1 NAME gedcom.org",
         fileName = 'GEDCOM_'+ getFormattedTime() +'.ged';
         
     // Put the header
-    tree += row + '\r\n';
+    tree += row;
 
     //Set warning
-    let warning='',
-        warningAge=false;
+    let warning='';
 
     // populate parents obj
     let objFam = {};
@@ -177,12 +186,16 @@
           mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0');
 
       if(objFam.hasOwnProperty(father+"/"+mother)) {continue;}
+      if(father == '0' || mother == '0') {continue;}
       objFam[father+"/"+mother] = FAMid
+      
       //add fam to object
-      FAMtree += `0 @F${FAMid} FAM`+ '\r\n' +
-                  `1 HUSB @I${father}@` + '\r\n' +
-                  `1 WIFE @I${mother}@`+ '\r\n' 
-      FAMid +=1
+      FAMtree +='\r\n' + `0 @F${FAMid} FAM`
+              + '\r\n' + `1 HUSB @I${father}@`
+              + '\r\n' + `1 WIFE @I${mother}@`;
+      //add children //to do ?
+
+      FAMid +=1;
     }
 
     // Adding each ind
@@ -195,43 +208,27 @@
       let father = (arrData[i].hasOwnProperty('father') && !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'father' ] : '0'),
           mother = (arrData[i].hasOwnProperty('mother')&& !arrData[i].hasOwnProperty('noparents') ? arrData[i][ 'mother' ] : '0');
        
-      ind=['1', `@${ind}@`, "INDI"].join(' ')
-      name=['1', "NAME", name].join(' ')
-      sex=['1', "SEX", sex].join(' ')
-      row = [ind, name, sex].join('\r\n')
+      indRow=['0', `@I${ind}@`, "INDI"].join(' ');
+      nameRow=['1', "NAME", name].join(' ');
+      sexRow=['1', "SEX", sex].join(' ');
+      row = [indRow, nameRow, sexRow].join('\r\n');
 
       //if parents
       if(objFam.hasOwnProperty(father+"/"+mother)) {
-        FAMid = ['1', "FAMS", "@" + objFam[father+"/"+mother] + "@"].join(' ')
+        FAMCid = ['1', "FAMC", "@F" + objFam[father+"/"+mother] + "@"].join(' ');
+        row += '\r\n' + FAMCid;
       }
 
-      //if children
-
-
-      /*
-      0 @I1@ INDI
-      1 NAME Sarah //
-      1 SEX F
-      1 FAMS @F1@
-
-      0 @F5@ FAM
-      1 HUSB @I5@
-      1 WIFE @I18@
-      1 MARR  
-      2 DATE ABT 1772
-      2 PLAC Pembroke, Wash, ME
-      1 CHIL @I6@
-      */
-
-
-      tree += row + '\r\n';
-        
+      let fullKey = searchKey(ind, objFam);
+      if(fullKey!=undefined && fullKey!="" && fullKey!=false) {
+        FAMSid = ['1', "FAMS", "@F" + objFam[fullKey] + "@"].join(' ');
+        row += '\r\n' + FAMSid;
+      }
+      
+      tree +=  '\r\n' + row;
     }
-
-    tree += FAMtree
-
-        // Adding each familiy
-
+    tree += FAMtree // Add each families
+    tree += "\r\n0 TRLR" //Tailer
 
     if(warning!='') {
         alert('Fichier GEDCOM non conforme : '+ warning);
