@@ -27,7 +27,24 @@ $(document).ready(function(){
 		}
 	})
 	$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-	   
+
+	//switch proband
+	var probandSwith_dialog;
+	function setProband(dataset, display_name, is_proband) {
+		$.each(dataset, function(_i, p) {
+			if (display_name === p.Name)
+				p.proband = is_proband;
+			else
+				delete p.proband;
+		});
+	}
+
+	$("#proband").on('click', function() {
+		if($(this).is(':checked')) {
+			probandSwith_dialog.dialog( "open" );
+		}
+	});
+
 	// Set onclick action
 	$( "#supp_edit_info" ).on( "click", function() {
 		//load hot and selected row
@@ -43,7 +60,7 @@ $(document).ready(function(){
 					index = 0;
 				// alert(lang.noIndSelected);
 				}
-		}
+			}
 
 		//name
 		var name = obj[index]['Name'];
@@ -54,12 +71,11 @@ $(document).ready(function(){
 		$("#proband").prop("checked", proband);
 		$("#proband").prop("disabled", proband);
 
-		//switch proband
-		var probandSwith_dialog;
 		probandSwith_dialog = $('<div id="msgDialog">' + lang.probandSwith_dialog + '</div>').dialog({
 			autoOpen: false,
 			title: lang.probandSwith_title,
 			width: 350,
+			// modal: true,
 			classes: {
 				"ui-dialog": "custom-background",
 				"ui-dialog-titlebar": "custom-theme",
@@ -71,34 +87,22 @@ $(document).ready(function(){
 			buttons: [{
 					text: "OK",
 					click: function() {
-						function setProband(dataset, display_name, is_proband) {
-							$.each(dataset, function(_i, p) {
-								if (display_name === p.Name)
-									p.proband = is_proband;
-								else
-									delete p.proband;
-							});
-						}
 						setProband(obj, name, true);
-						$('#id_proband').prop("disabled", true);
-						probandSwith_dialog.dialog( "close" );
+						$('#proband').prop("disabled", true);
+						$(probandSwith_dialog).dialog( "close" ); //$( this ) <= bug
+						// $( this ).dialog( "close" );
 					}
 				},{
 					text: lang.probandSwith_cancel,
 					click: function() {
 						$("#proband").prop('checked', false);
 						$("#proband").prop("disabled", false);
-						probandSwith_dialog.dialog( "close" );
+						$(probandSwith_dialog).dialog( "close" );
+						// $( this ).dialog( "close" );
 					}
 				}]
 		});
 		$(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-
-		$("#proband").on('click', function() {
-			if($(this).is(':checked')) {
-				probandSwith_dialog.dialog( "open" );
-			}
-		});
 
 		//civil_name
 		$( "#civil_name" ).val(obj[index]['civil_name']);
