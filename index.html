@@ -224,6 +224,28 @@
 	<div class="container">
 		<!-- Table -->
 		<div class="panel">
+			<nav class="panel-heading" style="background-color: #f5e7db;">
+				<div class="container-fluid">
+					<ul class="nav navbar-nav nav-pills">
+						<li>
+							<label class="btn btn-default">
+								<input id="submitLoad" type="file" class="hidden">
+								<i class="fa fa-folder-open" aria-hidden="true"></i> <span id="loadFile" class="lang title"></span>
+							</label>
+							&nbsp;
+						</li>
+						<li>
+							<button id="reset" class="btn btn-default lang">
+								<span><i class="fa fa-eraser" aria-hidden="true"></i></span>
+								<span id="resetText" class="lang"></span>
+							</button>
+							&nbsp;
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="panel">
 			<div class="panel-heading" style="background-color: #dbe9f5;">
 				<h3 id="title_table" class="lang"></h3>
 			</div>
@@ -246,7 +268,7 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" style="padding:10px;min-width:300px">
-						<li>
+						<!-- <li>
 							<div class="text-center" style="padding:0px 10px;">
 								<label class="btn btn-primary btn-block">
 									<i class="fa fa-folder-open-o"><abbr id="loadFileTitle" class="lang">
@@ -255,9 +277,13 @@
 									<input id="submitLoad" type="file" hidden>
 								</label>
 							</div>
-						</li>
-						<li class="divider"></li>
+						</li> -->
+						<!-- <li class="divider"></li> -->
 						<li>
+							<div class="row text-center">
+								<b><span id="AddFamStructure" class="lang"></span></b>
+								<div class="btnDivider"></div>
+							</div>
 							<div class="text-center">
 								<label class="radio-inline"><input type="radio" name="optradio" id="nuclear"><span
 										id="nuclear_1" class="lang"></span></label>
@@ -339,12 +365,6 @@
 				<button id="loadFromPedigree" class="btn btn-primary">
 					<span id="loadFromPedigreeText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
-				</button>
-
-				<!-- <div class="btnDivider"></div> -->
-				<button id="reset" class="btn btn-primary btn lang">
-					<!-- <span><i class="fa fa-eraser" aria-hidden="true"></i></span> -->
-					<span id="resetText" class="lang"></span>
 				</button>
 			</div>
 
@@ -1099,9 +1119,10 @@
 					<span id="loadFromHotText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
 				</button>
-				<label class="btn btn-primary">
+				<!-- <label class="btn btn-primary">
 					<i class="fa fa-folder-open-o"></i><input id="load" type="file" hidden>
-				</label>
+				</label> -->
+				<div class="btnDivider"></div>
 				<div class="btnDivider"></div>
 
 				<button id="save" class='btn btn-primary'>JSON <i class="fa fa-download"></i></button>

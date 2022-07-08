@@ -7,7 +7,7 @@ var lang = {
     title:"GeneTree",
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",
     
-    introduction_txt:"Note : l'année de la pathologie ou du décés peuve t être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée."+
+    introduction_txt:"Note : l'année de la pathologie ou du décés peuvent être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée."+
     ". L'âge correspondant sera automatiquement calculé",
     
     title_table:"Tableau",
@@ -22,6 +22,7 @@ var lang = {
     extended2_1:"nd",
     extended2_2:" degré",
     AddFam:"Créer une famille",
+    AddFamStructure:"Structure standard",
     bro:"frères",
     sis:"sœurs",
     sons:"fils",
@@ -198,7 +199,7 @@ var lang = {
     addSiblings:"Ajouter frère/sœur",
     addSpouse:"Ajouter conjoint",
     addParents:"Ajouter parents",
-    add_miscarriage:"Ajouter Fausses couches",
+    // add_miscarriage:"Ajouter Fausses couches",
     delete:"Supprimer",
     parameters:"Paramètres",
     addConsang:"étendre pour créer un conjoint consanguin",
@@ -285,7 +286,7 @@ var lang = {
 };
 
 var title = {
-    loadFileTitle:"Format JSON ou Boadicea",
+    loadFile:"Formats acceptés : GeneTree (JSON), Boadicea, CanRisk, PedigreeJS (JSON), GEDCOM",
     loadFormPedigreeText:"Charger depuis l'arbre généalogique",
     reload:"Charger depuis la sauvegarde locale",
     reset:"Réinitialiser",
