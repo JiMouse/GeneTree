@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             setter = false;
                         }
                     }
-                    if (col == "Age1" || col == "Age2" || col == "Age3") {
+                    if (col == "Age1" || col == "Age2" || col == "Age3" || ((col == 'Age') && (dead == 1))) {
+                        // calculate age from year for disease or if dead
                         //add Setter
                         let c=(col == "Age1" ? 10 : (col == "Age2" ? 12 : 14))
                         newValue = changes[0][3];

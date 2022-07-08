@@ -7,7 +7,8 @@ var lang = {
     title:"GeneTree",
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",
     
-    introduction_txt:"Note : l'année de la pathologie peut être renseigné dans les colonnes « Âge » des pathologies si la date de naissance est également renseignée.",
+    introduction_txt:"Note : l'année de la pathologie ou du décés peuve t être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée."+
+    ". L'âge correspondant sera automatiquement calculé",
     
     title_table:"Tableau",
     LangSetterText:"Fr",
