@@ -376,6 +376,7 @@ $(document).ready(function() {
     });
 
     //drag and drop
+    /*
     const fileSelector = document.getElementById('file-selector');
     if (window.FileList && window.File) {
         fileSelector.addEventListener('dragover', event => {
@@ -434,7 +435,7 @@ $(document).ready(function() {
             // }
         }); 
     }
-    
+    */
     $( "#nuclear" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
         loadFromHot();
