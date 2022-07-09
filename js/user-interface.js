@@ -324,8 +324,7 @@ $(document).ready(function(){
     var hotSelectedTable;
     var IndDiseaseInput;
 
-    // define cancerList dialog form
-    dialogCancerList = $( "#cancerList" ).dialog({
+    dialogCancerList = $( "#cancerList2" ).dialog({
         autoOpen: false,
         classes: {
             "ui-dialog": "custom-background",
@@ -334,12 +333,40 @@ $(document).ready(function(){
             "ui-dialog-content": "custom-background",
             "ui-dialog-buttonpane": "custom-background"
         },
-        width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+        width: ($(window).width() > 400 ? 260 : $(window).width()- 30),
         maxHeight: 700,
         title: 'Localisation du cancer',
     })
-
     $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+
+    var html_cancerListDialog =
+    "<form>"
+    +    "<fieldset>"
+
+    diseases=onco_full();
+
+    $.each(diseases, function(k) {
+        disease_name = capitaliseFirstLetter(cleanDiseaseText(diseases[k]));
+
+        html_cancerListDialog += 
+                "<div class='form-check'>"
+        +            "<label class='form-check-label font-normal'>"
+        +                "<input type='radio' class='form-check-input' name='cancerListradio'"
+        +                    "value='" + diseases[k] + "'" + "> " + disease_name
+        +            "</label>"
+        +        "</div>"
+    });
+
+    html_cancerListDialog +=
+           "<div class='form-check'>"
+    +            "<label class='form-check-label font-normal'>"
+    +               "<input type='radio' class='form-check-input' name='cancerListradio'" 
+    +               "value='" + "Autre" + "'" + "> " + "Autre" //"<span class='lang' id='ui_other'></span>"
+    +            "</label>"
+    +        "</div>"
+    +  "</fieldset>"
+    + "</form>"
+    dialogCancerList.html(html_cancerListDialog);
 
     $('input[name="cancerListradio"]').on("click", function(e) {
         if(IndDiseaseInput != null && IndDiseaseInput != "") { //if in dialog

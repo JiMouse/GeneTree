@@ -234,6 +234,8 @@ var lang = {
     ui_breast_cancer2:'Cancer du sein controlatéral',
     ui_ov_cancer: " Cancer de l'ovaire",
     ui_prostate_cancer: " Cancer de la prostate",
+    ui_colon_cancer: " Cancer du colon",
+    ui_cancer_poumon:" Cancer du poumon",
     ui_pan_cancer: " Cancer du pancréas",
     ui_uterus_cancer: " Cancer de l'utérus",
     ui_rein_cancer: " Cancer du rein",
@@ -337,6 +339,7 @@ function dicoD () {
         "cancer_pancréas":"cancer du pancréas",
         "cancer_prostate":"cancer de la prostate",
         "cancer_colon":"cancer du côlon",
+        "cancer_poumon":"cancer du poumon",
         "cancer_estomac":"cancer de l'estomac",
         "cancer_utérus":"cancer de l'utérus",
         "cancer_rein":"cancer du rein",
@@ -391,6 +394,7 @@ var DEFAULT_DISEASES = [
     {'type': 'cancer_prostate', 'colour': '#8DB8D5'},
     {'type': 'cancer_colon', 'colour': '#3E5FB5'},
     {'type': 'cancer_estomac', 'colour': '#C9D6FF'},
+    {'type': 'cancer_poumon', 'colour': '#808080'},
     {'type': 'cancer_utérus', 'colour': '#FFE5B4'},
     {'type': 'cancer_rein', 'colour': '#FFA500'},
     {'type': 'cancer_foie', 'colour': '#01D758'},
@@ -423,7 +427,7 @@ var diseases = onco();
 var onco_full = function(){
     return [
         'cancer_sein', 'cancer_sein2','cancer_ovaire','cancer_prostate','cancer_pancréas',
-        'cancer_colon', 'cancer_estomac', 'cancer_utérus', 'cancer_rein', 'cancer_foie',
+        'cancer_colon', 'cancer_estomac', 'cancer_poumon', 'cancer_utérus', 'cancer_rein', 'cancer_foie',
         'mélanome','cancer_orl','polypes'
     ]
 }

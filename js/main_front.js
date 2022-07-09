@@ -208,7 +208,7 @@ $(document).ready(function(){
                     + "</form>"
                     dialogCancerListTitle = 'Termes HPO et Orphanet'; 
                     dialogWidth = '400';
-                } else {
+                } else { // if Cancer mode
                     var html_cancerListDialog =
                     "<form>"
                     +    "<fieldset>"
@@ -244,14 +244,11 @@ $(document).ready(function(){
                     dialogCancerListTitle = 'Localisation du cancer';
                     dialogWidth = '260';
                 }
-                if(checkBoxOnco) dialogCancerListTitle = 'Pathologie';
+                if(checkBoxOnco.checked != true) dialogCancerListTitle = 'Pathologie';
                 dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
                 dialogCancerList.dialog( "option", "width", dialogWidth);
                 dialogCancerList.dialog("option", "close", function() {
-                    // alert(row)
-                    // alert(column)
                     dialogCancerList.dialog('close');
-                    // hotSelectedTable.selectCell(row, column);
                 }
                 );
         
