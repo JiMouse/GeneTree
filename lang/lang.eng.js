@@ -15,6 +15,7 @@ var lang = {
     LangSetterTextEng:"Eng",
     NewFam:"New family",
     loadFile : " Upload a file ",
+    dragAndDrop:"Drag and drop a file here!",
     nuclear_1:"Nuclear",
     extended1_1:"st",
     extended1_2:" degree",

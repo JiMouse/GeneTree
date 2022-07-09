@@ -16,6 +16,7 @@ var lang = {
     LangSetterTextEng:"Eng",
     NewFam:"Nouvelle famille",
     loadFile : " Charger un fichier ",
+    dragAndDrop:"Glisser-déposer un fichier ici !",
     nuclear_1:"Noyau",
     extended1_1:"er",
     extended1_2:" degré",

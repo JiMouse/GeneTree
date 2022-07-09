@@ -226,14 +226,29 @@
 		<div class="panel">
 			<nav class="panel-heading" style="background-color: #f5e7db;">
 				<div class="container-fluid">
-					<ul class="nav navbar-nav nav-pills">
+					<ul class="nav navbar-nav form-inline">
 						<li>
 							<label class="btn btn-default">
 								<input id="submitLoad" type="file" class="hidden">
-								<i class="fa fa-folder-open" aria-hidden="true"></i> <span id="loadFile" class="lang title"></span>
+								<i class="fa fa-folder-open" aria-hidden="true"></i><span id="loadFile" class="lang title"></span>
 							</label>
-							&nbsp;
 						</li>
+						<li><p style="padding-top:6px; padding-right:1px; margin-bottom:0px;">&nbsp;OU&nbsp;</p></li>
+						<li>
+							<div id="file-selector" class="text-center">
+								<p style="padding-top:5px ;"><span id="dragAndDrop" class="lang"></span></p>
+							</div>	
+							<style>
+								#file-selector {
+								  border: 1px dashed red;
+								  width: 300px;
+								  height: 32px;
+								}
+							</style>
+						</li>
+						<li>&nbsp;&nbsp;&nbsp;</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<button id="reset" class="btn btn-default lang">
 								<span><i class="fa fa-eraser" aria-hidden="true"></i></span>
