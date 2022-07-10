@@ -396,7 +396,7 @@ $(document).ready(function() {
         fileSelector.addEventListener('dragleave', event => {
             event.stopPropagation();
             event.preventDefault();
-            $("#file-selector").css("background-color","#f5e7db;");
+            $("#file-selector").css("background-color","#fff");
             $("#dragAndDrop").text(lang.dragAndDrop);
         });
 
