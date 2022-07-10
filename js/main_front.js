@@ -334,38 +334,42 @@ var opts = {
 
 //---Load table functions ---
 $(document).ready(function() {
+    loadFile = function (file) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
+                data = Formatboadicea(event.target.result);
+            } else if(event.target.result.indexOf("##") === 0 && event.target.result.indexOf("CanRisk") !== -1) {
+                //load pedigreeJS
+                let canrisk_data = io.readCanRiskFile(event.target.result);
+                risk_factors = canrisk_data[0]; //to add as new key
+                content = canrisk_data[1];
+                content = FormatToTable(content);
+                get_risk_factors(content, risk_factors) //add risk_factors as new keys
+                hot.loadData(content);
+                loadFromHot(); //Load pedigreeJS
+                loadStory(); //load text
+            } else if(event.target.result.startsWith("0 HEAD")) { //GEDCOM
+                data = gedCom_to_GeneTree(event.target.result);
+            } else {
+                data = JSON.parse(event.target.result);
+                if (!data[0].hasOwnProperty('FathID')) {
+                    data = FormatToTable(data);
+                }
+            }
+            hot.loadData(data);
+            loadFromHot(); //Load pedigreeJS
+            loadStory(); //load text
+        };
+        reader.readAsText(file);
+    }
+
     //Load functions
     $( "#submitLoad" ).change(function(event) {
         var file = event.target.files[0];
 													
         if(file) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
-                    data = Formatboadicea(event.target.result);
-                } else if(event.target.result.indexOf("##") === 0 && event.target.result.indexOf("CanRisk") !== -1) {
-                    //load pedigreeJS
-                    let canrisk_data = io.readCanRiskFile(event.target.result);
-                    risk_factors = canrisk_data[0]; //to add as new key
-                    content = canrisk_data[1];
-                    content = FormatToTable(content);
-                    get_risk_factors(content, risk_factors) //add risk_factors as new keys
-                    hot.loadData(content);
-                    loadFromHot(); //Load pedigreeJS
-                    loadStory(); //load text
-                } else if(event.target.result.startsWith("0 HEAD")) { //GEDCOM
-                    data = gedCom_to_GeneTree(event.target.result);
-                } else {
-                    data = JSON.parse(event.target.result);
-                    if (!data[0].hasOwnProperty('FathID')) {
-                        data = FormatToTable(data);
-                    }
-                }
-                hot.loadData(data);
-                loadFromHot(); //Load pedigreeJS
-                loadStory(); //load text
-            };
-            reader.readAsText(file);
+            loadFile(file);
         } else {
             console.error("File could not be read!");
         }
@@ -376,66 +380,44 @@ $(document).ready(function() {
     });
 
     //drag and drop
-    /*
+    //https://custom-drag-and-drop.glitch.me/
+    // https://stackoverflow.com/questions/28226021/entire-page-as-a-dropzone-for-drag-and-drop
     const fileSelector = document.getElementById('file-selector');
+
     if (window.FileList && window.File) {
         fileSelector.addEventListener('dragover', event => {
             event.stopPropagation();
             event.preventDefault();
             event.dataTransfer.dropEffect = 'copy';
+            $("#file-selector").css("background-color","#e4bf9f");
+            $("#dragAndDrop").text(lang.drop);
         });
+
+        fileSelector.addEventListener('dragleave', event => {
+            event.stopPropagation();
+            event.preventDefault();
+            $("#file-selector").css("background-color","#f5e7db;");
+            $("#dragAndDrop").text(lang.dragAndDrop);
+        });
+
         fileSelector.addEventListener('drop', event => {
-            output.innerHTML = '';
+            // output.innerHTML = '';
             event.stopPropagation();
             event.preventDefault();
             const files = event.dataTransfer.files;
-
             const file = files[0];
+            // alert(file.name)
 
             if(file) {
-                var reader = new FileReader();
-                reader.onload = function(event) {
-                    if(event.target.result.startsWith("BOADICEA import pedigree file format 4.0")) {
-                        data = Formatboadicea(event.target.result);
-                    } else if(event.target.result.indexOf("##") === 0 && event.target.result.indexOf("CanRisk") !== -1) {
-                        //load pedigreeJS
-                        let canrisk_data = io.readCanRiskFile(event.target.result);
-                        risk_factors = canrisk_data[0]; //to add as new key
-                        content = canrisk_data[1];
-                        content = FormatToTable(content);
-                        get_risk_factors(content, risk_factors) //add risk_factors as new keys
-                        hot.loadData(content);
-                        loadFromHot(); //Load pedigreeJS
-                        loadStory(); //load text
-                    } else if(event.target.result.startsWith("0 HEAD")) { //GEDCOM
-                        data = gedCom_to_GeneTree(event.target.result);
-                    } else {
-                        data = JSON.parse(event.target.result);
-                        if (!data[0].hasOwnProperty('FathID')) {
-                            data = FormatToTable(data);
-                        }
-                    }
-                    hot.loadData(data);
-                    loadFromHot(); //Load pedigreeJS
-                    loadStory(); //load text
-                };
-                reader.readAsText(file);
+                loadFile(file);
             } else {
                 console.error("File could not be read!");
             }
-            
-            // for (let i = 0; i < files.length; i++) {
-            // 	const li = document.createElement('li');
-            // 	const file = files[i];
-            // 	const name = file.name ? file.name : 'NOT SUPPORTED';
-            // 	const type = file.type ? file.type : 'NOT SUPPORTED';
-            // 	const size = file.size ? file.size : 'NOT SUPPORTED';
-            // 	li.textContent = `name: ${name}, type: ${type}, size: ${size}`;
-            // 	output.appendChild(li);
-            // }
+            $("#file-selector").css("background-color","#f5e7db;");
+            $("#dragAndDrop").text(lang.dragAndDrop);
         }); 
     }
-    */
+    
     $( "#nuclear" ).click(function() {
         hot.loadData(JSON.parse(myDataSafe));
         loadFromHot();

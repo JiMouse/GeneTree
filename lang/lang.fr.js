@@ -17,6 +17,7 @@ var lang = {
     NewFam:"Nouvelle famille",
     loadFile : " Charger un fichier ",
     dragAndDrop:"Glisser-déposer un fichier ici !",
+    drop:"Déposer le fichier !",
     nuclear_1:"Noyau",
     extended1_1:"er",
     extended1_2:" degré",

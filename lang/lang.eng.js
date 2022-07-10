@@ -16,6 +16,7 @@ var lang = {
     NewFam:"New family",
     loadFile : " Upload a file ",
     dragAndDrop:"Drag and drop a file here!",
+    drop:"Drop a file here!",
     nuclear_1:"Nuclear",
     extended1_1:"st",
     extended1_2:" degree",
