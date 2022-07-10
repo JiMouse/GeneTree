@@ -8,16 +8,17 @@ var lang = {
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",
     
     introduction_txt:"Note : l'année de la pathologie ou du décés peuvent être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée."+
-    ". L'âge correspondant sera automatiquement calculé",
-    
+    " L'âge correspondant sera automatiquement calculé",
+
     title_table:"Tableau",
     LangSetterText:"Fr",
     LangSetterTextFr:"Fr",
     LangSetterTextEng:"Eng",
     NewFam:"Nouvelle famille",
-    loadFile : " Charger un fichier ",
-    dragAndDrop:"Glisser-déposer un fichier ici !",
+    loadFile : " Charger un fichier ou glisser-déposer un fichier ici",
+    dragAndDrop:" Glisser-déposer un fichier ici !",
     drop:"Déposer le fichier !",
+    savePedigree:" Enregistrer",
     nuclear_1:"Noyau",
     extended1_1:"er",
     extended1_2:" degré",
