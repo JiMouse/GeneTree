@@ -1027,7 +1027,7 @@ $(document).ready(function() {
 
 		addKeyToObject(indObj, indexRow, 'dbirth')
         addKeyToObject(indObj, indexRow, 'civil_name')
-        indObj[indexRow]['Sex'] = $('input[name="sex"]:checked').val();
+        indObj[indexRow]['Sex'] = $('input[name="index_sex"]:checked').val();
         addKeyToObject(indObj, indexRow, 'comment', 'form_id_comment');
 
         //year of birth and age

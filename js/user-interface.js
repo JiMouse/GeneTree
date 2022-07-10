@@ -368,7 +368,16 @@ $(document).ready(function(){
     + "</form>"
     dialogCancerList.html(html_cancerListDialog);
 
-    openDialogCancerList = function() {
+    openDialogCancerList = function(SelectedSex) {
+        if(SelectedSex=='M') {
+            $('input[name=cancerListradio][value='+ onco_full()[2] + ']').attr("disabled",true); //ovarian
+            $('input[name=cancerListradio][value='+ onco_full()[8] + ']').attr("disabled",true); //uterus
+            $('input[name=cancerListradio][value='+ onco_full()[3] + ']').attr("disabled",false); //prostate
+        } else if(SelectedSex=='F') {
+            $('input[name=cancerListradio][value='+ onco_full()[3] + ']').attr("disabled",true); //prostate
+            $('input[name=cancerListradio][value='+ onco_full()[2] + ']').attr("disabled",false); //ovarian
+            $('input[name=cancerListradio][value='+ onco_full()[8] + ']').attr("disabled",false); //uterus
+        }
         dialogCancerList.dialog( "open" );
     }
 
@@ -395,7 +404,8 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == colDisease) {
                 hotSelectedTable =  this
-                openDialogCancerList();
+                let SelectedSex = $('input[name="index_sex"]:checked').val(); 
+                openDialogCancerList(SelectedSex);
             }
             preventScrolling.value = true;
         }
@@ -409,7 +419,8 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == colDisease) {
                 hotSelectedTable =  this
-                openDialogCancerList();
+                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+                openDialogCancerList(SelectedSex);
             }
             preventScrolling.value = true;
         }
@@ -424,7 +435,8 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == colDisease) {
                 hotSelectedTable =  this
-                openDialogCancerList();
+                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+                openDialogCancerList(SelectedSex);
             }
             preventScrolling.value = true;
         }
@@ -438,7 +450,8 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == colDisease) {
                 hotSelectedTable =  this
-                openDialogCancerList();
+                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+                openDialogCancerList(SelectedSex);
             }
             preventScrolling.value = true;
         }
@@ -452,7 +465,8 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == colDisease) {
                 hotSelectedTable =  this
-                openDialogCancerList();
+                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+                openDialogCancerList(SelectedSex);
             }
             preventScrolling.value = true;
         }
@@ -466,8 +480,9 @@ $(document).ready(function(){
         selectedColumn = column
         if(selectedColumn == colDisease) {
             hotSelectedTable =  this
-            openDialogCancerList();
-        }
+            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+            openDialogCancerList(SelectedSex);
+    }
         preventScrolling.value = true;
     }
     )
@@ -480,8 +495,9 @@ $(document).ready(function(){
         selectedColumn = column
         if(selectedColumn == colDisease) {
             hotSelectedTable =  this
-            openDialogCancerList();
-        }
+            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+            openDialogCancerList(SelectedSex);
+    }
         preventScrolling.value = true;
     }
     )
@@ -494,8 +510,9 @@ $(document).ready(function(){
         selectedColumn = column
         if(selectedColumn == colDisease) {
             hotSelectedTable =  this
-            openDialogCancerList();
-        }
+            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
+            openDialogCancerList(SelectedSex);
+    }
         preventScrolling.value = true;
     }
     )
@@ -568,11 +585,13 @@ $(document).ready(function(){
         //load disease dialog when click on cancer input
         $('input[name=IndDisease1Input]').on('click', function() {
             IndDiseaseInput = "IndDisease1Input"
-            openDialogCancerList();
+            let SelectedSex = $('input[name="sex"]:checked').val(); 
+            openDialogCancerList(SelectedSex);
         });
         $('input[name=IndDisease2Input]').on('click', function() {
             IndDiseaseInput = "IndDisease2Input"
-            openDialogCancerList();
+            let SelectedSex = $('input[name="sex"]:checked').val(); 
+            openDialogCancerList(SelectedSex);
         });
         
         //dialog disease
