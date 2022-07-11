@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>GeneTree</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,maximum-scale=2">
+	<meta name="author" content="Jean-Marie Ravel">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- load bootstrap dependencies -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+	<!-- load pedigreejs dependencies : jquery, bootstrap, font-awesome, d3 -->
+		<!-- css -->
+	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+
+		<!-- javascript -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	
+	<script src="../package/lodash.js"></script>
+	<script src="../package/jquery.inputmask.min.js"></script>
+
+	<!-- languages script -->
+	<script>
+		//check if one prefered langages is french else set english as default
+		var userLang = navigator.languages || navigator.userLanguage;
+		function isFr(lang) {
+			return /fr/.test(lang)
+		}
+		default_lang=(userLang.some(isFr) ? "fr" : "eng");
+		
+		//define load lang : check if localStorage
+		var local_lang = localStorage.getItem("language");
+		if (local_lang !== undefined && local_lang !== null) {
+			load_lang = local_lang;
+		} else {
+			load_lang = default_lang;
+		}
+		//load languages scripts
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/lang.'+load_lang+'.js"></sc'+'ript>');
+		document.write('<scr'+'ipt type="text/javascript" src="../lang/story.'+load_lang+'.js"></sc'+'ript>');
+	</script>
+	
+	<!-- load pedigreejs -->
+    <script src="../js/io.js"></script>
+    <script src="../js/pedigree_form.js"></script>
+    <script src="../js/pedigree.js"></script>
+    <script src="../js/undo_redo_refresh.js"></script>
+	<script src="../js/widgets.js"></script>
+	<script src="../js/zoom.js"></script>
+	<script src="../js/canrisk_file.js"></script>
+
+	<!-- main script -->
+	<script type="text/javascript" src="../js/main.js"></script>
+	<script type="text/javascript" src="../js/main_front.js"></script>
+	<script type="text/javascript" src="../js/hotContextMenu.js"></script>
+	<script type="text/javascript" src="../js/user-interface.js"></script>
+	<script type="text/javascript" src="../js/hotTable.js"></script>
+	<script type="text/javascript" src="../js/indexWidgets.js"></script>
+
+	<!-- main css -->
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
+	<link rel="stylesheet" type="text/css" href="../css/pedigreejs.css">
+
+	<!-- load handsontable module v10.0 --> 
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+
+	<!-- Display a loading icon until the page loads completely --> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+	<script>
+		$(window).on("load", function (e) {
+			$(".se-pre-con").fadeOut("slow");
+
+			//load HPOArr
+			var filePath = '../data/HPO_fr_CISMeF_1611083.txt';
+			HPOArr = ImportHPO(filePath);
+		});
+	</script>
+</head>
+<body>
+	<div class="se-pre-con"></div>
+	<script>
+		$(document).ready(function () {
+			populateText=function() {
+				$('.lang').each(function () {
+					var value = $(this).attr('id');
+					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
+					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
+
+					// class yes and no
+					$('.lang.lang-yes').text(lang["yes"]);
+					$('.lang.lang-no').text(lang["no"]);
+					$('.lang.lang-unknown').text(lang["unknown"]);
+					$('.lang.lang-pos').text(lang["pos"]);
+					$('.lang.lang-neg').text(lang["neg"]);
+					$('.lang.lang-full').text(lang["full"]);
+					$('.lang.lang-untested').text(lang["untested"]);
+					$('.lang.lang-targeted').text(lang["targeted"]);
+
+				})
+			}
+			populateText();
+
+			//Load load_lang
+			setSetterLanguage(load_lang);
+
+			(function () {
+				var strLink = '/GeneTree/docs/'+ 'user-interface.html'
+				document.getElementById("userLink").setAttribute("href", strLink);
+				var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
+				document.getElementById("guideLink").setAttribute("href", strLink2);
+			})();
+		});
+	</script>
+	<nav class="navbar navbar-default header" style="margin-bottom:0px;margin-top:0px;background-color: #002e5d;">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" style="background-color:#002e5d;" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only" style="background-color: #dbe9f5">Navigation</span>
+					<span class="icon-bar" style="background-color: #dbe9f5"></span>
+					<span class="icon-bar" style="background-color: #dbe9f5"></span>
+					<span class="icon-bar" style="background-color: #dbe9f5"></span>
+				</button>
+			</div>
+	
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+				<ul class="nav navbar-nav navbar-left">
+					<li class="dropdown" style="display:inline;">
+						<button class="dropdown btn" type='button' id="LangSetter" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false"
+							style="margin-bottom:0px;margin-top:8px;background-color: #002e5d;color: #dbe9f5">
+							<img id="LangSetterImg" alt="Français" src="/GeneTree/data/images/fr.svg">
+							<span id="LangSetterText" class="lang"></span>
+							<span class="caret"></span>
+						</button>
+						<div class="dropdown-menu" aria-labelledby="export"
+							style="width: 100% !important; min-width: 100%; max-width: 100%;padding:5px;background-color: #002e5d">
+							<button class="btn btn-block" type='button' id="LangSetterFr"
+								style="background-color: #002e5d;color: #dbe9f5">
+								<img alt="Français" src="/GeneTree/data/images/fr.svg">
+								<span>Fr</span>
+							</button>
+							<button class="btn btn-block" type='button' id="LangSetterEng"
+								style="background-color: #002e5d;color: #dbe9f5">
+								<img alt="Anglais" src="/GeneTree/data/images/eng.svg">
+								<span>Eng</span>
+							</button>
+						</div>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a class="headerlink" href="/GeneTree/" style="color:#dbe9f5">
+							<i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang"></span>
+						</a>
+					</li>
+					<li>
+						<a class="headerlink" id="userLink" style="color:#dbe9f5" onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
+							<span id="user_friendly" class="lang"></span>
+						</a>
+					</li>
+					<li>
+						<a class="headerlink" id="guideLink" style="color:#dbe9f5">
+							<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;
+							<span id="guide" class="lang"></span>
+						</a>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<!-- Présentation -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 class='h3-lightblue'>GeneTree</h3>
+				</div>
+			</div>
+			<p>
+				<div style="padding:0px 20px;">
+					Plusieurs propositions permettant la génération d’arbre généalogique existent, aussi bien payantes que gratuites. 
+					Néanmoins, à ce jour, aucune solution gratuite ne permettait la génération d’un arbre généalogique modifiable 
+					et exportable rapidement ainsi que le texte correspondant.<br><br>
+					
+					Cette application est un outil intégré pour simplifier l’activité administratives des médecins et conseillers 
+					en génétiques dans le cadre de leur consultation de génétique.<br><br>
+					Cet outil dispose d'un mode spécifique pour la consultation d'oncogénétique et d’un mode utilisant les phénotypes HPO. 
+					La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, 
+					puis complétée via un tableau ou une interface graphique, tous deux interconnectés. <br><br>
+					L'arbre est exportable dans plusieurs formats de fichiers (TSV, JSON, PED, BOADICEA) et modifiable 
+					par un éditeur vectoriel (format PDF, SVG) ou peut être imprimé directement. <br><br>
+					Enfin, cette application permet la génération automatique de texte à partir du contenu du tableau correspondant 
+					à l’histoire personnelle et familiale du patient.  Il s’agit, à ma connaissance, de la seule solution permettant 
+					ainsi de rédiger en un clic une partie importante du compte-rendu de consultation.<br><br>
+					L’interface en ligne optimisée pour le navigateur Google Chrome permet une utilisation simple sans nécessiter d’installation préalable.
+					Cet outil a été particulièrement pensé pour les consultations d'oncogénétique afin d'éviter la triple saisie 
+					(texte – arbre généalogique - score de risque Boadicea ou CanRisk).<br>
+
+				<!-- <span class="lang" id="ui_introduction_txt"></span> -->
+				</div>
+			</p>
+		</div>
+		
+		<!-- References -->
+		<div class='row' style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 id="title_reference" class="lang  h3-lightblue"></h3>
+				</div>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					<strong>CanRisk Tool—A Web Interface for the Prediction of Breast and Ovarian Cancer Risk
+					and the Likelihood of Carrying Genetic Pathogenic Variants.</strong> Carver, T. et al. 
+					<i>Cancer Epidemiol Biomarkers Prev (2020). <a href="https://cebp.aacrjournals.org/content/30/3/469" target="_blank">
+						doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
+				<p>
+					<strong>BOADICEA: a comprehensive breast cancer risk prediction
+					model incorporating genetic and nongenetic risk factors.</strong> Lee, A. et al. 
+					<i>Genet Med 21, 1708–1718 (2019). <a href="https://www.nature.com/articles/s41436-018-0406-9" target="_blank">
+					doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
+				<p><strong>pedigreejs: a web-based graphical pedigree editor</strong><br>
+					Carver T, Cunningham AP, Babb de Villiers C, Lee A, Hartley S, Tischkowitz M, et al. 
+					<i>Bioinformatics <a href="http://dx.doi.org/10.1093/bioinformatics/btx705" target="_blank">
+					doi:10.1093/bioinformatics/btx705</a></i>
+				</p>
+				<p><strong>HPO-translations</strong><br>
+					<a href="https://github.com/drseb/HPO-translations" target="_blank">drseb/HPO-translations</a>
+				</p>
+				<p><strong>The Human Phenotype Ontology (HPO)</strong><br>
+					<a href="https://hpo.jax.org/app/download/annotation" target="_blank">Annotations</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- FOOTER -->
+	<footer class="footer">
+		<div class="container-fluid" >
+			<div class="row text-center" style="padding:15px 15px 15px 15px">
+				<div class="col-md-4">
+				</div>
+				<div class="col-md-4">
+					<p>
+						Copyright Jean-Marie Ravel 2022
+					</p>
+				</div>
+				<div class="col-md-4">
+					<p>
+						<i class="fa fa-envelope"></i><a href="mailto:jmravel.dev@gmail.com?	subject=GeneTree">&nbsp;Contact</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- FOOTER END -->
+
+</body>
+
+</html>
