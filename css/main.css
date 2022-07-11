@@ -282,3 +282,26 @@ p.big {
   padding-bottom: 0px !important;
   margin-bottom: 0px !important;
 }
+
+.footer {
+  background-color: #002e5d;
+  position:absolute;
+  width:100%;
+  color: #d9e7f7;
+}
+.footer .container {
+  background-color: #002e5d;
+  color: #d9e7f7;
+}
+.footer p {
+  margin-bottom: 0px;
+}
+
+.navbar{
+  margin-bottom:0px;
+  margin-top:0px;
+  background-color: #002e5d;
+  border: 0px;
+  border-radius: 0px;
+}
+

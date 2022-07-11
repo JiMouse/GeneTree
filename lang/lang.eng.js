@@ -59,7 +59,8 @@ var lang = {
     mztwin:"mztwin",
     dztwin:"dztwin",
     pregnancy:"pregnancy",
-    Acknowledgment: "Tool initiated to satisfy a certain laziness and tested by the members of the team of the clinical genetics service of the CHRU of Nancy, whom I thank.",
+    Acknowledgment: "Tool initiated in the clinical genetics service of the CHRU of Nancy.",
+    contact:" Contact me",
     unknown: "unknown",
     pos:"Positive",
     neg:"Negative",
@@ -68,6 +69,7 @@ var lang = {
     targeted:"Targeted",
     alert_noAge:"year of birth not given",
     probandLabel:"proband",
+    about:"About",
 
     // addInfo
     canRiskDialog: "Add an identifier (Famid) in the file",
@@ -111,7 +113,7 @@ var lang = {
     ck56_bc_pathology_txt:"Cytokeratine 5/6",
     select_all_gene_tests_txt:"Set for all genes",
     test_type:"Test type",
-    result: "Resultt",
+    result: "Resultat",
     reset_txt:"Réinitialiser",
 
     // Alcohol

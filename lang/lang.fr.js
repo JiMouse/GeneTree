@@ -61,7 +61,8 @@ var lang = {
     mztwin:"JumMZ",
     dztwin:"JumDZ",
     pregnancy:"Grossesse",
-    Acknowledgment: "Outil initié pour satisfaire une certaine paresse et éprouvé par les membres de l'équipe du service de génétique clinique du CHRU de Nancy que je remercie.",
+    Acknowledgment: "Outil initié au sein du service de génétique clinique du CHRU de Nancy.",
+    contact:" Me contacter",
     unknown: "Inconnu",
     pos:"Positif",
     neg:"Négatif",
@@ -70,6 +71,7 @@ var lang = {
     targeted:"Ciblé",
     alert_noAge:"date de naissance non renseignée",
     probandLabel:"propositus",
+    about:"À propos",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
@@ -115,6 +117,7 @@ var lang = {
     test_type:"Type de test",
     result: "Résultat",
     reset_txt:"Réinitialiser",
+
 
     // Alcohol
     alcohol_cons: "Qu'elle est votre consommation quotidienne moyenne (en nombre de verre standardisé) ?",
