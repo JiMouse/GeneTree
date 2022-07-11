@@ -384,38 +384,36 @@ $(document).ready(function() {
     // https://stackoverflow.com/questions/28226021/entire-page-as-a-dropzone-for-drag-and-drop
     const fileSelector = document.getElementById('file-selector');
 
-    if (window.FileList && window.File) {
-        // fileSelector.addEventListener('dragover', event => {
-        //     event.stopPropagation();
-        //     event.preventDefault();
-        //     event.dataTransfer.dropEffect = 'copy';
-        //     $("#file-selector").css("background-color","#e4bf9f");
-        //     $("#dragAndDrop").text(lang.drop);
-        // });
+    if (window.FileList && window.File && fileSelector!=null) {
+        fileSelector.addEventListener('dragover', event => {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+            $("#file-selector").css("background-color","#e4bf9f");
+            $("#dragAndDrop").text(lang.drop);
+        });
 
-        // fileSelector.addEventListener('dragleave', event => {
-        //     event.stopPropagation();
-        //     event.preventDefault();
-        //     $("#file-selector").css("background-color","#fff");
-        //     $("#dragAndDrop").text(lang.dragAndDrop);
-        // });
+        fileSelector.addEventListener('dragleave', event => {
+            event.stopPropagation();
+            event.preventDefault();
+            $("#file-selector").css("background-color","#fff");
+            $("#dragAndDrop").text(lang.dragAndDrop);
+        });
 
-        // fileSelector.addEventListener('drop', event => {
-        //     // output.innerHTML = '';
-        //     event.stopPropagation();
-        //     event.preventDefault();
-        //     const files = event.dataTransfer.files;
-        //     const file = files[0];
-        //     // alert(file.name)
+        fileSelector.addEventListener('drop', event => {
+            event.stopPropagation();
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            const file = files[0];
 
-        //     if(file) {
-        //         loadFile(file);
-        //     } else {
-        //         console.error("File could not be read!");
-        //     }
-        //     $("#file-selector").css("background-color","#fff;");
-        //     $("#dragAndDrop").text(lang.dragAndDrop);
-        // }); 
+            if(file) {
+                loadFile(file);
+            } else {
+                console.error("File could not be read!");
+            }
+            $("#file-selector").css("background-color","#fff;");
+            $("#dragAndDrop").text(lang.dragAndDrop);
+        }); 
     }
     
     $( "#nuclear" ).click(function() {
