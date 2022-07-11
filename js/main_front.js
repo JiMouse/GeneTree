@@ -413,7 +413,7 @@ $(document).ready(function() {
             } else {
                 console.error("File could not be read!");
             }
-            $("#file-selector").css("background-color","#f5e7db;");
+            $("#file-selector").css("background-color","#fff;");
             $("#dragAndDrop").text(lang.dragAndDrop);
         }); 
     }

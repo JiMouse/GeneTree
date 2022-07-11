@@ -287,7 +287,8 @@ var lang = {
 };
 
 var title = {
-    loadFileTitle:"JSON or Boadicea format",
+    loadFileTitle:"Accepted files : GeneTree (JSON), Boadicea, CanRisk, PedigreeJS (JSON), GEDCOM",
+    submitLoad:"Accepted files : GeneTree (JSON), Boadicea, CanRisk, PedigreeJS (JSON), GEDCOM",
     loadFormPedigreeText:"Load from Family Tree",
     reload:"Loading from local backup",
     reset:"Reset",

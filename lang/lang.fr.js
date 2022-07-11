@@ -292,6 +292,7 @@ var lang = {
 
 var title = {
     loadFile:"Formats acceptés : GeneTree (JSON), Boadicea, CanRisk, PedigreeJS (JSON), GEDCOM",
+    submitLoad: "Formats acceptés : GeneTree (JSON), Boadicea, CanRisk, PedigreeJS (JSON), GEDCOM",
     loadFormPedigreeText:"Charger depuis l'arbre généalogique",
     reload:"Charger depuis la sauvegarde locale",
     reset:"Réinitialiser",
