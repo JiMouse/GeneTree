@@ -72,6 +72,8 @@ var lang = {
     alert_noAge:"date de naissance non renseignée",
     probandLabel:"propositus",
     about:"À propos",
+    saveJson:" Sauvegarder",
+    saveJson2:" Sauvegarder",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",

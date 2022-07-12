@@ -1130,7 +1130,7 @@
 
 				<!-- create export buttons -->
 				<div style="padding-top: 15px;">
-					<button id="exportJson" class="btn btn-primary lang">JSON <i class="fa fa-download"></i>
+					<button id="exportJson" class="btn btn-primary lang"><i class="fa fa-download"></i><span id="saveJson2" class="lang"></span>
 					</button>
 					<div class="btnDivider"></div>
 					<button id="exportBOADICEA" class="btn btn-primary lang">BOADICEA
@@ -1177,71 +1177,73 @@
 					<h3 id="title_pedigree" class="lang"></h3>
 				</div>
 			</div>
+		</div>
 
-			<div class="text-center">
+		<div class="row text-center">
+			<div class="col-md-3">
 				<button id="loadFromHot" class='btn btn-primary'>
 					<span id="loadFromHotText" class="lang"></span>
 					<span><i class="fa fa-refresh"></i></span>
 				</button>
-				<!-- <label class="btn btn-primary">
-					<i class="fa fa-folder-open-o"></i><input id="load" type="file" hidden>
-				</label> -->
-				<div class="btnDivider"></div>
-				<div class="btnDivider"></div>
-
-				<button id="save" class='btn btn-primary'>JSON <i class="fa fa-download"></i></button>
-				<button id="boadicea_download" class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
-				<button id="save_canrisk" class='btn btn-primary'>CanRisk <i class="fa fa-download"></i></button>
-				<div class="btnDivider"></div>
-
-				<div id="save-canrisk-dialog" class="modal fade">
-					<div class="modal-dialog" style="width:350px;">
-						<div class="modal-content">
-							<div class="modal-body">
-								<div class="pleft10">
-									<label>
-										<span id="canrisk_addInfo" class="lang"></span>
-									</label>
-									<input type="text" maxlength="13" class="form-control top10" id="famid"
-										placeholder="Ex. : Identifiant la généalogie">
-								</div>
-								<div class="checkbox radio-info radio-circle">
-									<input type="checkbox" name="report-opts" id="pid_fname" checked="">
-									<label for="pid_fname" class="radio-inline">
-										<span id="pid_fnameTxt" class="lang"></span>
-									</label>
-								</div>
-							</div>
-							<div class="modal-footer bg-blue rounded-bottom">
-								<button type="button" class="btn btn-primary" data-dismiss="modal"
-									id="cr_file_save">
-									<span id="canrisk_save" class="lang"></span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
-				<button id="png_download" class='btn btn-primary'>JPEG <i class="fa fa-download"></i></button>
-				<button id="print" class='btn btn-primary lang'></button>
-				<div class="btnDivider"></div>
-
+			</div>
+			<div class="col-md-6"></div>
+			<div class="col-md-3">
 				<button id="fh_edit_settings" class='btn btn-primary'>
 					<i class="fa fa-cog" aria-hidden="true"></i>
 					<span class='lang' id='legend'></span>
 				</button>
-				<br></br>
-
-				<!-- create pedigree -->
-				<div id="pedigrees"></div>
-				<div id="node_properties"></div>
-
-				<!-- create disease settings -->
-				<div id="fh_settings"></div>
-				<div id="reset_dialog" class="lang"></div>
 			</div>
 		</div>
+		<div class="row text-center">
+			<!-- create pedigree -->
+			<div id="pedigrees"></div>
+			<div id="node_properties"></div>
+
+			<!-- create disease settings -->
+			<div id="fh_settings"></div>
+			<div id="reset_dialog" class="lang"></div>
+		</div>
+		<div class='row' style="padding-top: 10px;">
+			<div class="text-center">
+				<button id="exportJson" class='btn btn-primary'><i class="fa fa-download"></i><span id="saveJson" class="lang"></span></button>
+				<button id="boadicea_download" class='btn btn-primary'>BOADICEA <i class="fa fa-download"></i></button>
+				<button id="save_canrisk" class='btn btn-primary'>CanRisk <i class="fa fa-download"></i></button>
+				<div class="btnDivider"></div>
+
+				<button id="svg_download" class='btn btn-primary'>SVG <i class="fa fa-download"></i></button>
+				<button id="png_download" class='btn btn-primary'>JPEG <i class="fa fa-download"></i></button>
+				<button id="print" class='btn btn-primary lang'></button>
+			</div>
+		</div>
+
+		<div id="save-canrisk-dialog" class="modal fade">
+			<div class="modal-dialog" style="width:350px;">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="pleft10">
+							<label>
+								<span id="canrisk_addInfo" class="lang"></span>
+							</label>
+							<input type="text" maxlength="13" class="form-control top10" id="famid"
+								placeholder="Ex. : Identifiant la généalogie">
+						</div>
+						<div class="checkbox radio-info radio-circle">
+							<input type="checkbox" name="report-opts" id="pid_fname" checked="">
+							<label for="pid_fname" class="radio-inline">
+								<span id="pid_fnameTxt" class="lang"></span>
+							</label>
+						</div>
+					</div>
+					<div class="modal-footer bg-blue rounded-bottom">
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							id="cr_file_save">
+							<span id="canrisk_save" class="lang"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<!-- Story -->
 		<div class='row' style="padding-top: 20px;">

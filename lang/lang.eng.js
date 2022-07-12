@@ -70,6 +70,8 @@ var lang = {
     alert_noAge:"year of birth not given",
     probandLabel:"proband",
     about:"About",
+    saveJson:" Save",
+    saveJson2:" Save",
 
     // addInfo
     canRiskDialog: "Add an identifier (Famid) in the file",
