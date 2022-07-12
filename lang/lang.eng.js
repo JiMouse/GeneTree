@@ -1,6 +1,6 @@
 var lang = {
     //index.html
-    home:"Home",
+    home:"Tool",
     guide:"Guide",
     user_friendly:"Patient interface",
     greeting : "Hello",
