@@ -1,4 +1,4 @@
-const { sortedIndex } = require("lodash");
+// const { sortedIndex } = require("lodash");
 
 //set global variables
 var i,
@@ -1034,7 +1034,7 @@ function setSetterLanguage(newLang, src=''){
     localStorage.setItem("language", newLang);
 }
 
-function setLanguage(oldLang, newLang){
+function setLanguage(oldLang, newLang){ 
     setSetterLanguage(newLang);
 
     //Replace all occurences of "oldscript.js" with "newscript.js" //relative path
@@ -1048,12 +1048,14 @@ function setLanguage(oldLang, newLang){
     if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
     let rootPath='';
     filePath = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    
+    //bug
     HPOArr = ImportHPO(filePath);
     OrphaArr = ImportOrphaData(rootPath + 'data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
-function updateLangage(oldLang, newLang) {
+function updateLangage(oldLang, newLang) { 
     setLanguage(oldLang, newLang);
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?

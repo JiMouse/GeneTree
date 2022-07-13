@@ -1,4 +1,7 @@
 $(document).ready(function(){
+
+    if(window.location.pathname != "/GeneTree/docs/user-interface.html") throw new Error('This is not an error. This is just to abort javascript');
+
     /* actualisation de l'arbre au fur et à mesure */
     //dbirth placeholder
     $("#dbirth").inputmask({
