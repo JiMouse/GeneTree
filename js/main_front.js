@@ -640,10 +640,13 @@ $(document).ready(function() {
       });
 
     //Export functions
-    $( "#exportJson" ).click(function() {
+    $( ".exportJson" ).click(function(event) {
+        event.stopPropagation();
+        event.stopImmediatePropagation();
         let myDeepClone = JSON.stringify(hot.getSourceData());
         ExportJSON(JSON.parse(myDeepClone));
     });
+
     $( "#exportBOADICEA" ).click(function() {
         let myDeepClone = JSON.stringify(hot.getSourceData()),
             Tdata = FormatToPedigreeJS(JSON.parse(myDeepClone));
