@@ -76,7 +76,26 @@ var lang = {
     saveJson2:" Sauvegarder",
     savePicture: " Image",
     saveSVG: "Image vectorielle",
-    about_text:"",
+    about_text:"Plusieurs propositions permettant la génération d’arbre généalogique existent, aussi bien payantes que gratuites."+ 
+    "Néanmoins, à ce jour, aucune solution gratuite ne permettait la génération d’un arbre généalogique modifiable"+ 
+    "et exportable rapidement ainsi que le texte correspondant."+"\n"+
+    
+    "Cette application est un outil intégré pour simplifier l’activité administratives des médecins et conseillers"+ 
+    "en génétiques dans le cadre de leur consultation de génétique.\n"+
+    "Cet outil dispose d'un mode spécifique pour la consultation d'oncogénétique et d’un mode utilisant les phénotypes HPO."+ 
+    "La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée,"+ 
+    "puis complétée via un tableau ou une interface graphique, tous deux interconnectés. \n"+
+    "L'arbre est exportable dans plusieurs formats de fichiers (TSV, JSON, PED, BOADICEA) et modifiable"+ 
+    "par un éditeur vectoriel (format PDF, SVG) ou peut être imprimé directement. \n"+
+    "Enfin, cette application permet la génération automatique de texte à partir du contenu du tableau correspondant"+ 
+    "à l’histoire personnelle et familiale du patient.  Il s’agit, à ma connaissance, de la seule solution permettant"+ 
+    "ainsi de rédiger en un clic une partie importante du compte-rendu de consultation.\n"+
+    "L’interface en ligne optimisée pour le navigateur Google Chrome permet une utilisation simple sans nécessiter d’installation préalable."+
+    "Cet outil a été particulièrement pensé pour les consultations d'oncogénétique afin d'éviter la triple saisie"+ 
+    "(texte – arbre généalogique - score de risque Boadicea ou CanRisk).\n"+
+
+    "GeneTree est développé est maintenu par le Dr Jean-Marie Ravel avec la participation des membres de l'équipe de génétique clinique"+
+    "du CHRU de Nancy (France).",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
