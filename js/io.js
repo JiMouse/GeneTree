@@ -177,7 +177,7 @@
 
 		$('#png_download').click(function(e) {
 			//scale to fit
-			pzoom.scale_to_fit(opts, 0);
+			// pzoom.scale_to_fit(opts, 0);
 
 			setTimeout(function() {
 				//download jpg

@@ -72,6 +72,9 @@ var lang = {
     about:"About",
     saveJson:" Save",
     saveJson2:" Save",
+    savePicture: " Picture",
+    saveSVG: "SVG picture",
+
 
     // addInfo
     canRiskDialog: "Add an identifier (Famid) in the file",
