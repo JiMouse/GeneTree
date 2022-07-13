@@ -76,6 +76,7 @@ var lang = {
     saveJson2:" Sauvegarder",
     savePicture: " Image",
     saveSVG: "Image vectorielle",
+    about_text:"",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
