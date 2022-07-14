@@ -1179,3 +1179,7 @@ function cleanDiseaseText(patho) {
 function lowerFirstLetter(string) {
     return string.charAt(0).toLowerCase() + string.slice(1);
 }
+
+function capitaliseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

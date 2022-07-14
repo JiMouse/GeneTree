@@ -314,10 +314,6 @@ if(utils.isIE() || utils.isEdge()) {
     document.write('<script src="https://cdn.jsdelivr.net/npm/canvg@2.0.0/dist/browser/canvg.min.js"><\/script>');
 }
 
-function capitaliseFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 var opts = {
     'targetDiv': 'pedigree',
     'btn_target': 'pedigree_history',
