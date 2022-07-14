@@ -53,7 +53,7 @@ function ImportHPO(tsv) {
 
 function loadExternalData(newLang, rootPath) {
     //change HPO source
-    if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
+    if(window.location.pathname != "/GeneTree/index.html") return //docs/user-interface.html") return
     HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
     HPOArr = loadHPOFile(HPO_path);
     OrphaArr = loadHPOFile('data/ORPHAnomenclature_fr.xml.txt');
