@@ -1046,9 +1046,7 @@ function setLanguage(oldLang, newLang){
 function updateLangage(oldLang, newLang) { 
     setLanguage(oldLang, newLang);
 
-    // loadExternalData(load_lang); // update HPO and ORPHAData //BUG
-
-    var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
+    var delayInMilliseconds = 100;  //hack: need to use async / awate ?
     setTimeout(function() {
         populateText();
 
@@ -1132,79 +1130,8 @@ function updateLangage(oldLang, newLang) {
         //load new table
         hot.loadData(JSON.parse(myDataSafe));
 
-    }, delayInMilliseconds);
+    }, delayInMilliseconds);   
 }
-
-//................ LOAD HPO and ORPHAData ........................//
-// Synchronously read a text file from the web server with Ajax
-// from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
-function loadFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    // xmlhttp.overrideMimeType('text/xml; charset=iso-8859-1'); //debug accent ?
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-      result = xmlhttp.responseText;
-    }
-
-    //importHPO
-    if(filePath.includes("HPO")) {
-        result = ImportHPO(result);
-    }
-
-    //ImportOrphaData
-    else if(filePath.includes("ORPHA")) {
-        result = result.split('\n');
-    }
-    return result;
-}
-  
-//Convert tsvtoJSON
-function tsvJSON(tsv) {
-    const lines = tsv.split('\n');
-    const headers = lines.shift().trim().split('\t');
-    return lines.map(line => {
-    var data = line.trim().split('\t');
-    return headers.reduce((obj, nextKey, index) => {
-        obj[nextKey] = data[index];
-        return obj;
-    }, {});
-    });
-};
-
-//Upload HPO terms and OrphaData
-function ImportHPO(tsv) {
-    // let tsv = loadFile(filePath);  //bug synch ?
-    let HPO = tsvJSON(tsv),
-        Arr = [];
-
-    for(var i in HPO) {
-        if(HPO[i].LABEL!='' & HPO[i].LABEL!='undefined' & HPO[i].LABEL!=null) Arr.push(HPO[i].LABEL);
-    }
-    return Arr;
-} 
-
-//Import Orphadata and concatenate
-function ImportOrphaData(filePath) {
-    let tsv = loadFile(filePath);
-    var x = tsv.split('\n');
-    return x;
-}
-
-function loadExternalData(newLang, rootPath) {
-    //change HPO source
-    if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
-    HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
-
-    HPOArr = loadFile(HPO_path);
-    OrphaArr = loadFile('data/ORPHAnomenclature_fr.xml.txt');
-    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
-}
-
-loadExternalData(load_lang, '');
-
-// ................................................................................
 
 function loadStory(){
     let myDeepClone = JSON.stringify(hot.getSourceData()),

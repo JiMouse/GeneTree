@@ -21,3 +21,5 @@
 // // function GetChild(o,i)
 // // function getPartner(o,i)
 */
+
+loadExternalData(load_lang, '');
