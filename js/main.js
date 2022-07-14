@@ -1,5 +1,3 @@
-// const { sortedIndex } = require("lodash");
-
 //set global variables
 var i;
 var HPOArr = [];
