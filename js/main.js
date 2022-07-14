@@ -1192,10 +1192,9 @@ function ImportOrphaData(filePath) {
     return x;
 }
 
-function loadExternalData(newLang) {
+function loadExternalData(newLang, rootPath) {
     //change HPO source
     if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
-    let rootPath='';
     HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
 
     HPOArr = loadFile(HPO_path);
@@ -1203,7 +1202,7 @@ function loadExternalData(newLang) {
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
-loadExternalData(load_lang); //OK
+loadExternalData(load_lang, '');
 
 // ................................................................................
 
