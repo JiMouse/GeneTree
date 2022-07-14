@@ -703,14 +703,12 @@ $(document).ready(function() {
     $( "#LangSetterFr" ).click(function() {
         $(".se-pre-con").show();
         updateLangage("eng", "fr");
-        // loadExternalData(load_lang, '');
         $(".se-pre-con").fadeOut("slow");
     });
 
     $( "#LangSetterEng" ).click(function() {
         $(".se-pre-con").show();
         updateLangage("fr", "eng");
-        // loadExternalData(load_lang, '');
         $(".se-pre-con").fadeOut("slow");
     });
 
