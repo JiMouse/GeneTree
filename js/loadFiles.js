@@ -56,10 +56,6 @@ function loadExternalData(newLang, rootPath) {
     if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
     HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
     HPOArr = loadHPOFile(HPO_path);
-    setTimeout(function() { 
-        // alert(HPOArr);
-    }, 1000); 
-
     OrphaArr = loadHPOFile('data/ORPHAnomenclature_fr.xml.txt');
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
