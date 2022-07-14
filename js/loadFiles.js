@@ -1,6 +1,9 @@
 //................ LOAD HPO and ORPHAData ........................//
 // Synchronously read a text file from the web server with Ajax
 // from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
+var HPOArr = [];
+var OrphaArr= [];
+
 function loadFile(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();

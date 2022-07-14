@@ -1,7 +1,5 @@
 //set global variables
 var i;
-var HPOArr = [];
-var OrphaArr;
 
 function JSONToPEDConvertor(JSONData, toKeep) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
