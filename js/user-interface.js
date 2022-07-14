@@ -2,6 +2,19 @@ $(document).ready(function(){
 
     if(window.location.pathname != "/GeneTree/docs/user-interface.html") return
 
+    // navbar language setter
+    $( "#LangSetterFr" ).click(function() {
+        $(".se-pre-con").show();
+        updateLangage("eng", "fr");
+        $(".se-pre-con").fadeOut("slow");
+    });
+
+    $( "#LangSetterEng" ).click(function() {
+        $(".se-pre-con").show();
+        updateLangage("fr", "eng");
+        $(".se-pre-con").fadeOut("slow");
+    });
+
     /* actualisation de l'arbre au fur et à mesure */
     //dbirth placeholder
     $("#dbirth").inputmask({
