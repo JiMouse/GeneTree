@@ -1048,7 +1048,7 @@ function setLanguage(oldLang, newLang){
 function updateLangage(oldLang, newLang) { 
     setLanguage(oldLang, newLang);
 
-    loadExternalData(load_lang); // update HPO and ORPHAData //BUG
+    // loadExternalData(load_lang); // update HPO and ORPHAData //BUG
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
     setTimeout(function() {
@@ -1205,7 +1205,7 @@ function loadExternalData(newLang) {
     HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
-// loadExternalData(load_lang); //OK
+loadExternalData(load_lang); //OK
 
 // ................................................................................
 

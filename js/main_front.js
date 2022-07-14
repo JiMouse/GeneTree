@@ -189,8 +189,7 @@ $(document).ready(function(){
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
                 hotSelectedTable =  this;
                 if (checkBoxHPO.checked == true) { //if HPO mode
-                    alert(HPOArr);
-                    // HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+                    // alert(HPOArr);
 
                     var html_cancerListDialog = 
                     "<form>"
