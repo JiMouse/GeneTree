@@ -1,8 +1,8 @@
 // const { sortedIndex } = require("lodash");
 
 //set global variables
-var i,
-    HPOArr = [];
+var i;
+var HPOArr = [];
 var OrphaArr;
 
 function JSONToPEDConvertor(JSONData, toKeep) {
@@ -1040,23 +1040,15 @@ function setLanguage(oldLang, newLang){
     //Replace all occurences of "oldscript.js" with "newscript.js" //relative path
     let root='';
     if(window.location.pathname == "/GeneTree/docs/user-interface.html") root='../'
-    //https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
+
     replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js")
     replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
-
-    //change HPO source
-    if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
-    let rootPath='';
-    filePath = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
-    
-    //bug
-    HPOArr = ImportHPO(filePath);
-    OrphaArr = ImportOrphaData(rootPath + 'data/ORPHAnomenclature_fr.xml.txt'); //todo : set language
-    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
 function updateLangage(oldLang, newLang) { 
     setLanguage(oldLang, newLang);
+
+    loadExternalData(load_lang); // update HPO and ORPHAData //BUG
 
     var delayInMilliseconds = 100;  //ugly hack need to use async / awate ?
     setTimeout(function() {
@@ -1145,9 +1137,9 @@ function updateLangage(oldLang, newLang) {
     }, delayInMilliseconds);
 }
 
+//................ LOAD HPO and ORPHAData ........................//
 // Synchronously read a text file from the web server with Ajax
 // from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
-
 function loadFile(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
@@ -1156,6 +1148,16 @@ function loadFile(filePath) {
     xmlhttp.send();
     if (xmlhttp.status==200) {
       result = xmlhttp.responseText;
+    }
+
+    //importHPO
+    if(filePath.includes("HPO")) {
+        result = ImportHPO(result);
+    }
+
+    //ImportOrphaData
+    else if(filePath.includes("ORPHA")) {
+        result = result.split('\n');
     }
     return result;
 }
@@ -1174,9 +1176,9 @@ function tsvJSON(tsv) {
 };
 
 //Upload HPO terms and OrphaData
-function ImportHPO(filePath) {
-    let tsv = loadFile(filePath),
-        HPO = tsvJSON(tsv),
+function ImportHPO(tsv) {
+    // let tsv = loadFile(filePath);  //bug synch ?
+    let HPO = tsvJSON(tsv),
         Arr = [];
 
     for(var i in HPO) {
@@ -1184,17 +1186,28 @@ function ImportHPO(filePath) {
     }
     return Arr;
 } 
-var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
-HPOArr = ImportHPO(filePath);
 
 //Import Orphadata and concatenate
 function ImportOrphaData(filePath) {
-    let tsv = loadFile(filePath); //bug importing accents
+    let tsv = loadFile(filePath);
     var x = tsv.split('\n');
     return x;
 }
-OrphaArr = ImportOrphaData('data/ORPHAnomenclature_fr.xml.txt');
-HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+
+function loadExternalData(newLang) {
+    //change HPO source
+    if(window.location.pathname == "/GeneTree/docs/user-interface.html") return
+    let rootPath='';
+    HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+
+    HPOArr = loadFile(HPO_path);
+    OrphaArr = loadFile('data/ORPHAnomenclature_fr.xml.txt');
+    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+}
+
+// loadExternalData(load_lang); //OK
+
+// ................................................................................
 
 function loadStory(){
     let myDeepClone = JSON.stringify(hot.getSourceData()),

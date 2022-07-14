@@ -173,7 +173,7 @@ $(document).ready(function(){
 
     //HPO search
     $(document).on("keyup", "input[id='HPOInput']", function search(e) {
-        searchInList();
+        searchInList(HPOArr);
         if(e.keyCode == 13) {
             e.preventDefault();
         }
@@ -189,6 +189,9 @@ $(document).ready(function(){
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
                 hotSelectedTable =  this;
                 if (checkBoxHPO.checked == true) { //if HPO mode
+                    alert(HPOArr);
+                    // HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
+
                     var html_cancerListDialog = 
                     "<form>"
                         +"<fieldset>"
@@ -266,7 +269,7 @@ $(document).ready(function(){
             hotSelectedTable.selectCell(row, column);
         }
     }
-    function searchInList() {
+    function searchInList(HPOArr) {
         // Declare variables
         var input, filter, ul, li, a, i, txtValue, itemsFull;
         input = document.getElementById('HPOInput');
@@ -361,7 +364,7 @@ $(document).ready(function() {
             loadFromHot(); //Load pedigreeJS
             loadStory(); //load text
         };
-        reader.readAsText(file);
+        // reader.readAsText(file); //bug ?
     }
 
     //Load functions
