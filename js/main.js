@@ -1044,6 +1044,8 @@ function setLanguage(oldLang, newLang){
 function updateLangage(oldLang, newLang) { 
     setLanguage(oldLang, newLang);
 
+    loadExternalData(newLang, ''); //load HPO
+
     var delayInMilliseconds = 100;  //hack: need to use async / awate ?
     setTimeout(function() {
         populateText();
