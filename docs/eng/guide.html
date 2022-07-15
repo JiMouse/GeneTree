@@ -23,65 +23,15 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	
-	<script src="package/lodash.js"></script>
-
-	<!-- languages script -->
-	<script>
-		//check if one prefered langages is french else set english as default
-		var userLang = navigator.languages || navigator.userLanguage;
-		function isFr(lang) {
-			return /fr/.test(lang)
-		}
-		default_lang=(userLang.some(isFr) ? "fr" : "eng");
-		
-		//define load lang : check if localStorage
-		var local_lang = localStorage.getItem("language");
-		if (local_lang !== undefined && local_lang !== null) {
-			load_lang = local_lang;
-		} else {
-			load_lang = default_lang;
-		}
-		
-		//load languages scripts
-		document.write('<scr'+'ipt type="text/javascript" src="../lang/lang.'+load_lang+'.js"></sc'+'ript>');
-		document.write('<scr'+'ipt type="text/javascript" src="../lang/story.'+load_lang+'.js"></sc'+'ript>');
-	</script>
-	
-	<!-- load pedigreejs -->
-    <script src="../js/io.js"></script>
-    <script src="../js/pedigree_form.js"></script>
-    <script src="../js/pedigree.js"></script>
-    <script src="../js/undo_redo_refresh.js"></script>
-	<script src="../js/widgets.js"></script>
-	<script src="../js/zoom.js"></script>
-	<script src="../js/table.js"></script>
-
-	<!-- main script -->
-	<script type="text/javascript" src="../js/main.js"></script>
-	<script type="text/javascript" src="../js/main_front.js"></script>
-	<script type="text/javascript" src="../js/hotContextMenu.js"></script>
 
 	<!-- main css -->
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<link rel="stylesheet" type="text/css" href="../css/handsontable.css">
-	
+	<link rel="stylesheet" type="text/css" href="../../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../../css/handsontable.css">
+
 	<!-- load handsontable module v10.0 --> 
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
 
-
-	<!-- Display a loading icon until the page loads completely --> 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-	<script>
-		$(window).on("load", function (e) {
-			$(".se-pre-con").fadeOut("slow");
-
-			//load HPOArr
-			var filePath = 'data/HPO_fr_CISMeF_1611083.txt';
-			HPOArr = ImportHPO(filePath);
-		});
-	</script>
 </head>
 <body>
 	<nav class="navbar navbar-default header" style="margin-bottom:0px;margin-top:0px;background-color: #002e5d;">
@@ -100,22 +50,16 @@
 			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
 				<ul class="nav navbar-nav navbar-left">
 					<li>
-			            <a data-lang="fr" href="/GeneTree/docs/fr/guide.html" class="pright5 headerlink" style="color:#dbe9f5" title="Français">Fr</a>
+			            <a data-lang="en" href="/GeneTree/docs/eng/guide.html" class="pright5 headerlink" style="color:#dbe9f5" title="English">Eng</a>
 			        </li>
-				</ul>
+			</ul>
 			<ul class="nav navbar-nav navbar-right">
-					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5">
-						<i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Tool</span></a>
-					</li>
-					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5">
-						<span id="user_friendly" class="lang">User-friendly</span></a>
-					</li>
-					<li><a class="headerlink" href="/GeneTree/docs/eng/guide.html" style="color:#dbe9f5">
-						<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a>
-					</li>
+					<li><a class="headerlink" href="/GeneTree/" style="color:#dbe9f5"><i class="fa fa-home"></i>&nbsp;&nbsp;<span id="home" class="lang">Outil</span></a> </li>
+					<li><a class="headerlink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5"><span id="user_friendly" class="lang">Interface patient</span></a></li>
+					<li><a class="headerlink" href="/GeneTree/docs/fr/guide.html" style="color:#dbe9f5"><i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;<span id="guide" class="lang">Guide</span></a></li>
 					<li>
 						<a class="headerlink" id="aboutLink" href="/GeneTree/docs/about.html" style="color:#dbe9f5">
-							<span>About</span>
+							<span>À propos</span>
 						</a>
 					</li>
 
@@ -126,19 +70,150 @@
 
 	<div class="container">  <!-- class="container-fluid" style="padding:0px 200px;"--> 
 
-		<!-- Story -->
+		<!-- Introduction -->
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class="lang" id ="title_story" style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Titre</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Introduction</h3>
 				</div>
 			</div>
 			
-			<p>
-				<div contenteditable="true" style="padding:0px 20px;">
-					Page in progress.
+			<div  style="padding:0px 10px 20px;">
+				<p class="big">
+					Cette application est un outil intégré pour aider les médecins dans le cadre de leur consultation de génétique, notamment francophones (disponible en anglais également).
+					Il dispose d'un mode spécifique pour la consultation d'oncogénétique ainsi qu'un utilisant les phénotypes HPO. 
+					<br>
+					La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, puis complétée via un tableau ou une interface graphique, tout deux interconnectés.
+					<br>
+					L'arbre est exportable dans plusieurs format de fichiers (TSV, JSON, PED, BOADICEA) et modifiable par un éditeur vectoriel (format PDF, SVG).
+					<br>Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau.
+					<hr>
+					Initialement, cet outil a été conçu particulièrement en pensant aux consultations d'oncogénétique afin d'éviter la triple saisie (texte-arbre- score de risque boadicea).
+					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte. Des boutons (en rouge) permettent de synchroniser manuellement les données
+					entre ces trois volets.
+				</p>
+				<p class="text-center">
+					<img src="../../data/images/plan général.png"  alt="fonctionnement général" class="responsive" style="max-width:800px;">
+					<br><br>
+					<span>Figure 1. Fonctionnement général de l'application</span>
+				</p>
+			</div>
+		</div>
+
+		<!-- Prise en main du tableur -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Tableau de saisie</h3>
 				</div>
-			</p>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					<h4>Chargement d'un fichier</h4>
+					<p>
+						Un fichier Boadicea v4 ou JSON (issu de l'arbre ou du tableur) peut être chargé directement (1).
+					</p>
+					<hr>
+					<h4>Création d'une famille</h4>
+					<p>
+						<li>Modèle prédéfini</li>
+						<p>
+							Un arbre de base est proposé : le cas index et ses parents, les grands-parents, et enfin les arrières-grands-parents (2).
+						</p>
+						<li>Modèle personalisé</li>
+						<p>
+							Il est aussi possible de générer un arbre personnalisé (3) avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)
+							via le bouton 'Créer un nouvel arbre' (4).
+							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu')(5).
+						</p>
+						<p class="text-center">
+							<img src="../../data/images/menu.png"  alt="menu arbre" width="300" style="display: inline-block;">
+							<br><br>
+							<span>Figure 2. Menu déroulant du tableau</span>
+						</p>
+					</p>
+					<hr>
+					<h4>Ajout d'un individu</h4>
+					<p>
+						Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un membre correspondant.
+						Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu.
+						Il est ensuite possible de personaliser cet individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc. Un champs "commentaire" est également 
+						existant et son contenu sera ajouté dans le texte généré.
+					</p>
+					<hr>
+					<h4>Autres fonctions</h4>
+					<p>
+						<ul>
+							<li>Réinitialiser : efface l'arbre est créer un arbre de base propositus et parents.</li>
+							<li>Défaire : défait la dernière action</li>
+							<li>Refaire : refait la dernière action</li>
+							<li>Mode "onco" : pré-rempli la liste des pathologies avec des cancers et affiche les colonnes présentes dans Boadicéa.</li>
+							<li>Mode "HPO" : importe la liste des pathologies et symptômes HPO lors du choix des pathologies.</li>
+						</ul>
+						Le tableur est également utilisable comme un tableur excel : il est possible de copier, coller ou supprimer des lignes.
+						Attention à ne pas supprimer des individus référencés comme ascendants d'autres individus (exemple : les parents).
+						Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque
+						l'arbre généré a des branches croisées.
+						Il est possible également de colorer des lignes ou colonnes ou cellules grâce au menu contextuel (clic droit).
+					</p>
+				</p>
+			</div>
+		</div>
+
+		<!-- Prise en main de l'arbre généalogique -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Prise en main de l'arbre généalogique</h3>
+				</div>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4.
+					Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.
+				</p>
+				<p>
+					Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les "widgets" utilisés pour l'édition.
+					Vous pouvez utiliser ces "widgets" pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre.
+					La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.
+				</p>
+				<p>
+					Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif.
+					Un bouton spécifique permets de transformer les couleurs en motifs.
+				</p>
+				<p class="text-center">
+					<img src="../../data/images/widgets.jpg"  alt="fonctionnement général" width="200" style="display: inline-block;">
+					<br><br>
+					<span>Figure 3. "Widgets" autour d'un individu</span>
+				</p>
+				<hr>
+				<p>
+					L'arbre est ensuite téléchargeable dans différent fichier : "JSON" pour la sauvegarde de toutes les informations, Boadicea afin d'utiliser <a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
+					,  "SVG" afin de permettre de le modifier avec un logiciel vectoriel et enfin "JPEG". L'impression directe ou l'export en format PDF est également possible via un bouton dédié.<br>
+					Avant de l'exporter, il est utile d'utiliser le bouton "centrer l'arbre" afin de centrer l'arbre et le mettre à l'échelle du cadre.
+				</p>
+				<hr>
+				<p>
+					Note : l'abre est sauvegardé en cache local ce qui empêche la perte de donnée en cas de raffraichissement accidentel. Par ailleurs, aucune donnée n'est envoyée au serveur.
+				</p>
+			</div>
+		</div>
+
+		<!-- Génération du texte -->
+		<div class='row'  style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Génération du texte</h3>
+				</div>
+			</div>
+			
+			<div  style="padding:0px 10px 20px;">
+				<p>
+					Le texte est généré à partir du tableau (et non de l'arbre) grâce au bouton dédié. Le texte est ensuite modifiable, sélectionable et copiable.
+				</p>
+			</div>
 		</div>
 	</div>
 
@@ -162,26 +237,6 @@
 		</div>
 	</footer>
 	<!-- FOOTER END -->
-
-	<!-- pattern fills //.style('fill', 'url(#circles-1)') --> 
-	<div id="patterns" style="height:0;">
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10"><image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSJ3aGl0ZSIgLz4KICA8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0iYmxhY2siLz4KPC9zdmc+" x="0" y="0" width="10" height="10"></image></pattern></defs></svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="dots-8" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nOCcgaGVpZ2h0PSc4JyBmaWxsPSdibGFjaycgLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="horizontal-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMTAnIGhlaWdodD0nMicgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="vertical-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMicgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="8" width="8" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="crosshatch" patternUnits="userSpaceOnUse" width="8" height="8"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnPgogIDxyZWN0IHdpZHRoPSc4JyBoZWlnaHQ9JzgnIGZpbGw9JyNmZmYnLz4KICA8cGF0aCBkPSdNMCAwTDggOFpNOCAwTDAgOFonIHN0cm9rZS13aWR0aD0nMC41JyBzdHJva2U9JyNhYWEnLz4KPC9zdmc+Cg==" x="0" y="0" width="8" height="8"> </image> </pattern> </defs> </svg>        
-		<svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs> </svg>
-	</div>
-	<script>
-		var patternsId = function(){//all id
-			items = ['circles-1', 'diagonal-stripe-1', 'dots-8', 'horizontal-stripe-2', 'vertical-stripe-2', 'crosshatch', 'lightstripe'];
-			for (let i = 0; i < items.length; i++) {
-				items[i] = 'url(#' + items[i] + ')';
-			}
-			return items
-		}
-	</script>
 </body>
 
 </html>
