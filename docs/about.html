@@ -80,6 +80,22 @@
 		$(window).on("load", function (e) {
 			$(".se-pre-con").fadeOut("slow");
 		});
+
+		$(document).ready(function() {
+		    // navbar language setter
+			$( "#LangSetterFr" ).click(function() {
+				$(".se-pre-con").show();
+				updateLangage("eng", "fr");
+				$(".se-pre-con").fadeOut("slow");
+			});
+
+			$( "#LangSetterEng" ).click(function() {
+				$(".se-pre-con").show();
+				updateLangage("fr", "eng");
+				$(".se-pre-con").fadeOut("slow");
+			});
+		});
+
 	</script>
 </head>
 <body>
