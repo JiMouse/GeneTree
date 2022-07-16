@@ -52,6 +52,7 @@ var lang = {
     exportText:"Export",
     copyToClip:"Copy",
     title_story:"Clinical history",
+    storyBtn: "Build text",
     title_reference:"References",
     miscarriage:'miscarriage',
     termination:'termination',

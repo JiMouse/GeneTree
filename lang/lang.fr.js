@@ -54,6 +54,7 @@ var lang = {
     exportText:"Exporter",
     copyToClip:"Copier",
     title_story:"Histoire clinique",
+    storyBtn: "Générer le texte",
     title_reference:"Références",
     miscarriage:'FCS',
     termination:'IMG',
