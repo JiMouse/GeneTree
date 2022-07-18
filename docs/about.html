@@ -61,7 +61,8 @@
 	<script type="text/javascript" src="../js/main.js"></script>
 	<script type="text/javascript" src="../js/user-interface.js"></script>
 	<script type="text/javascript" src="../js/indexWidgets.js"></script>
-	<!-- <script type="text/javascript" src="../js/main_front.js"></script> -->
+	<script type="text/javascript" src="../js/loadFiles.js"></script>
+	<script type="text/javascript" src="../js/main_front.js"></script>
 	<!-- <script type="text/javascript" src="../js/hotContextMenu.js"></script> -->
 	<!-- <script type="text/javascript" src="../js/hotTable.js"></script> -->
 
@@ -80,22 +81,6 @@
 		$(window).on("load", function (e) {
 			$(".se-pre-con").fadeOut("slow");
 		});
-
-		$(document).ready(function() {
-		    // navbar language setter
-			$( "#LangSetterFr" ).click(function() {
-				$(".se-pre-con").show();
-				updateLangage("eng", "fr");
-				$(".se-pre-con").fadeOut("slow");
-			});
-
-			$( "#LangSetterEng" ).click(function() {
-				$(".se-pre-con").show();
-				updateLangage("fr", "eng");
-				$(".se-pre-con").fadeOut("slow");
-			});
-		});
-
 	</script>
 </head>
 <body>
@@ -131,6 +116,20 @@
 				var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
 				document.getElementById("guideLink").setAttribute("href", strLink2);
 			})();
+
+            // navbar language setter
+            $( "#LangSetterFr" ).click(function() {
+                $(".se-pre-con").show();
+                updateLangage("eng", "fr");
+                $(".se-pre-con").fadeOut("slow");
+            });
+
+            $( "#LangSetterEng" ).click(function() {
+                $(".se-pre-con").show();
+                updateLangage("fr", "eng");
+                $(".se-pre-con").fadeOut("slow");
+            });
+
 		});
 	</script>
 	<nav class="navbar navbar-default header" style="margin-bottom:0px;margin-top:0px;background-color: #002e5d;">
@@ -194,7 +193,6 @@
 						</a>
 					</li>
 				</ul>
-
 			</div>
 		</div>
 	</nav>
