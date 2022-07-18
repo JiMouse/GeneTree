@@ -110,12 +110,12 @@
 			//Load load_lang
 			setSetterLanguage(load_lang);
 
-			(function () {
-				var strLink = '/GeneTree/docs/'+ 'user-interface.html'
-				document.getElementById("userLink").setAttribute("href", strLink);
-				var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
-				document.getElementById("guideLink").setAttribute("href", strLink2);
-			})();
+			// (function () {
+			// 	var strLink = '/GeneTree/docs/'+ 'user-interface.html'
+			// 	document.getElementById("userLink").setAttribute("href", strLink);
+			// 	var strLink2 = '/GeneTree/docs/' + load_lang + '/guide.html'
+			// 	document.getElementById("guideLink").setAttribute("href", strLink2);
+			// })();
 		});
 	</script>
 	<nav class="navbar navbar-default header" style="margin-bottom:0px;margin-top:0px;background-color: #002e5d;">
@@ -163,12 +163,12 @@
 						</a>
 					</li>
 					<li>
-						<a class="headerlink" id="userLink" style="color:#dbe9f5" onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
+						<a class="headerlink" id="userLink" href="/GeneTree/docs/user-interface.html" style="color:#dbe9f5" onclick="pbuttons.reset(opts, opts.keep_proband_on_reset);">
 							<span id="user_friendly" class="lang"></span>
 						</a>
 					</li>
 					<li>
-						<a class="headerlink" id="guideLink" style="color:#dbe9f5">
+						<a class="headerlink" id="guideLink" href="/GeneTree/docs/guide.html" style="color:#dbe9f5">
 							<i class="fa fa-info" aria-hidden="true"></i>&nbsp;&nbsp;
 							<span id="guide" class="lang"></span>
 						</a>
