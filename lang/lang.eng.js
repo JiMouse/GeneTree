@@ -97,6 +97,7 @@ var lang = {
     "of the CHRU of Nancy (France).",
 
     //guide
+    guide_introTitle:"General presentation",
     guide_intro0:"The application is structured around three parts: the table, the tree and the clinical history. " +
     "The family can be loaded from an existing file or created and modified with the table and the graphical interface. " //,
     // guide_intro1:

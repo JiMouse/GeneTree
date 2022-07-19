@@ -99,6 +99,7 @@ var lang = {
     "du CHRU de Nancy (France).",
 
     //guide
+    guide_introTitle:"Présentation générale",
     guide_intro0:"L'application est articulée autour de trois volets : le tableau, l'arbre et l'histoire clinique. " +
     "La famille peut être chargée à partir d'un fichier existant ou créée et modifiée avec le tableau et l'interface graphique. " //,
     // guide_intro1:
