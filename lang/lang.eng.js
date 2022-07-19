@@ -99,16 +99,16 @@ var lang = {
     //guide
     guide_introTitle:"General presentation",
     guide_intro0:"The application is structured around three parts: the table, the tree and the clinical history. " +
-    "The family can be loaded from an existing file or created and modified with the table and the graphical interface. " //,
+    "The family can be loaded from an existing file or created and modified with the table and the graphical interface. " + "\n" +
     // guide_intro1:
     + "The data is saved in a local cache and is deleted when the browser tab is closed. " +
     "In addition, no data is sent to the server, which guarantees the confidentiality of the data.",
     guide_intro2:"A first navigation bar allows you to load an existing family (by selecting or dragging a file), " +
     "to save the current family or to reset the family.",
     guide_fig1:"Figure 1: General function of the application",
-    guide_intro3:"There are also two optional usage modes to restrict pathologies (on the right of the window).",
-    guide_introOnco:"Onco' mode: pre-fills the list of pathologies with cancers and displays the columns present in CanRisk.",
-    guide_introHPO:"HPO' mode: imports the list of HPO conditions and symptoms when selecting conditions.",
+    guide_intro3:"There are also two optional modes of use to restrict the pathologies (on the right of the window):",
+    guide_introOnco:"the 'onco' mode is intended for oncogenetic consultations. It allows to pre-fill the list of pathologies with the frequent cancers",
+    guide_introHPO:"The 'HPO' mode limits the list of conditions to symptoms and diseases in the HPO and ORPHAdata databases.",
     guide_intro4:"The spreadsheet can also be used as an excel spreadsheet: it is possible to copy and paste lines."+
     "It is also possible to select one or more lines and drag them to another position. This can be useful when"+
     "the generated tree has crossed branches.",

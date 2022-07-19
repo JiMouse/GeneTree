@@ -101,34 +101,34 @@ var lang = {
     //guide
     guide_introTitle:"Présentation générale",
     guide_intro0:"L'application est articulée autour de trois volets : le tableau, l'arbre et l'histoire clinique. " +
-    "La famille peut être chargée à partir d'un fichier existant ou créée et modifiée avec le tableau et l'interface graphique. " //,
+    "La famille peut être chargée à partir d'un fichier existant ou créée et modifiée avec le tableau et l'interface graphique. " + "\n" +
     // guide_intro1:
     + "Les données sont sauvegardées en cache local et sont supprimées lorsque l'onglet du navigateur est fermé. " +
     "Par ailleurs, aucune donnée n'est envoyée au serveur ce qui garantie la confidentialité des données.",
     guide_intro2:"Une première barre de navigation permet de charger une famille existante (en sélectionnant un fichier ou en le faisant glisser), " +
     "d'enregistrer la famille en cours ou de réinitialiser la famille.",
     guide_fig1:"Figure 1. Fonctionnement général de l'application",
-    guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (à droite de la fenêtre).",
-    guide_introOnco:"Mode 'onco' : pré-rempli la liste des pathologies avec des cancers et affiche les colonnes présentes dans CanRisk.",
-    guide_introHPO:"Mode 'HPO' : importe la liste des pathologies et symptômes HPO lors du choix des pathologies.",
+    guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (à droite de la fenêtre) :",
+    guide_introOnco:"le mode 'onco' est destiné aux consultations d'oncogénétique. Il permet de pré-remplir la liste des pathologies avec les cancers fréquents",
+    guide_introHPO:"le mode 'HPO' limite la liste des pathologies aux symptômes et maladies des bases HPO et ORPHAdata.",
     guide_intro4:"Le tableur est également utilisable comme un tableur excel : il est possible de copier et coller des lignes."+
     "Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque"+
     "l'arbre généré a des branches croisées.",
     guide_famTitle:"Création d'une famille",
     guide_famTitle1:"Chargement d'un fichier",
-    guide_fam0:"Une famille existante peut être chargées grâce au bouton 'Charger un fichier ou glisser-déposer un fichier ici'." +
-    "De nombreux fichiers sont pris en charge : les fichiers créés par l'application (.json), fichier CanRisk ou Boadicea (v2 et v4) ou .ped." +
+    guide_fam0:"Une famille déjà créée peut être chargée grâce au bouton 'Charger un fichier ou glisser-déposer un fichier ici'. " +
+    "De nombreux fichiers sont pris en charge : les fichiers créés par l'application (.json), les fichier CanRisk et Boadicea (v2 et v4) ainsi que les fichiers .ped. " +
     "Les fichiers GEDCOM sont pris en charge partiellement (import de la structure de la famille avec les noms des membres)",
     guide_famTitle2:"Création d'une nouvelle famille",
-    guide_fam1:"La structure de base d'une famille est composée de trois membres : le cas index et ses parents." +
-    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille':",
+    guide_fam1:"La structure de base d'une famille est composée de trois membres : le cas index et ses parents. " +
+    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille' :",
     guide_fam2:"soit à partir d'une structure standard",
     guide_fam3:"le cas index et ses parents",
     guide_fam4:"le cas index, ses parents, et ses grands-parents",
     guide_fam5:"le cas index, ses parents, ses grands-parents, et les arrières-grands-parents",
     guide_fam6:"soit à partir d'une structure personalisée avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)."+
     "La famille est créée en cliquant sur le bouton 'Créer un nouvel arbre'. ",
-    guide_fam7:"Note : il est également possible, à tout moment, de sélectionner un individu sur le tableau" +
+    guide_fam7:"Note : il est également possible, à tout moment, de sélectionner un individu sur le tableau " +
     "et de lui ajouter des membres via ce menu en cliquant sur le bouton 'Ajouter à l'individu'.",
     guide_famFig2:"Figure 2. Menu déroulant du tableau",
     guide_modTitle:"Modification d'une famille au niveau du tableau",
@@ -137,7 +137,7 @@ var lang = {
     "Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu. ",
     guide_modTitle2:"Personnalisation d'un individu",
     guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc." +
-    "Note : l'année de la pathologie ou du décés peuvent être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
+    "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
     "L'âge correspondant sera automatiquement calculé." + "\n" +
     "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
     guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
