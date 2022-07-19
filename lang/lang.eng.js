@@ -76,6 +76,97 @@ var lang = {
     savePicture: " Picture",
     saveSVG: "SVG picture",
 
+    //about
+    about_text0:"There are several proposals for generating family trees, both paid and free. "+ 
+    "However, to date, no free solution has allowed the generation of an editable family tree "+ 
+    "and can be exported quickly along with the corresponding text."+"\n",
+    about_text1:"This application is an integrated tool to simplify the administrative activity of doctors and advisers "+ 
+    "in genetics as part of their genetic counselling.\n"+
+    "This tool has a specific mode for oncogenetic consultation and a mode using HPO phenotypes. ",
+    about_text2:"The family can be loaded (JSON or BOADICEA files) or created from a standard or custom structure, "+ 
+    "and then completed via a table or a graphic interface, both of which are interconnected. \n",
+    about_text3: "The pedigree can be exported in several file formats (TSV, JSON, PED, BOADICEA) and modified "+ 
+    "by a vector editor (PDF, SVG) or can be printed directly. \n",
+    about_text4:"Finally, this application allows the automatic generation of text from the content of the corresponding table "+ 
+    "to the patient's personal and family history.  To my knowledge, this is the only solution that allows "+ 
+    "This allows you to write an important part of the consultation report in one click.\n",
+    about_text5:"The online interface, optimised for the Google Chrome browser, makes it easy to use without the need for prior installation. "+
+    "This tool has been specifically designed for oncogenetic consultations in order to avoid triple entry "+ 
+    "(text - family tree - Boadicea or CanRisk score).\n",
+    about_text6:"GeneTree is developed and maintained by Dr Jean-Marie Ravel with the participation of members of the clinical genetics team "+
+    "of the CHRU of Nancy (France).",
+
+    //guide
+    guide_intro0:"The application is structured around three parts: the table, the tree and the clinical history. " +
+    "The family can be loaded from an existing file or created and modified with the table and the graphical interface. " //,
+    // guide_intro1:
+    + "The data is saved in a local cache and is deleted when the browser tab is closed. " +
+    "In addition, no data is sent to the server, which guarantees the confidentiality of the data.",
+    guide_intro2:"A first navigation bar allows you to load an existing family (by selecting or dragging a file), " +
+    "to save the current family or to reset the family.",
+    guide_fig1:"Figure 1: General function of the application",
+    guide_intro3:"There are also two optional usage modes to restrict pathologies (on the right of the window).",
+    guide_introOnco:"Onco' mode: pre-fills the list of pathologies with cancers and displays the columns present in CanRisk.",
+    guide_introHPO:"HPO' mode: imports the list of HPO conditions and symptoms when selecting conditions.",
+    guide_intro4:"The spreadsheet can also be used as an excel spreadsheet: it is possible to copy and paste lines."+
+    "It is also possible to select one or more lines and drag them to another position. This can be useful when"+
+    "the generated tree has crossed branches.",
+    guide_famTitle:"Creating a family",
+    guide_famTitle1:"Loading a file",
+    guide_fam0:"An existing family can be uploaded using the 'Upload a file or drag and drop a file here' button. " +
+    "Many files are supported: files created by the application (.json), CanRisk or Boadicea file (v2 and v4) or .ped." +
+    "GEDCOM files are partially supported (import of the family structure with the names of the members)",
+    guide_famTitle2:"Creating a new family",
+    guide_fam1:"The basic structure of a family consists of three members: the index case and its parents." +
+    "It is possible to create a more elaborate family in a few clicks by clicking on the 'New Family' drop-down menu:",
+    guide_fam2:"either from a standard structure",
+    guide_fam3:"the index case and its parents",
+    guide_fam4:"the index case, his parents and grandparents",
+    guide_fam5:"the index case, his parents, grandparents and great-grandparents",
+    guide_fam6:"or from a personalised structure with the appropriate number of members (brothers, sisters, uncles and aunts of each branch)."+
+    "The family is created by clicking on the 'Create a new tree' button. ",
+    guide_fam7:"Note: it is also possible, at any time, to select an individual on the table" +
+    "and add members to it via this menu by clicking on the 'Add to individual' button.",
+    guide_famFig2:"Figure 2: Table drop-down menu",
+    guide_modTitle:"Modification of a family at table level",
+    guide_modTitle1:"Adding an individual",
+    guide_mod0: "Once an individual is selected, it is possible to click on the buttons to add a corresponding member."+"\n"+
+    "Note: The spouse button allows you to add a new spouse to the individual. ",
+    guide_modTitle2:"Personalisation of an individual",
+    guide_mod1:"Several parameters can be filled in for each individual: gender, death, age, year of birth, pathology with age of onset etc." +
+    "Note: The year of the disease or death can be entered in the 'Age' columns of the disease or death if the date of birth is also entered." +
+    "The corresponding age will be automatically calculated." + "\n" +
+    "A 'comment' field also exists and its content is added to the generated text.",
+    guide_intTitle:"Getting to grips with the graphic interface of the family tree",
+    guide_int0:"The tree can be loaded from a pedigreeJS file, from the spreadsheet or from a BOADICEA v4 file." +
+    "It is possible to put the tree in full screen, to undo or redo the last action and also to centre the tree.",
+    guide_int1:"Once you have started to build your family tree, place the mouse pointer over an individual to reveal the 'widgets' used for editing." +
+    "You can use these widgets to add partners, parents, siblings and children to your tree." +
+    "The wheel allows you to open a menu to modify the individual: age, sex, pathologies, etc.",
+    guide_int2:"The pathologies can be set using the wheel on the right. Each pathology corresponds to a colour (in HEX or in all letters) or to a pattern."+"\n"+
+    "A special button allows you to transform the colours into patterns.",
+    guide_intFig3:"Figure 3: 'Widgets' around an individual",
+    guide_int3:"There are four additional buttons above the GUI:",
+    guide_int4:"cancel the last action",
+    guide_int5:"redo the last cancelled action",
+    guide_int6:"reset the tree",
+    guide_int7:"'centre the tree', to centre the tree and scale it to the frame (useful before exporting)",
+    guide_expTitle:"Export of different files",
+    guide_exp0:"Many files are exportable, either at the table level or at the graphical interface level. "+
+    "The two interfaces are not synchronised by default to optimise the performance of the tool. "+
+    "Simply click on 'Load Tree Data' to load the data from the GUI to the table "+
+    "and symmetrically to click on 'Load Table' to load the data from the spreadsheet to the graphical interface.",
+    guide_exp1:"It is possible to export the table in :",
+    guide_exp2:"And also via the drop-down menu",
+    guide_exp3:"simple spreadsheet (.tsv)",
+    guide_exp4:"GEDCOM (partial export with structure and names)",
+    guide_exp5:"It is possible to export the graphical interface in :",
+    guide_exp6:"picture (.jpeg)",
+    guide_exp7:"vector image (.svg)",
+    guide_exp8:"Print (.pdf)",
+    guide_texTitle:"Text generation",
+    guide_tex0:"The text is generated from the table (not the tree) using the 'generate text' button. "+
+    "The text can then be edited, selected and copied.",
 
     // addInfo
     canRiskDialog: "Add an identifier (Famid) in the file",

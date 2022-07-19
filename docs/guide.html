@@ -203,144 +203,184 @@
 		<div class='row'  style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Introduction</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Présentation générale</h3>
 				</div>
 			</div>
+			<p>
+				<div style="padding:0px 20px;">
+					<p>
+						<span id="guide_intro0" class="lang"></span>
+					</p>
+					<p>
+						<span id="guide_intro1" class="lang"></span>
+					</p>
+					<p>
+						<span id="guide_intro2" class="lang"></span>
+					</p>
+					<p>
+						<span id="guide_intro3" class="lang"></span>
+						<ul>
+							<li><span id="guide_introOnco" class="lang"></span></li>
+							<li><span id="guide_introHPO" class="lang"></span></li>
+						</ul>
+						<span id="guide_intro4" class="lang"></span>
+						
+					</p>
+					<p class="text-center">
+						<img src="../data/images/plan général.png"  alt="fonctionnement général" class="responsive" style="max-width:800px;">
+						<br><br>
+						<span id="guide_fig1" class="lang"></span>
+					</p>
+				</div>
+			</p>
 			
-			<div  style="padding:0px 10px 20px;">
-				<p class="big">
-					Cette application est un outil intégré pour aider les médecins dans le cadre de leur consultation de génétique, notamment francophones (disponible en anglais également).
-					Il dispose d'un mode spécifique pour la consultation d'oncogénétique ainsi qu'un utilisant les phénotypes HPO. 
-					<br>
-					La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, puis complétée via un tableau ou une interface graphique, tout deux interconnectés.
-					<br>
-					L'arbre est exportable dans plusieurs format de fichiers (TSV, JSON, PED, BOADICEA) et modifiable par un éditeur vectoriel (format PDF, SVG).
-					<br>Enfin, cette application permet la génération automatique de texte basée sur le contenu du tableau.
-					<hr>
-					Initialement, cet outil a été conçu particulièrement en pensant aux consultations d'oncogénétique afin d'éviter la triple saisie (texte-arbre- score de risque boadicea).
-					L'application est articulée autour de trois volets : le tableur, l'arbre, le texte. Des boutons (en rouge) permettent de synchroniser manuellement les données
-					entre ces trois volets.
-				</p>
-				<p class="text-center">
-					<img src="../data/images/plan général.png"  alt="fonctionnement général" class="responsive" style="max-width:800px;">
-					<br><br>
-					<span>Figure 1. Fonctionnement général de l'application</span>
-				</p>
-			</div>
 		</div>
 
-		<!-- Prise en main du tableur -->
-		<div class='row'  style="padding-top: 20px;">
+		<!-- Création d'une famille -->
+		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Tableau de saisie</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"><span id="guide_famTitle" class="lang"></span></h3>
 				</div>
 			</div>
-			
-			<div  style="padding:0px 10px 20px;">
-				<p>
-					<h4>Chargement d'un fichier</h4>
+			<p>
+				<div style="padding:0px 20px;">
+					<h4><span id="guide_famTitle1" class="lang"></span></h4>
 					<p>
-						Un fichier Boadicea v4 ou JSON (issu de l'arbre ou du tableur) peut être chargé directement (1).
+						<span id="guide_fam0" class="lang"></span>
 					</p>
-					<hr>
-					<h4>Création d'une famille</h4>
+					
+					<h4><span id="guide_famTitle2" class="lang"></span></h4>
 					<p>
-						<li>Modèle prédéfini</li>
-						<p>
-							Un arbre de base est proposé : le cas index et ses parents, les grands-parents, et enfin les arrières-grands-parents (2).
-						</p>
-						<li>Modèle personalisé</li>
-						<p>
-							Il est aussi possible de générer un arbre personnalisé (3) avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)
-							via le bouton 'Créer un nouvel arbre' (4).
-							Note : il est également possible de sélectionner un individu et d'ajouter via ce menu des membres ('Ajouter à l'individu')(5).
-						</p>
-						<p class="text-center">
-							<img src="../data/images/menu.png"  alt="menu arbre" width="300" style="display: inline-block;">
-							<br><br>
-							<span>Figure 2. Menu déroulant du tableau</span>
-						</p>
-					</p>
-					<hr>
-					<h4>Ajout d'un individu</h4>
-					<p>
-						Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un membre correspondant.
-						Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu.
-						Il est ensuite possible de personaliser cet individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc. Un champs "commentaire" est également 
-						existant et son contenu sera ajouté dans le texte généré.
-					</p>
-					<hr>
-					<h4>Autres fonctions</h4>
-					<p>
+						<span id="guide_fam1" class="lang"></span>
+						<li><span id="guide_fam2" class="lang"></span></li>
 						<ul>
-							<li>Réinitialiser : efface l'arbre est créer un arbre de base propositus et parents.</li>
-							<li>Défaire : défait la dernière action</li>
-							<li>Refaire : refait la dernière action</li>
-							<li>Mode "onco" : pré-rempli la liste des pathologies avec des cancers et affiche les colonnes présentes dans Boadicéa.</li>
-							<li>Mode "HPO" : importe la liste des pathologies et symptômes HPO lors du choix des pathologies.</li>
+							<li><span id="guide_fam3" class="lang"></span></li>
+							<li><span id="guide_fam4" class="lang"></span></li>
+							<li><span id="guide_fam5" class="lang"></span></li>
 						</ul>
-						Le tableur est également utilisable comme un tableur excel : il est possible de copier, coller ou supprimer des lignes.
-						Attention à ne pas supprimer des individus référencés comme ascendants d'autres individus (exemple : les parents).
-						Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque
-						l'arbre généré a des branches croisées.
-						Il est possible également de colorer des lignes ou colonnes ou cellules grâce au menu contextuel (clic droit).
+							
+						<li><span id="guide_fam6" class="lang"></span>
+						</li>
+						<span id="guide_fam7" class="lang"></span>
 					</p>
-				</p>
+					<p class="text-center">
+						<img src="../data/images/menu.png"  alt="menu arbre" width="300" style="display: inline-block;">
+						<br><br>
+						<span id="guide_famFig2" class="lang"></span>
+					</p>
+				</div>	
+			</p>
+		</div>
+
+		<!-- Modification d'une famille au niveau du tableau -->
+		<div class='row' style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"><span id="guide_modTitle" class="lang"></span></h3>
+				</div>
 			</div>
+			<p>
+				<div style="padding:0px 20px;">
+					<h4><span id="guide_modTitle1" class="lang"></span></h4>
+					<p>
+						<span id="guide_mod0" class="lang"></span>
+					</p>
+	
+					<h4><span id="guide_modTitle2" class="lang"></span></h4>
+					<p>
+						<span id="guide_mod1" class="lang"></span>
+					</p>
+				</div>
+			</p>
 		</div>
 
 		<!-- Prise en main de l'arbre généalogique -->
-		<div class='row'  style="padding-top: 20px;">
+		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Prise en main de l'arbre généalogique</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"><span id="guide_intTitle" class="lang"></span></h3>
 				</div>
 			</div>
 			
-			<div  style="padding:0px 10px 20px;">
+			<div style="padding:0px 20px;">
 				<p>
-					L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4.
-					Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.
+					<span id="guide_int0" class="lang"></span>
+					
 				</p>
 				<p>
-					Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les "widgets" utilisés pour l'édition.
-					Vous pouvez utiliser ces "widgets" pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre.
-					La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.
+					<span id="guide_int1" class="lang"></span>
 				</p>
 				<p>
-					Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif.
-					Un bouton spécifique permets de transformer les couleurs en motifs.
+					<span id="guide_int2" class="lang"></span>
 				</p>
 				<p class="text-center">
 					<img src="../data/images/widgets.jpg"  alt="fonctionnement général" width="200" style="display: inline-block;">
 					<br><br>
-					<span>Figure 3. "Widgets" autour d'un individu</span>
+					<span id="guide_intFig3" class="lang"></span>
 				</p>
-				<hr>
 				<p>
-					L'arbre est ensuite téléchargeable dans différent fichier : "JSON" pour la sauvegarde de toutes les informations, Boadicea afin d'utiliser <a target="_blank" id="BoadiceaLink" rel="noopener noreferrer" href="https://canrisk.org/canrisk_tool/">Canrisk</a>
-					,  "SVG" afin de permettre de le modifier avec un logiciel vectoriel et enfin "JPEG". L'impression directe ou l'export en format PDF est également possible via un bouton dédié.<br>
-					Avant de l'exporter, il est utile d'utiliser le bouton "centrer l'arbre" afin de centrer l'arbre et le mettre à l'échelle du cadre.
+					<span id="guide_int3" class="lang"></span>
+					<ul>
+						<li><span id="guide_int4" class="lang"></span></li>
+						<li><span id="guide_int5" class="lang"></span></li>
+						<li><span id="guide_int6" class="lang"></span></li>
+						<li><span id="guide_int7" class="lang"></span></li>
+					</ul>
 				</p>
-				<hr>
+			</div>
+		</div>
+
+		<!-- Export des différents fichiers -->
+		<div class='row' style="padding-top: 20px;">
+			<div class="panel">
+				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"><span id="guide_expTitle" class="lang"></span></h3>
+				</div>
+			</div>
+			
+			<div style="padding:0px 20px;">
 				<p>
-					Note : l'abre est sauvegardé en cache local ce qui empêche la perte de donnée en cas de raffraichissement accidentel. Par ailleurs, aucune donnée n'est envoyée au serveur.
+					<span id="guide_exp0" class="lang"></span>
+				</p>
+				<p>
+					<span id="guide_exp1" class="lang"></span>
+					<ul>
+						<li>GeneTree (.json)</li>
+						<li>CanRisk</li>
+						<li>Boadicea v4</li>
+						<span id="guide_exp2" class="lang"></span>
+						<li><span id="guide_exp3" class="lang"></span></li>
+						<li>PedigreeJS (.json)</li>
+						<li>PED</li>
+						<li><span id="guide_exp4" class="lang"></span></li>
+					</ul>
+				</p>
+				<p>
+					<span id="guide_exp5" class="lang"></span>
+					<ul>
+						<li>GeneTree (.json)</li>
+						<li>CanRisk</li>
+						<li>Boadicea v4</li>
+						<li><span id="guide_exp6" class="lang"></span></li>
+						<li><span id="guide_exp7" class="lang"></span></li>
+						<li><span id="guide_exp8" class="lang"></span></li>
+					</ul>
 				</p>
 			</div>
 		</div>
 
 		<!-- Génération du texte -->
-		<div class='row'  style="padding-top: 20px;">
+		<div class='row' style="padding-top: 20px;">
 			<div class="panel">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;">Génération du texte</h3>
+					<h3 style="background-color: #dbe9f5;display: inline-block; margin-right: 10px;"><span id="guide_texTitle" class="lang"></span></h3>
 				</div>
 			</div>
 			
-			<div  style="padding:0px 10px 20px;">
+			<div style="padding:0px 20px 10px;">
 				<p>
-					Le texte est généré à partir du tableau (et non de l'arbre) grâce au bouton dédié. Le texte est ensuite modifiable, sélectionable et copiable.
+					<span id="guide_tex0" class="lang"></span>
 				</p>
 			</div>
 		</div>
@@ -366,26 +406,6 @@
 		</div>
 	</footer>
 	<!-- FOOTER END -->
-
-	<!-- pattern fills //.style('fill', 'url(#circles-1)') --> 
-	<div id="patterns" style="height:0;">
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><pattern id="circles-1" patternUnits="userSpaceOnUse" width="10" height="10"><image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSJ3aGl0ZSIgLz4KICA8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0iYmxhY2siLz4KPC9zdmc+" x="0" y="0" width="10" height="10"></image></pattern></defs></svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="diagonal-stripe-1" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="dots-8" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nOCcgaGVpZ2h0PSc4JyBmaWxsPSdibGFjaycgLz4KPC9zdmc+" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="horizontal-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMTAnIGhlaWdodD0nMicgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="vertical-stripe-2" patternUnits="userSpaceOnUse" width="10" height="10"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScgLz4KICA8cmVjdCB4PScwJyB5PScwJyB3aWR0aD0nMicgaGVpZ2h0PScxMCcgZmlsbD0nYmxhY2snIC8+Cjwvc3ZnPg==" x="0" y="0" width="10" height="10"> </image> </pattern> </defs> </svg>
-		<svg height="8" width="8" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="crosshatch" patternUnits="userSpaceOnUse" width="8" height="8"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc4JyBoZWlnaHQ9JzgnPgogIDxyZWN0IHdpZHRoPSc4JyBoZWlnaHQ9JzgnIGZpbGw9JyNmZmYnLz4KICA8cGF0aCBkPSdNMCAwTDggOFpNOCAwTDAgOFonIHN0cm9rZS13aWR0aD0nMC41JyBzdHJva2U9JyNhYWEnLz4KPC9zdmc+Cg==" x="0" y="0" width="8" height="8"> </image> </pattern> </defs> </svg>        
-		<svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs> </svg>
-	</div>
-	<script>
-		var patternsId = function(){//all id
-			items = ['circles-1', 'diagonal-stripe-1', 'dots-8', 'horizontal-stripe-2', 'vertical-stripe-2', 'crosshatch', 'lightstripe'];
-			for (let i = 0; i < items.length; i++) {
-				items[i] = 'url(#' + items[i] + ')';
-			}
-			return items
-		}
-	</script>
 </body>
 
 </html>

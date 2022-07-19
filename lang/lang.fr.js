@@ -77,6 +77,8 @@ var lang = {
     saveJson2:" Sauvegarder",
     savePicture: " Image",
     saveSVG: "Image vectorielle",
+
+    //about
     about_text0:"Plusieurs propositions permettant la génération d’arbre généalogique existent, aussi bien payantes que gratuites. "+ 
     "Néanmoins, à ce jour, aucune solution gratuite ne permettait la génération d’un arbre généalogique modifiable "+ 
     "et exportable rapidement ainsi que le texte correspondant."+"\n",
@@ -95,6 +97,78 @@ var lang = {
     "(texte – arbre généalogique - score de risque Boadicea ou CanRisk).\n",
     about_text6:"GeneTree est développé est maintenu par le Dr Jean-Marie Ravel avec la participation des membres de l'équipe de génétique clinique "+
     "du CHRU de Nancy (France).",
+
+    //guide
+    guide_intro0:"L'application est articulée autour de trois volets : le tableau, l'arbre et l'histoire clinique. " +
+    "La famille peut être chargée à partir d'un fichier existant ou créée et modifiée avec le tableau et l'interface graphique. " //,
+    // guide_intro1:
+    + "Les données sont sauvegardées en cache local et sont supprimées lorsque l'onglet du navigateur est fermé. " +
+    "Par ailleurs, aucune donnée n'est envoyée au serveur ce qui garantie la confidentialité des données.",
+    guide_intro2:"Une première barre de navigation permet de charger une famille existante (en sélectionnant un fichier ou en le faisant glisser), " +
+    "d'enregistrer la famille en cours ou de réinitialiser la famille.",
+    guide_fig1:"Figure 1. Fonctionnement général de l'application",
+    guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (à droite de la fenêtre).",
+    guide_introOnco:"Mode 'onco' : pré-rempli la liste des pathologies avec des cancers et affiche les colonnes présentes dans CanRisk.",
+    guide_introHPO:"Mode 'HPO' : importe la liste des pathologies et symptômes HPO lors du choix des pathologies.",
+    guide_intro4:"Le tableur est également utilisable comme un tableur excel : il est possible de copier et coller des lignes."+
+    "Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque"+
+    "l'arbre généré a des branches croisées.",
+    guide_famTitle:"Création d'une famille",
+    guide_famTitle1:"Chargement d'un fichier",
+    guide_fam0:"Une famille existante peut être chargées grâce au bouton 'Charger un fichier ou glisser-déposer un fichier ici'." +
+    "De nombreux fichiers sont pris en charge : les fichiers créés par l'application (.json), fichier CanRisk ou Boadicea (v2 et v4) ou .ped." +
+    "Les fichiers GEDCOM sont pris en charge partiellement (import de la structure de la famille avec les noms des membres)",
+    guide_famTitle2:"Création d'une nouvelle famille",
+    guide_fam1:"La structure de base d'une famille est composée de trois membres : le cas index et ses parents." +
+    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille':",
+    guide_fam2:"soit à partir d'une structure standard",
+    guide_fam3:"le cas index et ses parents",
+    guide_fam4:"le cas index, ses parents, et ses grands-parents",
+    guide_fam5:"le cas index, ses parents, ses grands-parents, et les arrières-grands-parents",
+    guide_fam6:"soit à partir d'une structure personalisée avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)."+
+    "La famille est créée en cliquant sur le bouton 'Créer un nouvel arbre'. ",
+    guide_fam7:"Note : il est également possible, à tout moment, de sélectionner un individu sur le tableau" +
+    "et de lui ajouter des membres via ce menu en cliquant sur le bouton 'Ajouter à l'individu'.",
+    guide_famFig2:"Figure 2. Menu déroulant du tableau",
+    guide_modTitle:"Modification d'une famille au niveau du tableau",
+    guide_modTitle1:"Ajout d'un individu",
+    guide_mod0: "Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un membre correspondant."+"\n"+
+    "Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu. ",
+    guide_modTitle2:"Personnalisation d'un individu",
+    guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc." +
+    "Note : l'année de la pathologie ou du décés peuvent être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
+    "L'âge correspondant sera automatiquement calculé." + "\n" +
+    "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
+    guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
+    guide_int0:"L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4." +
+    "Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.",
+    guide_int1:"Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les 'widgets' utilisés pour l'édition." +
+    "Vous pouvez utiliser ces 'widgets' pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre." +
+    "La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.",
+    guide_int2:"Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif."+"\n"+
+    "Un bouton spécifique permets de transformer les couleurs en motifs.",
+    guide_intFig3:"Figure 3. 'Widgets' autour d'un individu",
+    guide_int3:"Il existe quatre boutons suplémentaires au dessus de l'interface graphique :",
+    guide_int4:"annuler la dernière action",
+    guide_int5:"refaire la dernière action annulée",
+    guide_int6:"réinitialiser l'arbre",
+    guide_int7:"'centrer l'arbre', afin de centrer l'arbre et le mettre à l'échelle du cadre (utile avant de l'exporter)",
+    guide_expTitle:"Export des différents fichiers",
+    guide_exp0:"De nombreux fichiers sont exportables, soit au niveau du tableau, soit au niveau de l'interface graphique. "+
+    "Les deux interfaces ne sont pas synchronisées par défaut pour optimiser la performance de l'outil. "+
+    "Il suffit de cliquer sur 'Charger les données de l'arbre' pour charger les données de l'interface graphique au niveau du tableau "+
+    "et symétriquement de cliquer sur 'Charger le tableau' pour charger les données du tableur au niveau de l'interface graphique.",
+    guide_exp1:"Il est possible d'exporter le tableau aux formats :",
+    guide_exp2:"Et également via le menu déroulant",
+    guide_exp3:"tableur simple (.tsv)",
+    guide_exp4:"GEDCOM (export partiel avec la structure et les noms)",
+    guide_exp5:"Il est possible d'exporter l'interface graphique aux formats :",
+    guide_exp6:"image (.jpeg)",
+    guide_exp7:"image vectorielle (.svg)",
+    guide_exp8:"Imprimer (.pdf)",
+    guide_texTitle:"Génération du texte",
+    guide_tex0:"Le texte est généré à partir du tableau (et non de l'arbre) grâce au bouton 'générer le texte'. "+
+    "Le texte est ensuite modifiable, sélectionable et copiable.",
 
     // addInfo
     canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
