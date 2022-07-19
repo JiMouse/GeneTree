@@ -140,6 +140,8 @@ var lang = {
     "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
     "L'âge correspondant sera automatiquement calculé." + "\n" +
     "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
+    guide_mod2:"Un menu supplémentaire existe pour remplir d'autres informations et en particulier les données nécessaires au calcul du CanRisk. " +
+    "Il est ouvert en cliquant sur 'Ajouter des informations à un individu' à gauche de l'écran. Par défaut, le cas index est sélectionné.",
     guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
     guide_int0:"L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4." +
     "Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.",
