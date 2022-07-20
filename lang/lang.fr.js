@@ -104,23 +104,23 @@ var lang = {
     "La famille peut être chargée à partir d'un fichier existant ou créée et modifiée avec le tableau et l'interface graphique. " +
     "Les données sont sauvegardées en cache local et sont supprimées lorsque l'onglet du navigateur est fermé." + "\n" +
     "Par ailleurs, aucune donnée n'est envoyée au serveur ce qui garantie la confidentialité des données.",
-    guide_intro2:"Une première barre de navigation permet de charger une famille existante (en sélectionnant un fichier ou en le faisant glisser), " +
-    "d'enregistrer la famille en cours ou de réinitialiser la famille.",
+    guide_intro2:"Une première barre de navigation (Figure 1) permet de charger une famille existante (en sélectionnant un fichier ou en le faisant glisser, 1), " +
+    "d'enregistrer la famille en cours localement (2) ou de réinitialiser la famille (3).",
     guide_fig1:"Figure 1. Fonctionnement général de l'application",
-    guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (à droite de la fenêtre) :",
+    guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (7) :",
     guide_introOnco:"le mode 'onco' est destiné aux consultations d'oncogénétique. Il permet de pré-remplir la liste des pathologies avec les cancers fréquents",
     guide_introHPO:"le mode 'HPO' limite la liste des pathologies aux symptômes et maladies des bases HPO et ORPHAdata.",
-    guide_intro4:"Le tableur est également utilisable comme un tableur excel : il est possible de copier et coller des lignes."+
+    guide_intro4:"Le tableur (8) est également utilisable comme un tableur excel : il est possible de copier et coller des lignes."+
     "Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque"+
     "l'arbre généré a des branches croisées.",
     guide_famTitle:"Création d'une famille",
     guide_famTitle1:"Chargement d'un fichier",
-    guide_fam0:"Une famille déjà créée peut être chargée grâce au bouton 'Charger un fichier ou glisser-déposer un fichier ici'. " +
+    guide_fam0:"Une famille déjà créée peut être chargée grâce au bouton dédié (1). " +
     "De nombreux fichiers sont pris en charge : les fichiers créés par l'application (.json), les fichier CanRisk et Boadicea (v2 et v4) ainsi que les fichiers .ped. " +
     "Les fichiers GEDCOM sont pris en charge partiellement (import de la structure de la famille avec les noms des membres)",
     guide_famTitle2:"Création d'une nouvelle famille",
     guide_fam1:"La structure de base d'une famille est composée de trois membres : le cas index et ses parents. " +
-    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille' :",
+    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille' (4, Figure 2):",
     guide_fam2:"soit à partir d'une structure standard",
     guide_fam3:"le cas index et ses parents",
     guide_fam4:"le cas index, ses parents, et ses grands-parents",
@@ -140,9 +140,9 @@ var lang = {
     "L'âge correspondant sera automatiquement calculé." + "\n" +
     "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
     guide_mod2:"Un menu supplémentaire existe pour remplir d'autres informations et en particulier les données nécessaires au calcul du CanRisk. " +
-    "Il est ouvert en cliquant sur 'Ajouter des informations à un individu' à gauche de l'écran. Par défaut, le cas index est sélectionné.",
+    "Il est ouvert en cliquant sur 'Ajouter des informations à un individu' (5). Par défaut, le cas index est sélectionné.",
     guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
-    guide_int0:"L'arbre est chargeable à partir d'un fichier pedigreeJS, depuis le tableur ou d'un fichier BOADICEA v4." +
+    guide_int0:"L'arbre est chargeable depuis le tableur." +
     "Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.",
     guide_int1:"Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les 'widgets' utilisés pour l'édition." +
     "Vous pouvez utiliser ces 'widgets' pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre." +
@@ -150,11 +150,12 @@ var lang = {
     guide_int2:"Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif."+"\n"+
     "Un bouton spécifique permets de transformer les couleurs en motifs.",
     guide_intFig3:"Figure 3. 'Widgets' autour d'un individu",
-    guide_int3:"Il existe quatre boutons suplémentaires au dessus de l'interface graphique :",
+    guide_int3:"Il existe cinq boutons suplémentaires au dessus de l'interface graphique :",
     guide_int4:"annuler la dernière action",
     guide_int5:"refaire la dernière action annulée",
     guide_int6:"réinitialiser l'arbre",
     guide_int7:"'centrer l'arbre', afin de centrer l'arbre et le mettre à l'échelle du cadre (utile avant de l'exporter)",
+    guide_int8:"plein écran",
     guide_expTitle:"Export des différents fichiers",
     guide_exp0:"De nombreux fichiers sont exportables, soit au niveau du tableau, soit au niveau de l'interface graphique. "+
     "Les deux interfaces ne sont pas synchronisées par défaut pour optimiser la performance de l'outil. "+
