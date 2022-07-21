@@ -278,7 +278,7 @@ $(document).ready(function() {
             loadFromHot(); //Load pedigreeJS
             loadStory(); //load text
         };
-        // reader.readAsText(file); //bug ?
+        reader.readAsText(file); //bug ?
     }
 
     //Load functions
