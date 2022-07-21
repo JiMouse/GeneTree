@@ -1,87 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    hot.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            let checkBoxHPO = document.getElementById("myCheckHPO");
-            let checkBoxOnco = document.getElementById("myCheckOnco");
-            let dialogCancerListTitle;
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
-                hotSelectedTable =  this;
-                if (checkBoxHPO.checked == true) { //if HPO mode
-                    // alert(HPOArr);
-
-                    var html_cancerListDialog = 
-                    "<form>"
-                        +"<fieldset>"
-                            +'<input type="text" id="HPOInput" autocomplete="off" placeholder="Taper au moins deux lettres">'
-                            + '<ul id="myUL" style="height: 500px; overflow-y: auto">'
-                    
-                    var items = HPOArr.slice(0,100);
-                    for (let i = 0; i < items.length; i++) {
-                        items[i] = "<li><a name='cancerListradio' data-val='" + items[i]+"'>"+ items[i]+"</li></a>";
-                    }
-                    var list = items.join("");
-
-                    html_cancerListDialog += list;
-                    html_cancerListDialog += 
-                            '</ul>'
-                        + "</fieldset>"
-                    + "</form>"
-                    dialogCancerListTitle = 'Termes HPO et Orphanet'; 
-                    dialogWidth = '400';
-                } else { // if Cancer mode
-                    var html_cancerListDialog =
-                    "<form>"
-                    +    "<fieldset>"
-
-                    $.each(diseases, function(k) {
-                        disease_name = capitaliseFirstLetter(cleanDiseaseText(diseases[k]));
-
-                        html_cancerListDialog += 
-                                "<div class='form-check'>"
-                        +            "<label class='form-check-label font-normal'>"
-                        +                "<input type='radio' class='form-check-input' name='cancerListradio'"
-                        +                    "value='" + diseases[k] + "'" + "> " + disease_name
-                        +            "</label>"
-                        +        "</div>"
-                    });
-
-                    html_cancerListDialog += "<br>"
-                    + "<div class='row'>"
-                    +       "<div class='form-check col-md-8'>"
-                    +            "<label class='form-check-label font-normal'>"
-                    +               "<input type='text' id='other_cancer' autocomplete='off' class='form-control'"  
-                    +						"aria-invalid='false' placeholder='Autre'>"
-                    +            "</label>"
-                    +        "</div>"
-                    +        "<div col-md-4>"
-                    +           "<label class='btn btn-primary'>"
-                    +               "<input id='validOtherCancer' type='button' style='display: none;'/>OK"
-                    +           "</label>"
-                    +       "</div>"
-                    + "</div>"
-                    +  "</fieldset>"
-                    + "</form>"
-                    dialogCancerListTitle = 'Localisation du cancer';
-                    dialogWidth = '260';
-                }
-                if(checkBoxOnco.checked != true) dialogCancerListTitle = 'Pathologie';
-                dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
-                dialogCancerList.dialog( "option", "width", dialogWidth);
-                dialogCancerList.dialog("option", "close", function() {
-                    dialogCancerList.dialog('close');
-                }
-                );
-        
-                dialogCancerList.html(html_cancerListDialog);
-                dialogCancerList.dialog('open');
-            }
-            preventScrolling.value = true;
-        }
-    );
-
     var updatePartnersAndChildren_dialog;
     var updateHotDialog_title;
 
@@ -296,3 +214,195 @@ function array_move(arr, fromIndex, toIndex) {
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
 }
+
+$(document).ready(function(){
+        //add popup div to select cancer type
+    // define variable
+    var selectedRow;
+    var selectedColumn;
+    var dialogCancerList;
+    var hotSelectedTable;
+
+    // define cancerList dialog form
+    dialogCancerList = $( "#cancerList" ).dialog({
+        autoOpen: false,        
+        closeOnEscape: true,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+        width: ($(window).width() > 400 ? 250 : $(window).width()- 30),
+        maxHeight: 700
+    })
+
+    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+    
+    // on radio click
+    $(document).on("click","input[name='cancerListradio']", function(){     
+        let cancerType = $('input[name="cancerListradio"]:checked').val();        
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    //on 'OK' click, add other value
+    $(document).on("click","#validOtherCancer", function() {
+        cancerType = $('#other_cancer').val();
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    //if press enter on other input field
+    $(document).on("keydown", "input[id='other_cancer']", function search(e) {
+        if(e.keyCode == 13) {
+            e.preventDefault();
+           $("#validOtherCancer").click();
+        }
+    });
+
+    //HPO list click
+    $(document).on("click","a[name='cancerListradio']", function() {
+        cancerType = $(this).data('val'); 
+        updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn, cancerType);
+        dialogCancerList.dialog( "close" );
+    });
+
+    //HPO search
+    $(document).on("keyup", "input[id='HPOInput']", function search(e) {
+        searchInList(HPOArr);
+        if(e.keyCode == 13) {
+            e.preventDefault();
+        }
+    });
+
+
+    function updateDiseasecol(hotSelectedTable, row, column, cancerType) {
+        if(cancerType != undefined) {
+            hotSelectedTable.setDataAtRowProp(row, column, cancerType);
+            $('input[name="cancerListradio"]:checked').prop('checked', false);
+            hotSelectedTable.selectCell(row, column);
+        }
+    }
+    function searchInList(HPOArr) {
+        // Declare variables
+        var input, filter, ul, li, a, i, txtValue, itemsFull;
+        input = document.getElementById('HPOInput');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName('li');
+
+        //To improve efficiency : load full list after search of minimum two letters
+        if(filter.length<2) {
+            itemsFull = HPOArr.slice(1,20);
+            return;
+        } else {
+            itemsFull = HPOArr//.concat(OrphaArr); //concatenate HPO and OrphaData
+        }
+
+        var filteredList = [];
+        for (let i = 0; i < itemsFull.length; i++) {
+            txtValue=capitaliseFirstLetter(itemsFull[i]);
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                filteredList.push("<li><a name='cancerListradio' data-val='" + txtValue+"'>"+ txtValue+"</li></a>");
+            }
+        }
+        var newList = filteredList.join("");
+        ul.innerHTML = newList;
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+            } else {
+            li[i].style.display = "none";
+            }
+        }
+    }
+    
+    hot.addHook('afterSelectionEndByProp',
+        function(row, column, preventScrolling) {
+            let checkBoxHPO = document.getElementById("myCheckHPO");
+            let checkBoxOnco = document.getElementById("myCheckOnco");
+            let dialogCancerListTitle;
+            selectedRow = row;
+            selectedColumn = column
+            if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
+                hotSelectedTable =  this;
+                if (checkBoxHPO.checked == true) { //if HPO mode
+                    // alert(HPOArr);
+
+                    var html_cancerListDialog = 
+                    "<form>"
+                        +"<fieldset>"
+                            +'<input type="text" id="HPOInput" autocomplete="off" placeholder="Taper au moins deux lettres">'
+                            + '<ul id="myUL" style="height: 500px; overflow-y: auto">'
+                    
+                    var items = HPOArr.slice(0,100);
+                    for (let i = 0; i < items.length; i++) {
+                        items[i] = "<li><a name='cancerListradio' data-val='" + items[i]+"'>"+ items[i]+"</li></a>";
+                    }
+                    var list = items.join("");
+
+                    html_cancerListDialog += list;
+                    html_cancerListDialog += 
+                            '</ul>'
+                        + "</fieldset>"
+                    + "</form>"
+                    dialogCancerListTitle = 'Termes HPO et Orphanet'; 
+                    dialogWidth = '400';
+                } else { // if Cancer mode
+                    var html_cancerListDialog =
+                    "<form>"
+                    +    "<fieldset>"
+
+                    $.each(diseases, function(k) {
+                        disease_name = capitaliseFirstLetter(cleanDiseaseText(diseases[k]));
+
+                        html_cancerListDialog += 
+                                "<div class='form-check'>"
+                        +            "<label class='form-check-label font-normal'>"
+                        +                "<input type='radio' class='form-check-input' name='cancerListradio'"
+                        +                    "value='" + diseases[k] + "'" + "> " + disease_name
+                        +            "</label>"
+                        +        "</div>"
+                    });
+
+                    html_cancerListDialog += "<br>"
+                    + "<div class='row'>"
+                    +       "<div class='form-check col-md-8'>"
+                    +            "<label class='form-check-label font-normal'>"
+                    +               "<input type='text' id='other_cancer' autocomplete='off' class='form-control'"  
+                    +						"aria-invalid='false' placeholder='Autre'>"
+                    +            "</label>"
+                    +        "</div>"
+                    +        "<div col-md-4>"
+                    +           "<label class='btn btn-primary'>"
+                    +               "<input id='validOtherCancer' type='button' style='display: none;'/>OK"
+                    +           "</label>"
+                    +       "</div>"
+                    + "</div>"
+                    +  "</fieldset>"
+                    + "</form>"
+                    dialogCancerListTitle = 'Localisation du cancer';
+                    dialogWidth = '260';
+                }
+                if(checkBoxOnco.checked != true) dialogCancerListTitle = 'Pathologie';
+                dialogCancerList.dialog( "option", "title", dialogCancerListTitle);
+                dialogCancerList.dialog( "option", "width", dialogWidth);
+                dialogCancerList.dialog("option", "close", function() {
+                    dialogCancerList.dialog('close');
+                }
+                );
+        
+                dialogCancerList.html(html_cancerListDialog);
+                dialogCancerList.dialog('open');
+            }
+            preventScrolling.value = true;
+        }
+    );
+})
