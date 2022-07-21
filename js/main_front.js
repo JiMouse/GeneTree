@@ -116,10 +116,6 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
 };
 
 //-----------------------------------
-$(document).ready(function(){
-
-
-});
 
 //---Pedigreejs variables---
 if(utils.isIE() || utils.isEdge()) {
