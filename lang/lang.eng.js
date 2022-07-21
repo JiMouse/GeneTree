@@ -17,7 +17,7 @@ var lang = {
     loadFile : " Upload a file or drag and drop a file here",
     dragAndDrop:"Drag and drop a file here!",
     drop:"Drop a file here!",
-    savePedigree:"Enregistrer",
+    savePedigree:"Save",
     nuclear_1:"Nuclear",
     extended1_1:"st",
     extended1_2:" degree",
