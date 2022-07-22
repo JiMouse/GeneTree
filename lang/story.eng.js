@@ -12,7 +12,7 @@ function getPatho(obj, i,text_neg, text_pos) {
             a = obj[i][keys[j]],
             y = obj[i].yob + a;
         result = (result != '' ? result + " et d'un " : text_pos);
-        result += t(out);
+        result += cleanDiseaseText(out);
         if(a != "" && a != null) {
           result += " diagnosed";
           if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y;
