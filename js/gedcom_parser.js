@@ -139,7 +139,6 @@
       ind["IndivID"] = row.INDI.match(numberPattern)[0]
       ind["Sex"] = row.SEX
 
-      // To do : Birth Date : regex 4-digit number as year //Yob
       if(row.hasOwnProperty("BIRT.DATE")) {
         var yearPattern = /\d{4}/g;
         ind["Yob"] = row["BIRT.DATE"].match(yearPattern)[0]
@@ -233,12 +232,12 @@
       row = [indRow, nameRow, sexRow].join('\r\n');
 
       //add yob
-      // let yob = arrData[i]['Yob'];
-      // if(yob != undefined) {
-      //   yobRow=['1', "BIRT"].join(' ');
-      //   yobRow=yobRow.concat(['2', "DATE", yob].join(' '));
-      //   row = row + '\r\n' + yobRow
-      // }
+      let yob = arrData[i]['yob'];
+      if(yob != undefined) {
+        yobRow=['1', "BIRT"].join(' ');
+        yobRow+= '\r\n' + (['2', "DATE", yob].join(' '));
+        row = row + '\r\n' + yobRow
+      }
 
       //if parents
       if(objFam.hasOwnProperty(father+"/"+mother)) {
