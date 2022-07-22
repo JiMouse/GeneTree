@@ -1,8 +1,26 @@
 
 $(document).ready(function(){
 	// save CanRisk
+	var save_canrisk_dialog;
+	save_canrisk_dialog = $('#save-canrisk-dialog').dialog({
+		autoOpen: false,
+		title: lang.canrisk_addInfo,
+        resizable: false,
+        height: "auto",
+        width: 350,
+        modal: true,
+        classes: {
+            "ui-dialog": "custom-background",
+            "ui-dialog-titlebar": "custom-theme",
+            "ui-dialog-title": "custom-theme text-center",
+            // "ui-dialog-titlebar-close":"custom-btn",
+            "ui-dialog-content": "custom-background",
+            "ui-dialog-buttonpane": "custom-background"
+        },
+	})
+
 	$('#save_canrisk').on('click', function (e) {
-		$('#save-canrisk-dialog').modal('show');
+		$('#save-canrisk-dialog').dialog('open');
 	});
 
 	// CanRisk file save dialog
@@ -17,6 +35,7 @@ $(document).ready(function(){
 
 		var fname = ($( "#pid_fname").is(':checked') ? "canrisk_"+famid+".txt": "canrisk.txt");
 		io.save_file(opts, this_canrisk, fname);
+		$('#save-canrisk-dialog').dialog('close');
 	})
 
 	// get surgical ops and PRS for canrisk header
