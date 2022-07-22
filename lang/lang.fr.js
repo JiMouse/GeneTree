@@ -120,20 +120,19 @@ var lang = {
     "Les fichiers GEDCOM sont pris en charge partiellement (import de la structure de la famille avec les noms des membres)",
     guide_famTitle2:"Création d'une nouvelle famille",
     guide_fam1:"La structure de base d'une famille est composée de trois membres : le cas index et ses parents. " +
-    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille' (4, Figure 2):",
-    guide_fam2:"soit à partir d'une structure standard",
+    "Il est possible de créer une famille plus élaborée en quelques clics en cliquant sur le menu déroulant 'Nouvelle Famille' (4) :",
+    guide_fam2:"soit à partir d'une structure standard (9)",
     guide_fam3:"le cas index et ses parents",
     guide_fam4:"le cas index, ses parents, et ses grands-parents",
     guide_fam5:"le cas index, ses parents, ses grands-parents, et les arrières-grands-parents",
-    guide_fam6:"soit à partir d'une structure personalisée avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches)."+
-    "La famille est créée en cliquant sur le bouton 'Créer un nouvel arbre'. ",
+    guide_fam6:"soit à partir d'une structure personalisée (10) avec le nombre de membres adéquats (frères, soeurs, oncles et tantes de chaque branches). "+
+    "La famille est créée en cliquant sur le bouton 'Créer un nouvel arbre' (11). ",
     guide_fam7:"Note : il est également possible, à tout moment, de sélectionner un individu sur le tableau " +
-    "et de lui ajouter des membres via ce menu en cliquant sur le bouton 'Ajouter à l'individu'.",
+    "et de lui ajouter des membres via ce menu en cliquant sur le bouton 'Ajouter à l'individu' (12).",
     guide_famFig2:"Figure 2. Menu déroulant du tableau",
     guide_modTitle:"Modification d'une famille au niveau du tableau",
     guide_modTitle1:"Ajout d'un individu",
-    guide_mod0: "Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un membre correspondant."+"\n"+
-    "Note : le bouton conjoint permets d'ajouter un nouveau conjoint à l'individu. ",
+    guide_mod0: "Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un apparenté (6) : frère, soeur, fils, fille, parents, nouveau conjoint, fausse-couche.",
     guide_modTitle2:"Personnalisation d'un individu",
     guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc." +
     "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
@@ -142,12 +141,12 @@ var lang = {
     guide_mod2:"Un menu supplémentaire existe pour remplir d'autres informations et en particulier les données nécessaires au calcul du CanRisk. " +
     "Il est ouvert en cliquant sur 'Ajouter des informations à un individu' (5). Par défaut, le cas index est sélectionné.",
     guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
-    guide_int0:"L'arbre est chargeable depuis le tableur." +
-    "Il est possible de mettre l'arbre en plein écran, de défaire ou refaire la dernière action et également de centrer l'arbre.",
+    guide_int0:"L'arbre est chargé depuis le tableur grâce au bouton dédié (13). " +
+    "Il est possible de de défaire ou refaire la dernière action, de réinitialiser l'arbre, mettre l'arbre en plein écran, et également de centrer l'arbre (14).",
     guide_int1:"Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les 'widgets' utilisés pour l'édition." +
     "Vous pouvez utiliser ces 'widgets' pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre." +
     "La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.",
-    guide_int2:"Les pathologies sont paramétrables grâce à la roulette à droite. Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif."+"\n"+
+    guide_int2:"Les couleurs des pathologies sont paramétrables grâce au bouton à droite (15). Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif."+"\n"+
     "Un bouton spécifique permets de transformer les couleurs en motifs.",
     guide_intFig3:"Figure 3. 'Widgets' autour d'un individu",
     guide_int3:"Il existe cinq boutons suplémentaires au dessus de l'interface graphique :",
