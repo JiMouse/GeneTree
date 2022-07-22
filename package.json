@@ -17,6 +17,6 @@
   "dependencies": {
     "handsontable": "^7.4.2",
     "pedigreejs":"0.2.0",
-    "lodash": ">=4.17.19"
+    "lodash": ">=4.17.21"
   }
 }
