@@ -158,8 +158,8 @@ var lang = {
     guide_expTitle:"Export des différents fichiers",
     guide_exp0:"De nombreux fichiers sont exportables, soit au niveau du tableau, soit au niveau de l'interface graphique. "+
     "Les deux interfaces ne sont pas synchronisées par défaut pour optimiser la performance de l'outil. "+
-    "Il suffit de cliquer sur 'Charger les données de l'arbre' pour charger les données de l'interface graphique au niveau du tableau "+
-    "et symétriquement de cliquer sur 'Charger le tableau' pour charger les données du tableur au niveau de l'interface graphique.",
+    "Il suffit de cliquer sur 'Charger les données de l'arbre' (5) pour charger les données de l'interface graphique au niveau du tableau "+
+    "et symétriquement de cliquer sur 'Charger le tableau' (13) pour charger les données du tableur au niveau de l'interface graphique.",
     guide_exp1:"Il est possible d'exporter le tableau aux formats :",
     guide_exp2:"Et également via le menu déroulant",
     guide_exp3:"tableur simple (.tsv)",
