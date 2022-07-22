@@ -420,6 +420,12 @@ var title = {
     fullScreen:"Full screen"
 };
 
+var placeholder = {
+    menarche: "(age)",
+    menopause:"(age)",
+    famid:"Ex. : pedigree identifier"
+}
+
 var boadicea = {
     proband:"The age of the index case is not provided.",
     disease:"All family members with cancer must have a valid age.",

@@ -427,6 +427,12 @@ var title = {
     fullScreen:"Plein écran"
 };
 
+var placeholder = {
+    menarche: "(âge)",
+    menopause:"(âge)",
+    famid:"Ex. : Identifiant la généalogie"
+}
+
 var boadicea = {
     proband:"L'âge du cas index n'est pas renseigné.",
     disease:"Tous les membres atteints d'un cancer de la famille doivent avoir un âge valide.",

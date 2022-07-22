@@ -122,6 +122,7 @@
 					var value = $(this).attr('id');
 					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
 					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
+					if (typeof (placeholder[value]) != 'undefined') $('#' + value).prop('placeholder', placeholder[value]); // add placeholder
 
 					// class yes and no
 					$('.lang.lang-yes').text(lang["yes"]);
@@ -555,8 +556,8 @@
 												</div>
 												<div class="field col-sm-4">
 													<input type="number" name="menarche" size="17" style="text-align: center;"
-														class="form-control valid" maxlength="60" id="menarche"
-														aria-invalid="false" min="8" max="14" placeholder="(âge)">
+														class="form-control valid lang" maxlength="60" id="menarche"
+														aria-invalid="false" min="8" max="14" placeholder="">
 												</div>
 											</div>
 
@@ -648,7 +649,7 @@
 												</div>
 												<div class="field col-sm-4">
 													<input type="number" name="menopause" size="17"
-														class="form-control valid" maxlength="60" id="menopause"  style="text-align: center;"
+														class="form-control valid lang" maxlength="60" id="menopause"  style="text-align: center;"
 														aria-invalid="false" min="30" max="60" placeholder="(âge)">
 												</div>
 											</div>
@@ -1219,8 +1220,8 @@
 
 		<div id="save-canrisk-dialog">
 			<div class="row text-center" style="margin:10px 10px ;">
-				<input type="text" maxlength="13" class="form-control top10" id="famid"
-				placeholder="Ex. : Identifiant la généalogie">
+				<input type="text" maxlength="13" class="form-control top10 lang" id="famid"
+				placeholder="">
 			</div>
 			<div class="row text-center" style="margin:10px 10px ;">
 				<input type="checkbox" name="report-opts" id="pid_fname" checked="">

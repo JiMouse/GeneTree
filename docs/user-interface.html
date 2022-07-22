@@ -92,6 +92,7 @@
 					var value = $(this).attr('id');
 					if (typeof (lang[value]) != 'undefined') $('#' + value).text(lang[value]); //add text
 					if (typeof (title[value]) != 'undefined') $('#' + value).prop('title', title[value]); //add title
+					if (typeof (placeholder[value]) != 'undefined') $('#' + value).prop('placeholder', placeholder[value]); // add placeholder
 
 					// class yes and no
 					$('.lang.lang-yes').text(lang["yes"]);
