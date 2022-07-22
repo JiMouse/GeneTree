@@ -115,6 +115,7 @@
     let JSONdata = parse(input);
     let obj =[];
     var numberPattern = /\d+/g;
+    
     // get parents
     let objParents = {};
     for(const row of JSONdata) {
@@ -131,12 +132,20 @@
     // alert(JSON.stringify(objParents))
 
     //get individuals
+    alert(JSON.stringify(JSONdata));
     for (const row of JSONdata) {
       if(!row.hasOwnProperty("INDI")) continue;
       let ind = {};
       ind["Name"] = row.NAME
       ind["IndivID"] = row.INDI.match(numberPattern)[0]
       ind["Sex"] = row.SEX
+
+      // To do : Birth Date : regex 4-digit number as year //Yob
+      if(row.hasOwnProperty("BIRT.DATE")) {
+        var yearPattern = /\d{4}/g;
+        ind["Yob"] = row["BIRT.DATE"].match(yearPattern)[0]
+      }
+
       if(row.hasOwnProperty("FAMC")) {
         ind["FathID"] = objParents[row.FAMC].FathID
         ind["MothID"] = objParents[row.FAMC].MothID
@@ -223,6 +232,14 @@
       nameRow=['1', "NAME", name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")].join(' '); //remove accent
       sexRow=['1', "SEX", sex].join(' ');
       row = [indRow, nameRow, sexRow].join('\r\n');
+
+      //add yob
+      // let yob = arrData[i]['Yob'];
+      // if(yob != undefined) {
+      //   yobRow=['1', "BIRT"].join(' ');
+      //   yobRow=yobRow.concat(['2', "DATE", yob].join(' '));
+      //   row = row + '\r\n' + yobRow
+      // }
 
       //if parents
       if(objFam.hasOwnProperty(father+"/"+mother)) {
