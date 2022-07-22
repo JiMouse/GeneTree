@@ -132,7 +132,6 @@
     // alert(JSON.stringify(objParents))
 
     //get individuals
-    alert(JSON.stringify(JSONdata));
     for (const row of JSONdata) {
       if(!row.hasOwnProperty("INDI")) continue;
       let ind = {};
