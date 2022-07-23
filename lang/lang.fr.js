@@ -282,6 +282,8 @@ var lang = {
     yes:"Oui",
     no:"Non",
     addDisease:"Ajouter une maladie",
+    diseases:"Maladie",
+    color:"Couleur",
 
     //updatePartnersAndChildren_dialog
     updatePartnersAndChildren_title:'Mise à jour des conjoints et enfants',

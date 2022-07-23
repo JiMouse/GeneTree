@@ -277,6 +277,8 @@ var lang = {
     yes:"Yes",
     no:"No",
     addDisease:"Add a disease",
+    diseases:"Disease",
+    color:"Colour",
 
     //updatePartnersAndChildren_dialog
     updatePartnersAndChildren_title:'Update of children and partners',

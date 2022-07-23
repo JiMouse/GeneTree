@@ -680,7 +680,7 @@ $(document).ready(function() {
 
     function update_diseases() {
         var tab = "<table class='table table-condensed table-striped table-bordered'>" +
-                    "<thead><tr><th>Maladie</th><th>Couleur</th><th></th></tr></thead>";
+                    "<thead><tr><th>" + lang.diseases + "</th><th>" + lang.color + "</th><th></th></tr></thead>";
         $.each(opts.diseases, function(k, v) {
             var disease_colour = '&thinsp;<span style="padding-left:5px;background:'+opts.diseases[k].colour+'"></span>';
             tab += "<tr>" +
