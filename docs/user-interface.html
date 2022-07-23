@@ -747,26 +747,23 @@
 				<button id="png_download" class="btn btn-primary"><span class="lang" id="ui_dl_png"></span></button>
 			</div>
 
-			<div id="save-canrisk-dialog" class="modal fade text-center">
-				<div class="modal-dialog" style="width:400px;">
-					<div class="modal-content">
-						<div class="modal-body">
-							<div class="pleft10">
-								<label><span class="lang" id="ui_add_id"></span></label>
-								<input type="text" maxlength="13" class="form-control top10" id="famid" placeholder="Ex. : Identifiant la généalogie">
-							</div>
-							<div class="checkbox radio-info radio-circle">
-								<input type="checkbox" name="report-opts" id="pid_fname" checked="">
-								<label for="pid_fname" class="radio-inline"><span class="lang" id="ui_add_id_file"></span></label>
-							</div>
-						</div>
-						<div class="modal-footer bg-blue rounded-bottom">
-							<button type="button" class="btn btn-primary" data-dismiss="modal" id="cr_file_save"><span class="lang" id="ui_add_id_file"></span></button>
-						</div>
-					</div>
+			<div id="save-canrisk-dialog">
+				<div class="row text-center" style="margin:10px 10px ;">
+					<input type="text" maxlength="13" class="form-control top10 lang" id="famid"
+					placeholder="">
 				</div>
-			</div>
-		</div>		
+				<div class="row text-center" style="margin:10px 10px ;">
+					<input type="checkbox" name="report-opts" id="pid_fname" checked="">
+					<label for="pid_fname" class="radio-inline">
+						<span id="pid_fnameTxt" class="lang"></span>
+					</label>
+				</div>
+				<div class="modal-footer bg-blue rounded-bottom">
+					<button type="button" class="btn btn-primary" id="cr_file_save">
+						<span id="canrisk_save" class="lang"></span>
+					</button>
+				</div>
+			</div>	
 	</div>
 
 	<!-- FOOTER -->

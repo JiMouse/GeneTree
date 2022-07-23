@@ -1,7 +1,6 @@
-
+var save_canrisk_dialog;
 $(document).ready(function(){
 	// save CanRisk
-	var save_canrisk_dialog;
 	save_canrisk_dialog = $('#save-canrisk-dialog').dialog({
 		autoOpen: false,
 		title: lang.canrisk_addInfo,
