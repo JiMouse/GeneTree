@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    if(window.location.pathname != "/GeneTree/docs/user-interface.html") return
+    if(window.location.pathname != "/GeneTree/docs/user-interface.html" && window.location.pathname != "/docs/user-interface.html") return
 
     // navbar language setter
     $( "#LangSetterFr" ).click(function() {
