@@ -20,7 +20,7 @@ $(document).ready(function(){
 	})
 
 	$('#save_canrisk').on('click', function (e) {
-		$('#save-canrisk-dialog').dialog('open');
+		save_canrisk_dialog.dialog('open');
 	});
 
 	// CanRisk file save dialog
@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 		var fname = ($( "#pid_fname").is(':checked') ? "canrisk_"+famid+".txt": "canrisk.txt");
 		io.save_file(opts, this_canrisk, fname);
-		$('#save-canrisk-dialog').dialog('close');
+		save_canrisk_dialog.dialog('close');
 	})
 
 	// get surgical ops and PRS for canrisk header

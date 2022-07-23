@@ -788,7 +788,7 @@ $(document).ready(function() {
 
     $('#save_canrisk_fromHot').on('click', function (e) {
         loadFromHot();
-		$('#save-canrisk-dialog').modal('show');
+		save_canrisk_dialog.dialog('open');
 	});
 
     //create pedigree in user interface
