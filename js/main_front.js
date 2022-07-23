@@ -490,7 +490,8 @@ $(document).ready(function() {
     });
     $( "#exportPedigreejsCanRisk" ).click(function() {
         //1 export canRisk
-        $('#save-canrisk-dialog').modal('show');
+        // $('#save-canrisk-dialog').modal('show');
+        save_canrisk_dialog.dialog('open');
         let obj = pedcache.current(opts);
 
         //export pedigreeJS
@@ -789,6 +790,7 @@ $(document).ready(function() {
     $('#save_canrisk_fromHot').on('click', function (e) {
         loadFromHot();
 		save_canrisk_dialog.dialog('open');
+        // $('#save-canrisk-dialog').modal('show');
 	});
 
     //create pedigree in user interface
