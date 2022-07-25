@@ -267,52 +267,52 @@ $(document).ready(function() {
         loadFromHot();
     });
 
-    //create reset_dialog
-    var reset_dialog;
-    reset_dialog = $('<div id="msgDialog">'+lang.confirmReset+'</div>').dialog({
-        autoOpen: false,
-        title: lang.reset_dialogs,
-        resizable: false,
-        height: "auto",
-        width: 400,
-        modal: true,
-        classes: {
-            "ui-dialog": "custom-background",
-            "ui-dialog-titlebar": "custom-theme",
-            "ui-dialog-title": "custom-theme text-center",
-            // "ui-dialog-titlebar-close":"custom-btn",
-            "ui-dialog-content": "custom-background",
-            "ui-dialog-buttonpane": "custom-background"
-        },
-        buttons: [{
-            text: lang.continue,
-            click: function () {
-                //reset data
-                hot.loadData(JSON.parse(myDataSafe));
-                
-                //reset disease
-                let checkBox = document.getElementById("myCheckOnco");
-                if(checkBox) {
-                    diseases=onco_full();
-                }else{
-                    diseases=[];
-                }
-                
-                loadFromHot();
-                loadStory();
-                $(this).dialog( "close" );
-            },
-        }, {
-            text: lang.cancel,
-            click: function () {
-                $(this).dialog( "close" );
-                return;
-            },
-        }],
-    });
-    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-
     $( "#reset" ).click(function() {
+        //create reset_dialog
+        var reset_dialog;
+        reset_dialog = $('<div id="msgDialog">'+lang.confirmReset+'</div>').dialog({
+            autoOpen: false,
+            title: lang.reset_dialogs,
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            classes: {
+                "ui-dialog": "custom-background",
+                "ui-dialog-titlebar": "custom-theme",
+                "ui-dialog-title": "custom-theme text-center",
+                // "ui-dialog-titlebar-close":"custom-btn",
+                "ui-dialog-content": "custom-background",
+                "ui-dialog-buttonpane": "custom-background"
+            },
+            buttons: [{
+                text: lang.continue,
+                click: function () {
+                    //reset data
+                    hot.loadData(JSON.parse(myDataSafe));
+                    
+                    //reset disease
+                    let checkBox = document.getElementById("myCheckOnco");
+                    if(checkBox) {
+                        diseases=onco_full();
+                    }else{
+                        diseases=[];
+                    }
+                    
+                    loadFromHot();
+                    loadStory();
+                    $(this).dialog( "close" );
+                },
+            }, {
+                text: lang.cancel,
+                click: function () {
+                    $(this).dialog( "close" );
+                    return;
+                },
+            }],
+        });
+        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+        
         reset_dialog.dialog( "open" );
     });
     $( "#add-parents" ).click(function() {

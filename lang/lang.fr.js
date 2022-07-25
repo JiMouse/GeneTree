@@ -292,7 +292,7 @@ var lang = {
     removePartnersAndChildren_dialog:"Un individu qui a des enfants vient d'être supprimé. Les conjoints et enfants concernés vont être supprimés.",
 
     //undo_redo_refresh.js
-    confirmReset:"Réinitialiser entraînera une perte de données.",
+    confirmReset:"Si vous continuez, les données seront supprimées.",
     continue:"Continuer",
     cancel:"Annuler",
 
