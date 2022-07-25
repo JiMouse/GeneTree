@@ -197,14 +197,14 @@ $(document).ready(function() {
             event.preventDefault();
             event.dataTransfer.dropEffect = 'copy';
             $("#file-selector").css("background-color","#e4bf9f");
-            $("#dragAndDrop").text(lang.drop);
+            $("#loadFile").text(lang.drop);
         });
 
         fileSelector.addEventListener('dragleave', event => {
             event.stopPropagation();
             event.preventDefault();
             $("#file-selector").css("background-color","#fff");
-            $("#dragAndDrop").text(lang.dragAndDrop);
+            $("#loadFile").text(lang.dragAndDrop);
         });
 
         fileSelector.addEventListener('drop', event => {
@@ -219,7 +219,7 @@ $(document).ready(function() {
                 console.error("File could not be read!");
             }
             $("#file-selector").css("background-color","#fff;");
-            $("#dragAndDrop").text(lang.dragAndDrop);
+            $("#loadFile").text(lang.dragAndDrop);
         }); 
     }
     
