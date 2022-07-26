@@ -95,6 +95,8 @@ var lang = {
     about_text6: "GeneTree is developed and maintained by Dr Jean-Marie Ravel with the participation of members of the clinical genetics team "+" of the Nancy University Hospital (France).",
 
     //guide
+    guide_video:"A video presentation of this application is available ",
+    guide_video_href:"here",
     guide_introTitle:"General presentation",
     guide_intro0:"The application is articulated around three components: the table, the tree and the clinical history. " +
     "The family can be loaded from an existing file or created and modified with the table and the graphic interface. " +
