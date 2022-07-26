@@ -112,7 +112,7 @@ var lang = {
     guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (7) :",
     guide_introOnco:"le mode 'onco' est destiné aux consultations d'oncogénétique. Il permet de pré-remplir la liste des pathologies avec les cancers fréquents",
     guide_introHPO:"le mode 'HPO' limite la liste des pathologies aux symptômes et maladies des bases HPO et ORPHAdata.",
-    guide_intro4:"Le tableur (8) est également utilisable comme un tableur excel : il est possible de copier et coller des lignes."+
+    guide_intro4:"Le tableur (8) est également utilisable comme un tableur excel : il est possible de copier et coller des lignes. "+
     "Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque"+
     "l'arbre généré a des branches croisées.",
     guide_famTitle:"Création d'une famille",

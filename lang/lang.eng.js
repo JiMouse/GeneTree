@@ -108,7 +108,7 @@ var lang = {
     guide_intro3:"There are also two optional modes of use to restrict pathologies (7):",
     guide_introOnco:"the 'onco' mode is intended for oncogenetic consultations. It allows the list of pathologies to be pre-filled with frequent cancers.",
     guide_introHPO:"The 'HPO' mode limits the list of conditions to symptoms and diseases in the HPO and ORPHAdata databases.",
-    guide_intro4:"The spreadsheet (8) can also be used as an Excel spreadsheet: it is possible to copy and paste rows."+
+    guide_intro4:"The spreadsheet (8) can also be used as an Excel spreadsheet: it is possible to copy and paste rows. "+
     "It is also possible to select one or more rows and drag them to another position. This can be useful when "+
     "the generated pedigree has crossed branches",
     guide_famTitle:"Creating a family",
