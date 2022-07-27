@@ -136,18 +136,18 @@ var lang = {
     guide_modTitle1:"Ajout d'un individu",
     guide_mod0: "Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un apparenté (6) : frère, soeur, fils, fille, parents, nouveau conjoint, fausse-couche.",
     guide_modTitle2:"Personnalisation d'un individu",
-    guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc." +
-    "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée." +
+    guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc. " +
+    "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également précisée. " +
     "L'âge correspondant sera automatiquement calculé." + "\n" +
     "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
     guide_mod2:"Un menu supplémentaire existe pour remplir d'autres informations et en particulier les données nécessaires au calcul du CanRisk. " +
     "Il est ouvert en cliquant sur 'Ajouter des informations à un individu' (5). Par défaut, le cas index est sélectionné.",
     guide_intTitle:"Prise en main de l'interface graphique de l'arbre généalogique",
     guide_int0:"L'arbre est chargé depuis le tableur grâce au bouton dédié (13). " +
-    "Il est possible de de défaire ou refaire la dernière action, de réinitialiser l'arbre, mettre l'arbre en plein écran, et également de centrer l'arbre (14).",
-    guide_int1:"Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les 'widgets' utilisés pour l'édition." +
-    "Vous pouvez utiliser ces 'widgets' pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre." +
-    "La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc.",
+    "Il est possible de de défaire ou refaire la dernière action, de réinitialiser l'arbre, mettre l'arbre en plein écran, et également de centrer l'arbre (14). ",
+    guide_int1:"Une fois que vous avez commencé à construire votre arbre généalogique, placez le pointeur de la souris sur un individu, pour faire apparaître les 'widgets' utilisés pour l'édition. " +
+    "Vous pouvez utiliser ces 'widgets' pour ajouter des partenaires, des parents, des frères et sœurs, des enfants à votre arbre. " +
+    "La roulette permets, elle, d'ouvrir un menu afin de modifier l'individu : âge, sexe, pathologies, etc. ",
     guide_int2:"Les couleurs des pathologies sont paramétrables grâce au bouton à droite (15). Chaque pathologie corresponds à une couleur (en HEX ou en toute lettre) ou à un motif."+"\n"+
     "Un bouton spécifique permets de transformer les couleurs en motifs.",
     guide_intFig3:"Figure 3. 'Widgets' autour d'un individu",
