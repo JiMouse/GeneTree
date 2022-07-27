@@ -233,7 +233,7 @@
 
       //add yob
       let yob = arrData[i]['yob'];
-      if(yob != undefined) {
+      if(yob != undefined && yob != null && yob != '') {
         yobRow=['1', "BIRT"].join(' ');
         yobRow+= '\r\n' + (['2', "DATE", yob].join(' '));
         row = row + '\r\n' + yobRow
