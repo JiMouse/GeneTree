@@ -92,7 +92,8 @@ var lang = {
     about_text5: "The online interface, optimised for the Google Chrome browser, makes it easy to use without the need for prior installation. "+
     "This tool has been especially designed for oncogenetic consultations in order to avoid triple entry "+ 
     "(text - family tree - Boadicea or CanRisk score)\n",
-    about_text6: "GeneTree is developed and maintained by Dr Jean-Marie Ravel with the participation of members of the clinical genetics team "+" of the Nancy University Hospital (France).",
+    about_text6: "GeneTree is developed and maintained by Dr Jean-Marie Ravel with the participation of members of the clinical genetics team "+
+    " of the Nancy University Hospital (France).",
 
     //guide
     guide_video:"A video presentation of this application is available ",
@@ -100,8 +101,8 @@ var lang = {
     guide_introTitle:"General presentation",
     guide_intro0:"The application is articulated around three components: the table, the tree and the clinical history. " +
     "The family can be loaded from an existing file or created and modified with the table and the graphic interface. " +
-    "Data is saved in local cache and is deleted when the browser tab is closed." + "\n" +
-    "Furthermore, no data is sent to the server which guarantees data confidentiality.",
+    "Data is saved in local cache and is deleted when the browser tab is closed. " + "\n" +
+    "Furthermore, no data is sent to the server which guarantees data confidentiality. ",
     guide_intro2:"A first navigation bar (Figure 1) allows you to load an existing family (by selecting a file or dragging it, 1)," + 
     " to save the current family locally (2) or to reset the family (3)",
     guide_fig1:"Figure 1: General function of the application",
@@ -114,7 +115,7 @@ var lang = {
     guide_famTitle:"Creating a family",
     guide_famTitle1:"Loading a file",
     guide_fam0:"A family already created can be loaded using the dedicated button (1). " +
-    "Many files are supported: files created by the application (.json), CanRisk and Boadicea files (v2 and v4) as well as .ped files." +
+    "Many files are supported: files created by the application (.json), CanRisk and Boadicea files (v2 and v4) as well as .ped files. "+
     "GEDCOM files are partially supported (import of the family structure with the names of the members)",
     guide_famTitle2:"Creating a new family",
     guide_fam1:"The basic structure of a family is composed of three members: the index case and its parents. " +
@@ -132,8 +133,8 @@ var lang = {
     guide_modTitle1:"Adding an individual",
     guide_mod0: "Once an individual is selected, it is possible to click on the buttons to add a relative (6): brother, sister, son, daughter, parents, new spouse, miscarriage.",
     guide_modTitle2:"Personalisation of an individual",
-    guide_mod1: "Several parameters can be filled in for each individual: gender, death, age, year of birth, disease with age of onset etc." + 
-    "The year of a disease or of death can be filled in the 'Age' columns of diseases or death if the date of birth is also filled in." +
+    guide_mod1: "Several parameters can be filled in for each individual: gender, death, age, year of birth, disease with age of onset etc. "+ 
+    "The year of a disease or of death can be filled in the 'Age' columns of diseases or death if the date of birth is also filled in. "+
     "The corresponding age will be automatically calculated." + "\n" +
     "A 'comment' field also exists and its content is added to the generated text.",
     guide_mod2:"An additional menu exists to fill in other information and in particular the data needed to calculate the CanRisk. " +
@@ -141,10 +142,10 @@ var lang = {
     guide_intTitle: "Getting to grips with the graphic interface of the family tree",
     guide_int0:"The pedigree is loaded from the spreadsheet using the dedicated button (13). " +
     "It is possible to undo or redo the last action, to reset the tree, to put the tree in full screen, and also to centre the tree (14)",
-    guide_int1:"Once you have started building your family tree, place the mouse pointer over an individual, to bring up the 'widgets' used for editing." +
+    guide_int1:"Once you have started building your family tree, place the mouse pointer over an individual, to bring up the 'widgets' used for editing. "+
     "You can use these 'widgets' to add partners, parents, brothers and sisters, children to your tree"+
     "The wheel allows you to open a menu to modify the individual: age, sex, pathologies, etc.",
-    guide_int2:"The colours of the pathologies are configurable thanks to the button on the right (15)." + 
+    guide_int2:"The colours of the pathologies are configurable thanks to the button on the right (15). "+ 
     "A specific button allows to transform the colours into patterns",
     guide_intFig3:"Figure 3: 'Widgets' around an individual",
     guide_int3:"There are four additional buttons above the GUI:",
