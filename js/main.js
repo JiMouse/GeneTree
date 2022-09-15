@@ -341,7 +341,7 @@ function FormatToTable(JSONData) {
         
         obj[i] = {
             "FamID": obj[i].famid,
-            "Name": obj[i].display_name,
+            "Name": (obj[i].display_name == undefined) ? obj[i].name : obj[i].display_name,
             "IndivID": obj[i].name,
             "FathID": obj[i].hasOwnProperty('father') ? (obj[i].hasOwnProperty('noparents') ? '0' : obj[i].father) : '0',
             "MothID": obj[i].hasOwnProperty('mother') ? (obj[i].hasOwnProperty('noparents') ? '0' : obj[i].mother) : '0',
