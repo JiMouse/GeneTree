@@ -46,6 +46,7 @@ function buildStoryText(obj) { //Meta function to build story
   text = text.replace(/ \) \(/g, ''); //remove ") ("
   text = text.replace(/  /g, ' '); //replace double space by simple space
   text = text.replace(/\) \(/g, ', '); //replace ) (  by ", "
+  text = text.replace(/un enfant : /g, ''); //remove "un enfant : " 
   return text;
 }
 
