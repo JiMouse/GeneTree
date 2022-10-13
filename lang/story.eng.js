@@ -42,7 +42,12 @@ function getPatho(obj, i,text_neg, text_pos) {
     if(typeof(gmp) !== 'undefined') text += '<br>' + dico.pronom2[sex] +" paternal grandmother" + textline(obj, gmp);
     if(typeof(gpm) !== 'undefined') text += '<br>' + dico.pronom2[sex] +" maternal grandfather" + textline(obj, gpm);
     if(typeof(gmm) !== 'undefined') text += '<br>' + dico.pronom2[sex] +" maternal grandmother" + textline(obj, gmm);
-  
+    
+    // Final polishing
+    text = text.replace(/ \) \(/g, ''); //remove ") ("
+    text = text.replace(/  /g, ' '); //replace double space by simple space
+    text = text.replace(/\) \(/g, ', '); //replace ) (  by ", "
+    text = text.replace(/one child : /g, ''); //remove "one child : " 
     return text;
   }
   
