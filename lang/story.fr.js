@@ -43,8 +43,9 @@ function buildStoryText(obj) { //Meta function to build story
   if(typeof(gmm) !== 'undefined') text += '<br>' + "Sa grand-mère maternelle" + textline(obj, gmm);
 
   // Final polishing
-  text = text.replace(/ \) \(/g, '');
-  text = text.replace(/  /g, ' ');
+  text = text.replace(/ \) \(/g, ''); //remove ") ("
+  text = text.replace(/  /g, ' '); //replace double space by simple space
+  text = text.replace(/\) \(/g, ', '); //replace ) (  by ", "
   return text;
 }
 
