@@ -1,30 +1,34 @@
 //................ LOAD HPO and ORPHAData ........................//
-// Synchronously read a text file from the web server with Ajax
-// from https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript/41133213
 var HPOArr = [];
-var OrphaArr= [];
+var OrphaArr = [];
 
-function loadHPOFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    // xmlhttp.overrideMimeType('text/xml; charset=iso-8859-1'); //debug accent ?
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-      result = xmlhttp.responseText;
-    }
+async function loadHPOFile(filePath) {
+    try {
+        const response = await fetch(filePath);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    //importHPO
-    if(filePath.includes("HPO")) {
-        result = ImportHPO(result);
-    }
+        const text = await response.text();
+        let result;
 
-    //ImportOrphaData
-    else if(filePath.includes("ORPHA")) {
-        result = result.split('\n');
+        // ImportHPO
+        if (filePath.includes("HPO")) {
+            result = ImportHPO(text);
+        }
+        // ImportOrphaData
+        else if (filePath.includes("ORPHA")) {
+            result = text.split('\n');
+        }
+
+        return result;
+
+    } catch (error) {
+        console.error(`Failed to load ${filePath}:`, error);
+        return null;
     }
-    return result;
 }
+
   
 //Convert tsvtoJSON
 function tsvJSON(tsv) {
