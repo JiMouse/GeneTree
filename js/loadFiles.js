@@ -2,6 +2,7 @@
 var HPOArr = [];
 var OrphaArr = [];
 
+// Async file loader using fetch
 async function loadHPOFile(filePath) {
     try {
         const response = await fetch(filePath);
@@ -29,39 +30,59 @@ async function loadHPOFile(filePath) {
     }
 }
 
-  
-//Convert tsvtoJSON
+// Convert TSV to JSON
 function tsvJSON(tsv) {
     const lines = tsv.split('\n');
     const headers = lines.shift().trim().split('\t');
     return lines.map(line => {
-    var data = line.trim().split('\t');
-    return headers.reduce((obj, nextKey, index) => {
-        obj[nextKey] = data[index];
-        return obj;
-    }, {});
+        const data = line.trim().split('\t');
+        return headers.reduce((obj, nextKey, index) => {
+            obj[nextKey] = data[index];
+            return obj;
+        }, {});
     });
-};
-
-//Upload HPO terms
-function ImportHPO(tsv) {
-    // let tsv = loadFile(filePath);  //bug synch ?
-    let HPO = tsvJSON(tsv),
-        Arr = [];
-
-    for(var i in HPO) {
-        if(HPO[i].LABEL!='' & HPO[i].LABEL!='undefined' & HPO[i].LABEL!=null) Arr.push(HPO[i].LABEL);
-    }
-    return Arr;
-} 
-
-function loadExternalData(newLang, rootPath) {
-    //change HPO source
-    if(window.location.pathname != "/GeneTree/" && window.location.pathname != "/index.html") return // /GeneTree/docs/user-interface.html") return
-    HPO_path = rootPath + (newLang=="fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
-    HPOArr = loadHPOFile(HPO_path);
-    OrphaArr = loadHPOFile(rootPath + 'data/ORPHAnomenclature_fr.xml.txt');
-    HPOArr = HPOArr.concat(OrphaArr); //concatenate HPO and OrphaData
 }
 
-loadExternalData(load_lang, '');
+// Parse HPO file content into an array of LABELs
+function ImportHPO(tsv) {
+    const HPO = tsvJSON(tsv);
+    const Arr = [];
+
+    for (let i in HPO) {
+        const label = HPO[i].LABEL;
+        if (label !== '' && label !== 'undefined' && label !== null) {
+            Arr.push(label);
+        }
+    }
+    return Arr;
+}
+
+// Load HPO and ORPHA data, combining both
+async function loadExternalData(newLang, rootPath) {
+    // Only run on main pages
+    if (window.location.pathname !== "/GeneTree/" && window.location.pathname !== "/index.html") return;
+
+    const HPO_path = rootPath + (newLang === "fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
+    const ORPHA_path = rootPath + 'data/ORPHAnomenclature_fr.xml.txt';
+
+    // Load both files asynchronously
+    const hpoData = await loadHPOFile(HPO_path);
+    const orphaData = await loadHPOFile(ORPHA_path);
+
+    // Store them in global variables
+    HPOArr = hpoData || [];
+    OrphaArr = orphaData || [];
+
+    // Combine both arrays into HPOArr
+    HPOArr = HPOArr.concat(OrphaArr);
+}
+
+// Example of how to call loadExternalData
+async function initApp() {
+    await loadExternalData(load_lang, '');
+    // You can now safely use HPOArr
+    console.log(HPOArr);
+}
+
+// Initialize app
+initApp();
