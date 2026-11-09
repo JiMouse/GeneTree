@@ -1,0 +1,58 @@
+/* Patient page: one card of fields per relative (replaces the Handsontable grids). */
+.person-table { width: 100%; text-align: left; }
+.pt-container { margin-top: 6px; }
+.pt-list { display: flex; flex-direction: column; gap: 12px; }
+
+.pt-card, .pt-row {
+  background: #fff;
+  border: 1px solid #c9dcee;
+  border-left: 4px solid #5b8fc7;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.pt-row { border-left-color: #c9dcee; padding: 10px 14px; }
+
+.pt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px 14px;
+  align-items: end;
+}
+.person-table-rows .pt-grid { grid-template-columns: 2fr 1fr 1fr; }
+
+.pt-field label {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3d5368;
+  line-height: 1.25;
+}
+.pt-field .form-control { height: 34px; padding: 6px 10px; }
+.pt-wide { grid-column: 1 / -1; }
+
+/* name heads the card */
+.pt-name { margin-bottom: 10px; }
+.pt-name label { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: #5b6f82; }
+.pt-name .form-control { font-weight: 600; font-size: 15px; color: #002e5d; }
+
+/* deceased tick box sits on the same baseline as the inputs */
+.pt-check { display: flex; align-items: center; gap: 8px; min-height: 34px; }
+.pt-check input { width: 18px; height: 18px; margin: 0; flex: none; }
+.pt-check label { margin: 0; font-size: 13px; }
+
+/* cancer location: chosen from the list */
+.pt-disease[readonly] {
+  background: #f4f8fc url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%235b8fc7'/></svg>") no-repeat right 10px center;
+  cursor: pointer;
+  padding-right: 26px;
+}
+.pt-disease[readonly]:focus { background-color: #fff; }
+
+@media (max-width: 480px) {
+  .pt-card, .pt-row { padding: 10px 12px; }
+  .pt-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .person-table-rows .pt-grid { grid-template-columns: 1fr 1fr; }
+  .pt-disease-field { grid-column: 1 / -1; } /* full cancer label on small screens */
+  .pt-field .form-control { font-size: 16px; } /* no auto-zoom on iPhone */
+}
