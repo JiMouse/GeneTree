@@ -188,6 +188,14 @@
     if (column && column.type === 'checkbox') input.checked = String(v) === String(column.checkedTemplate);
     else if (this.diseaseProps.indexOf(prop) >= 0) input.value = this._diseaseLabel(v);
     else input.value = this._displayValue(v);
+    this._markValidity(input, column, v);
+  };
+
+  // numeric field holding text (e.g. "environ 50"): kept as typed, shown in red like Handsontable did
+  PersonTable.prototype._markValidity = function (input, column, v) {
+    var invalid = !!column && column.type === 'numeric' && !isEmptyValue(v) && typeof v !== 'number';
+    input.classList.toggle('pt-invalid', invalid);
+    if (invalid) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
   };
 
   // Disease fields store the internal key (e.g. 'cancer_sein') but show the label of
@@ -228,6 +236,7 @@
     if (column.type === 'numeric') input.setAttribute('inputmode', 'numeric');
     if (prop === 'comment' || prop === 'Name') input.setAttribute('maxlength', '200');
     input.value = isDisease ? this._diseaseLabel(value) : this._displayValue(value);
+    this._markValidity(input, column, value);
 
     if (isDisease) {
       // chosen from the cancer list, like clicking the disease cell of the old grid

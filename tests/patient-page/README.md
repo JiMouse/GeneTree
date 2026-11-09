@@ -26,3 +26,12 @@ node compare.js out_old out_new   # "35 identical, 0 different" expected
 ```
 
 `drive_old.js` clicks into Handsontable cells, so the old page must display its tables. Handsontable 16 draws them 0 px wide, so record the reference with 15.3.0.
+
+## Bug tests
+
+`bugs.js` checks one fixed bug per test (12 tests): no carry-over between groups of relatives, correct ages and years of diagnosis, clearing an age, text in an age field, clickable labels, relatives' names, the English wording, and deceased relatives.
+
+```bash
+node bugs.js http://localhost:8000/GeneTree/docs/patient.html drive_new.js
+node bugs.js http://localhost:8000/GeneTree/docs/user-interface.html drive_old.js
+```

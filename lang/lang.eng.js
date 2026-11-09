@@ -330,7 +330,7 @@ var lang = {
     ui_man:'Man',
     ui_woman:'Woman',
     ui_comment:'Comment :',
-    ui_cancer:'Did you developp cancer ?',
+    ui_cancer:'Have you ever had cancer?',
     ui_cancer_type:'Fill type and diagnostic year or age',
     ui_breast_cancer:' Breast cancer',
     ui_breast_cancer2:'Controlateral breast cancer',
@@ -372,14 +372,13 @@ var lang = {
     ui_dl_png: "Download the pedigree (image)",
     ui_add_id:"Add an identifier (Famid) to the file",
     ui_add_id_file:"include in the file name",
-    ui_dl:"Save",
     ui_ind_sex:"Is it a man (boy) or a woman (girl)?",
     ui_ind_sex_M:"Male",
     ui_ind_sex_F:"Female",
-    ui_ind_bd:"What is its year of birth or age?",
-    ui_ind_dcd:"Is he dead?",
+    ui_ind_bd:"What is their year of birth or age?",
+    ui_ind_dcd:"Is this person deceased?",
     ui_ind_dcd_yrs:"What is the year of death or age at death?",
-    ui_ind_cancer: "Does this child have (or have had) cancer?",
+    ui_ind_cancer: "Does this person have (or have they had) cancer?",
     ui_ind_cancer1:"First cancer",
     ui_ind_cancer1_loc:" Localisation",
     ui_ind_cancer1_age: " Age or year of diagnosis",
@@ -387,7 +386,14 @@ var lang = {
     ui_ind_cancer2_loc:" Localisation",
     ui_ind_cancer2_age: " Age or year of diagnosis",
     ui_ind_comment: "Comment:",
-    ui_finalisation:"Finalisation"
+    ui_finalisation:"Finalisation",
+    ui_ind_save:"Save",
+    ui_cancer_list:"Cancer site",
+    ui_alert_dead_yob:"For a deceased person, please give their year of birth (not their age).",
+    ui_rel_children:"Child", ui_rel_children_M:"Son", ui_rel_children_F:"Daughter",
+    ui_rel_siblings:"Sibling", ui_rel_siblings_M:"Brother", ui_rel_siblings_F:"Sister",
+    ui_rel_fatherSiblings:"Paternal uncle/aunt", ui_rel_fatherSiblings_M:"Paternal uncle", ui_rel_fatherSiblings_F:"Paternal aunt",
+    ui_rel_motherSiblings:"Maternal uncle/aunt", ui_rel_motherSiblings_M:"Maternal uncle", ui_rel_motherSiblings_F:"Maternal aunt"
 };
 
 var title = {

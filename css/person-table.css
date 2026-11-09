@@ -30,6 +30,7 @@
 }
 .pt-field .form-control { height: 34px; padding: 6px 10px; }
 .pt-wide { grid-column: 1 / -1; }
+.pt-field .form-control.pt-invalid { border-color: #c0392b; background: #fdf0ef; }
 
 /* name heads the card */
 .pt-name { margin-bottom: 10px; }

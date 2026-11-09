@@ -226,13 +226,13 @@
 									<input id="dbirth" class="form-control" type="text" im-insert="false">
 								</div>
 								<div class="col-lg-2 text-center">
-									<label for="id_sex_0">
+									<label for="index_id_sex_0">
 										<input type="radio" name="index_sex" value="M" required="" id="index_id_sex_0" class="valid">
 										<span class="lang" id="ui_man"></span>
 									</label>
 								</div>
 								<div class="col-lg-1 text-center">
-									<label for="id_sex_1">
+									<label for="index_id_sex_1">
 										<input type="radio" name="index_sex" value="F" required="" id="index_id_sex_1" class="valid" checked>
 										<span class="lang" id="ui_woman"></span>
 									</label>
@@ -250,8 +250,8 @@
 							<div class="row" style="padding: 0px 20px;">
                                 <div class="col-lg-3">
 									<p class='question'><span class="lang" id="ui_cancer"></span></p>
-									<label class="radio-inline" for="cancer_Yes"><input type="radio" name="cancer_radio" id="cancer_Yes" value="cancer_Yes">Oui</label>
-									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked>Non</label>
+									<label class="radio-inline" for="cancer_Yes"><input type="radio" name="cancer_radio" id="cancer_Yes" value="cancer_Yes"><span class="lang lang-yes"></span></label>
+									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked><span class="lang lang-no"></span></label>
                                 </div>
                                 <div id="cancer_table_div" class="col-lg-9">
 									<p class='question'><span class="lang" id="ui_cancer_type"></span></p>
@@ -407,8 +407,8 @@
                             <div class="row" style="padding: 0px 20px;">
                                 <div class="col-lg-3">
 									<p class='question'><span class="lang" id="ui_siblings_q"></span></p>
-									<label class="radio-inline" for="siblings_Yes"><input type="radio" name="siblings_radio" id="siblings_Yes" value="siblings_Yes">Oui</label>
-									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked>Non</label>
+									<label class="radio-inline" for="siblings_Yes"><input type="radio" name="siblings_radio" id="siblings_Yes" value="siblings_Yes"><span class="lang lang-yes"></span></label>
+									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked><span class="lang lang-no"></span></label>
 									<br><br>
 									<div id="siblings_div">
 										<p class='question'><span class="lang" id="ui_siblings_cb"></span></p>
@@ -564,8 +564,8 @@
                             <div class="row" style="padding: 20px 20px;">
                                 <div class="col-lg-3">
 									<p class='question'><span class="lang" id="ui_sib"></span></p>
-									<label class="radio-inline" for="fatherSiblings_Yes"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_Yes" value="fatherSiblings_Yes">Oui</label>
-									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked>Non</label>
+									<label class="radio-inline" for="fatherSiblings_Yes"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_Yes" value="fatherSiblings_Yes"><span class="lang lang-yes"></span></label>
+									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked><span class="lang lang-no"></span></label>
 									<br><br>
 									<div id="fatherSiblings_div">
 										<p class='question'><span class="lang" id="ui_sib_cb"></span></p>
@@ -665,8 +665,8 @@
                             <div class="row" style="padding: 20px 20px;">
                                 <div class="col-lg-3">
 									<p class='question'><span class="lang" id="ui_m_sib"></span></p>
-									<label class="radio-inline" for="motherSiblings_Yes"><input type="radio" name="motherSiblings_radio" id="motherSiblings_Yes" value="motherSiblings_Yes">Oui</label>
-									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked>Non</label>
+									<label class="radio-inline" for="motherSiblings_Yes"><input type="radio" name="motherSiblings_radio" id="motherSiblings_Yes" value="motherSiblings_Yes"><span class="lang lang-yes"></span></label>
+									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked><span class="lang lang-no"></span></label>
 									<br><br>
 									<div id="motherSiblings_div">
 										<p class='question'><span class="lang" id="ui_m_sib_cb"></span></p>
@@ -823,13 +823,13 @@
 					<p class='row'><span class="lang" id="ui_ind_dcd"></span></p>
 					<div id="deadInd" class="row">
 						<div class="col-sm-4 text-center">
-							<label for="id_sex_0">
+							<label>
 								<input type="radio" name="deadStatus" value="1" class="valid">
 								<span class="lang lang-yes"></span>
 							</label>
 						</div>
 						<div class="col-sm-4 text-center">
-							<label for="id_sex_1">
+							<label>
 								<input type="radio" name="deadStatus" value="0" class="valid" checked>
 								<span class="lang lang-no"></span>
 							</label>
@@ -851,13 +851,13 @@
 				<p class='question'><span class="lang" id="ui_ind_cancer"></span></p>
 				<div id="IndDisease" class="row">
 					<div class="col-sm-6 text-center">
-						<label for="id_sex_0">
+						<label>
 							<input type="radio" name="diseaseStatus" value="1" class="valid">
 							<span class="lang lang-yes"></span>
 						</label>
 					</div>
 					<div class="col-sm-6 text-center">
-						<label for="id_sex_1">
+						<label>
 							<input type="radio" name="diseaseStatus" value="0" class="valid" checked>
 							<span class="lang lang-no"></span>
 						</label>
@@ -889,7 +889,7 @@
 				<div id="IndDisease2" class="row">
 					<div class="panel-heading header-lightblue"  style="margin: 10px 10px;"> 
 						<h3 class="panel-title h3-lightblue">
-							<span class="lang" id="ui_ind_cancer1"></span>
+							<span class="lang" id="ui_ind_cancer2"></span>
 						</h3>
 					</div>
 					<div class="col-sm-6 text-center">

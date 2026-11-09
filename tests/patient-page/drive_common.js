@@ -47,7 +47,7 @@ async function addRelatives(page, group, list) {
       if (p.d2) { await page.click('#IndDisease2Input'); await pickCancer(page, p.d2); await page.fill('#IndDisease2Age', p.a2 || ''); }
     }
     if (p.comment) await page.fill('#IndCommentInput', p.comment);
-    await dlg.getByRole('button', { name: 'Sauvegarder' }).click();
+    await dlg.locator('.ui-dialog-buttonpane button').first().click(); // 'Sauvegarder' before the fix, 'Enregistrer' / 'Save' after
     await page.waitForTimeout(450);
   }
   await page.waitForTimeout(400);
