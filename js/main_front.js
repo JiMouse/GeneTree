@@ -120,7 +120,7 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
 //---Pedigreejs variables---
 if(utils.isIE() || utils.isEdge()) {
     //<!-- canvg used to convert svf to png image -->
-    document.write('<script src="https://cdn.jsdelivr.net/npm/canvg@2.0.0/dist/browser/canvg.min.js"><\/script>');
+    document.write('<script src="package/vendor/canvg/canvg.min.js"><\/script>');
 }
 
 var opts = {

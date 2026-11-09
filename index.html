@@ -10,32 +10,27 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<!-- load bootstrap dependencies -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-		crossorigin="anonymous"></script>
+	<script src="package/vendor/jquery/jquery.slim.min.js"></script>
+	<script src="package/vendor/popper/popper.min.js"></script>
 
 	<!-- load pedigreejs dependencies : jquery, bootstrap, font-awesome, d3 -->
 	<!-- css -->
-	<link href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css"
+	<link href="package/vendor/jquery-ui/themes/cupertino/jquery-ui.css" rel="stylesheet" type="text/css"
 		media="all" />
 
-	<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<!-- <link href="package/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="package/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
 
-	<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+	<!-- <link href="package/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
 		type="text/css" media="all" /> -->
 	<link rel="stylesheet" href="package\font-awesome-4.7.0\css\font-awesome.min.css">
 
 	<!-- javascript -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+	<script src="package/vendor/jquery/jquery.min.js"></script>
+	<!-- <script src="package/bootstrap.min.js"></script> -->
 	<script src="package/bootstrap.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/d3@5.16.0/dist/d3.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="package/vendor/d3/d3.min.js"></script>
+	<script src="package/vendor/jquery-ui/jquery-ui.min.js"></script>
 
 	<script src="package/lodash.js"></script>
 	<script src="package/jquery.inputmask.min.js"></script>
@@ -87,11 +82,10 @@
 	<link rel="stylesheet" type="text/css" href="css/pedigreejs.css">
 
 	<!-- load handsontable module v10.0 -->
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable@16.2.0/dist/handsontable.full.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@16.2.0/dist/handsontable.full.min.css" />
+	<script type="text/javascript" src="package/vendor/handsontable/handsontable.full.min.js"></script>
+	<link rel="stylesheet" href="package/vendor/handsontable/handsontable.full.min.css" />
 
 	<!-- Display a loading icon until the page loads completely -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 	<script>
 		$(window).on("load", function (e) {
 			$(".se-pre-con").fadeOut("slow");
