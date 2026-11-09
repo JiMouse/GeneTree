@@ -35,4 +35,4 @@ async function run(page, sc) {
   for (const g of ['children', 'siblings', 'fatherSiblings', 'motherSiblings']) await addRelatives(page, g, sc[g]);
   for (const [table, row, prop, value] of sc.edits) { await openPanel(page, table); await editCell(page, table, row, prop, value); }
 }
-module.exports = { run };
+module.exports = { run, editCell };

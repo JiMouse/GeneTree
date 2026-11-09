@@ -372,8 +372,8 @@ var lang = {
     ui_m_sib: "Est-ce que votre mère a des frères et sœurs ?",
     ui_m_sib_cb: "Combien de frères et sœurs a votre mère ?",
     ui_m_sib_cb_qd:"Quand sont nés les frères et sœurs de votre mère ?",
-    ui_click:"Cliquer sur le bouton ci-dessous afin de générer l'arbre à partir des données que vous avez entré.",
-    ui_build_pedigree : "Créer l'abre généalogique",
+    ui_click:"Cliquer sur le bouton ci-dessous afin de générer l'arbre à partir des données que vous avez saisies.",
+    ui_build_pedigree : "Créer l'arbre généalogique",
     ui_dl: "Télécharger les deux fichiers à envoyer à votre médecin",
     ui_dl_png: "Télécharger l'arbre généalogique (image)",
     ui_add_id:"Ajouter un identifiant (Famid) dans le fichier",
@@ -383,9 +383,9 @@ var lang = {
     ui_ind_sex_M:"Homme",
     ui_ind_sex_F:"Femme",
     ui_ind_bd:"Quelle est son année de naissance ou son âge ?",
-    ui_ind_dcd:"Est-il décédé ?",
-    ui_ind_dcd_yrs:"Quelle est son année de décés ou son âge au décés ?",
-    ui_ind_cancer: "Est-ce que cet enfant est (ou a été) atteint par un cancer ?",
+    ui_ind_dcd:"Cette personne est-elle décédée ?",
+    ui_ind_dcd_yrs:"Quelle est son année de décès ou son âge au décès ?",
+    ui_ind_cancer: "Cette personne est-elle (ou a-t-elle été) atteinte d'un cancer ?",
     ui_ind_cancer1:"Premier cancer",
     ui_ind_cancer1_loc:" Localisation",
     ui_ind_cancer1_age: " Âge ou année du diagnostic",
@@ -393,7 +393,14 @@ var lang = {
     ui_ind_cancer2_loc:" Localisation",
     ui_ind_cancer2_age: " Âge ou année du diagnostic",
     ui_ind_comment: "Commentaire :",
-    ui_finalisation:"Finalisation"
+    ui_finalisation:"Finalisation",
+    ui_ind_save:"Enregistrer",
+    ui_cancer_list:"Localisation du cancer",
+    ui_alert_dead_yob:"Pour une personne décédée, indiquez son année de naissance (et non son âge).",
+    ui_rel_children:"Enfant", ui_rel_children_M:"Fils", ui_rel_children_F:"Fille",
+    ui_rel_siblings:"Frère/Sœur", ui_rel_siblings_M:"Frère", ui_rel_siblings_F:"Sœur",
+    ui_rel_fatherSiblings:"Oncle/Tante paternel(le)", ui_rel_fatherSiblings_M:"Oncle paternel", ui_rel_fatherSiblings_F:"Tante paternelle",
+    ui_rel_motherSiblings:"Oncle/Tante maternel(le)", ui_rel_motherSiblings_M:"Oncle maternel", ui_rel_motherSiblings_F:"Tante maternelle"
 };
 
 var title = {
@@ -616,7 +623,7 @@ var dico = {
   //user-interface.html
   var colCancer_header = ['Localisation du cancer', 'Âge au diagnostic', 'Année du diagnostic'];
   var colCancer_header2 = ['Localisation<br> du cancer', 'Âge au<br> diagnostic', 'Année du<br> diagnostic', 'Commentaire'];
-  var colChildren_header = ['Nom', 'Genre', 'Décés', 'Âge', 'Année de<br> Naissance'];
+  var colChildren_header = ['Nom', 'Genre', 'Décès', 'Âge', 'Année de<br> Naissance'];
 
   var myDataGpp = [
     {"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},

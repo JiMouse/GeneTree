@@ -98,11 +98,16 @@ $(document).ready(function(){
     //update age and yob
     function syncAgeYob(changes, source, colAge='Age', colYear='Yob', hotTable, deceasedIndex=2, refDate) {
         if(changes != null) {
-            col = changes[0][1];
-            row = changes[0][0];
-            dead = hotTable.getSourceDataAtCell(row, deceasedIndex)
+            // local variables: these used to be implicit globals, shared between nested calls
+            let col = changes[0][1];
+            let row = changes[0][0];
+            let dead = hotTable.getSourceDataAtCell(row, deceasedIndex)
             if((source == 'edit') && (changes.length == 1)) {
                 let newValue = changes[0][3];
+                // Only a number can be synchronised. A cleared field (null) or text such as
+                // "environ 50" must leave the other field as it is (it used to set the year
+                // of birth to the current year, or erase it).
+                if (typeof newValue !== 'number' || isNaN(newValue)) return;
                 if ((col == colAge || col == colYear) && (dead != 1)) {
                     if(refDate==undefined) {
                         var today = new Date();
@@ -124,28 +129,18 @@ $(document).ready(function(){
                         setter = false;
                     }
                 }
-                if(newValue == "" || newValue == null) return
-                if (col == "Age1") {
-                    //add Setter?
-                    let y = hotTable.getDataAtRowProp(row, 'Yob');
-                    if(y != "" && y != null) {
+                if (col == "Age1" || col == "Year1") {
+                    // year of birth: a number when typed in the table, text when it comes
+                    // from the relative dialog ("1990"), so convert it before adding
+                    let y = Number(hotTable.getDataAtRowProp(row, 'Yob'));
+                    let yob = hotTable.getDataAtRowProp(row, 'Yob');
+                    if(yob !== "" && yob != null && !isNaN(y)) {
                         if (!setterDisease) {
                             setterDisease = true;
-                            let value = String(y+newValue);
-                            hotTable.setDataAtRowProp(row, 'Year1', value);
-                        } else {
-                            setterDisease = false;
-                        }
-                    }
-                }
-                if (col == "Year1") {
-                    //add Setter?
-                    let y = hotTable.getDataAtRowProp(row, 'Yob');
-                    if(y != "" && y != null) {
-                        if (!setterDisease) {
-                            setterDisease = true;
-                            let value = String(y-newValue);
-                            hotTable.setDataAtRowProp(row, 'Age1', value);
+                            if (col == "Age1") // year of diagnosis = year of birth + age at diagnosis
+                                hotTable.setDataAtRowProp(row, 'Year1', String(y + newValue));
+                            else               // age at diagnosis = year of diagnosis - year of birth
+                                hotTable.setDataAtRowProp(row, 'Age1', String(newValue - y));
                         } else {
                             setterDisease = false;
                         }
@@ -203,7 +198,7 @@ $(document).ready(function(){
             if(!isNaN(nchild)) {
                 Indindex = 1;
                 IndObj=[];  //reset IndObj
-                loadInd(Indindex, nchild, hotChildren.loadData, 'Enfant ');
+                loadInd(Indindex, nchild, hotChildren.loadData, 'children');
             }
 
             $("#children_table_div").show();
@@ -240,7 +235,7 @@ $(document).ready(function(){
             if(!isNaN(nSiblings)) {
                 Indindex = 1;
                 IndObj=[];  //reset IndObj
-                loadInd(Indindex, nSiblings, hotSiblings.loadData, 'Frère/Sœur ');
+                loadInd(Indindex, nSiblings, hotSiblings.loadData, 'siblings');
             }
             $("#siblings_table_div").show();
             hotSiblings.render();
@@ -287,7 +282,7 @@ $(document).ready(function(){
             if(!isNaN(nFatherSiblings)) {
                 Indindex = 1;
                 IndObj=[];  //reset IndObj
-                loadInd(Indindex, nFatherSiblings, hotFatherSiblings.loadData, 'Frère/Sœur du père ');
+                loadInd(Indindex, nFatherSiblings, hotFatherSiblings.loadData, 'fatherSiblings');
             }
             $("#fatherSiblings_table_div").show();
             hotFatherSiblings.render();
@@ -325,7 +320,7 @@ $(document).ready(function(){
             if(!isNaN(nMotherSiblings)) {
                 Indindex = 1;
                 IndObj=[];  //reset IndObj
-                loadInd(Indindex, nMotherSiblings, hotMotherSiblings.loadData, 'Frère/Sœur de la mère ');
+                loadInd(Indindex, nMotherSiblings, hotMotherSiblings.loadData, 'motherSiblings');
             }
             $("#motherSiblings_table_div").show();
             hotMotherSiblings.render();
@@ -352,7 +347,7 @@ $(document).ready(function(){
         },
         width: ($(window).width() > 400 ? 260 : $(window).width()- 30),
         maxHeight: 700,
-        title: 'Localisation du cancer',
+        title: (typeof lang !== 'undefined' && lang.ui_cancer_list) || 'Localisation du cancer',
     })
     $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
 
@@ -378,7 +373,7 @@ $(document).ready(function(){
            "<div class='form-check'>"
     +            "<label class='form-check-label font-normal'>"
     +               "<input type='radio' class='form-check-input' name='cancerListradio'" 
-    +               "value='" + "Autre" + "'" + "> " + "Autre" //"<span class='lang' id='ui_other'></span>"
+    +               "value='" + "Autre" + "'" + "> " + ((typeof lang !== 'undefined' && lang.ui_other) ? lang.ui_other.trim() : "Autre") // value stays "Autre"
     +            "</label>"
     +        "</div>"
     +  "</fieldset>"
@@ -619,41 +614,74 @@ $(document).ready(function(){
     var Indindex;
     var nInd;
 
-    loadInd = function(Indindex, nInd, myCallback, label) {
+    // Name of a relative in the patient's language: "Fille", "Oncle maternel"... or neutral when the sex is unknown
+    function relativeLabel(group, sex) {
+        if (typeof lang !== 'undefined') {
+            if (sex && lang['ui_rel_' + group + '_' + sex]) return lang['ui_rel_' + group + '_' + sex];
+            if (lang['ui_rel_' + group]) return lang['ui_rel_' + group];
+        }
+        return group;
+    }
+
+    // Empty the relative dialog. Done before EVERY relative, including the first one of a
+    // group: the values of the previous relative used to carry over to the next group.
+    function resetIndForm() {
+        document.getElementById("defineInd.frm").reset();
+        $("#deathyInd_div").hide();
+        $("#IndDisease1").hide();
+        $("#IndDisease2").hide();
+        IndDiseaseInput = null;
+    }
+
+    // The dialog asks for an "age or year of diagnosis": a value above 200 is a year
+    function diagnosis(value, yob) {
+        if (value === '' || value == null) return {};
+        let v = Number(value), y = Number(yob);
+        if (isNaN(v) || v <= 200) return {age: value};
+        return (yob !== '' && yob != null && !isNaN(y)) ? {age: String(v - y), year: v} : {year: v};
+    }
+
+    loadInd = function(Indindex, nInd, myCallback, group) {
+        if (Indindex == 1) resetIndForm();
         // set title
         dialogInd.dialog({
-            title: label + Indindex
+            title: relativeLabel(group) + ' ' + Indindex
         })
         // set button
-        dialogInd.dialog({
-            buttons: {
-                "Sauvegarder": function() {
-                    safeInd(Indindex, nInd, myCallback, label);
-                }
-            }
-        })
+        let buttons = {};
+        buttons[(typeof lang !== 'undefined' && lang.ui_ind_save) || "Enregistrer"] = function() {
+            safeInd(Indindex, nInd, myCallback, group);
+        };
+        dialogInd.dialog({ buttons: buttons })
+        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
 
         // open dialogInd
         dialogInd.dialog( "open" );
     }
 
-    safeInd = function(Indindex, nInd, myCallback, label) {
+    safeInd = function(Indindex, nInd, myCallback, group) {
         let deadStatus = $('input[name="deadStatus"]:checked').val();
-        
+        let sex = $('input[name="sex"]:checked').val();
+        let yobOrAge = $( "#yobIndInput" ).val();
+        var today = new Date();
+
+        // A deceased relative needs a YEAR of birth. This used to show a warning and then
+        // save the relative anyway with wrong values; now the dialog stays open.
+        if (deadStatus == 1 && yobOrAge !== '' && Number(yobOrAge) < 200) {
+            alert((typeof lang !== 'undefined' && lang.ui_alert_dead_yob) || "Pour une personne décédée, indiquez son année de naissance (et non son âge).");
+            return;
+        }
+
         let ind = {
             "FamID": "1",
-            "Name": "Enfant"+(Indindex), 
-            "Sex": $('input[name="sex"]:checked').val(),
+            "Name": relativeLabel(group, sex) + ' ' + Indindex,
+            "Sex": sex,
             "Deceased":deadStatus};
         IndObj.push(ind);
 
         //Age and year of birth
-        let yobOrAge = $( "#yobIndInput" ).val();
-        var today = new Date();
-
         if(deadStatus==1) {
             let deathyIndInput = $( "#deathyIndInput" ).val();
-            if(yobOrAge<200) {alert("L'année de naissance ne peut être inférieure à 200.")}
             deathyIndInput = (deathyIndInput>200 ? deathyIndInput-yobOrAge: deathyIndInput)
             IndObj[Indindex-1]["Yob"] = yobOrAge;
             IndObj[Indindex-1]["Age"] = deathyIndInput;
@@ -667,34 +695,31 @@ $(document).ready(function(){
             };
         };
 
-        //Diseases
-        let IndDisease1Input = $( "#IndDisease1Input" ).val();
-        let IndDisease1Age = $( "#IndDisease1Age" ).val();
-        let IndDisease2Input = $( "#IndDisease2Input" ).val();
-        let IndDisease2Age = $( "#IndDisease2Age" ).val();
-        
-        if(IndDisease1Input!="") IndObj[Indindex-1]["Disease1"] = IndDisease1Input;
-        if(IndDisease1Age!="") IndObj[Indindex-1]["Age1"] = IndDisease1Age;
-        if(IndDisease2Input!="") IndObj[Indindex-1]["Disease2"] = IndDisease2Input;
-        if(IndDisease2Age!="") IndObj[Indindex-1]["Age2"] = IndDisease2Age;
+        //Diseases: only when "has had cancer" is answered yes (the fields stay filled when hidden)
+        if ($('input[name="diseaseStatus"]:checked').val() == '1') {
+            let yob = IndObj[Indindex-1]["Yob"];
+            let IndDisease1Input = $( "#IndDisease1Input" ).val();
+            let IndDisease2Input = $( "#IndDisease2Input" ).val();
+            let d1 = diagnosis($( "#IndDisease1Age" ).val(), yob);
+            let d2 = diagnosis($( "#IndDisease2Age" ).val(), yob);
+
+            if(IndDisease1Input!="") IndObj[Indindex-1]["Disease1"] = IndDisease1Input;
+            if(d1.age !== undefined) IndObj[Indindex-1]["Age1"] = d1.age;
+            if(d1.year !== undefined) IndObj[Indindex-1]["Year1"] = d1.year;
+            if(IndDisease2Input!="") IndObj[Indindex-1]["Disease2"] = IndDisease2Input;
+            if(d2.age !== undefined) IndObj[Indindex-1]["Age2"] = d2.age;
+        }
 
         //Comment
         addKeyToObject(IndObj, Indindex-1, 'comment', 'IndCommentInput')
 
-        // alert(JSON.stringify(IndObj))
         dialogInd.dialog( "close" );
-        // alert(label + Indindex + ' sauvegardé');
 
         // load next form
         if(Indindex < nInd) {
             Indindex+=1;
-            document.getElementById("defineInd.frm").reset(); //reset form
-            // defineInd_init();
-            $("#deathyInd_div").hide();
-            $("#IndDisease1").hide();
-            $("#IndDisease2").hide();
-    
-            loadInd(Indindex, nInd, myCallback, label);
+            resetIndForm();
+            loadInd(Indindex, nInd, myCallback, group);
         } else {
             myCallback(IndObj);
         }
