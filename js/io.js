@@ -353,9 +353,9 @@
 
         var width = $(window).width()*0.9;
         var height = $(window).height()-10;
+        // local copy only: no third-party request from the print window
         var cssFiles = [
-        	'/static/css/canrisk.css',
-        	'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+        	new URL('package/font-awesome-4.7.0/css/font-awesome.min.css', document.baseURI).href
         ];
         var printWindow = window.open('', 'PrintMap', 'width=' + width + ',height=' + height);
         var headContent = '';
