@@ -71,11 +71,29 @@ test('tick box with the mouse and with Space', async (page) => {
   await page.keyboard.press('Space'); expect((await data(page))[2].Deceased === '0', 'Space again');
 });
 
-test('dropdown cells offer their list (Sexe: M, F, U)', async (page) => {
-  await g.click(page, 1, 4); await page.keyboard.press('Enter');
-  const opts = await page.evaluate(() => { const i = document.querySelector('.dg-editor'); return i && i.list ? [...i.list.options].map(o => o.value) : null; });
-  expect(JSON.stringify(opts) === '["M","F","U"]', 'options: ' + JSON.stringify(opts));
-  await page.keyboard.press('Escape');
+test('a single click opens the Sexe / Option list; click, arrows + Enter, or typing choose a value', async (page) => {
+  const listShown = () => page.evaluate(() => { const l = document.querySelector('.dg-dropdown'); return l && l.style.display !== 'none' ? [...l.children].map(o => o.textContent) : null; });
+  await g.click(page, 1, 8); await page.waitForTimeout(150);
+  expect(JSON.stringify(await listShown()) === JSON.stringify(['FCS', 'IMG', 'Grossesse', 'JumMZ', 'JumDZ', 'Adopté']), 'Option list: ' + JSON.stringify(await listShown()));
+  await page.locator('.dg-dropdown .dg-option', { hasText: 'Adopté' }).click(); await page.waitForTimeout(150);
+  expect((await data(page))[1].Option === 'Adopté' && !(await listShown()), 'click on a value: ' + (await data(page))[1].Option);
+  await g.click(page, 2, 4);                                     // Sexe of the mother: F
+  expect(JSON.stringify(await listShown()) === '["M","F","U"]', 'Sexe list: ' + JSON.stringify(await listShown()));
+  await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
+  expect((await data(page))[2].Sex === 'U', 'ArrowDown + Enter: ' + (await data(page))[2].Sex);
+  await g.click(page, 2, 4); await page.keyboard.type('f'); await page.keyboard.press('Enter');
+  expect((await data(page))[2].Sex === 'F', 'typing: ' + (await data(page))[2].Sex);
+  await g.click(page, 1, 4); await page.keyboard.press('Escape');
+  expect((await data(page))[1].Sex === 'M' && !(await listShown()), 'Escape');
+});
+
+test('"Grossesse" on someone who has children: clear message, previous drawing kept', async (page, alerts) => {
+  await page.evaluate(() => $('#loadFromHot').click()); await page.waitForTimeout(500);
+  const before = await page.evaluate(() => document.querySelectorAll('#pedigree svg .node').length);
+  await page.evaluate(() => { hot.setDataAtRowProp(1, 'Option', 'Grossesse'); $('#loadFromHot').click(); }); await page.waitForTimeout(500);
+  const after = await page.evaluate(() => document.querySelectorAll('#pedigree svg .node').length);
+  expect(alerts.length === 1 && /Père est marqué\(e\) « Grossesse »/.test(alerts[0]), 'alert: ' + JSON.stringify(alerts));
+  expect(before > 0 && after === before, `drawing: ${before} people before, ${after} after`);
 });
 
 test('year of diagnosis without year of birth: cell turns red', async (page) => {
