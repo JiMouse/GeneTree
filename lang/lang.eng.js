@@ -393,7 +393,12 @@ var lang = {
     ui_rel_children:"Child", ui_rel_children_M:"Son", ui_rel_children_F:"Daughter",
     ui_rel_siblings:"Sibling", ui_rel_siblings_M:"Brother", ui_rel_siblings_F:"Sister",
     ui_rel_fatherSiblings:"Paternal uncle/aunt", ui_rel_fatherSiblings_M:"Paternal uncle", ui_rel_fatherSiblings_F:"Paternal aunt",
-    ui_rel_motherSiblings:"Maternal uncle/aunt", ui_rel_motherSiblings_M:"Maternal uncle", ui_rel_motherSiblings_F:"Maternal aunt"
+    ui_rel_motherSiblings:"Maternal uncle/aunt", ui_rel_motherSiblings_M:"Maternal uncle", ui_rel_motherSiblings_F:"Maternal aunt",
+    alert_pedigree:"The pedigree cannot be drawn from the current table. The previous drawing is kept.\n\nDetail:",
+    alert_pregnancy_parent:"{name} is marked as 'pregnancy' in the Option column but has children in the table.\n\n'pregnancy' stands for an ongoing pregnancy (unborn child): remove this option for {name}.\n\nThe previous drawing is kept.",
+    alert_missing_parent:"The row of {name} gives a {parent} (Id. {id}) who is not in the table.\n\nAdd this person or correct the Father / Mother columns of {name}.\n\nThe previous drawing is kept.",
+    alert_father:"father", alert_mother:"mother",
+    alert_no_index:"The row of the index case (the person consulting) is no longer in the table: the pedigree cannot be drawn.\n\nLoad the family again from a saved file, or recreate the index case row (as the first row).\n\nThe previous drawing is kept.",
 };
 
 var title = {

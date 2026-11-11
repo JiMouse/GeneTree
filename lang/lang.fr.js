@@ -400,7 +400,12 @@ var lang = {
     ui_rel_children:"Enfant", ui_rel_children_M:"Fils", ui_rel_children_F:"Fille",
     ui_rel_siblings:"Frère/Sœur", ui_rel_siblings_M:"Frère", ui_rel_siblings_F:"Sœur",
     ui_rel_fatherSiblings:"Oncle/Tante paternel(le)", ui_rel_fatherSiblings_M:"Oncle paternel", ui_rel_fatherSiblings_F:"Tante paternelle",
-    ui_rel_motherSiblings:"Oncle/Tante maternel(le)", ui_rel_motherSiblings_M:"Oncle maternel", ui_rel_motherSiblings_F:"Tante maternelle"
+    ui_rel_motherSiblings:"Oncle/Tante maternel(le)", ui_rel_motherSiblings_M:"Oncle maternel", ui_rel_motherSiblings_F:"Tante maternelle",
+    alert_pedigree:"L'arbre ne peut pas être dessiné avec le tableau actuel. Le dessin précédent est conservé.\n\nDétail :",
+    alert_pregnancy_parent:"{name} est marqué(e) « Grossesse » dans la colonne Option, mais a des enfants dans le tableau.\n\n« Grossesse » désigne une grossesse en cours (enfant à naître) : retirez cette option pour {name}.\n\nLe dessin précédent est conservé.",
+    alert_missing_parent:"La ligne de {name} indique un(e) {parent} (Id. {id}) qui n'est pas dans le tableau.\n\nAjoutez cette personne ou corrigez les colonnes Père / Mère de {name}.\n\nLe dessin précédent est conservé.",
+    alert_father:"père", alert_mother:"mère",
+    alert_no_index:"La ligne du cas index (la personne qui consulte) n'est plus dans le tableau : l'arbre ne peut pas être dessiné.\n\nRechargez la famille depuis un fichier enregistré, ou recréez la ligne du cas index (en première ligne).\n\nLe dessin précédent est conservé.",
 };
 
 var title = {

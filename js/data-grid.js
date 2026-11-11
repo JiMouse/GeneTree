@@ -422,47 +422,97 @@
 
   /* ---------- editing ---------- */
 
-  DataGrid.prototype._openEditor = function (initial, fast) {
+  // opts.selectAll: select the current text, so typing replaces it (single click on a list cell)
+  DataGrid.prototype._openEditor = function (initial, fast, opts) {
     var s = this.sel; if (!s) return;
-    var r = s.r1, c = s.c1, p = this._cellProps(r, c), td = this.getCell(r, c);
+    var r = s.r1, c = s.c1, p = this._cellProps(r, c), td = this.getCell(r, c), self = this;
     if (!td || p.readOnly) return;
     if (p.type === 'checkbox') { this._toggle(r, c); return; }
     var input = document.createElement('input');
     input.type = 'text'; input.className = 'dg-editor'; input.autocomplete = 'off';
     input.value = initial !== undefined ? initial : text(this.data[r][p.prop]);
-    var source = p.source || (p.type === 'dropdown' || p.type === 'autocomplete' ? [] : null);
-    if (source) {
-      var list = document.getElementById('dg-list-' + r + '-' + c) || document.createElement('datalist');
-      list.id = 'dg-list-' + r + '-' + c; list.innerHTML = '';
-      source.forEach(function (o) { var opt = document.createElement('option'); opt.value = o; list.appendChild(opt); });
-      this.rootElement.appendChild(list);
-      input.setAttribute('list', list.id);
-    }
-    this.editor = { row: r, col: c, input: input, fast: !!fast };
-    td.innerHTML = ''; td.appendChild(input);
+    var isList = p.type === 'dropdown' || p.type === 'autocomplete';
+    this.editor = { row: r, col: c, input: input, fast: !!fast, source: isList ? (p.source || []) : null, items: [], active: -1, list: null };
+    td.innerHTML = ''; td.classList.remove('dg-list'); td.appendChild(input);
     input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
-    var self = this;
+    if (opts && opts.selectAll) input.select();
+    else input.setSelectionRange(input.value.length, input.value.length);
     input.addEventListener('keydown', function (e) { self._editorKey(e); });
     input.addEventListener('blur', function () { if (self.editor && self.editor.input === input) self._closeEditor(true); });
+    if (isList) {
+      input.addEventListener('input', function () { if (self.editor && self.editor.input === input) self._showList(true); });
+      this._showList(initial !== undefined); // typed: filter on it; opened: whole list, current value highlighted
+    }
+  };
+
+  /* dropdown list under the cell (Sexe, Option...): click a value, or arrows + Enter */
+  DataGrid.prototype._showList = function (filter) {
+    var ed = this.editor, self = this; if (!ed || !ed.source) return;
+    var q = ed.input.value.trim().toLowerCase();
+    var items = (filter && q) ? ed.source.filter(function (o) { return String(o).toLowerCase().indexOf(q) >= 0; }) : ed.source.slice();
+    ed.items = items.slice(0, 200);
+    ed.active = filter ? (ed.items.length ? 0 : -1) : ed.items.map(String).indexOf(ed.input.value);
+    if (!ed.list) {
+      ed.list = document.createElement('div');
+      ed.list.className = 'dg-dropdown';
+      ed.list.setAttribute('role', 'listbox');
+      ed.list.addEventListener('mousedown', function (e) {
+        e.preventDefault(); // keep the focus in the editor
+        var opt = e.target.closest('.dg-option'); if (!opt || !self.editor) return;
+        self.editor.input.value = self.editor.items[+opt.getAttribute('data-i')];
+        self._closeEditor(true); self._focus();
+      });
+      document.body.appendChild(ed.list);
+    }
+    ed.list.innerHTML = '';
+    ed.items.forEach(function (o, i) {
+      var d = document.createElement('div');
+      d.className = 'dg-option' + (i === ed.active ? ' dg-option-active' : '');
+      d.setAttribute('role', 'option'); d.setAttribute('data-i', i);
+      d.textContent = o === '' ? '\u00a0' : o;
+      ed.list.appendChild(d);
+    });
+    ed.list.style.display = ed.items.length ? 'block' : 'none';
+    this._placeList();
+  };
+
+  DataGrid.prototype._placeList = function () {
+    var ed = this.editor; if (!ed || !ed.list) return;
+    var td = this.getCell(ed.row, ed.col); if (!td) return;
+    var b = td.getBoundingClientRect(), l = ed.list;
+    l.style.minWidth = Math.max(b.width, 80) + 'px';
+    l.style.left = b.left + 'px';
+    var h = Math.min(l.scrollHeight, 220);
+    l.style.top = (b.bottom + h > window.innerHeight && b.top > h ? b.top - h : b.bottom) + 'px';
+    var act = l.querySelector('.dg-option-active'); if (act) act.scrollIntoView({ block: 'nearest' });
+  };
+
+  DataGrid.prototype._moveListHighlight = function (d) {
+    var ed = this.editor; if (!ed || !ed.items.length) return;
+    ed.active = Math.max(0, Math.min(ed.items.length - 1, ed.active + d));
+    Array.prototype.forEach.call(ed.list.children, function (el, i) { el.classList.toggle('dg-option-active', i === ed.active); });
+    this._placeList();
   };
 
   DataGrid.prototype._closeEditor = function (save) {
     var ed = this.editor; if (!ed) return;
     this.editor = null;
-    var list = document.getElementById('dg-list-' + ed.row + '-' + ed.col); if (list) list.remove();
+    if (ed.list) ed.list.remove();
     if (save) this._change([[ed.row, this._prop(ed.col), ed.input.value]], 'edit');
     this._renderRow(ed.row);
   };
 
   DataGrid.prototype._editorKey = function (e) {
     var ed = this.editor; if (!ed) return;
+    var listOpen = ed.list && ed.list.style.display !== 'none' && ed.items.length;
+    if (listOpen && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); this._moveListHighlight(e.key === 'ArrowDown' ? 1 : -1); return; }
+    if (listOpen && (e.key === 'Enter' || e.key === 'Tab') && ed.active >= 0) ed.input.value = ed.items[ed.active];
     var move = null;
     if (e.key === 'Enter') move = [e.shiftKey ? -1 : 1, 0];
     else if (e.key === 'Tab') move = [0, e.shiftKey ? -1 : 1];
     else if (e.key === 'Escape') { e.preventDefault(); this._closeEditor(false); this._focus(); return; }
     else if (ed.fast && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) move = [e.key === 'ArrowUp' ? -1 : 1, 0];
-    else if (ed.fast && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !ed.input.getAttribute('list')) move = [0, e.key === 'ArrowLeft' ? -1 : 1];
+    else if (ed.fast && !ed.source && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) move = [0, e.key === 'ArrowLeft' ? -1 : 1];
     if (!move) return;
     e.preventDefault();
     this._closeEditor(true);
@@ -513,6 +563,7 @@
       else self._select(cell.r, cell.c, cell.r, cell.c, false);
       self._focus();
       self._dragSel = true;
+      self._clickOpens = !e.shiftKey && e.target.type !== 'checkbox';
       if (e.target.type === 'checkbox') { self._dragSel = false; self._toggle(cell.r, cell.c); self._fireSelectionEnd(); }
     });
     sc.addEventListener('mouseover', function (e) {
@@ -521,8 +572,17 @@
       if (cell.r !== self.sel.r2 || cell.c !== self.sel.c2) self._select(self.sel.r1, self.sel.c1, cell.r, cell.c, false);
     });
     document.addEventListener('mouseup', function () {
-      if (self._dragSel) { self._dragSel = false; self._fireSelectionEnd(); }
+      if (!self._dragSel) return;
+      self._dragSel = false;
+      self._fireSelectionEnd();
+      // a single click on a list cell (Sexe, Option) opens its list
+      var s = self.sel;
+      if (self._clickOpens && s && s.r1 === s.r2 && s.c1 === s.c2 && !self.editor &&
+          self._cellProps(s.r1, s.c1).type === 'dropdown')
+        self._openEditor(undefined, false, { selectAll: true });
     });
+    sc.addEventListener('scroll', function () { self._placeList(); });
+    window.addEventListener('resize', function () { self._placeList(); });
     sc.addEventListener('click', function (e) {
       if (e.target.type === 'checkbox') e.preventDefault(); // the value is set on mousedown; the redraw shows it
       if (e.target.classList.contains('dg-del')) {

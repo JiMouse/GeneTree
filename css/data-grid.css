@@ -50,3 +50,14 @@
 .dg-del:hover { color: #c0392b; }
 .dg-table tr.dg-dragging td, .dg-table tr.dg-dragging th { opacity: .5; }
 .dg-dropline { position: absolute; left: 0; right: 0; height: 2px; background: #2f6fb3; display: none; z-index: 5; pointer-events: none; }
+
+/* dropdown list of Sexe, Option... */
+.dg-dropdown {
+  position: fixed; z-index: 2000; max-height: 220px; overflow-y: auto; background: #fff;
+  border: 1px solid #9fb6cc; border-radius: 3px; box-shadow: 0 4px 12px rgba(0, 46, 93, .18);
+  font-family: Helvetica, Arial, sans-serif; font-size: 13px; padding: 2px 0;
+}
+.dg-option { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+.dg-option:hover { background: #eef4fb; }
+.dg-option-active { background: #2f6fb3; color: #fff; }
+.dg-option-active:hover { background: #2f6fb3; }

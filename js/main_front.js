@@ -740,6 +740,35 @@ $(document).ready(function() {
         });
     }
 
+    var lastDrawnDataset = null; // last family drawn from the table (JSON), redrawn if the next one fails
+
+    // Message shown when the table cannot be drawn
+    function pedigreeErrorMessage(rows, error) {
+        let L = (typeof lang !== 'undefined') ? lang : {};
+        // most frequent case: "Grossesse" (an unborn child) set on someone who has children
+        for (let i = 0; i < rows.length; i++) {
+            let r = rows[i];
+            if (L.pregnancy && r.Option == L.pregnancy &&
+                rows.some(function (c) { return c.FathID == r.IndivID || c.MothID == r.IndivID; }) && L.alert_pregnancy_parent)
+                return L.alert_pregnancy_parent.split('{name}').join(r.Name || ('Id. ' + r.IndivID));
+        }
+        // the patient's own row (proband) is no longer in the table
+        if (rows.length && !rows.some(function (r) { return r.proband === true || r.proband === 'true'; }) && L.alert_no_index)
+            return L.alert_no_index;
+        // a father or mother who is not (or no longer) in the table
+        let ids = rows.map(function (r) { return String(r.IndivID); });
+        for (let i = 0; i < rows.length; i++) {
+            let r = rows[i];
+            for (let key of ['FathID', 'MothID']) {
+                let id = r[key];
+                if (id !== undefined && id !== null && id !== '' && String(id) !== '0' && ids.indexOf(String(id)) < 0 && L.alert_missing_parent)
+                    return L.alert_missing_parent.split('{name}').join(r.Name || ('Id. ' + r.IndivID))
+                        .split('{parent}').join(key == 'FathID' ? L.alert_father : L.alert_mother).split('{id}').join(id);
+            }
+        }
+        return (L.alert_pedigree || "The pedigree cannot be drawn:") + '\n\n' + (error && error.message ? error.message : error);
+    }
+
     // Update dataset from handsontable
     function loadFromHot(hotTable=hot) {
         loadFromObj(hotTable.getSourceData());
@@ -748,7 +777,12 @@ $(document).ready(function() {
         // load table and convert it
         let myDeepClone = JSON.stringify(hotData);
         var obj = JSON.parse(myDeepClone);
-        obj = FormatToPedigreeJS(obj, true); //without
+        try {
+            obj = FormatToPedigreeJS(obj, true); //without
+        } catch (error) { // inconsistent table (e.g. a parent's row deleted): say so, keep the drawing
+            alert(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
+            return;
+        }
         //TO DO: add clean level update as with Boadicea input.
 
         // get all disease of the obj 
@@ -776,9 +810,25 @@ $(document).ready(function() {
         }
 
         //Update pedigree and diseases
+        var previousDataset = opts.dataset, previousDiseases = opts.diseases;
+        var cleanCopy = JSON.stringify(obj); // drawing adds circular links (parent_node) to the dataset
         opts.diseases = $.extend(true, [], new_diseases);
         opts.dataset = obj;
-        ptree.rebuild(opts);
+        try {
+            ptree.rebuild(opts);
+        } catch (error) {
+            // The table cannot be drawn (e.g. a mother not marked as a woman): keep the
+            // previous drawing and tell why, instead of leaving an empty pedigree.
+            opts.diseases = previousDiseases;
+            try {
+                opts.dataset = lastDrawnDataset ? JSON.parse(lastDrawnDataset)
+                    : (previousDataset ? JSON.parse(JSON.stringify(previousDataset, function (k, v) { return k === 'parent_node' ? undefined : v; })) : previousDataset);
+                if (opts.dataset) ptree.rebuild(opts);
+            } catch (e2) { console.error(e2); }
+            alert(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
+            return;
+        }
+        lastDrawnDataset = cleanCopy;
 
         opts.diseases = new_diseases;
         sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
