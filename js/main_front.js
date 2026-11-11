@@ -91,7 +91,8 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    Handsontable.renderers.TextRenderer.apply(this, arguments); 
+    // index.html: Handsontable; tool.html: DataGrid (same signature)
+    (typeof Handsontable !== 'undefined' ? Handsontable.renderers.TextRenderer : DataGrid.renderText).apply(this, arguments);
 };
 
 //autRenderer without onco
@@ -112,7 +113,8 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    Handsontable.renderers.TextRenderer.apply(this, arguments); 
+    // index.html: Handsontable; tool.html: DataGrid (same signature)
+    (typeof Handsontable !== 'undefined' ? Handsontable.renderers.TextRenderer : DataGrid.renderText).apply(this, arguments);
 };
 
 //-----------------------------------

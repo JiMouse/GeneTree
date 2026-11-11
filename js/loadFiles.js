@@ -59,8 +59,8 @@ function ImportHPO(tsv) {
 
 // Load HPO and ORPHA data, combining both
 async function loadExternalData(newLang, rootPath) {
-    // Only run on main pages
-    if (window.location.pathname !== "/GeneTree/" && window.location.pathname !== "/index.html") return;
+    // Only on the tool pages (/GeneTree/, index.html, tool.html), not on the pages in docs/
+    if (/\/docs\//.test(window.location.pathname)) return;
 
     const HPO_path = rootPath + (newLang === "fr" ? 'data/HPO_fr_CISMeF_1611083.txt' : 'data/HPO_eng_20200726.txt');
     const ORPHA_path = rootPath + 'data/ORPHAnomenclature_fr.xml.txt';
