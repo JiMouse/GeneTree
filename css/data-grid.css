@@ -1,0 +1,52 @@
+/* DataGrid: the family table of tool.html (replaces Handsontable). */
+.dg { position: relative; width: 100%; text-align: left; }
+.dg-scroll { position: relative; overflow: auto; max-height: 400px; border: 1px solid #ccd6e0; background: #fff; }
+.dg-table { border-collapse: separate; border-spacing: 0; font-family: Helvetica, Arial, sans-serif; font-size: 13px; min-width: 100%; }
+
+.dg-table th, .dg-table td {
+  border-right: 1px solid #ccd6e0; border-bottom: 1px solid #ccd6e0;
+  height: 24px; padding: 0 6px; white-space: nowrap; vertical-align: middle; background: #fff;
+}
+.dg-table thead th {
+  position: sticky; top: 0; z-index: 3;
+  color: #002e5d; background: #dbe9f5; font-weight: normal; text-align: center;
+}
+.dg-table thead th.dg-corner { left: 0; z-index: 4; }
+.dg-table th.dg-rowhead {
+  position: sticky; left: 0; z-index: 2;
+  background: #f2f6fa; color: #4a6075; text-align: center; padding: 0 2px; min-width: 64px; font-weight: normal;
+}
+
+/* cell content */
+.dg-table td { min-width: 40px; cursor: cell; }
+.dg-table td.htCenter { text-align: center; }
+.dg-table td.htMiddle { vertical-align: middle; }
+.dg-table td.helvetica { font-family: Helvetica, Arial, sans-serif; font-size: 13px; }
+.dg-table td.white { background: #fff; }
+.dg-table td.red { background: red; }
+.dg-table td.dg-list::after { content: '\25BE'; color: #8aa3bb; margin-left: 4px; font-size: 10px; }
+.dg-table td input[type=checkbox] { margin: 0; vertical-align: middle; cursor: pointer; }
+
+/* selection */
+.dg-table td.dg-sel { background-color: #e3eefa; }
+.dg-table td.dg-sel.red { background-color: #ff6b6b; }
+.dg-table td.dg-active { box-shadow: inset 0 0 0 2px #2f6fb3; }
+
+/* editor */
+.dg-table td .dg-editor {
+  width: 100%; min-width: 80px; height: 22px; border: 0; outline: 0; padding: 0; margin: 0;
+  font: inherit; text-align: inherit; background: #fff;
+}
+.dg-focus { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; resize: none; pointer-events: none; }
+
+/* row header: drag handle, number, delete */
+.dg-handle { cursor: grab; color: #9fb2c4; letter-spacing: -3px; margin-right: 4px; user-select: none; }
+.dg-num { display: inline-block; min-width: 18px; }
+.dg-del {
+  border: 0; background: none; color: #b0bccb; font-size: 15px; line-height: 1; padding: 0 2px; margin-left: 2px; cursor: pointer;
+  visibility: hidden;
+}
+.dg-table tr:hover .dg-del, .dg-del:focus { visibility: visible; }
+.dg-del:hover { color: #c0392b; }
+.dg-table tr.dg-dragging td, .dg-table tr.dg-dragging th { opacity: .5; }
+.dg-dropline { position: absolute; left: 0; right: 0; height: 2px; background: #2f6fb3; display: none; z-index: 5; pointer-events: none; }

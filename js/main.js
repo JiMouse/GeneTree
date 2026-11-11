@@ -1036,7 +1036,9 @@ function setLanguage(oldLang, newLang){
     //Replace all occurences of "oldscript.js" with "newscript.js" //relative path
     let root='';
     // if(window.location.pathname == "/GeneTree/docs/user-interface.html") root='../'
-    if(window.location.pathname != "/GeneTree/" && window.location.pathname != "/index.html") root='../'
+    // pages in docs/ load the language files from one level up; the tool pages
+    // (/GeneTree/, index.html, tool.html) from their own folder
+    if (/\/docs\//.test(window.location.pathname)) root='../'
 
     replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js")
     replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
