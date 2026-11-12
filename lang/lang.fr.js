@@ -7,7 +7,7 @@ var lang = {
     title:"GeneTree",
     subtitle:"Un outil intégré pour construire un arbre généalogique, téléchargeable en fichier BOADICEA, et l'histoire clinique d'une famille.",
     
-    introduction_txt:"Note : l'année de la pathologie ou du décés peuvent être renseigné dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également renseignée."+
+    introduction_txt:"Note : l'année de la pathologie ou du décès peut être renseignée dans les colonnes « Âge » des pathologies ou du décès si l'année de naissance est également renseignée."+
     " L'âge correspondant sera automatiquement calculé",
 
     title_table:"Tableau",
@@ -87,15 +87,17 @@ var lang = {
     "Cet outil dispose d'un mode spécifique pour la consultation d'oncogénétique et d’un mode utilisant les phénotypes HPO. ",
     about_text2:"La famille peut être chargée (fichiers JSON ou BOADICEA) ou créée à partir d'une structure standard ou personnalisée, "+ 
     "puis complétée via un tableau ou une interface graphique, tous deux interconnectés. \n",
-    about_text3: "L'arbre est exportable dans plusieurs formats de fichiers (TSV, JSON, PED, BOADICEA) et modifiable "+ 
+    about_text3: "L'arbre est exportable dans plusieurs formats de fichiers (TSV, JSON, PED, BOADICEA, CanRisk, GEDCOM) et modifiable "+ 
     "par un éditeur vectoriel (format PDF, SVG) ou peut être imprimé directement. \n",
     about_text4:"Enfin, cette application permet la génération automatique de texte à partir du contenu du tableau correspondant "+ 
     "à l’histoire personnelle et familiale du patient.  Il s’agit, à ma connaissance, de la seule solution permettant "+ 
     "ainsi de rédiger en un clic une partie importante du compte-rendu de consultation.\n",
     about_text5:"L’interface en ligne optimisée pour le navigateur Google Chrome permet une utilisation simple sans nécessiter d’installation préalable. "+
     "Cet outil a été particulièrement pensé pour les consultations d'oncogénétique afin d'éviter la triple saisie "+ 
-    "(texte – arbre généalogique - score de risque Boadicea ou CanRisk).\n",
-    about_text6:"GeneTree est développé est maintenu par le Dr Jean-Marie Ravel avec la participation des membres de l'équipe de génétique clinique "+
+    "(texte – arbre généalogique - score de risque Boadicea ou CanRisk).\n" +
+    "Une interface patient permet en outre au patient de saisir son histoire familiale avant la consultation, sur ordinateur ou sur téléphone. " +
+    "Aucune donnée n'est envoyée à un serveur : tout le traitement se fait dans le navigateur.\n",
+    about_text6:"GeneTree est développé et maintenu par le Dr Jean-Marie Ravel avec la participation des membres de l'équipe de génétique clinique "+
     "du CHRU de Nancy (France).",
 
     //guide
@@ -112,9 +114,11 @@ var lang = {
     guide_intro3:"Il existe également deux modes d'utilisation optionnels permettant de restreindre les pathologies (7) :",
     guide_introOnco:"le mode 'onco' est destiné aux consultations d'oncogénétique. Il permet de pré-remplir la liste des pathologies avec les cancers fréquents",
     guide_introHPO:"le mode 'HPO' limite la liste des pathologies aux symptômes et maladies des bases HPO et ORPHAdata.",
-    guide_intro4:"Le tableur (8) est également utilisable comme un tableur excel : il est possible de copier et coller des lignes. "+
-    "Il est possible également de sélectionner une ou plusieurs lignes et de les glisser à une autre position. Cela peut être utile lorsque"+
-    "l'arbre généré a des branches croisées.",
+    guide_intro4:"Le tableau (8) s'utilise comme un tableur : saisie directe au clavier (Entrée, Tab, flèches), copier-coller de cellules avec Excel, "+
+    "annulation (Ctrl+Z) et rétablissement (Ctrl+Y). Un clic sur une cellule « Sexe » ou « Option » ouvre sa liste ; un clic sur une cellule de pathologie ouvre la liste des cancers ou des termes HPO." + "\n" +
+    "Pour déplacer une ligne, faites-la glisser par la poignée (⋮⋮) située à gauche de son numéro : cela peut être utile lorsque "+
+    "l'arbre généré a des branches croisées. Pour supprimer une ligne, cliquez sur la croix (×) qui apparaît au survol de son numéro. " +
+    "Le cas index et ses ascendants ne peuvent pas être supprimés ; pour une personne ayant des enfants, la liste des personnes supprimées avec elle est affichée avant confirmation.",
     guide_famTitle:"Création d'une famille",
     guide_famTitle1:"Chargement d'un fichier",
     guide_fam0:"Une famille déjà créée peut être chargée grâce au bouton dédié (1). " +
@@ -137,7 +141,7 @@ var lang = {
     guide_mod0: "Une fois un individu sélectionné, il est possible de cliquer sur les boutons afin d'ajouter un apparenté (6) : frère, soeur, fils, fille, parents, nouveau conjoint, fausse-couche.",
     guide_modTitle2:"Personnalisation d'un individu",
     guide_mod1:"Plusieurs paramètres peuvent être remplis pour chaque individu : genre, décès, âge, année de naissance, pathologie avec âge de début etc. " +
-    "L'année d'une pathologie ou du décés peuvent être renseignés dans les colonnes « Âge » des pathologies ou de décés si la date de naissance est également précisée. " +
+    "L'année d'une pathologie ou du décès peut être renseignée dans les colonnes « Âge » des pathologies ou du décès si l'année de naissance est également précisée. " +
     "L'âge correspondant sera automatiquement calculé." + "\n" +
     "Un champs 'commentaire' est également existant et son contenu ajouté dans le texte généré.",
     guide_mod2:"Un menu supplémentaire existe pour remplir d'autres informations et en particulier les données nécessaires au calcul du CanRisk. " +
