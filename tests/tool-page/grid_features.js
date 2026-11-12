@@ -1,5 +1,5 @@
-// Tests of DataGrid's spreadsheet features on tool.html (behaviour checked directly, not against Handsontable).
-// usage: node grid_features.js http://localhost:8000/GeneTree/tool.html
+// Tests of DataGrid's spreadsheet features on index.html (behaviour checked directly, not against Handsontable).
+// usage: node grid_features.js http://localhost:8000/GeneTree/
 const { chromium, openTool } = require('./harness');
 const g = require('./grid_driver');
 const drv = require('./drive_new');

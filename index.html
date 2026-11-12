@@ -81,9 +81,9 @@
 	<link rel="stylesheet" type="text/css" href="css/handsontable.css">
 	<link rel="stylesheet" type="text/css" href="css/pedigreejs.css">
 
-	<!-- load handsontable module v10.0 -->
-	<script type="text/javascript" src="package/vendor/handsontable/handsontable.full.min.js"></script>
-	<link rel="stylesheet" href="package/vendor/handsontable/handsontable.full.min.css" />
+	<!-- family table: DataGrid, no third-party code (see js/data-grid.js) -->
+	<script type="text/javascript" src="js/data-grid.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/data-grid.css">
 
 	<!-- Display a loading icon until the page loads completely -->
 	<script>
@@ -1054,11 +1054,10 @@
 		<!-- To do : min-height:100px; max-height:400px -->
 		<div class="row" style="padding:0px 30px">
 			<div class="text-center">
-				<!-- create handsontable table -->
+				<!-- family table -->
 				<div class='hotContainer'>
 					<!--  style="max-height: 250px;" -->
-					<div id="dataTable" class="hot handsontable htColumnHeaders handsontable-helvetica2"
-						style="display:inline-block;z-index: 0;min-height:100px;max-height: 400px;">
+					<div id="dataTable">
 						<!--;min-height:100px;overflow: hidden; max-height: 400px; 150-->
 					</div>
 				</div>
@@ -1075,7 +1074,7 @@
 						load_hotData = myData;
 					}
 
-					var hot = new Handsontable(container, {
+					var hot = new DataGrid(container, {
 						data: load_hotData,
 						rowHeaders: true,//false
 						colHeaders: cols_headerOnco,

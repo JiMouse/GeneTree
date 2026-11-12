@@ -1,4 +1,4 @@
-// One test per fixed bug of the tool, on index.html (Handsontable) and tool.html (DataGrid).
+// One test per fixed bug of the tool, on tool-handsontable.html (Handsontable) and index.html (DataGrid).
 // usage: node bugs.js <url> <drive_old.js | drive_new.js>
 const path = require('path');
 const { chromium, openTool } = require('./harness');

@@ -1,6 +1,6 @@
 # Tool page: output comparison tests
 
-These tests check that the tool built on Handsontable (`index.html`) and the tool built on DataGrid (`tool.html`) produce **exactly the same results**. For each family they compare:
+These tests check that the tool built on Handsontable (`tool-handsontable.html`) and the tool built on DataGrid (`index.html`) produce **exactly the same results**. For each family they compare:
 
 - the table (`getSourceData()`) and the copy saved in the session;
 - the pedigree built from the table (output of `FormatToPedigreeJS`);
@@ -23,11 +23,11 @@ npx playwright install chromium   # once
 python3 -m http.server 8000       # in another terminal, from the folder that CONTAINS GeneTree/
 cd GeneTree/tests/tool-page
 
-node run_suite.js http://localhost:8000/GeneTree/ drive_old.js out_old          # Handsontable
-node run_suite.js http://localhost:8000/GeneTree/tool.html drive_new.js out_new # DataGrid
+node run_suite.js http://localhost:8000/GeneTree/tool-handsontable.html drive_old.js out_old          # Handsontable
+node run_suite.js http://localhost:8000/GeneTree/ drive_new.js out_new # DataGrid
 node compare.js out_old out_new          # "38 identical, 0 different" expected
 
-node grid_features.js http://localhost:8000/GeneTree/tool.html   # DataGrid's own features
+node grid_features.js http://localhost:8000/GeneTree/   # DataGrid's own features
 ```
 
 `drive_old.js` and `drive_new.js` hold the two actions that use each grid's own widgets: deleting a row (Handsontable's right-click menu or DataGrid's × button) and dragging a row. Every other action (`grid_driver.js`) is the same mouse and keyboard input on both pages.
@@ -47,6 +47,6 @@ node grid_features.js http://localhost:8000/GeneTree/tool.html   # DataGrid's ow
 - the TSV header.
 
 ```bash
-node bugs.js http://localhost:8000/GeneTree/ drive_old.js
-node bugs.js http://localhost:8000/GeneTree/tool.html drive_new.js
+node bugs.js http://localhost:8000/GeneTree/tool-handsontable.html drive_old.js
+node bugs.js http://localhost:8000/GeneTree/ drive_new.js
 ```

@@ -1,5 +1,5 @@
 // Mouse/keyboard actions on the tool's table that are the same on both pages
-// (Handsontable on index.html, DataGrid on tool.html): both expose hot.getCell(row, col).
+// (Handsontable on tool-handsontable.html, DataGrid on index.html): both expose hot.getCell(row, col).
 async function cellBox(page, r, c, selector) {
   return page.evaluate(([r, c, sel]) => {
     if (!hot.getCell(r, c)) hot.scrollViewportTo({ row: r, col: c }); // Handsontable draws only the visible rows

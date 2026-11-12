@@ -1,4 +1,4 @@
-// Actions that need Handsontable's own widgets (index.html): context menu and row dragging.
+// Actions that need Handsontable's own widgets (tool-handsontable.html): context menu and row dragging.
 const g = require('./grid_driver');
 async function removeRow(page, r) {
   const b = await g.cellBox(page, r, 0);
