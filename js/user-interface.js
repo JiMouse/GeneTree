@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    var uiPages = ["/GeneTree/docs/user-interface.html", "/docs/user-interface.html", "/GeneTree/docs/patient.html", "/docs/patient.html"];
+    var uiPages = ["/GeneTree/docs/patient.html", "/docs/patient.html"];
     if (uiPages.indexOf(window.location.pathname) < 0) return
 
     // navbar language setter

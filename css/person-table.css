@@ -1,4 +1,4 @@
-/* Patient page: one card of fields per relative (replaces the Handsontable grids). */
+/* Patient page: one card of fields per relative. */
 .person-table { width: 100%; text-align: left; }
 .pt-container { margin-top: 6px; }
 .pt-list { display: flex; flex-direction: column; gap: 12px; }

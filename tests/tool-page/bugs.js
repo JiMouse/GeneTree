@@ -1,10 +1,10 @@
-// One test per fixed bug of the tool, on tool-handsontable.html (Handsontable) and index.html (DataGrid).
-// usage: node bugs.js <url> <drive_old.js | drive_new.js>
+// One test per fixed bug of the tool.
+// usage: node bugs.js <tool url>
 const path = require('path');
 const { chromium, openTool } = require('./harness');
 const g = require('./grid_driver');
-const [url, driverPath] = process.argv.slice(2);
-const drv = require(path.resolve(driverPath));
+const [url] = process.argv.slice(2);
+const drv = require('./drive_new');
 const tests = [];
 const test = (name, lang, fn) => tests.push({ name, lang, fn });
 const expect = (cond, msg) => { if (!cond) throw new Error(msg); };
@@ -20,7 +20,7 @@ const dialogText = (page) => page.evaluate(() => $('.ui-dialog:visible .ui-dialo
 test('1. summary text: no "undefined" for a person of unknown sex ("Grossesse")', 'fr', async (page) => {
   await template(page, 'nuclear');
   await page.evaluate(() => { hot.setDataAtRowProp(0, 'Option', 'Grossesse'); hot.setDataAtRowProp(0, 'Yob', 1981); });
-  await page.waitForTimeout(300);                                  // Handsontable applies changes asynchronously
+  await page.waitForTimeout(300);
   await page.evaluate(() => $('#loadStory').click());
   const story = await page.evaluate(() => document.getElementById('story').innerHTML);
   expect(!/undefined/.test(story) && /^La personne/.test(story), 'story: ' + story.slice(0, 120));
@@ -29,7 +29,7 @@ test('1. summary text: no "undefined" for a person of unknown sex ("Grossesse")'
 test('1b. same in English', 'eng', async (page) => {
   await template(page, 'nuclear');
   await page.evaluate(() => { hot.setDataAtRowProp(0, 'Option', 'pregnancy'); hot.setDataAtRowProp(0, 'Yob', 1981); });
-  await page.waitForTimeout(300);                                  // Handsontable applies changes asynchronously
+  await page.waitForTimeout(300);
   await page.evaluate(() => $('#loadStory').click());
   const story = await page.evaluate(() => document.getElementById('story').innerHTML);
   expect(!/undefined/.test(story), 'story: ' + story.slice(0, 120));

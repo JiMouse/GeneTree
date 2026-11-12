@@ -1,10 +1,10 @@
 // One test per fixed bug of the patient page.
-// usage: node bugs.js <page url> <drive_old.js | drive_new.js>
+// usage: node bugs.js <page url>
 const path = require('path');
 const { chromium, openPage } = require('./harness');
 const { openPanel, pickCancer, addRelatives } = require('./drive_common');
-const [url, driverPath] = process.argv.slice(2);
-const { editCell } = require(path.resolve(driverPath));
+const [url] = process.argv.slice(2);
+const { editCell } = require('./drive_new');
 const isNew = url.includes('patient.html');
 
 const rows = (page, hot) => page.evaluate(h => window[h].getSourceData(), hot);

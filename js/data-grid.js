@@ -9,7 +9,7 @@
  * and a delete button on each row.
  *
  * It implements the part of the Handsontable API that GeneTree uses, with the same
- * data semantics (checked against Handsontable 16 on tool-handsontable.html), so main.js,
+ * data semantics (measured on the Handsontable version of the tool before it was removed), so main.js,
  * main_front.js, hotTable.js and indexWidgets.js run unchanged:
  *   loadData, getSourceData, getSourceDataAtCell, getDataAtRowProp, setDataAtRowProp
  *   (single and batch), populateFromArray, updateSettings, render, setCellMeta,

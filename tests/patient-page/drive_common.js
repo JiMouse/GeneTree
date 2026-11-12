@@ -1,4 +1,4 @@
-// Steps that are identical on the old and new pages (no Handsontable involved).
+// Index fields, panels, the cancer list and the step-by-step relative dialogs.
 const PANEL = { cancer: 'collapseCancer', children: 'collapseChildren', siblings: 'collapseSiblings', parents: 'collapseParents', gpp: 'collapseGpp', fatherSiblings: 'collapseGpp', gpm: 'collapseGpm', motherSiblings: 'collapseGpm' };
 const COLLAPSE = { collapseCancer: '#collapse1', collapseChildren: '#collapse2', collapseSiblings: '#collapse3', collapseParents: '#collapseP', collapseGpp: '#collapse4', collapseGpm: '#collapse5' };
 
@@ -11,7 +11,7 @@ async function openPanel(page, key) {
 
 async function pickCancer(page, value) {
   await page.locator('#cancerList2').waitFor({ state: 'visible' });
-  // scenarios use the French keys; translate by position for the English page
+  // the tests use the French keys; translate by position for the English page
   const FR = ['cancer_sein', 'cancer_sein2', 'cancer_ovaire', 'cancer_prostate', 'cancer_pancréas', 'cancer_colon', 'cancer_estomac', 'cancer_poumon', 'cancer_utérus', 'cancer_rein', 'cancer_foie', 'mélanome', 'cancer_orl', 'polypes'];
   const key = await page.evaluate(([fr, v]) => fr.includes(v) ? onco_full()[fr.indexOf(v)] : v, [FR, value]);
   await page.locator(`#cancerList2 input[value="${key}"]`).click();

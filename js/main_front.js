@@ -91,8 +91,7 @@ function autRenderer(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    // tool-handsontable.html: Handsontable; index.html: DataGrid (same signature)
-    (typeof Handsontable !== 'undefined' ? Handsontable.renderers.TextRenderer : DataGrid.renderText).apply(this, arguments);
+    DataGrid.renderText.apply(this, arguments);
 };
 
 //autRenderer without onco
@@ -113,8 +112,7 @@ function autRenderer2(instance, td, row, col, prop, value, cellProperties) {
     }
 
     //Update cell properties
-    // tool-handsontable.html: Handsontable; index.html: DataGrid (same signature)
-    (typeof Handsontable !== 'undefined' ? Handsontable.renderers.TextRenderer : DataGrid.renderText).apply(this, arguments);
+    DataGrid.renderText.apply(this, arguments);
 };
 
 //-----------------------------------
@@ -769,7 +767,7 @@ $(document).ready(function() {
         return (L.alert_pedigree || "The pedigree cannot be drawn:") + '\n\n' + (error && error.message ? error.message : error);
     }
 
-    // Update dataset from handsontable
+    // Update dataset from the table
     function loadFromHot(hotTable=hot) {
         loadFromObj(hotTable.getSourceData());
     }

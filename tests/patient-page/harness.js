@@ -1,6 +1,5 @@
-// Shared test harness: deterministic clock + random, captures createPed() output and both downloaded files.
+// Test harness for the patient page: fixed date and Math.random, captures the createPed() output.
 const { chromium } = require('playwright');
-const fs = require('fs');
 const FIXED = new Date('2026-11-09T10:00:00');
 async function openPage(browser, url, lang='fr', viewport={width:1300,height:900}) {
   const ctx = await browser.newContext({acceptDownloads:true, viewport, locale: lang==='fr'?'fr-FR':'en-US'});
@@ -23,18 +22,4 @@ async function openPage(browser, url, lang='fr', viewport={width:1300,height:900
   });
   return {ctx, page, errors};
 }
-async function buildAndExport(page) {
-  await page.click('#createPed');
-  await page.waitForTimeout(300);
-  const createPed = await page.evaluate(() => window.__createPedOut[window.__createPedOut.length-1]);
-  const dls = [];
-  page.on('download', d => dls.push(d));
-  await page.click('#exportPedigreejsCanRisk');
-  await page.waitForTimeout(400);
-  await page.click('#cr_file_save');
-  await page.waitForTimeout(400);
-  const files = {};
-  for (const d of dls) files[d.suggestedFilename().replace(/\d{4}-\d{2}-\d{2}|\d{8,}/g,'DATE')] = fs.readFileSync(await d.path(), 'utf8');
-  return {createPed, files};
-}
-module.exports = { chromium, openPage, buildAndExport };
+module.exports = { chromium, openPage };

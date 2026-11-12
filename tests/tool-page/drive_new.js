@@ -1,4 +1,4 @@
-// Actions on DataGrid's own widgets (index.html): the row delete button and the drag handle.
+// Actions on the table's own widgets: the row delete button and the drag handle.
 async function removeRow(page, r) {
   const head = page.locator('#dataTable tbody tr').nth(r).locator('th.dg-rowhead');
   await head.hover(); await head.locator('.dg-del').click(); await page.waitForTimeout(400);

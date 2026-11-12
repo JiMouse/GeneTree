@@ -1,4 +1,4 @@
-// Drives the NEW patient page (PersonTable cards) like a patient: click a field, type, move on.
+// Drives the patient page's cards like a patient: click a field, type, move on.
 const { openPanel, pickCancer, fillIndexFields, addRelatives } = require('./drive_common');
 const BOX = { cancer: '#hotCancer', parents: '#hotParents', gpp: '#hotGpp', gpm: '#hotGpm', children: '#hotChildren', siblings: '#hotSiblings', fatherSiblings: '#hotFatherSiblings', motherSiblings: '#hotMotherSiblings' };
 
