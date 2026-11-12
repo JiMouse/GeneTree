@@ -43,7 +43,14 @@ module.exports = [
   {
     id: 'T3b_remove_with_children_fr', lang: 'fr', steps: [
       ['template', 'extended2'],
-      ['remove', 1], ['dialog', 0],                                                   // father: "Continue" also removes his children
+      ['remove', 1],                                                                  // father (ancestor of the index): refused, alert
+    ],
+  },
+  {
+    id: 'T3c_remove_branch_fr', lang: 'fr', steps: [
+      ['template', 'extended1'],
+      ['select', 0, 0], ['branch', { son: 1, daughter: 1 }],                          // index gets a partner, a son, a daughter
+      ['remove', 3], ['dialog', 0],                                                   // row 3 = the partner: "Continue" also removes the son and daughter
     ],
   },
   {

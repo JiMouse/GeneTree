@@ -286,6 +286,10 @@ var lang = {
     //updatePartnersAndChildren_dialog
     updatePartnersAndChildren_title:'Update of children and partners',
     updatePartnersAndChildren_dialog:'Would you like to update children and partners?',
+    removePartnersAndChildren_title:'Update of children and partners',
+    sexChange_dialog:"The sex of {name} has been changed. Partners and children concerned will be updated: {list}.\n\n'Cancel' restores the previous sex.",
+    removeBranch_dialog:"{name} has children. Also deleted: {list}.\n\n'Cancel' deletes nobody.",
+    removeIndexLine_alert:"{name} cannot be deleted: the index case and his/her ancestors (parents, grandparents…) are needed to draw the pedigree.\n\nYou can leave this row without information.",
 
     //undo_redo_refresh.js
     confirmReset:"Resetting will result in loss of data.",
@@ -570,27 +574,33 @@ var patterns = function(){//all id selected by user
 var dico = {
     'pronom':{
         'M':'He',
-        'F':'She'
+        'F':'She',
+        'U':'This person'
     },
     'pronom2':{
         'M':'His',
-        'F':'Her'
+        'F':'Her',
+        'U':'Their'
     },
     'pronom3':{
         'M':'he',
-        'F':'she'
+        'F':'she',
+        'U':'this person'
     },
     'civil':{
         'M':'Mister',
-        'F':'Miss'
+        'F':'Miss',
+        'U':'The person'
     },
     'naissance':{
         'M':'born',
-        'F':'born'
+        'F':'born',
+        'U':'born'
     },
     'décés':{
         'M':'deceased',
-        'F':'deceased'
+        'F':'deceased',
+        'U':'deceased'
     },
     'etre':{
         'vie':'is',
@@ -598,15 +608,18 @@ var dico = {
     },
     'issu':{
         'M':'from',
-        'F':'from'
+        'F':'from',
+        'U':'from'
     },
     'enfant':{
       'M':'a son',
-      'F':'a daughter'
+      'F':'a daughter',
+        'U':'a child'
     },
     'fratrie':{
       'M':'a brother',
-      'F':'a sister'
+      'F':'a sister',
+        'U':'a sibling'
     },
     'presenter':{
       'vie':'have',
@@ -614,7 +627,8 @@ var dico = {
     },
     'accord':{
         'M':'',
-        'F':'e'
+        'F':'e',
+        'U':''
     }
   };
   

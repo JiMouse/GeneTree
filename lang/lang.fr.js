@@ -292,6 +292,9 @@ var lang = {
     updatePartnersAndChildren_dialog:"Le genre d'un individu vient d'être modifié. Le genre des conjoints et enfants concernés va être mis à jour.",
     removePartnersAndChildren_title:'Mise à jour des conjoints et enfants',
     removePartnersAndChildren_dialog:"Un individu qui a des enfants vient d'être supprimé. Les conjoints et enfants concernés vont être supprimés.",
+    sexChange_dialog:"Le genre de {name} a été modifié. Mise à jour des conjoints et des enfants concernés : {list}.\n\n« Annuler » rétablit le genre précédent.",
+    removeBranch_dialog:"{name} a des enfants. Seront aussi supprimés : {list}.\n\n« Annuler » ne supprime personne.",
+    removeIndexLine_alert:"{name} ne peut pas être supprimé(e) : le cas index et ses ascendants (parents, grands-parents…) sont nécessaires pour dessiner l'arbre.\n\nVous pouvez laisser cette ligne sans informations.",
 
     //undo_redo_refresh.js
     confirmReset:"Si vous continuez, les données seront supprimées.",
@@ -542,7 +545,7 @@ var optionList = function(){
     return ['FCS', 'IMG', 'Grossesse','JumMZ', 'JumDZ', 'Adopté'];
 }
 
-var cols_header = ['Nom', 'Id.', 'Père', 'Mère', 'Sexe', 'Décés', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3','Comment.'];
+var cols_header = ['Nom', 'Id.', 'Père', 'Mère', 'Sexe', 'Décès', 'Âge', 'Ddn', 'Option', 'Maladie1', 'Âge1', 'Maladie2', 'Âge2', 'Maladie3', 'Âge3','Comment.'];
 var cols_headerOnco = [];
 cols_headerOnco=cols_header.concat(cols_headerOnco)
 
@@ -577,27 +580,33 @@ var patterns = function(){//all id selected by user
 var dico = {
     'pronom':{
         'M':'Il',
-        'F':'Elle'
+        'F':'Elle',
+        'U':'Il/Elle'
     },
     'pronom2':{
         'M':'Son',
-        'F':'Sa'
+        'F':'Sa',
+        'U':'Son/Sa'
     },
     'pronom3':{
         'M':'il',
-        'F':'elle'
+        'F':'elle',
+        'U':'il/elle'
     },
     'civil':{
         'M':'Monsieur',
-        'F':'Madame'
+        'F':'Madame',
+        'U':'La personne'
     },
     'naissance':{
         'M':'né',
-        'F':'née'
+        'F':'née',
+        'U':'né(e)'
     },
     'décés':{
         'M':'décédé',
-        'F':'décédée'
+        'F':'décédée',
+        'U':'décédé(e)'
     },
     'etre':{
         'vie':'est',
@@ -605,15 +614,18 @@ var dico = {
     },
     'issu':{
         'M':'issu',
-        'F':'issue'
+        'F':'issue',
+        'U':'issu(e)'
     },
     'enfant':{
       'M':'un fils',
-      'F':'une fille'
+      'F':'une fille',
+        'U':'un enfant'
     },
     'fratrie':{
       'M':'un frère',
-      'F':'une sœur'
+      'F':'une sœur',
+        'U':'un frère ou une sœur'
     },
     'presenter':{
       'vie':'présente',
@@ -621,7 +633,8 @@ var dico = {
     },
     'accord':{
         'M':'',
-        'F':'e'
+        'F':'e',
+        'U':'(e)'
     }
   };
 

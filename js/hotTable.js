@@ -4,8 +4,57 @@ document.addEventListener("DOMContentLoaded", function() {
     var updateHotDialog_title;
 
     var setter = false;
+
+    // ---- family helpers ----
+    function isZero(id) { return id === undefined || id === null || id === '' || String(id) === '0'; }
+    function rowOf(rows, id) {
+        if (isZero(id)) return -1;
+        for (let j = 0; j < rows.length; j++) if (String(rows[j].IndivID) === String(id)) return j;
+        return -1;
+    }
+    function childrenOf(rows, id) {
+        let out = [];
+        if (isZero(id)) return out;
+        rows.forEach(function (r, j) { if (String(r.FathID) === String(id) || String(r.MothID) === String(id)) out.push(j); });
+        return out;
+    }
+    // rows of the index case (proband, else the first row) and of all his/her ancestors
+    function indexLine(rows) {
+        let keep = {}, start = rows.findIndex(function (r) { return r.proband === true || r.proband === 'true'; });
+        let stack = [start < 0 ? 0 : start];
+        while (stack.length) {
+            let j = stack.pop();
+            if (j < 0 || j >= rows.length || keep[j]) continue;
+            keep[j] = true;
+            stack.push(rowOf(rows, rows[j].FathID), rowOf(rows, rows[j].MothID));
+        }
+        return keep;
+    }
+    function personLabel(r) { return (r.Name && String(r.Name).trim() !== '' ? r.Name : 'Id. ' + r.IndivID); }
+    function fill(text, values) {
+        Object.keys(values).forEach(function (k) { text = String(text).split('{' + k + '}').join(values[k]); });
+        return text;
+    }
+    // rows created by pasting from Excel get what rows created by the tool have
+    function fillPastedRows(changes) {
+        let rows = hot.getSourceData(), famID = (rows[0] && !isZero(rows[0].FamID)) ? rows[0].FamID : '1', batch = [], seen = {};
+        changes.forEach(function (c) {
+            let r = c[0];
+            if (seen[r] || !rows[r]) return;
+            seen[r] = true;
+            let x = rows[r];
+            if ((x.FamID === null || x.FamID === undefined || x.FamID === '') && (!isZero(x.IndivID) || (x.Name && x.Name !== ''))) {
+                batch.push([r, 'FamID', famID]);
+                if (x.Affected === null || x.Affected === undefined || x.Affected === '') batch.push([r, 'Affected', '1']);
+                if (x.Deceased === null || x.Deceased === undefined || x.Deceased === '') batch.push([r, 'Deceased', '0']);
+            }
+        });
+        if (batch.length) hot.setDataAtRowProp(batch, 'GeneTree.defaults');
+    }
+
     hot.addHook('afterChange',  //update age and yob if alive
         function(changes, source) {
+            if (changes != null && source === 'CopyPaste.paste') fillPastedRows(changes);
             if(changes != null) {
                 col = changes[0][1];
                 var deceasedIndex = 5;
@@ -53,78 +102,104 @@ document.addEventListener("DOMContentLoaded", function() {
                             hot.render()
                         }                    
                     }
-                    if (col == "Sex") {//check after change that partner has opposite sex if not update partner sex and children's parents 
-                        // load data
-                        let myDeepClone = JSON.stringify(hot.getSourceData());
-                        obj = JSON.parse(myDeepClone)
-
-                        //update partner(s)
-                        let partnersID = getPartnersFromHot(obj, row);
-                        if (partnersID == [] || partnersID == '' || partnersID == undefined) return
-                        for(let i = 0; i < partnersID.length; i++) {
-                            let partnerRow = getRow(obj, partnersID[i]);
-                            if (obj[partnerRow].Sex != obj[row].Sex) return
-                            obj[partnerRow].Sex = (obj[row].Sex == "M" ? "F" : "M") // change partner sex
-                        }
-                        
-                        // get all children and change children parents
-                        for (let k = 0; k < obj.length; k++) {
-                            if (obj[k]['FathID'] == obj[row]['IndivID'] || obj[k]['MothID'] == obj[row]['IndivID']) {
-                                let MothID = obj[k]['MothID'];
-                                obj[k]['MothID'] = obj[k]['FathID'];
-                                obj[k]['FathID'] = MothID;
-                            };
-                        };
-
-                        //load data back
-                        updatePartnersAndChildren_dialog = $('<div id="msgDialog">'+ lang.updatePartnersAndChildren_dialog +'</div>').dialog(updatePartnersAndChildren_dialog_param);
-                        updatePartnersAndChildren_dialog.dialog({
-                            title: lang.updatePartnersAndChildren_title,
-                        })                        
-                        updatePartnersAndChildren_dialog.dialog( "open" );
+                    if (col == "Sex") { // partners get the other sex; children: Father = the man, Mother = the woman
+                        let rows = JSON.parse(JSON.stringify(hot.getSourceData())),
+                            me = rows[row], sex = me.Sex, oldSex = changes[0][2], touched = [];
+                        if ((sex !== 'M' && sex !== 'F') || sex === oldSex) return;
+                        let kids = childrenOf(rows, me.IndivID);
+                        kids.forEach(function (k) {
+                            let otherId = String(rows[k].FathID) === String(me.IndivID) ? rows[k].MothID : rows[k].FathID,
+                                p = rowOf(rows, otherId);
+                            if (p >= 0 && rows[p].Sex === sex) {
+                                rows[p].Sex = (sex === 'M' ? 'F' : 'M');
+                                if (touched.indexOf(personLabel(rows[p])) < 0) touched.push(personLabel(rows[p]));
+                            }
+                        });
+                        kids.forEach(function (k) {
+                            let f = rowOf(rows, rows[k].FathID), m = rowOf(rows, rows[k].MothID);
+                            if ((f >= 0 && rows[f].Sex === 'F') || (m >= 0 && rows[m].Sex === 'M')) {
+                                let t = rows[k].FathID; rows[k].FathID = rows[k].MothID; rows[k].MothID = t;
+                                touched.push(personLabel(rows[k]));
+                            }
+                        });
+                        if (!touched.length) return;
+                        confirmTableUpdate(lang.updatePartnersAndChildren_title,
+                            fill(lang.sexChange_dialog, {name: personLabel(me), list: touched.join(', ')}),
+                            function () { hot.loadData(rows); },
+                            function () { hot.setDataAtRowProp(row, 'Sex', oldSex, 'GeneTree.cancel'); });
                     }
                 }
             }
         }
     );
-    hot.addHook('beforeRemoveRow',  //Fonction debug si une personne est supprimée : vérifier si enfants +/- conjoint avec warning si vrai avant délétion
+    hot.addHook('beforeRemoveRow', // a person with children: their descendants (and partners left alone) go too, after confirmation
         function(index, amount, physicalRows, source) {
-            // load data
-            let myDeepClone = JSON.stringify(hot.getSourceData());
-            obj = JSON.parse(myDeepClone);
+            let rows = JSON.parse(JSON.stringify(hot.getSourceData())),
+                line = indexLine(rows),
+                selected = (physicalRows && physicalRows.length ? physicalRows : [index]).slice();
 
-            // get all children
-            let rowToSplice = []
-            for (let i = 0; i < physicalRows.length; i++) {
-                let row = physicalRows[i];
-                for (let k = 0; k < obj.length; k++) {
-                    if (obj[k]['FathID'] == obj[row]['IndivID'] || obj[k]['MothID'] == obj[row]['IndivID']) {
-                        //delete row
-                        rowToSplice.push(k)
-
-                        //delete partner if exist 
-                        let partnersID = getPartnersFromHot(obj, row);
-                        if (partnersID == [] || partnersID == '' || partnersID == undefined) return
-                        let partnerRow = getRow(obj, partnersID[i]);
-                        rowToSplice.push(partnerRow)
-                    };
-                };
+            // the index case and his/her ancestors cannot be deleted: the pedigree could no longer be drawn
+            let blocked = selected.filter(function (j) { return line[j]; });
+            if (blocked.length) {
+                alert(fill(lang.removeIndexLine_alert, {name: blocked.map(function (j) { return personLabel(rows[j]); }).join(', ')}));
+                return false;
             }
-            if(rowToSplice == [] || rowToSplice == "") return            
-            rowToSplice=rowToSplice.concat(physicalRows); //add selected rows
-            rowToSplice.sort(function(a,b){ return b - a; }); //sort arr
 
-            for (var j = 0; j<rowToSplice.length; j++)
-                obj.splice(rowToSplice[j],1);
+            // descendants of the deleted person(s)
+            let remove = {};
+            selected.forEach(function (j) { remove[j] = true; });
+            let queue = selected.slice();
+            while (queue.length) {
+                let j = queue.shift();
+                childrenOf(rows, rows[j].IndivID).forEach(function (k) {
+                    if (!remove[k] && !line[k]) { remove[k] = true; queue.push(k); }
+                });
+            }
+            // partners with no parents in the table, all of whose children are deleted
+            let more = true;
+            while (more) {
+                more = false;
+                rows.forEach(function (r, p) {
+                    if (remove[p] || line[p]) return;
+                    let kids = childrenOf(rows, r.IndivID);
+                    if (kids.length && isZero(r.FathID) && isZero(r.MothID) && kids.every(function (k) { return remove[k]; })) {
+                        remove[p] = true; more = true;
+                    }
+                });
+            }
+            let extra = Object.keys(remove).map(Number).filter(function (j) { return selected.indexOf(j) < 0; });
+            if (!extra.length) return; // nobody else concerned: deleted as usual
 
-            //load data back
-            updatePartnersAndChildren_dialog = $('<div id="msgDialog">'+ lang.removePartnersAndChildren_dialog +'</div>').dialog(updatePartnersAndChildren_dialog_param);
-            updatePartnersAndChildren_dialog.dialog({
-                title: lang.removePartnersAndChildren_title
-            })    
-            updatePartnersAndChildren_dialog.dialog( "open" );
+            // nothing is deleted until "Continue"
+            let kept = rows.filter(function (r, j) { return !remove[j]; });
+            confirmTableUpdate(lang.removePartnersAndChildren_title,
+                fill(lang.removeBranch_dialog, {
+                    name: selected.map(function (j) { return personLabel(rows[j]); }).join(', '),
+                    list: extra.map(function (j) { return personLabel(rows[j]); }).join(', ')}),
+                function () { hot.loadData(kept); },
+                function () {});
+            return false;
         }
     )
+
+    // keep the copy of the table saved in the session up to date after deleting or adding rows
+    function saveSession() { sessionStorage.setItem('hotData', JSON.stringify(hot.getSourceData())); }
+    hot.addHook('afterRemoveRow', saveSession);
+    hot.addHook('afterCreateRow', saveSession);
+
+    // dialog: Continue / Cancel
+    function confirmTableUpdate(title, message, onContinue, onCancel) {
+        let d = $('<div class="msgDialog" style="white-space: pre-line"></div>').text(message);
+        d.dialog($.extend({}, updatePartnersAndChildren_dialog_param, {
+            autoOpen: true, title: title,
+            buttons: [
+                {text: lang.continue, click: function () { $(this).dialog('close'); onContinue(); }},
+                {text: lang.cancel, click: function () { $(this).dialog('close'); onCancel(); }}
+            ],
+            close: function () { $(this).dialog('destroy').remove(); }
+        }));
+        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
+    }
 
     //create reset_dialog
     var updatePartnersAndChildren_dialog_param;
