@@ -391,6 +391,7 @@ var lang = {
     ui_ind_cancer2_age: " Age or year of diagnosis",
     ui_ind_comment: "Comment:",
     ui_finalisation:"Finalisation",
+    ui_name_father:"Father", ui_name_mother:"Mother",
     ui_ind_save:"Save",
     ui_cancer_list:"Cancer site",
     ui_alert_dead_yob:"For a deceased person, please give their year of birth (not their age).",
@@ -633,9 +634,9 @@ var dico = {
   };
   
   //user-interface.html
-  var colCancer_header = ['Cancer location', 'Age at diagnosis', 'Year of diagnosis'];
-  var colCancer_header2 = ['Cancer<br> localisation', 'Diagnostic<br> age', 'Diagnostic<br> year', 'Comment'];
-  var colChildren_header = ['Name', 'Gender', 'Death', 'Age', 'Year of<br> birth'];
+  var colCancer_header = ['Cancer site', 'Age at diagnosis', 'Year of diagnosis'];
+  var colCancer_header2 = ['Cancer<br> site', 'Age at<br> diagnosis', 'Year of<br> diagnosis', 'Comment'];
+  var colChildren_header = ['Name', 'Sex', 'Deceased', 'Age', 'Year of<br> birth'];
 
 var myDataGpp = [
     {"FamID": "1","Name": "Paternal grandfather","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},

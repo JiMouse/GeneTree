@@ -16,6 +16,32 @@ $(document).ready(function(){
         $(".se-pre-con").fadeOut("slow");
     });
 
+    // After a language switch: field labels of the cards, and default names nobody has changed
+    var defaultNames = null;
+    function currentDefaultNames() {
+        return {
+            hotParents: [lang.ui_name_father, lang.ui_name_mother],
+            hotGpp: myDataGpp.map(function (r) { return r.Name; }),
+            hotGpm: myDataGpm.map(function (r) { return r.Name; })
+        };
+    }
+    window.onLanguageChanged = function () {
+        if (typeof hotParents === 'undefined' || typeof hotParents.updateHeaders !== 'function') return; // cards only
+        let relatives = colChildren_header.concat(colCancer_header2);
+        hotCancer.updateHeaders(colCancer_header);
+        [hotChildren, hotSiblings, hotParents, hotGpp, hotFatherSiblings, hotGpm, hotMotherSiblings]
+            .forEach(function (t) { t.updateHeaders(relatives); });
+        let fresh = currentDefaultNames(), tables = {hotParents: hotParents, hotGpp: hotGpp, hotGpm: hotGpm};
+        Object.keys(tables).forEach(function (k) {
+            fresh[k].forEach(function (name, i) {
+                if (defaultNames && tables[k].getDataAtRowProp(i, 'Name') === defaultNames[k][i])
+                    tables[k].setDataAtRowProp(i, 'Name', name, 'language');
+            });
+        });
+        defaultNames = fresh;
+    };
+    if (typeof lang !== 'undefined' && typeof myDataGpp !== 'undefined') defaultNames = currentDefaultNames();
+
     /* actualisation de l'arbre au fur et à mesure */
     //dbirth placeholder
     $("#dbirth").inputmask({
