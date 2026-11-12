@@ -1,5 +1,5 @@
 /*
- * DataGrid — a dependency-free spreadsheet for the GeneTree tool (tool.html),
+ * DataGrid — a dependency-free spreadsheet for the GeneTree tool (index.html),
  * replacing Handsontable. No third-party code, no licence key.
  *
  * Spreadsheet features: keyboard editing (arrows, Enter, Tab, Escape, F2, typing
@@ -9,7 +9,7 @@
  * and a delete button on each row.
  *
  * It implements the part of the Handsontable API that GeneTree uses, with the same
- * data semantics (checked against Handsontable 16 on index.html), so main.js,
+ * data semantics (checked against Handsontable 16 on tool-handsontable.html), so main.js,
  * main_front.js, hotTable.js and indexWidgets.js run unchanged:
  *   loadData, getSourceData, getSourceDataAtCell, getDataAtRowProp, setDataAtRowProp
  *   (single and batch), populateFromArray, updateSettings, render, setCellMeta,
