@@ -1,4 +1,6 @@
-/* DataGrid: the family table of tool.html (replaces Handsontable). */
+/* DataGrid: the family table of the tool (index.html). */
+#dataTable { height: 400px; width: 100%; }
+.helvetica { font-family: Helvetica; font-size: 13px; }
 .dg { position: relative; width: 100%; text-align: left; }
 .dg-scroll { position: relative; overflow: auto; max-height: 400px; border: 1px solid #ccd6e0; background: #fff; }
 .dg-table { border-collapse: separate; border-spacing: 0; font-family: Helvetica, Arial, sans-serif; font-size: 13px; min-width: 100%; }

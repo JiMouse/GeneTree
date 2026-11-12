@@ -1,6 +1,5 @@
-// Test harness for the GeneTree tool page: fixed date and Math.random, every export captured.
+// Test harness for the GeneTree tool page: fixed date and Math.random.
 const { chromium } = require('playwright');
-const fs = require('fs');
 const FIXED = new Date('2026-11-11T10:00:00').getTime();
 
 async function openTool(browser, url, lang = 'fr') {
@@ -26,31 +25,4 @@ async function openTool(browser, url, lang = 'fr') {
   return { ctx, page, errors, alerts };
 }
 
-// Builds the pedigree and the summary text from the table, then clicks every export.
-async function exportAll(page) {
-  const files = {}, dls = [], exportErrors = {};
-  page.on('download', d => dls.push(d));
-  const click = async (sel) => {
-    try { await page.evaluate(s => $(s).first().click(), sel); }
-    catch (e) { exportErrors[sel] = e.message.split('\n')[0].replace(/^page.evaluate: /, ''); }
-    await page.waitForTimeout(350);
-  };
-  await page.evaluate(() => { window.__ped.length = 0; });
-  await click('#loadFromHot');
-  const pedigree = await page.evaluate(() => window.__ped[window.__ped.length - 1] || null);
-  await click('#loadStory');
-  const story = await page.evaluate(() => document.getElementById('story').innerHTML);
-  for (const sel of ['.exportJson', '#exportBOADICEA', '#export_file', '#savePed', '#exportPedigreejs', '#exportGEDCOM']) await click(sel);
-  await click('#save_canrisk_fromHot');
-  await click('#cr_file_save');
-  await page.evaluate(() => $('.ui-dialog-content:visible').each(function () { try { $(this).dialog('close'); } catch (e) {} }));
-  for (const d of dls) {
-    let name = d.suggestedFilename(), n = 2;
-    while (files[name]) name = d.suggestedFilename() + '#' + n++;
-    files[name] = fs.readFileSync(await d.path(), 'utf8');
-  }
-  const table = await page.evaluate(() => hot.getSourceData());
-  const session = await page.evaluate(() => sessionStorage.getItem('hotData'));
-  return { table, session: session && JSON.parse(session), pedigree, story, files, exportErrors };
-}
-module.exports = { chromium, openTool, exportAll };
+module.exports = { chromium, openTool };

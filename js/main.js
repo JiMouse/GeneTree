@@ -1040,7 +1040,7 @@ function setLanguage(oldLang, newLang){
     let root='';
     // if(window.location.pathname == "/GeneTree/docs/user-interface.html") root='../'
     // pages in docs/ load the language files from one level up; the tool pages
-    // (/GeneTree/, index.html, tool-handsontable.html) from their own folder
+    // (/GeneTree/, index.html) from their own folder
     if (/\/docs\//.test(window.location.pathname)) root='../'
 
     return Promise.all([

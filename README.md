@@ -31,8 +31,7 @@ GeneTree is a static site: everything runs in the browser.
 | `index.html` | The tool: table, pedigree, text, exports |
 | `docs/patient.html` | Patient interface |
 | `docs/guide.html`, `docs/about.html` | Guide and description |
-| `tool.html` | Forwards to `index.html` |
-| `tool-handsontable.html`, `docs/user-interface.html` | Previous versions of the tool and of the patient interface, kept as fallbacks and not linked |
+| `tool.html`, `docs/user-interface.html` | Former addresses: they forward to the tool and to the patient interface |
 
 ## Code
 
@@ -46,10 +45,10 @@ GeneTree is a static site: everything runs in the browser.
 
 ## Tests
 
-The tests drive the pages in a real browser (Playwright) with the mouse and keyboard, and compare what the pages produce. See the README in each folder.
+The tests drive the pages in a real browser (Playwright) with the mouse and keyboard, and check what the pages produce. See the README in each folder.
 
-- `tests/tool-page/`: 38 families compared between the current and previous tool (table, pedigree, text and the 7 exports), the fixed bugs, and the table's spreadsheet features.
-- `tests/patient-page/`: 35 families compared between the current and previous patient interface, and the fixed bugs.
+- `tests/tool-page/`: the fixed bugs and the table's spreadsheet features.
+- `tests/patient-page/`: the fixed bugs.
 - `tests/language/`: the language switch on every page.
 
 ```bash
@@ -64,7 +63,7 @@ node tests/tool-page/grid_features.js http://localhost:8000/GeneTree/
 - [HPO translations](https://github.com/drseb/HPO-translations) and ORPHAdata: phenotype and disease lists
 - jQuery, jQuery UI, Bootstrap, d3 and Font Awesome
 
-Until November 2026 the tables were built with [Handsontable](https://github.com/handsontable/handsontable). It is now used only by the two fallback pages.
+Until November 2026 the tables were built with Handsontable. They are now GeneTree's own code (`js/data-grid.js`, `js/person-table.js`), and Handsontable is no longer part of the repository.
 
 ## Authors and licence
 

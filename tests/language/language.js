@@ -3,7 +3,7 @@
 const { chromium } = require('playwright');
 const base = process.argv[2], DELAY = 400;
 const expect = (c, m) => { if (!c) throw new Error(m); };
-const PAGES = ['', 'tool-handsontable.html', 'docs/patient.html', 'docs/user-interface.html', 'docs/about.html', 'docs/guide.html'];
+const PAGES = ['', 'docs/patient.html', 'docs/about.html', 'docs/guide.html'];
 const WORD = { fr: 'Outil', eng: 'Tool' }, LABEL = { fr: 'Fr', eng: 'Eng' };
 
 (async () => {
@@ -23,7 +23,7 @@ const WORD = { fr: 'Outil', eng: 'Tool' }, LABEL = { fr: 'Fr', eng: 'Eng' };
         await p.evaluate(l => $(l === 'fr' ? '#LangSetterFr' : '#LangSetterEng').click(), lang); await p.waitForTimeout(DELAY * 2 + 900);
         await check(lang, 'after switching to ' + lang);
       }
-      if (pg === '' || pg === 'tool-handsontable.html') {
+      if (pg === '') {
         const h = await p.evaluate(() => [...document.querySelectorAll('#dataTable thead th')].map(t => t.textContent.trim()).filter(Boolean).slice(0, 6).join('|'));
         expect(h.startsWith('Name|Id.|Father|Mother'), 'table headers: ' + h);
       }
