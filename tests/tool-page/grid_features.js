@@ -48,11 +48,13 @@ test('paste from Excel (CRLF, trailing new line, quoted cell)', async (page) => 
 
 test('delete a row with its button, then undo', async (page) => {
   await page.evaluate(() => $('#extended1').click()); await page.waitForTimeout(400);
-  await drv.removeRow(page, 6);                       // grandmother: the tool warns about her child
-  await g.dialogButton(page, 1);                       // "Cancel": only this row is removed
-  expect((await data(page)).length === 6, 'row not removed');
-  await g.click(page, 0, 0); await page.keyboard.press('Control+Z');
-  const d = await data(page); expect(d.length === 7 && d[6].IndivID === '7', 'undo did not restore the row: ' + d.length);
+  await g.click(page, 0, 0); await g.closeCancerList(page);
+  await page.evaluate(() => { $('#brother').val(1); $('#submitAddBranch').click(); }); await page.waitForTimeout(500);
+  const before = (await data(page)).map(r => r.IndivID).join(',');   // row 1 is the new brother (no children)
+  await drv.removeRow(page, 1);
+  expect((await data(page)).length === 7, 'row not removed');
+  await g.click(page, 0, 0); await g.closeCancerList(page); await page.keyboard.press('Control+Z');
+  expect((await data(page)).map(r => r.IndivID).join(',') === before, 'undo did not restore the row: ' + (await data(page)).map(r => r.IndivID).join(','));
 });
 
 test('drag a row; the index (first row) cannot be displaced', async (page, alerts) => {

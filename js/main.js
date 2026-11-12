@@ -1010,13 +1010,16 @@ function createFamily(famObj, hotObj){
 function replacejscssfile(oldfilename, newfilename, filetype){
     var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
     var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
-    var allsuspects=document.getElementsByTagName(targetelement)
+    var allsuspects=document.getElementsByTagName(targetelement), loaded=[]
     for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
         if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
             var newelement=createjscssfile(newfilename, filetype)
+            // resolves once the new file has run (or failed), so callers can wait for it
+            loaded.push(new Promise(function (resolve) { newelement.onload = resolve; newelement.onerror = resolve; }))
             allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
         }
     }
+    return Promise.all(loaded)
 }
 
 function setSetterLanguage(newLang, src=''){
@@ -1040,18 +1043,27 @@ function setLanguage(oldLang, newLang){
     // (/GeneTree/, index.html, tool.html) from their own folder
     if (/\/docs\//.test(window.location.pathname)) root='../'
 
-    replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js")
-    replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
+    return Promise.all([
+        replacejscssfile(root+"lang/lang."+oldLang+".js", root+"lang/lang."+newLang+".js", "js"),
+        replacejscssfile(root+"lang/story."+oldLang+".js", root+"lang/story."+newLang+".js", "js")
+    ])
 }
 
+var languageSwitching = null;
 function updateLangage(oldLang, newLang) { 
-    setLanguage(oldLang, newLang);
+    // some pages attach the language buttons twice: one switch at a time
+    if (languageSwitching === newLang) return;
+    languageSwitching = newLang;
+    var filesLoaded = setLanguage(oldLang, newLang);
 
     loadExternalData(newLang, ''); //load HPO
 
-    var delayInMilliseconds = 100;  //hack: need to use async / awate ?
-    setTimeout(function() {
+    // Fill in the texts only once the new language files have loaded. (A fixed 100 ms wait
+    // used to leave the previous language's texts under the new flag on a slow connection.)
+    filesLoaded.then(function() {
+        languageSwitching = null;
         populateText();
+        if (typeof window.onLanguageChanged === 'function') window.onLanguageChanged(newLang);
 
         //update hot settings
         let checkBox = document.getElementById("myCheckOnco"),
@@ -1133,7 +1145,7 @@ function updateLangage(oldLang, newLang) {
         //load new table
         hot.loadData(JSON.parse(myDataSafe));
 
-    }, delayInMilliseconds);   
+    });   
 }
 
 function loadStory(){

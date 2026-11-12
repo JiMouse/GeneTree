@@ -397,6 +397,7 @@ var lang = {
     ui_ind_cancer2_age: " Âge ou année du diagnostic",
     ui_ind_comment: "Commentaire :",
     ui_finalisation:"Finalisation",
+    ui_name_father:"Père", ui_name_mother:"Mère",
     ui_ind_save:"Enregistrer",
     ui_cancer_list:"Localisation du cancer",
     ui_alert_dead_yob:"Pour une personne décédée, indiquez son année de naissance (et non son âge).",
@@ -644,10 +645,10 @@ var dico = {
   var colChildren_header = ['Nom', 'Genre', 'Décès', 'Âge', 'Année de<br> Naissance'];
 
   var myDataGpp = [
-    {"FamID": "1","Name": "Grand-Père paternelle","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
-    {"FamID": "1","Name": "Grand-Mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
+    {"FamID": "1","Name": "Grand-père paternel","IndivID": "4","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+    {"FamID": "1","Name": "Grand-mère paternelle","IndivID": "5","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"},
     ]
     var myDataGpm = [
-        {"FamID": "1","Name": "Grand-Père maternelle","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
-        {"FamID": "1","Name": "Grand-Mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
+        {"FamID": "1","Name": "Grand-père maternel","IndivID": "6","FathID": "0","MothID": "0","Sex": "M","Affected":"1","Deceased":"0"},
+        {"FamID": "1","Name": "Grand-mère maternelle","IndivID": "7","FathID": "0","MothID": "0","Sex": "F","Affected":"1","Deceased":"0"}
         ]
