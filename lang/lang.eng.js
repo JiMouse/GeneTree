@@ -84,14 +84,16 @@ var lang = {
     "This tool has a specific mode for oncogenetic consultation and a mode using HPO phenotypes. ",
     about_text2: "The family can be loaded (JSON or BOADICEA files) or created from a standard or custom structure, "+
     "and then filled in via a table or GUI, both of which are interconnected. \n",
-    about_text3: "The pedigree can be exported in several file formats (TSV, JSON, PED, BOADICEA) and modified "+
+    about_text3: "The pedigree can be exported in several file formats (TSV, JSON, PED, BOADICEA, CanRisk, GEDCOM) and modified "+
     " by a vector editor (PDF, SVG format) or can be printed directly. \n",
     about_text4: "Finally, this application allows the automatic generation of text from the content of the table corresponding "+
     "to the personal and family history of the patient.  To my knowledge, this is the only solution allowing "+ 
     "to write an important part of the consultation report in one click\n",
     about_text5: "The online interface, optimised for the Google Chrome browser, makes it easy to use without the need for prior installation. "+
     "This tool has been especially designed for oncogenetic consultations in order to avoid triple entry "+ 
-    "(text - family tree - Boadicea or CanRisk score)\n",
+    "(text - family tree - Boadicea or CanRisk score).\n" +
+    "A patient interface also lets patients enter their family history before the consultation, on a computer or a phone. " +
+    "No data is sent to a server: everything is processed in the browser.\n",
     about_text6: "GeneTree is developed and maintained by Dr Jean-Marie Ravel with the participation of members of the clinical genetics team "+
     " of the Nancy University Hospital (France).",
 
@@ -109,9 +111,11 @@ var lang = {
     guide_intro3:"There are also two optional modes of use to restrict pathologies (7):",
     guide_introOnco:"the 'onco' mode is intended for oncogenetic consultations. It allows the list of pathologies to be pre-filled with frequent cancers.",
     guide_introHPO:"The 'HPO' mode limits the list of conditions to symptoms and diseases in the HPO and ORPHAdata databases.",
-    guide_intro4:"The spreadsheet (8) can also be used as an Excel spreadsheet: it is possible to copy and paste rows. "+
-    "It is also possible to select one or more rows and drag them to another position. This can be useful when "+
-    "the generated pedigree has crossed branches",
+    guide_intro4:"The table (8) works like a spreadsheet: type straight into a cell (Enter, Tab, arrow keys), copy and paste cells with Excel, "+
+    "undo (Ctrl+Z) and redo (Ctrl+Y). A click on a 'Gender' or 'Option' cell opens its list; a click on a disease cell opens the list of cancers or HPO terms." + "\n" +
+    "To move a row, drag it by the handle (⋮⋮) to the left of its number: this can be useful when "+
+    "the generated pedigree has crossed branches. To delete a row, click the cross (×) that appears when the pointer is over its number. " +
+    "The index case and his or her ancestors cannot be deleted; for a person with children, the list of people deleted with them is shown before confirmation.",
     guide_famTitle:"Creating a family",
     guide_famTitle1:"Loading a file",
     guide_fam0:"A family already created can be loaded using the dedicated button (1). " +
