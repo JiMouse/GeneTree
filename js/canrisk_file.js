@@ -19,8 +19,20 @@ $(document).ready(function(){
 	})
 
 	$('#save_canrisk').on('click', function (e) {
+		if(!canrisk_check(pedcache.current(opts))) return;
 		save_canrisk_dialog.dialog('open');
 	});
+
+	// Tool: the CanRisk download is blocked while a member with a cancer used by CanRisk
+	// (breast, ovary, prostate, pancreas) has no valid age (see canriskAgeErrors, main.js)
+	canrisk_check = function(dataset) {
+		let errors = canriskAgeErrors(dataset || []);
+		if(errors.length) {
+			alert(boadicea.title_canrisk + '\n' + canriskAgeMessage(errors));
+			return false;
+		}
+		return true;
+	};
 
 	// CanRisk file save dialog
 	$('#cr_file_save').on('click', function (e) {
@@ -276,7 +288,7 @@ $(document).ready(function(){
 			$.each(cancers, function(cancer, diagnosis_age) {
 				// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
 				if(diagnosis_age in p)
-					msg += (diagnosis_age in p ? p[diagnosis_age] : 'AU')+'\t';
+					msg += (p[diagnosis_age] !== '' && p[diagnosis_age] != null ? p[diagnosis_age] : 'AU')+'\t';
 				else
 					msg += '0\t';
 			});

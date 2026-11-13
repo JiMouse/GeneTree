@@ -571,6 +571,61 @@ function getFormattedTime() {
     return y + "-" + m + "-" + d;
 }
 
+// BOADICEA / CanRisk check: every family member with a cancer used by CanRisk (breast,
+// contralateral breast, ovary, prostate, pancreas; other cancers are not checked) needs
+// a valid age: an age and a year of birth that agree with each other, and no age at
+// diagnosis above the age. An unknown age at diagnosis (empty or "AU") is accepted.
+// Returns one line per member at fault (empty if the file can be downloaded).
+function canriskAgeErrors(dataset) {
+    let errors = [],
+        thisYear = new Date().getFullYear(),
+        labels = (typeof dicoD === 'function') ? dicoD() : {},
+        isInt = function(v) { return v !== undefined && v !== null && /^\d+$/.test(String(v).trim()); },
+        fill = function(text, values) {
+            for (let k in values) text = text.split('{' + k + '}').join(values[k]);
+            return text;
+        };
+
+    $.each(dataset, function(_i, p) {
+        if (!p || p.hidden || p.exclude) return;
+
+        // cancers used by CanRisk for this member (age at diagnosis 0 = not affected)
+        let affected = [];
+        $.each(cancers_canrisk, function(cancer, key) {
+            if (key in p && String(p[key]).trim() !== '0') affected.push(cancer);
+        });
+        if (!affected.length) return;
+
+        let name = p.display_name || p.name,
+            age = isInt(p.age) ? parseInt(p.age) : NaN,
+            yob = isInt(p.yob) ? parseInt(p.yob) : NaN;
+
+        if (!(age >= 1 && age <= 110) || !(yob >= 1800 && yob <= thisYear)) {
+            errors.push(fill(boadicea.age_missing, {name: name}));
+            return;
+        }
+        // same rule as CanRisk: alive, age + year of birth = this year (± 1); deceased, not after this year
+        let dead = String(p.status) === '1',
+            sum = age + yob;
+        if (dead ? sum > thisYear : Math.abs(thisYear - sum) > 1 || sum > thisYear) {
+            errors.push(fill(boadicea.age_yob, {name: name, age: age, yob: yob}));
+            return;
+        }
+        affected.forEach(function(cancer) {
+            let diag = String(p[cancers_canrisk[cancer]]).trim();
+            if (diag === '' || diag.toUpperCase() === 'AU') return;
+            if (!isInt(diag) || parseInt(diag) < 1 || parseInt(diag) > age)
+                errors.push(fill(boadicea.diag_age, {name: name, cancer: labels[cancer] || cancer, diag: diag, age: age}));
+        });
+    });
+    return errors;
+}
+
+// Text of the message that blocks the download
+function canriskAgeMessage(errors) {
+    return boadicea.disease + '\n   - ' + errors.join('\n   - ');
+}
+
 function ExportBOADICEv4(JSONData) {
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData,
         CSV = '',   
@@ -585,8 +640,7 @@ function ExportBOADICEv4(JSONData) {
     CSV += row + '\r\n';
 
     //Set warning
-    let warning='',
-        warningAge=false;
+    let warning='';
 
     // Adding each rows of the table
     for (var i = 0; i < arrData.length; i++) {
@@ -676,25 +730,22 @@ function ExportBOADICEv4(JSONData) {
         CSV += row + '\r\n';
         
         //Check boadicea conformity
-        if(proband==1 && yob==0) warning +='\r   -'+ boadicea.proband; //index need to have yob
-
-        //if cancer : need valide age
-        const exist = (element) => element != 0;
-        if (rowDiseases.some(exist) && yob==0 && !warningAge){
-            warning +='\r   -'+ boadicea.disease
-            warningAge=true;
-        }
+        if(proband==1 && yob==0) warning +='\n   - '+ boadicea.proband; //index need to have yob
 
         //if test : need to have result
         for(let r =0; r < rowTest.length; r+=2){
-            if(rowTest[r]!=0 && rowTest[r+1]==0) warning +='\r   -'+ boadicea.test1 + ' ' + test[r] + ' ' + boadicea.test2;
-            if(rowTest[r+1]!=0 && rowTest[r]==0) warning +='\r   -'+ boadicea.result1 + ' ' + test[r] + ' ' + boadicea.result2;
+            if(rowTest[r]!=0 && rowTest[r+1]==0) warning +='\n   - '+ boadicea.test1 + ' ' + gt[r/2].toUpperCase() + ' ' + boadicea.test2;
+            if(rowTest[r+1]!=0 && rowTest[r]==0) warning +='\n   - '+ boadicea.result1 + ' ' + gt[r/2].toUpperCase() + ' ' + boadicea.result2;
         }
-        
+
     }
 
+    //members with a cancer used by CanRisk (breast, ovary, prostate, pancreas): valid age needed
+    let ageErrors = canriskAgeErrors(arrData);
+    if(ageErrors.length) warning += '\n' + canriskAgeMessage(ageErrors);
+
     if(warning!='') {
-        alert('Fichier Boadicea non conforme : '+ warning);
+        alert(boadicea.title_boadicea + warning);
         return;
     }
 

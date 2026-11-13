@@ -453,7 +453,12 @@ var placeholder = {
 
 var boadicea = {
     proband:"The age of the index case is not provided.",
-    disease:"All family members with cancer must have a valid age.",
+    disease:"All family members with a cancer used by CanRisk (breast, ovary, prostate, pancreas) must have a valid age:",
+    age_missing:"{name}: age or year of birth missing or invalid",
+    age_yob:"{name}: the age ({age}) and the year of birth ({yob}) do not agree",
+    diag_age:"{name}: age at diagnosis of {cancer} ({diag}) invalid or above the age ({age})",
+    title_boadicea:"BOADICEA file not compliant:",
+    title_canrisk:"CanRisk file not compliant:",
     test1:"",
     test2:"test is filled in but the result is not defined.",
     result1:"The result of the ",
