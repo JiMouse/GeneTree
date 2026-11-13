@@ -839,6 +839,7 @@ $(document).ready(function() {
 
     $('#save_canrisk_fromHot').on('click', function (e) {
         loadFromHot();
+        if(!canrisk_check(pedcache.current(opts))) return;
 		save_canrisk_dialog.dialog('open');
         // $('#save-canrisk-dialog').modal('show');
 	});

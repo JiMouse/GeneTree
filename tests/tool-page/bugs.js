@@ -116,6 +116,73 @@ test('6. TSV export header: "Décès"', 'fr', async (page) => {
   expect(text.startsWith('"Nom"\t"Id."\t"Père"\t"Mère"\t"Sexe"\t"Décès"'), text.slice(0, 80));
 });
 
+// BOADICEA / CanRisk downloads: blocked while a member with a cancer used by CanRisk
+// (breast, ovary, prostate, pancreas) has no valid age; other cancers are not checked.
+const setRows = (page, rows) => page.evaluate(r => {
+  for (const [row, values] of Object.entries(r)) for (const [k, v] of Object.entries(values)) hot.setDataAtRowProp(Number(row), k, v, 'test');
+}, rows);
+const index = { Age: '46', Yob: '1980' };
+const downloads = (page) => { const d = []; page.on('download', x => d.push(x)); return d; };
+const canriskOpen = (page) => page.evaluate(() => $('#save-canrisk-dialog').is(':visible'));
+
+test('7. BOADICEA: blocked when a member with prostate cancer has no age', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 1: { Disease1: 'cancer_prostate', Age1: '60' } });
+  const dl = downloads(page);
+  await page.evaluate(() => $('#exportBOADICEA').click()); await page.waitForTimeout(500);
+  expect(dl.length === 0 && alerts.length === 1 && /BOADICEA non conforme/.test(alerts[0]) && /âge valide/.test(alerts[0])
+    && /Père : âge ou année de naissance manquant/.test(alerts[0]), 'downloads ' + dl.length + ', alerts ' + JSON.stringify(alerts));
+});
+
+test('7b. BOADICEA: a cancer not used by CanRisk (colon) without age does not block', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 1: { Disease1: 'cancer_colon', Age1: '60' } });
+  const dl = page.waitForEvent('download', { timeout: 3000 });
+  await page.evaluate(() => $('#exportBOADICEA').click());
+  await dl;
+  expect(alerts.length === 0, 'alerts ' + JSON.stringify(alerts));
+});
+
+test('7c. BOADICEA: blocked when the age at diagnosis is above the age', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 2: { Age: '50', Yob: '1976', Disease1: 'cancer_ovaire', Age1: '62' } });
+  await page.evaluate(() => $('#exportBOADICEA').click()); await page.waitForTimeout(500);
+  expect(alerts.length === 1 && /Mère : âge au diagnostic du cancer de l'ovaire \(62\)/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+});
+
+test('7d. BOADICEA: blocked when age and year of birth do not agree', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 2: { Age: '50', Yob: '1960', Disease1: 'cancer_sein', Age1: '45' } });
+  await page.evaluate(() => $('#exportBOADICEA').click()); await page.waitForTimeout(500);
+  expect(alerts.length === 1 && /Mère : l'âge \(50 ans\) et l'année de naissance \(1960\) ne concordent pas/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+});
+
+test('7e. CanRisk: blocked (dialog not opened) when a member with breast cancer has no age', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 2: { Disease1: 'cancer_sein', Age1: '45' } });
+  await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
+  expect(!(await canriskOpen(page)) && alerts.length === 1 && /CanRisk non conforme/.test(alerts[0]) && /Mère/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+});
+
+test('7f. CanRisk: valid ages, unknown age at diagnosis: downloaded, written "AU"', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 1: { Age: '76', Yob: '1950', Disease1: 'cancer_prostate', Age1: '' }, 2: { Disease1: 'cancer_colon' } });
+  await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
+  expect(await canriskOpen(page) && alerts.length === 0, 'dialog not opened, alerts ' + JSON.stringify(alerts));
+  const dl = page.waitForEvent('download');
+  await page.evaluate(() => $('#cr_file_save').click());
+  const lines = require('fs').readFileSync(await (await dl).path(), 'utf8').split('\n');
+  const head = lines.find(l => l.startsWith('##FamID')).split('\t'), father = lines.find(l => l.split('\t')[3] === '2').split('\t');
+  expect(father[head.indexOf('PRO')] === 'AU', 'father row: ' + father.join(' | '));
+});
+
+test('7g. same check in English', 'eng', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index, 1: { Disease1: 'pancreatic_cancer', Age1: '70' } });
+  await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
+  expect(!(await canriskOpen(page)) && alerts.length === 1 && /CanRisk file not compliant/.test(alerts[0]) && /age or year of birth missing/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

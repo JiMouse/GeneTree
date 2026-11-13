@@ -459,7 +459,12 @@ var placeholder = {
 
 var boadicea = {
     proband:"L'âge du cas index n'est pas renseigné.",
-    disease:"Tous les membres atteints d'un cancer de la famille doivent avoir un âge valide.",
+    disease:"Tous les membres atteints d'un cancer pris en compte par CanRisk (sein, ovaire, prostate, pancréas) doivent avoir un âge valide :",
+    age_missing:"{name} : âge ou année de naissance manquant ou invalide",
+    age_yob:"{name} : l'âge ({age} ans) et l'année de naissance ({yob}) ne concordent pas",
+    diag_age:"{name} : âge au diagnostic du {cancer} ({diag}) invalide ou supérieur à l'âge ({age} ans)",
+    title_boadicea:"Fichier BOADICEA non conforme :",
+    title_canrisk:"Fichier CanRisk non conforme :",
     test1:"Le test",
     test2:"est renseigné mais le résultat n'est pas rempli.",
     result1:"Le résultat du test",
