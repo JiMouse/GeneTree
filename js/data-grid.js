@@ -130,6 +130,8 @@
     this._setData(data);
     this.meta = {};
     this.undoStack = []; this.redoStack = [];
+    // a selection past the new last row would point to nobody
+    if (this.sel && Math.max(this.sel.r1, this.sel.r2) >= this.data.length) this.sel = null;
     this.render();
     this._run('afterChange', null, 'loadData');
   };

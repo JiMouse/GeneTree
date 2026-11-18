@@ -183,6 +183,23 @@ test('7g. same check in English', 'eng', async (page, alerts) => {
   expect(!(await canriskOpen(page)) && alerts.length === 1 && /CanRisk file not compliant/.test(alerts[0]) && /age or year of birth missing/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
 });
 
+test('8. resetting the drawing does not grey out the personal information fields', 'fr', async (page) => {
+  await template(page, 'extended1');
+  await page.evaluate(() => $('#pedigrees .fa-refresh').first().click()); await page.waitForTimeout(300);
+  await g.dialogButton(page, 0); await page.waitForTimeout(500);
+  const disabled = await page.evaluate(() => $('#supp_info fieldset').map(function () { return this.disabled; }).get());
+  expect(disabled.length && disabled.every(d => !d), 'disabled fieldsets: ' + JSON.stringify(disabled));
+});
+
+test('8b. "Informations" after a table reset while a removed row was selected: no crash, index shown', 'fr', async (page) => {
+  await template(page, 'extended1');
+  await g.click(page, 6, 0); await g.closeCancerList(page);
+  await page.evaluate(() => $('#reset').click()); await g.dialogButton(page, 0); await page.waitForTimeout(500);
+  await page.evaluate(() => $('#supp_edit_info').click()); await page.waitForTimeout(400);
+  const name = await page.evaluate(() => $('#form_id_name').val());
+  expect(name === 'Index', 'name field: ' + name);
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

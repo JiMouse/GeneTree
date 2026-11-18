@@ -97,17 +97,17 @@
 		try {
 			var id = $('#id_name').val();  // get name from hidden field
 			var node = pedigree_util.getNodeByName(pedcache.current(opts), id)
-			if(node === undefined)
-				$('form > fieldset').prop("disabled", true);
-			else
-				$('form > fieldset').prop('disabled', false);
+			// only the form that edits the selected person: other forms of the page
+			// (personal information, risk factors) must stay usable
+			var fieldsets = $('#id_name').closest('form').children('fieldset');
+			fieldsets.prop("disabled", node === undefined);
 		} catch(err) {
 			console.warn(err);
 		}
     })
 
 	pedigree_form.nodeclick = function(node) {
-		$('form > fieldset').prop('disabled', false);
+		$('#id_name').closest('form').children('fieldset').prop('disabled', false);
 		// clear values
 		$('#person_details').find("input[type=text], input[type=number]").val("");
 		$('#person_details select').val('').prop('selected', true);
