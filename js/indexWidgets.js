@@ -51,16 +51,12 @@ $(document).ready(function(){
 		var hotObj=hot
 
 		if(typeof(hotObj) !== 'undefined') {
-			let deepObj = JSON.stringify(hotObj.getSourceData());
-			try {
-				obj=JSON.parse(deepObj);
-				index = hotObj.getSelectedLast()[0]; //selected row
-				} catch (error) {
-					obj=JSON.parse(deepObj);
-					index = 0;
-				// alert(lang.noIndSelected);
-				}
-			}
+			obj = JSON.parse(JSON.stringify(hotObj.getSourceData()));
+			var sel = hotObj.getSelectedLast();
+			index = sel ? sel[0] : 0; //selected row
+			// the selection can point past the end of the table (e.g. after a reset)
+			if(!(index >= 0 && index < obj.length)) index = 0;
+		}
 
 		//name
 		var name = obj[index]['Name'];
