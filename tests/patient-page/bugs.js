@@ -83,7 +83,7 @@ test('6b. names and questions in English', 'eng', async (page) => {
 
 test('7. English page: no French yes/no, download button text', 'eng', async (page) => {
   const t = await page.evaluate(() => ({ yes: $('label[for=cancer_Yes]').text().trim(), no: $('label[for=siblings_No]').text().trim(), q: $('#ui_cancer').text(), dl: $('#ui_dl').text() }));
-  expect(t.yes === 'Yes' && t.no === 'No' && t.q === 'Have you ever had cancer?' && t.dl === 'Download the two files to send to your doctor', JSON.stringify(t));
+  expect(t.yes === 'Yes' && t.no === 'No' && t.q === 'Have you ever had cancer?' && t.dl === 'Download the file to send to your doctor', JSON.stringify(t));
 });
 
 test('8. deceased relative: the age is the age at death, the year of birth is not recalculated', 'fr', async (page) => {

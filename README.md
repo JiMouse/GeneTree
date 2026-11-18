@@ -12,7 +12,7 @@ GeneTree is an integrated tool for clinical geneticists and genetic counsellors,
 - **A table that works like a spreadsheet:** keyboard editing, copy and paste with Excel, undo and redo, rows moved by dragging, lists for sex and options, a cancer or HPO picker for diseases.
 - **Automatic text:** the personal and family history is written from the table, in French or English.
 - **Exports:** GeneTree JSON, TSV, PED, BOADICEA, CanRisk, GEDCOM, pedigreejs JSON; the drawing as SVG, image or PDF (print).
-- **Patient interface** ([docs/patient.html](https://jimouse.github.io/GeneTree/docs/patient.html)): a form the patient fills in before the consultation, on a computer or a phone, with the pedigree drawn beside it as they answer. It produces two files (GeneTree and CanRisk) that the patient sends to the practitioner.
+- **Patient interface** ([docs/patient.html](https://jimouse.github.io/GeneTree/docs/patient.html)): a form the patient fills in before the consultation, on a computer or a phone, with the pedigree drawn beside it as they answer. It produces a GeneTree file that the patient sends to the practitioner, who opens it in the tool (and can export CanRisk from there).
 - **Guide** ([docs/guide.html](https://jimouse.github.io/GeneTree/docs/guide.html)) and **About** ([docs/about.html](https://jimouse.github.io/GeneTree/docs/about.html)) pages.
 
 ## Privacy
