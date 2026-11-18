@@ -8,7 +8,7 @@ The tests drive the patient interface (`docs/patient.html`) in a real browser, t
 
 ## 2. Questionnaire (`questionnaire.js`)
 
-15 tests: the cards appear as soon as the number of relatives is given (no dialog), default names that follow the sex, fewer relatives (confirmation before removing filled cards), the cancer questions and the single "age or year of diagnosis" field, parents and grandparents, uncles and aunts with a second cancer, age and year of birth calculated from each other, the warnings (year of birth, diagnosis, date of birth), the patient's own cancers ("another cancer?"), a group answered "no", the comment at the end, the language switch, and what a whole family sends to the pedigree.
+16 tests: the cards appear as soon as the number of relatives is given (no dialog), default names that follow the sex and are numbered per sex (Sœur 1, Frère 1, Sœur 2), fewer relatives (confirmation before removing filled cards), the cancer questions and the single "age or year of diagnosis" field, parents and grandparents, uncles and aunts with a second cancer, age and year of birth calculated from each other, the warnings (year of birth, diagnosis, date of birth), the patient's own cancers ("another cancer?"), a group answered "no", the comment at the end, the language switch, and what a whole family sends to the pedigree.
 
 ## 3. Live pedigree (`live.js`)
 

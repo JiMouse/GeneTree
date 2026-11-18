@@ -21,7 +21,7 @@ test('follows the answers: relatives, names, cancers', async (page) => {
   await addRelatives(page, 'children', [{ sex: 'F', yob: '2008' }, {}]);
   await settle(page);
   let n = await names(page);
-  expect(await nodeCount(page) === 10 && n.includes('Fille 1') && n.includes('Enfant 2'), 'after the children: ' + JSON.stringify(n));
+  expect(await nodeCount(page) === 10 && n.includes('Fille 1') && n.includes('Enfant 1'), 'after the children: ' + JSON.stringify(n));
   await editField(page, 'children', 1, 'Name', 'Paul');
   await editField(page, 'children', 0, 'K1', '1');
   await editField(page, 'children', 0, 'Disease1', 'cancer_sein');
