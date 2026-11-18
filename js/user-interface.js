@@ -67,6 +67,22 @@ $(document).ready(function(){
 
     function sexOf(r) { return r && (r.Sex === 'M' || r.Sex === 'F') ? r.Sex : 'U'; }
 
+    // Default names are numbered per sex: "Sœur 1", "Frère 1", "Sœur 2"... (people whose
+    // sex is not chosen yet: "Frère/Sœur 1", "Frère/Sœur 2"). A person whose name was
+    // typed keeps it, but still counts: after "Marie", the next sister is "Sœur 2".
+    function defaultName(group, rows, i) {
+        var sex = sexOf(rows[i]), n = 0;
+        for (var j = 0; j <= i; j++) if (sexOf(rows[j]) === sex) n++;
+        return relativeLabel(group, sex) + ' ' + n;
+    }
+    function renumber(table, group, source) {
+        var rows = table.getSourceData();
+        rows.forEach(function (r, i) {
+            var name = defaultName(group, rows, i);
+            if (r.NameAuto && r.Name !== name) table.setDataAtRowProp(i, 'Name', name, source || 'sync');
+        });
+    }
+
     // Name of a relative in the patient's language: "Fille", "Oncle maternel"... or neutral when the sex is unknown
     function relativeLabel(group, sex) {
         if (sex && sex !== 'U' && lang['ui_rel_' + group + '_' + sex]) return lang['ui_rel_' + group + '_' + sex];
@@ -216,7 +232,7 @@ $(document).ready(function(){
             }
             // a name typed by the patient is kept; a default name follows the sex
             if (prop === 'Name') table.setDataAtRowProp(row, 'NameAuto', false, 'sync');
-            if (prop === 'Sex' && r.NameAuto && groups[group]) table.setDataAtRowProp(row, 'Name', relativeLabel(group, r.Sex) + ' ' + (row + 1), 'sync');
+            if (prop === 'Sex' && groups[group]) renumber(table, group);
             // the parents' years of birth are checked against the grandparents'
             if (group === 'parents' && (prop === 'Yob' || prop === 'Age')) { hotGpp.refresh(); hotGpm.refresh(); }
         });
@@ -263,6 +279,7 @@ $(document).ready(function(){
             data = data.slice(0, n);
         } else return;
         table.loadData(data);
+        renumber(table, group);
     }
 
     function groupInit(group) {
@@ -435,10 +452,7 @@ $(document).ready(function(){
         hotCancer.updateHeaders([]);
         allRelatives().forEach(function (t) { t.updateHeaders([]); });
         Object.keys(groups).forEach(function (g) {
-            var t = window[groups[g].table];
-            t.getSourceData().forEach(function (r, i) {
-                if (r.NameAuto) t.setDataAtRowProp(i, 'Name', relativeLabel(g, r.Sex) + ' ' + (i + 1), 'language');
-            });
+            renumber(window[groups[g].table], g, 'language');
         });
         var fresh = currentDefaultNames(), tables = {hotParents: hotParents, hotGpp: hotGpp, hotGpm: hotGpm};
         Object.keys(tables).forEach(function (k) {

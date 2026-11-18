@@ -70,7 +70,7 @@ test('6. relatives get readable names', 'fr', async (page) => {
   await addRelatives(page, 'siblings', [{ sex: 'M', yob: '1970' }, { sex: 'F', yob: '1972' }]);
   await addRelatives(page, 'fatherSiblings', [{ sex: 'F', yob: '1945' }]);
   const names = [...(await rows(page, 'hotSiblings')), ...(await rows(page, 'hotFatherSiblings'))].map(r => r.Name);
-  expect(JSON.stringify(names) === JSON.stringify(['Frère 1', 'Sœur 2', 'Tante paternelle 1']), 'names: ' + JSON.stringify(names));
+  expect(JSON.stringify(names) === JSON.stringify(['Frère 1', 'Sœur 1', 'Tante paternelle 1']), 'names: ' + JSON.stringify(names));
 });
 
 test('6b. names and questions in English', 'eng', async (page) => {

@@ -30,6 +30,20 @@ test('a default name follows the sex; a name typed by the patient is kept', 'fr'
   expect(JSON.stringify(names) === '["Fils 1","Paul"]', JSON.stringify(names));
 });
 
+test('default names are numbered per sex: Sœur 1, Frère 1, Sœur 2', 'fr', async (page) => {
+  await addRelatives(page, 'siblings', [{ sex: 'F' }, { sex: 'M' }, {}, {}]);
+  let names = (await rows(page, 'hotSiblings')).map(r => r.Name);
+  expect(JSON.stringify(names) === '["Sœur 1","Frère 1","Frère/Sœur 1","Frère/Sœur 2"]', 'first: ' + JSON.stringify(names));
+  await editField(page, 'siblings', 2, 'Sex', 'F');
+  await editField(page, 'siblings', 0, 'Name', 'Marie');
+  await editField(page, 'siblings', 3, 'Sex', 'F');
+  names = (await rows(page, 'hotSiblings')).map(r => r.Name);
+  expect(JSON.stringify(names) === '["Marie","Frère 1","Sœur 2","Sœur 3"]', 'then: ' + JSON.stringify(names));
+  await editField(page, 'siblings', 2, 'Sex', 'M');
+  names = (await rows(page, 'hotSiblings')).map(r => r.Name);
+  expect(JSON.stringify(names) === '["Marie","Frère 1","Frère 2","Sœur 2"]', 'after a change of sex: ' + JSON.stringify(names));
+});
+
 test('fewer relatives: empty cards removed; filled cards only after confirmation', 'fr', async (page, answers) => {
   await addRelatives(page, 'siblings', [{}, {}, { yob: '1990' }]);
   await page.fill('#siblings_input', '2'); await page.keyboard.press('Tab'); await page.waitForTimeout(200);
