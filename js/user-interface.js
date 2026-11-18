@@ -1,3 +1,16 @@
+// Patient interface (docs/patient.html): the questionnaire.
+//
+// Every relative is a card (js/person-table.js). The patient gives the number of
+// children, brothers and sisters, uncles and aunts; the cards appear at once, named
+// "Enfant 1", "Enfant 2"... (renamed "Fils 1" / "Fille 1" when the sex is chosen, as
+// long as the patient has not typed a name). Each card asks whether the person has had
+// cancer; on a yes, the site and the "age or year of diagnosis" appear, then "another
+// cancer?". Values that look wrong are flagged under the field, never refused.
+//
+// Columns stored in the cards but not sent to the pedigree: K1 / K2 (yes / no to the
+// cancer questions), Dx1 / Dx2 (age or year of diagnosis as typed), NameAuto (the name
+// is still the default one). relativeForPedigree() turns them into Disease1, Age1,
+// Year1, Disease2, Age2, the fields the tool reads.
 $(document).ready(function(){
 
     var uiPages = ["/GeneTree/docs/patient.html", "/docs/patient.html"];
@@ -16,353 +29,320 @@ $(document).ready(function(){
         $(".se-pre-con").fadeOut("slow");
     });
 
-    // After a language switch: field labels of the cards, and default names nobody has changed
-    var defaultNames = null;
-    function currentDefaultNames() {
-        return {
-            hotParents: [lang.ui_name_father, lang.ui_name_mother],
-            hotGpp: myDataGpp.map(function (r) { return r.Name; }),
-            hotGpm: myDataGpm.map(function (r) { return r.Name; })
+    /* ---------- helpers ---------- */
+
+    function L(key) { return (typeof lang !== 'undefined' && lang[key] != null) ? lang[key] : key; }
+    function thisYear() { return new Date().getFullYear(); }
+    function msg(key) { return L(key).replace('%Y', thisYear()); }
+    function isEmpty(v) { return v === null || v === undefined || v === ''; }
+
+    // number typed in a field: null when empty, NaN when it is text ("environ 50")
+    function num(v) {
+        if (isEmpty(v)) return null;
+        if (typeof v === 'number') return v;
+        var s = String(v).trim().replace(',', '.');
+        return /^-?\d+(\.\d+)?$/.test(s) ? parseFloat(s) : NaN;
+    }
+    function validYear(y) { return y !== null && !isNaN(y) && y >= 1900 && y <= thisYear(); }
+
+    // "Age or year of diagnosis": a value above 200 is a year
+    window.diagnosisFrom = function (value, yob) {
+        var v = num(value), y = num(yob);
+        if (v === null) return {};
+        if (isNaN(v)) return {age: value};                 // text: kept as typed
+        var hasYob = y !== null && !isNaN(y);
+        if (v <= 200) return hasYob ? {age: v, year: y + v} : {age: v};
+        return hasYob ? {age: v - y, year: v} : {year: v};
+    };
+
+    // year of birth of the patient, from the date of birth (dd/mm/yyyy)
+    function indexYob() {
+        var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec($('#dbirth').val() || '');
+        if (!m) return null;
+        var y = Number(m[3]), mo = Number(m[2]), d = Number(m[1]);
+        var date = new Date(y, mo - 1, d);
+        if (date.getMonth() !== mo - 1 || date.getDate() !== d || !validYear(y)) return null;
+        return y;
+    }
+
+    function sexOf(r) { return r && (r.Sex === 'M' || r.Sex === 'F') ? r.Sex : 'U'; }
+
+    // Name of a relative in the patient's language: "Fille", "Oncle maternel"... or neutral when the sex is unknown
+    function relativeLabel(group, sex) {
+        if (sex && sex !== 'U' && lang['ui_rel_' + group + '_' + sex]) return lang['ui_rel_' + group + '_' + sex];
+        return lang['ui_rel_' + group] || group;
+    }
+
+    /* ---------- validation (messages under the fields) ---------- */
+
+    function vAge(v, r) {
+        var n = num(v);
+        if (n === null) return null;
+        if (isNaN(n)) return msg('ui_v_number');
+        if (n < 0 || n > 120) return msg('ui_v_age');
+        return null;
+    }
+
+    function parentYob(group) {
+        if (typeof hotParents === 'undefined') return null;
+        var y = num(hotParents.getDataAtRowProp(group === 'gpp' ? 0 : 1, 'Yob'));
+        return validYear(y) ? y : null;
+    }
+
+    function vYob(group) {
+        return function (v, r) {
+            var n = num(v);
+            if (n === null) return null;
+            if (isNaN(n)) return msg('ui_v_number');
+            if (!validYear(n)) return msg('ui_v_year');
+            var iy = indexYob();
+            if (group === 'children' && iy !== null && n < iy + 12) return msg('ui_v_child');
+            if (group === 'parents' && iy !== null && n > iy - 12) return msg('ui_v_parent');
+            if (group === 'gpp' || group === 'gpm') {
+                var p = parentYob(group), ref = p !== null ? p : (iy !== null ? iy - 12 : null);
+                if (ref !== null && n > ref - 12) return msg('ui_v_grandparent');
+            }
+            return null;
         };
     }
-    window.onLanguageChanged = function () {
-        if (typeof hotParents === 'undefined' || typeof hotParents.updateHeaders !== 'function') return; // cards only
-        let relatives = colChildren_header.concat(colCancer_header2);
-        hotCancer.updateHeaders(colCancer_header);
-        [hotChildren, hotSiblings, hotParents, hotGpp, hotFatherSiblings, hotGpm, hotMotherSiblings]
-            .forEach(function (t) { t.updateHeaders(relatives); });
-        let fresh = currentDefaultNames(), tables = {hotParents: hotParents, hotGpp: hotGpp, hotGpm: hotGpm};
-        Object.keys(tables).forEach(function (k) {
-            fresh[k].forEach(function (name, i) {
-                if (defaultNames && tables[k].getDataAtRowProp(i, 'Name') === defaultNames[k][i])
-                    tables[k].setDataAtRowProp(i, 'Name', name, 'language');
-            });
-        });
-        defaultNames = fresh;
-    };
-    if (typeof lang !== 'undefined' && typeof myDataGpp !== 'undefined') defaultNames = currentDefaultNames();
 
-    /* actualisation de l'arbre au fur et à mesure */
-    //dbirth placeholder
+    // age or year of diagnosis, checked against the year of birth and the age of the person
+    function checkDiagnosis(v, yob, age) {
+        var n = num(v);
+        if (n === null) return null;
+        if (isNaN(n)) return msg('ui_v_number');
+        var y = num(yob), a = num(age);
+        if (n <= 200) {
+            if (n < 0 || n > 120) return msg('ui_v_age');
+            if (a !== null && !isNaN(a) && n > a) return msg('ui_v_dx_age');
+            if (validYear(y) && y + n > thisYear()) return msg('ui_v_dx_future');
+        } else {
+            if (n > thisYear()) return msg('ui_v_dx_future');
+            if (n < 1900) return msg('ui_v_year');
+            if (validYear(y) && n < y) return msg('ui_v_dx_birth');
+        }
+        return null;
+    }
+    function vDx(v, r) { return checkDiagnosis(v, r.Yob, r.Age); }
+    function vDxIndex(v) { var iy = indexYob(); return checkDiagnosis(v, iy, iy !== null ? thisYear() - iy : null); }
+
+    /* ---------- tables ---------- */
+
+    var yesNo = [{value: '1', label: function () { return L('yes'); }}, {value: '0', label: function () { return L('no'); }}];
+    var sexes = [{value: 'M', label: function () { return L('ui_man'); }}, {value: 'F', label: function () { return L('ui_woman'); }}];
+
+    function relativeColumns(group, fixedSex) {
+        var cancer1 = function (r) { return r.K1 === '1'; };
+        var cancer2 = function (r) { return r.K1 === '1' && r.K2 === '1'; };
+        return [
+            {data: 'Name', label: function () { return L('ui_f_name'); }},
+            {data: 'Sex', type: 'radio', options: sexes, label: function () { return L('ui_f_sex'); },
+                visible: function () { return !fixedSex; }},
+            {data: 'Deceased', type: 'checkbox', checkedTemplate: '1', uncheckedTemplate: '0', label: function () { return L('ui_f_deceased'); }},
+            {data: 'Age', type: 'numeric', validate: vAge,
+                label: function (r) { return L(r.Deceased == '1' ? 'ui_f_age_death' : 'ui_f_age'); }},
+            {data: 'Yob', type: 'numeric', validate: vYob(group), label: function () { return L('ui_f_yob'); }},
+            {data: 'K1', type: 'radio', options: yesNo, wide: true,
+                label: function (r) { return L('ui_q_cancer_' + group + '_' + sexOf(r)); }},
+            {data: 'Disease1', visible: cancer1, label: function () { return L('ui_f_loc'); }},
+            {data: 'Dx1', type: 'numeric', visible: cancer1, validate: vDx, label: function () { return L('ui_f_dx'); }},
+            {data: 'K2', type: 'radio', options: yesNo, wide: true, visible: cancer1,
+                label: function (r) { return L('ui_q_another_' + sexOf(r)); }},
+            {data: 'Disease2', visible: cancer2, label: function () { return L('ui_f_loc2'); }},
+            {data: 'Dx2', type: 'numeric', visible: cancer2, validate: vDx, label: function () { return L('ui_f_dx'); }},
+            {data: 'comment', type: 'text', label: function () { return L('ui_f_comment'); }}
+        ];
+    }
+
+    function newRelative(group, k) {
+        return {FamID: '1', Name: relativeLabel(group) + ' ' + k, NameAuto: true, Sex: null, Deceased: '0', Age: null, Yob: null,
+            K1: '0', Disease1: null, Dx1: null, K2: '0', Disease2: null, Dx2: null, comment: null};
+    }
+    function withQuestions(rows) {
+        return rows.map(function (r) { return $.extend({K1: '0', K2: '0'}, r); });
+    }
+
+    function makeTable(id, group, data, fixedSex) {
+        return new PersonTable(document.getElementById(id), {
+            diseaseProps: ['Disease1', 'Disease2'],
+            data: data,
+            columns: relativeColumns(group, fixedSex)
+        });
+    }
+
+    // the patient's own cancers: one block, then "Have you had another cancer?"
+    window.hotCancer = new PersonTable(document.getElementById('hotCancer'), {
+        layout: 'rows', diseaseProps: ['Cancer'],
+        data: [{Cancer: null, Dx: null, More: '0'}],
+        columns: [
+            {data: 'Cancer', label: function () { return L('ui_f_loc'); }},
+            {data: 'Dx', type: 'numeric', validate: vDxIndex, label: function () { return L('ui_f_dx'); }},
+            {data: 'More', type: 'radio', options: yesNo, wide: true, label: function () { return L('ui_another_cancer'); }}
+        ]
+    });
+
+    var groups = {
+        children:       {table: 'hotChildren',       data: []},
+        siblings:       {table: 'hotSiblings',       data: []},
+        fatherSiblings: {table: 'hotFatherSiblings', data: []},
+        motherSiblings: {table: 'hotMotherSiblings', data: []}
+    };
+    Object.keys(groups).forEach(function (g) { window[groups[g].table] = makeTable(groups[g].table, g, []); });
+
+    window.hotParents = makeTable('hotParents', 'parents', withQuestions([
+        {"FamID": "1","Name": lang.ui_name_father,"IndivID": "2","FathID": "4","MothID": "5","Sex": "M","Affected":"1","Deceased":"0"},
+        {"FamID": "1","Name": lang.ui_name_mother,"IndivID": "3","FathID": "6","MothID": "7","Sex": "F","Affected":"1","Deceased":"0"}
+    ]), true);
+    window.hotGpp = makeTable('hotGpp', 'gpp', withQuestions(myDataGpp), true);
+    window.hotGpm = makeTable('hotGpm', 'gpm', withQuestions(myDataGpm), true);
+
+    var allRelatives = function () {
+        return [hotChildren, hotSiblings, hotParents, hotGpp, hotFatherSiblings, hotGpm, hotMotherSiblings];
+    };
+    function refreshAll() { hotCancer.refresh(); allRelatives().forEach(function (t) { t.refresh(); }); }
+
+    /* ---------- age <-> year of birth, default names ---------- */
+
+    function addRelativeHooks(table, group) {
+        table.addHook('afterChange', function (changes, source) {
+            if (!changes || source !== 'edit') return;
+            var row = changes[0][0], prop = changes[0][1], value = changes[0][3], r = table.data[row];
+            if (!r) return;
+            // Age <-> year of birth (not for a deceased person: the age is the age at death)
+            if ((prop === 'Age' || prop === 'Yob') && r.Deceased != '1') {
+                var n = num(value), Y = thisYear();
+                if (prop === 'Age' && n !== null && !isNaN(n) && n >= 0 && n <= 120) table.setDataAtRowProp(row, 'Yob', Y - n, 'sync');
+                if (prop === 'Yob' && validYear(n)) table.setDataAtRowProp(row, 'Age', Y - n, 'sync');
+            }
+            // a name typed by the patient is kept; a default name follows the sex
+            if (prop === 'Name') table.setDataAtRowProp(row, 'NameAuto', false, 'sync');
+            if (prop === 'Sex' && r.NameAuto && groups[group]) table.setDataAtRowProp(row, 'Name', relativeLabel(group, r.Sex) + ' ' + (row + 1), 'sync');
+            // the parents' years of birth are checked against the grandparents'
+            if (group === 'parents' && (prop === 'Yob' || prop === 'Age')) { hotGpp.refresh(); hotGpm.refresh(); }
+        });
+    }
+    Object.keys(groups).forEach(function (g) { addRelativeHooks(window[groups[g].table], g); });
+    addRelativeHooks(hotParents, 'parents');
+    addRelativeHooks(hotGpp, 'gpp');
+    addRelativeHooks(hotGpm, 'gpm');
+
+    // "Have you had another cancer?": yes adds a block, no removes the next ones
+    hotCancer.addHook('afterChange', function (changes, source) {
+        if (!changes || source !== 'edit' || changes[0][1] !== 'More') return;
+        var row = changes[0][0], data = hotCancer.getSourceData();
+        if (changes[0][3] === '1') {
+            if (row === data.length - 1) {
+                data.push({Cancer: null, Dx: null, More: '0'});
+                hotCancer.loadData(data);
+            }
+        } else {
+            var removed = data.slice(row + 1);
+            if (!removed.length) return;
+            var filled = removed.some(function (r) { return !isEmpty(r.Cancer) || !isEmpty(r.Dx); });
+            if (filled && !confirm(L('ui_confirm_remove'))) { hotCancer.setDataAtRowProp(row, 'More', '1', 'sync'); return; }
+            hotCancer.loadData(data.slice(0, row + 1));
+        }
+    });
+
+    /* ---------- number of relatives ---------- */
+
+    function isFilled(r) {
+        return r.NameAuto === false || r.Deceased == '1' || r.K1 === '1' ||
+            ['Sex', 'Age', 'Yob', 'Disease1', 'Dx1', 'Disease2', 'Dx2', 'comment'].some(function (k) { return !isEmpty(r[k]); });
+    }
+
+    function setCount(group, n) {
+        var table = window[groups[group].table], data = table.getSourceData();
+        if (n > data.length) {
+            for (var k = data.length + 1; k <= n; k++) data.push(newRelative(group, k));
+        } else if (n < data.length) {
+            if (data.slice(n).some(isFilled) && !confirm(L('ui_confirm_remove'))) {
+                $('#' + group + '_input').val(data.length);
+                return;
+            }
+            data = data.slice(0, n);
+        } else return;
+        table.loadData(data);
+    }
+
+    function groupInit(group) {
+        var div = $('#' + group + '_div'), tableDiv = $('#' + group + '_table_div');
+        div.hide(); tableDiv.hide();
+        $('input[type=radio][name=' + group + '_radio]').on('change', function () {
+            var yes = $(this).val() === group + '_Yes';
+            div.toggle(yes);
+            tableDiv.toggle(yes && window[groups[group].table].countRows() > 0);
+        });
+        $('#' + group + '_input').on('change', function () {
+            var n = Math.round(Number($(this).val()));
+            if ($(this).val() === '' || isNaN(n)) return;
+            n = Math.max(0, Math.min(20, n));
+            $(this).val(n);
+            setCount(group, n);
+            tableDiv.toggle(window[groups[group].table].countRows() > 0);
+        });
+    }
+    Object.keys(groups).forEach(groupInit);
+
+    // relatives of a group, as the tool expects them; none when the patient answered "no"
+    window.patientRelatives = function (group) {
+        var radio = $('input[name=' + group + '_radio]');
+        if (radio.length && radio.filter(':checked').val() !== group + '_Yes') return [];
+        var table = groups[group] ? window[groups[group].table] : {parents: hotParents, gpp: hotGpp, gpm: hotGpm}[group];
+        return table.getSourceData().map(relativeForPedigree);
+    };
+
+    function relativeForPedigree(r) {
+        if (r.K1 === '1') {
+            var d1 = diagnosisFrom(r.Dx1, r.Yob);
+            if (d1.age !== undefined) r.Age1 = d1.age;
+            if (d1.year !== undefined) r.Year1 = d1.year;
+        } else { delete r.Disease1; }
+        if (r.K1 === '1' && r.K2 === '1') {
+            var d2 = diagnosisFrom(r.Dx2, r.Yob);
+            if (d2.age !== undefined) r.Age2 = d2.age;
+        } else { delete r.Disease2; }
+        if (r.Sex !== 'M' && r.Sex !== 'F') r.Sex = 'U';
+        ['K1', 'K2', 'Dx1', 'Dx2', 'NameAuto'].forEach(function (k) { delete r[k]; });
+        return r;
+    }
+
+    // the patient's own cancers, as Disease1 / Age1, Disease2 / Age2...
+    window.patientCancers = function () {
+        if ($('input[name=cancer_radio]:checked').val() !== 'cancer_Yes') return {};
+        var out = {}, k = 0, iy = indexYob();
+        hotCancer.getSourceData().forEach(function (r) {
+            if (isEmpty(r.Cancer)) return;
+            k++;
+            var d = diagnosisFrom(r.Dx, iy);
+            out['Disease' + k] = r.Cancer;
+            out['Age' + k] = d.age !== undefined ? d.age : null;
+        });
+        return out;
+    };
+
+    /* ---------- patient's own section ---------- */
+
     $("#dbirth").inputmask({
         alias: "datetime", inputFormat: "dd/mm/yyyy", placeholder: "jj/mm/aaaa"
-    })
+    });
+    $('#dbirth').on('change blur', function () {
+        var v = $(this).val(), bad = v !== '' && /\d/.test(v) && indexYob() === null;
+        $('#dbirth_msg').text(bad ? msg('ui_v_dbirth') : '').toggle(bad);
+        $(this).toggleClass('pt-invalid', bad);
+        refreshAll();
+    });
 
-    //initialize panel
-    cancer_init();
-    children_init();
-    siblings_init();
-    parents_init();
-    gpp_init();
-    fatherSiblings_init();
-    gpm_init();
-    motherSiblings_init();
+    $("#cancer_table_div").hide();
+    $('input[type=radio][name=cancer_radio]').on('change', function () {
+        $("#cancer_table_div").toggle($(this).val() === 'cancer_Yes');
+    });
 
-    //set variables
-    var myDataChildren_new = [];
+    /* ---------- cancer list ---------- */
 
-    // Add hooks to update age and yob
-    var setter = false;
-    var setterDisease = false;
+    var selectedRow, selectedColumn, hotSelectedTable;
 
-    hotCancer.addHook('afterChange',
-        function(changes, source) {
-            let dbirth = $( "#dbirth" ).val();
-            if(dbirth != undefined)
-                syncAgeYob(changes, source, 'Age', 'Year', hotCancer, 2, dbirth); //based on dbirth
-        }
-    );
-    //hotChildren
-    hotChildren.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotChildren);
-        }
-    );
-
-    // hotSiblings
-    hotSiblings.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotSiblings);
-        }
-    );
-
-    // hotParents
-    hotParents.addHook('afterChange',
-    function(changes, source) {
-        syncAgeYob(changes, source, 'Age', 'Yob', hotParents);
-    }
-    );
-
-    // hotGpp
-    hotGpp.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotGpp);
-        }
-    );
-
-    // hotGpm
-    hotGpm.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotGpm);
-        }
-    );
-
-    // hotFatherSiblings
-    hotFatherSiblings.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotFatherSiblings);
-        }
-    );
-
-    // hotMotherSiblings
-    hotMotherSiblings.addHook('afterChange',
-        function(changes, source) {
-            syncAgeYob(changes, source, 'Age', 'Yob', hotMotherSiblings);
-        }
-    );
-
-    //update age and yob
-    function syncAgeYob(changes, source, colAge='Age', colYear='Yob', hotTable, deceasedIndex=2, refDate) {
-        if(changes != null) {
-            // local variables: these used to be implicit globals, shared between nested calls
-            let col = changes[0][1];
-            let row = changes[0][0];
-            let dead = hotTable.getSourceDataAtCell(row, deceasedIndex)
-            if((source == 'edit') && (changes.length == 1)) {
-                let newValue = changes[0][3];
-                // Only a number can be synchronised. A cleared field (null) or text such as
-                // "environ 50" must leave the other field as it is (it used to set the year
-                // of birth to the current year, or erase it).
-                if (typeof newValue !== 'number' || isNaN(newValue)) return;
-                if ((col == colAge || col == colYear) && (dead != 1)) {
-                    if(refDate==undefined) {
-                        var today = new Date();
-                        var y = today.getFullYear();
-                    }else{
-                        let d = refDate.split('/')[0],
-                            m = refDate.split('/')[1],
-                            year = refDate.split('/')[2];
-                        var refYear=new Date(year, m, d);
-                        var y = refYear.getFullYear();
-                        if(year==undefined) return;
-                    }
-                    if (!setter) {
-                        setter = true;
-                        let colSync = (col == colAge ? colYear : colAge);
-                        let value = (refDate==undefined ? y-newValue : (col == colAge ? newValue+y : newValue-y));
-                        hotTable.setDataAtRowProp(row, colSync, value);
-                    } else {
-                        setter = false;
-                    }
-                }
-                if (col == "Age1" || col == "Year1") {
-                    // year of birth: a number when typed in the table, text when it comes
-                    // from the relative dialog ("1990"), so convert it before adding
-                    let y = Number(hotTable.getDataAtRowProp(row, 'Yob'));
-                    let yob = hotTable.getDataAtRowProp(row, 'Yob');
-                    if(yob !== "" && yob != null && !isNaN(y)) {
-                        if (!setterDisease) {
-                            setterDisease = true;
-                            if (col == "Age1") // year of diagnosis = year of birth + age at diagnosis
-                                hotTable.setDataAtRowProp(row, 'Year1', String(y + newValue));
-                            else               // age at diagnosis = year of diagnosis - year of birth
-                                hotTable.setDataAtRowProp(row, 'Age1', String(newValue - y));
-                        } else {
-                            setterDisease = false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    function cancer_init() {
-        $("#cancer_table_div").hide();
-        $('input[type=radio][name=cancer_radio]').on('change', function() {
-            switch($(this).val()) {
-                case 'cancer_Yes':
-                    $("#cancer_table_div").show();
-                    hotCancer.render();
-                    break;
-
-                case 'cancer_No':
-                    $("#cancer_table_div").hide();
-                    break;
-            }
-        });
-    
-        $("#cancer_input").on("blur", function () {
-            $("#cancer_table_div").show();
-        });
-        $("#collapseCancer").click(function () {
-            window.setTimeout(()=>{hotCancer.render();});
-        });
-
-    }
-
-    function children_init() {
-        $("#children_div").hide();
-        $("#children_table_div").hide();
-    
-        $('input[type=radio][name=children_radio]').on('change', function() {
-            switch($(this).val()) {
-                case 'children_Yes':
-                    $("#children_div").show();
-                    hotChildren.render()
-                    break;
-
-                case 'children_No':
-                    $("#children_div").hide();
-                    $("#children_table_div").hide();
-                    break;
-            }
-        });
-    
-        $("#children_input").on("blur", function () {
-            var nchild = parseFloat($("#children_input").prop("value"));
-
-            if(!isNaN(nchild)) {
-                Indindex = 1;
-                IndObj=[];  //reset IndObj
-                loadInd(Indindex, nchild, hotChildren.loadData, 'children');
-            }
-
-            $("#children_table_div").show();
-            window.setTimeout(()=>{hotChildren.render();});
-
-        });
-
-        $("#collapseChildren").click(function () {
-            window.setTimeout(()=>{hotChildren.render();});
-        });
-    }
-    
-    function siblings_init() {
-        $("#siblings_div").hide();
-        $("#siblings_table_div").hide();
-    
-        $('input[type=radio][name=siblings_radio]').on('change', function() {
-            switch($(this).val()) {
-                case 'siblings_Yes':
-                    $("#siblings_div").show();
-
-                    hotSiblings.render();
-                    break;
-
-                case 'siblings_No':
-                    $("#siblings_div").hide();
-                    $("#siblings_table_div").hide();
-                    break;
-            }
-        });
-    
-        $("#siblings_input").on("blur", function () {
-            var nSiblings = parseFloat($("#siblings_input").prop("value"));
-            if(!isNaN(nSiblings)) {
-                Indindex = 1;
-                IndObj=[];  //reset IndObj
-                loadInd(Indindex, nSiblings, hotSiblings.loadData, 'siblings');
-            }
-            $("#siblings_table_div").show();
-            hotSiblings.render();
-
-        });
-        $("#collapseSiblings").click(function () {
-            window.setTimeout(()=>{hotSiblings.render();});
-        });
-
-    }
-    function parents_init() {
-        $("#collapseParents").click(function () {
-            window.setTimeout(()=>{hotParents.render();});
-        });
-    }
-
-    function gpp_init() {
-        $("#collapseGpp").click(function () {
-            window.setTimeout(()=>{hotGpp.render();});
-            window.setTimeout(()=>{hotFatherSiblings.render();});
-        });
-    }
-
-    function fatherSiblings_init() {
-        $("#fatherSiblings_div").hide();
-        $("#fatherSiblings_table_div").hide();
-    
-        $('input[type=radio][name=fatherSiblings_radio]').on('change', function() {
-            switch($(this).val()) {
-                case 'fatherSiblings_Yes':
-                    $("#fatherSiblings_div").show();
-                    hotFatherSiblings.render();
-                    break;
-
-                case 'fatherSiblings_No':
-                    $("#fatherSiblings_div").hide();
-                    $("#fatherSiblings_table_div").hide();
-                    break;
-            }
-        });
-    
-        $("#fatherSiblings_input").on("blur", function () {
-            var nFatherSiblings = parseFloat($("#fatherSiblings_input").prop("value"));
-            if(!isNaN(nFatherSiblings)) {
-                Indindex = 1;
-                IndObj=[];  //reset IndObj
-                loadInd(Indindex, nFatherSiblings, hotFatherSiblings.loadData, 'fatherSiblings');
-            }
-            $("#fatherSiblings_table_div").show();
-            hotFatherSiblings.render();
-
-        });
-    }
-
-    function gpm_init() {
-        $("#collapseGpm").click(function () {
-            window.setTimeout(()=>{hotGpm.render();});
-            window.setTimeout(()=>{hotMotherSiblings.render();});
-        });
-    }
-
-    function motherSiblings_init() {
-        $("#motherSiblings_div").hide();
-        $("#motherSiblings_table_div").hide();
-    
-        $('input[type=radio][name=motherSiblings_radio]').on('change', function() {
-            switch($(this).val()) {
-                case 'motherSiblings_Yes':
-                    $("#motherSiblings_div").show();
-                    hotMotherSiblings.render();
-                    break;
-
-                case 'motherSiblings_No':
-                    $("#motherSiblings_div").hide();
-                    $("#motherSiblings_table_div").hide();
-                    break;
-            }
-        });
-    
-        $("#motherSiblings_input").on("blur", function () {
-            var nMotherSiblings = parseFloat($("#motherSiblings_input").prop("value"));
-            if(!isNaN(nMotherSiblings)) {
-                Indindex = 1;
-                IndObj=[];  //reset IndObj
-                loadInd(Indindex, nMotherSiblings, hotMotherSiblings.loadData, 'motherSiblings');
-            }
-            $("#motherSiblings_table_div").show();
-            hotMotherSiblings.render();
-        });
-    }
-
-    //add popup div to select cancer type
-    // define variable
-    var selectedRow;
-    var selectedColumn;
-    var dialogCancerList;
-    var colDisease;
-    var hotSelectedTable;
-    var IndDiseaseInput;
-
-    dialogCancerList = $( "#cancerList2" ).dialog({
+    var dialogCancerList = $( "#cancerList2" ).dialog({
         autoOpen: false,
         classes: {
             "ui-dialog": "custom-background",
@@ -373,381 +353,75 @@ $(document).ready(function(){
         },
         width: ($(window).width() > 400 ? 260 : $(window).width()- 30),
         maxHeight: 700,
-        title: (typeof lang !== 'undefined' && lang.ui_cancer_list) || 'Localisation du cancer',
-    })
-    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-
-    var html_cancerListDialog =
-    "<form>"
-    +    "<fieldset>"
-
-    diseases=onco_full();
-
-    $.each(diseases, function(k) {
-        disease_name = capitaliseFirstLetter(cleanDiseaseText(diseases[k]));
-
-        html_cancerListDialog += 
-                "<div class='form-check'>"
-        +            "<label class='form-check-label font-normal'>"
-        +                "<input type='radio' class='form-check-input' name='cancerListradio'"
-        +                    "value='" + diseases[k] + "'" + "> " + disease_name
-        +            "</label>"
-        +        "</div>"
+        title: L('ui_cancer_list'),
     });
 
-    html_cancerListDialog +=
-           "<div class='form-check'>"
-    +            "<label class='form-check-label font-normal'>"
-    +               "<input type='radio' class='form-check-input' name='cancerListradio'" 
-    +               "value='" + "Autre" + "'" + "> " + ((typeof lang !== 'undefined' && lang.ui_other) ? lang.ui_other.trim() : "Autre") // value stays "Autre"
-    +            "</label>"
-    +        "</div>"
-    +  "</fieldset>"
-    + "</form>"
-    dialogCancerList.html(html_cancerListDialog);
+    var html = "<form><fieldset>";
+    diseases = onco_full();
+    $.each(diseases, function (k) {
+        html += "<div class='form-check'><label class='form-check-label font-normal'>"
+            + "<input type='radio' class='form-check-input' name='cancerListradio' value='" + diseases[k] + "'> "
+            + capitaliseFirstLetter(cleanDiseaseText(diseases[k])) + "</label></div>";
+    });
+    html += "<div class='form-check'><label class='form-check-label font-normal'>"
+        + "<input type='radio' class='form-check-input' name='cancerListradio' value='Autre'> " + L('ui_other').trim() // value stays "Autre"
+        + "</label></div></fieldset></form>";
+    dialogCancerList.html(html);
 
-    openDialogCancerList = function(SelectedSex) {
-        if(SelectedSex=='M') {
-            $('input[name=cancerListradio][value='+ onco_full()[2] + ']').attr("disabled",true); //ovarian
-            $('input[name=cancerListradio][value='+ onco_full()[8] + ']').attr("disabled",true); //uterus
-            $('input[name=cancerListradio][value='+ onco_full()[3] + ']').attr("disabled",false); //prostate
-        } else if(SelectedSex=='F') {
-            $('input[name=cancerListradio][value='+ onco_full()[3] + ']').attr("disabled",true); //prostate
-            $('input[name=cancerListradio][value='+ onco_full()[2] + ']').attr("disabled",false); //ovarian
-            $('input[name=cancerListradio][value='+ onco_full()[8] + ']').attr("disabled",false); //uterus
-        }
+    window.openDialogCancerList = function (SelectedSex) {
+        var ovary = onco_full()[2], prostate = onco_full()[3], uterus = onco_full()[8];
+        $('input[name=cancerListradio][value=' + ovary + ']').attr("disabled", SelectedSex == 'M');
+        $('input[name=cancerListradio][value=' + uterus + ']').attr("disabled", SelectedSex == 'M');
+        $('input[name=cancerListradio][value=' + prostate + ']').attr("disabled", SelectedSex == 'F');
         dialogCancerList.dialog( "open" );
-    }
+    };
 
-    $('input[name="cancerListradio"]').on("click", function(e) {
-        if(IndDiseaseInput != null && IndDiseaseInput != "") { //if in dialog
-            cancerType = $('input[name="cancerListradio"]:checked').val();
-            if(cancerType != undefined) {
-                $( "#"+IndDiseaseInput ).val(cancerType);
-                $('input[name="cancerListradio"]:checked').prop('checked', false);
-                IndDiseaseInput = null;
-            }
-        } else {
-            updateDiseasecol(hotSelectedTable, selectedRow, selectedColumn);
-        }
-
-        dialogCancerList.dialog( "close" );
-    })
-
-    // hotCancer adHook
-    hotCancer.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            colDisease = "Cancer";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotSelectedTable =  this
-                let SelectedSex = $('input[name="index_sex"]:checked').val(); 
-                openDialogCancerList(SelectedSex);
-            }
-            preventScrolling.value = true;
-        }
-    )
-
-    // hotChildren adHook
-    hotChildren.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            colDisease = "Disease1";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotSelectedTable =  this
-                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-                openDialogCancerList(SelectedSex);
-            }
-            preventScrolling.value = true;
-        }
-    )
-
-    
-    // showDialogCancerList(hotSiblings, "Disease1");
-    hotSiblings.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            colDisease = "Disease1";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotSelectedTable =  this
-                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-                openDialogCancerList(SelectedSex);
-            }
-            preventScrolling.value = true;
-        }
-    )
-
-    // showDialogCancerList(hotParents, "Disease1");
-    hotParents.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            colDisease = "Disease1";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotSelectedTable =  this
-                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-                openDialogCancerList(SelectedSex);
-            }
-            preventScrolling.value = true;
-        }
-    )
-
-    // showDialogCancerList(hotGpp, "Disease1");
-    hotGpp.addHook('afterSelectionEndByProp',
-        function(row, column, preventScrolling) {
-            colDisease = "Disease1";
-            selectedRow = row;
-            selectedColumn = column
-            if(selectedColumn == colDisease) {
-                hotSelectedTable =  this
-                let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-                openDialogCancerList(SelectedSex);
-            }
-            preventScrolling.value = true;
-        }
-    )
-
-    // showDialogCancerList(hotFatherSiblings, "Disease1");
-    hotFatherSiblings.addHook('afterSelectionEndByProp',
-    function(row, column, preventScrolling) {
-        colDisease = "Disease1";
-        selectedRow = row;
-        selectedColumn = column
-        if(selectedColumn == colDisease) {
-            hotSelectedTable =  this
-            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-            openDialogCancerList(SelectedSex);
-    }
-        preventScrolling.value = true;
-    }
-    )
-
-    // showDialogCancerList(hotGpm, "Disease1");
-    hotGpm.addHook('afterSelectionEndByProp',
-    function(row, column, preventScrolling) {
-        colDisease = "Disease1";
-        selectedRow = row;
-        selectedColumn = column
-        if(selectedColumn == colDisease) {
-            hotSelectedTable =  this
-            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-            openDialogCancerList(SelectedSex);
-    }
-        preventScrolling.value = true;
-    }
-    )
-
-    // showDialogCancerList(hotMotherSiblings, "Disease1");
-    hotMotherSiblings.addHook('afterSelectionEndByProp',
-    function(row, column, preventScrolling) {
-        colDisease = "Disease1";
-        selectedRow = row;
-        selectedColumn = column
-        if(selectedColumn == colDisease) {
-            hotSelectedTable =  this
-            let SelectedSex = hotSelectedTable.getDataAtRowProp(selectedRow, 'Sex');
-            openDialogCancerList(SelectedSex);
-    }
-        preventScrolling.value = true;
-    }
-    )
-
-    function updateDiseasecol(hotSelectedTable, row, column) {
-        let cancerType = $('input[name="cancerListradio"]:checked').val();
-        if(cancerType != undefined) {
-            hotSelectedTable.setDataAtRowProp(row, column, cancerType);
+    $('input[name="cancerListradio"]').on("click", function () {
+        var cancerType = $('input[name="cancerListradio"]:checked').val();
+        if (cancerType != undefined && hotSelectedTable) {
+            hotSelectedTable.setDataAtRowProp(selectedRow, selectedColumn, cancerType);
             $('input[name="cancerListradio"]:checked').prop('checked', false);
         }
-    }
+        dialogCancerList.dialog( "close" );
+    });
 
-//pop up dialog
-    // Set dialog form
-    var dialogInd, obj, index;
-    dialogInd = $( "#defineInd" ).dialog({
-        autoOpen: false,
-        classes: {
-            "ui-dialog": "custom-background",
-            "ui-dialog-titlebar": "custom-theme",
-            "ui-dialog-title": "custom-theme text-center",
-            // "ui-dialog-titlebar-close":"custom-btn",
-            "ui-dialog-content": "custom-background",
-            "ui-dialog-buttonpane": "custom-background no-margin"
-        },
-        width: ($(window).width() > 800 ? 950 : $(window).width()- 30),
-        maxHeight: 700,
-        modal: true,
-        show: { effect: "slideDown", duration: 500 },
-        hide: { effect: "slideUp", duration: 300 }
-    })
-    $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-    $(".ui-dialog .ui-dialog-buttonpane button").addClass('no-margin-top');
-    defineInd_init();
-
-    //Set div hidding function
-    function defineInd_init() {
-        $("#deathyInd_div").hide();
-        $("#IndDisease1").hide();
-        $("#IndDisease2").hide();
-
-        //décés
-        $('input[type=radio][name=deadStatus]').on('change', function() {
-            switch($(this).val()) {
-                case '1':
-                    $("#deathyInd_div").show();
-                    break;
-
-                case '0':
-                    $("#deathyInd_div").hide();
-                    break;
-            }
+    [hotCancer].concat(allRelatives()).forEach(function (t) {
+        t.addHook('afterSelectionEndByProp', function (row, column) {
+            selectedRow = row; selectedColumn = column; hotSelectedTable = t;
+            var sex = t === hotCancer ? $('input[name="index_sex"]:checked').val() : t.getDataAtRowProp(row, 'Sex');
+            openDialogCancerList(sex);
         });
+    });
 
-        // cancer
-        $('input[type=radio][name=diseaseStatus]').on('change', function() {
-            switch($(this).val()) {
-                case '1':
-                    $("#IndDisease1").show();
-                    $("#IndDisease2").show();
-                    break;
+    /* ---------- language switch ---------- */
 
-                case '0':
-                    $("#IndDisease1").hide();
-                    $("#IndDisease2").hide();
-                    break;
-            }
-        });
-
-        //load disease dialog when click on cancer input
-        $('input[name=IndDisease1Input]').on('click', function() {
-            IndDiseaseInput = "IndDisease1Input"
-            let SelectedSex = $('input[name="sex"]:checked').val(); 
-            openDialogCancerList(SelectedSex);
-        });
-        $('input[name=IndDisease2Input]').on('click', function() {
-            IndDiseaseInput = "IndDisease2Input"
-            let SelectedSex = $('input[name="sex"]:checked').val(); 
-            openDialogCancerList(SelectedSex);
-        });
-        
-        //dialog disease
-        // 
-    }
-    
-    var IndObj=[];
-    var Indindex;
-    var nInd;
-
-    // Name of a relative in the patient's language: "Fille", "Oncle maternel"... or neutral when the sex is unknown
-    function relativeLabel(group, sex) {
-        if (typeof lang !== 'undefined') {
-            if (sex && lang['ui_rel_' + group + '_' + sex]) return lang['ui_rel_' + group + '_' + sex];
-            if (lang['ui_rel_' + group]) return lang['ui_rel_' + group];
-        }
-        return group;
-    }
-
-    // Empty the relative dialog. Done before EVERY relative, including the first one of a
-    // group: the values of the previous relative used to carry over to the next group.
-    function resetIndForm() {
-        document.getElementById("defineInd.frm").reset();
-        $("#deathyInd_div").hide();
-        $("#IndDisease1").hide();
-        $("#IndDisease2").hide();
-        IndDiseaseInput = null;
-    }
-
-    // The dialog asks for an "age or year of diagnosis": a value above 200 is a year
-    function diagnosis(value, yob) {
-        if (value === '' || value == null) return {};
-        let v = Number(value), y = Number(yob);
-        if (isNaN(v) || v <= 200) return {age: value};
-        return (yob !== '' && yob != null && !isNaN(y)) ? {age: String(v - y), year: v} : {year: v};
-    }
-
-    loadInd = function(Indindex, nInd, myCallback, group) {
-        if (Indindex == 1) resetIndForm();
-        // set title
-        dialogInd.dialog({
-            title: relativeLabel(group) + ' ' + Indindex
-        })
-        // set button
-        let buttons = {};
-        buttons[(typeof lang !== 'undefined' && lang.ui_ind_save) || "Enregistrer"] = function() {
-            safeInd(Indindex, nInd, myCallback, group);
+    // After a language switch: field labels of the cards, and default names nobody has changed
+    var defaultNames = null;
+    function currentDefaultNames() {
+        return {
+            hotParents: [lang.ui_name_father, lang.ui_name_mother],
+            hotGpp: myDataGpp.map(function (r) { return r.Name; }),
+            hotGpm: myDataGpm.map(function (r) { return r.Name; })
         };
-        dialogInd.dialog({ buttons: buttons })
-        $(".ui-dialog-buttonset .ui-button").addClass('custom-btn');
-
-        // open dialogInd
-        dialogInd.dialog( "open" );
     }
-
-    safeInd = function(Indindex, nInd, myCallback, group) {
-        let deadStatus = $('input[name="deadStatus"]:checked').val();
-        let sex = $('input[name="sex"]:checked').val();
-        let yobOrAge = $( "#yobIndInput" ).val();
-        var today = new Date();
-
-        // A deceased relative needs a YEAR of birth. This used to show a warning and then
-        // save the relative anyway with wrong values; now the dialog stays open.
-        if (deadStatus == 1 && yobOrAge !== '' && Number(yobOrAge) < 200) {
-            alert((typeof lang !== 'undefined' && lang.ui_alert_dead_yob) || "Pour une personne décédée, indiquez son année de naissance (et non son âge).");
-            return;
-        }
-
-        let ind = {
-            "FamID": "1",
-            "Name": relativeLabel(group, sex) + ' ' + Indindex,
-            "Sex": sex,
-            "Deceased":deadStatus};
-        IndObj.push(ind);
-
-        //Age and year of birth
-        if(deadStatus==1) {
-            let deathyIndInput = $( "#deathyIndInput" ).val();
-            deathyIndInput = (deathyIndInput>200 ? deathyIndInput-yobOrAge: deathyIndInput)
-            IndObj[Indindex-1]["Yob"] = yobOrAge;
-            IndObj[Indindex-1]["Age"] = deathyIndInput;
-        } else {
-            if(yobOrAge>200) {
-                IndObj[Indindex-1]["Yob"] = yobOrAge;
-                IndObj[Indindex-1]["Age"] = today.getFullYear() - yobOrAge;
-            } else {
-                IndObj[Indindex-1]["Yob"] = today.getFullYear() - yobOrAge;
-                IndObj[Indindex-1]["Age"] = yobOrAge;
-            };
-        };
-
-        //Diseases: only when "has had cancer" is answered yes (the fields stay filled when hidden)
-        if ($('input[name="diseaseStatus"]:checked').val() == '1') {
-            let yob = IndObj[Indindex-1]["Yob"];
-            let IndDisease1Input = $( "#IndDisease1Input" ).val();
-            let IndDisease2Input = $( "#IndDisease2Input" ).val();
-            let d1 = diagnosis($( "#IndDisease1Age" ).val(), yob);
-            let d2 = diagnosis($( "#IndDisease2Age" ).val(), yob);
-
-            if(IndDisease1Input!="") IndObj[Indindex-1]["Disease1"] = IndDisease1Input;
-            if(d1.age !== undefined) IndObj[Indindex-1]["Age1"] = d1.age;
-            if(d1.year !== undefined) IndObj[Indindex-1]["Year1"] = d1.year;
-            if(IndDisease2Input!="") IndObj[Indindex-1]["Disease2"] = IndDisease2Input;
-            if(d2.age !== undefined) IndObj[Indindex-1]["Age2"] = d2.age;
-        }
-
-        //Comment
-        addKeyToObject(IndObj, Indindex-1, 'comment', 'IndCommentInput')
-
-        dialogInd.dialog( "close" );
-
-        // load next form
-        if(Indindex < nInd) {
-            Indindex+=1;
-            resetIndForm();
-            loadInd(Indindex, nInd, myCallback, group);
-        } else {
-            myCallback(IndObj);
-        }
-    }
-})
+    window.onLanguageChanged = function () {
+        hotCancer.updateHeaders([]);
+        allRelatives().forEach(function (t) { t.updateHeaders([]); });
+        Object.keys(groups).forEach(function (g) {
+            var t = window[groups[g].table];
+            t.getSourceData().forEach(function (r, i) {
+                if (r.NameAuto) t.setDataAtRowProp(i, 'Name', relativeLabel(g, r.Sex) + ' ' + (i + 1), 'language');
+            });
+        });
+        var fresh = currentDefaultNames(), tables = {hotParents: hotParents, hotGpp: hotGpp, hotGpm: hotGpm};
+        Object.keys(tables).forEach(function (k) {
+            fresh[k].forEach(function (name, i) {
+                if (defaultNames && tables[k].getDataAtRowProp(i, 'Name') === defaultNames[k][i])
+                    tables[k].setDataAtRowProp(i, 'Name', name, 'language');
+            });
+        });
+        defaultNames = fresh;
+        dialogCancerList.dialog('option', 'title', L('ui_cancer_list'));
+    };
+    defaultNames = currentDefaultNames();
+});

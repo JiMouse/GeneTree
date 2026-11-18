@@ -16,9 +16,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 10px 14px;
-  align-items: end;
+  align-items: start;
 }
-.person-table-rows .pt-grid { grid-template-columns: 2fr 1fr 1fr; }
+.person-table-rows .pt-grid { grid-template-columns: 2fr 1fr; }
 
 .pt-field label {
   display: block;
@@ -39,8 +39,31 @@
 
 /* deceased tick box sits on the same baseline as the inputs */
 .pt-check { display: flex; align-items: center; gap: 8px; min-height: 34px; }
+.pt-grid > .pt-check { margin-top: 18px; } /* level with the inputs, below their labels */
 .pt-check input { width: 18px; height: 18px; margin: 0; flex: none; }
 .pt-check label { margin: 0; font-size: 13px; }
+
+/* buttons: sex, yes / no questions */
+.pt-radio-field .pt-label {
+  display: block;
+  margin: 0 0 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3d5368;
+  line-height: 1.25;
+}
+.pt-radios { display: flex; flex-wrap: wrap; gap: 6px 18px; min-height: 34px; align-items: center; }
+.pt-field .pt-radio { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-weight: normal; font-size: 13px; cursor: pointer; }
+.pt-field .pt-radio input { width: 16px; height: 16px; margin: 0; }
+/* a yes / no question is a question: larger, on its own line */
+.pt-wide.pt-radio-field { border-top: 1px dashed #dbe6f1; padding-top: 8px; }
+.pt-wide.pt-radio-field .pt-label { font-size: 13px; color: #002e5d; }
+
+.pt-field[data-prop=Sex], .pt-card .pt-disease-field { grid-column: span 2; }
+
+/* warning under a field: the value is kept */
+.pt-msg { margin-top: 3px; font-size: 12px; color: #b03a2e; line-height: 1.3; }
+#dbirth.pt-invalid { border-color: #c0392b; background: #fdf0ef; }
 
 /* cancer location: chosen from the list */
 .pt-disease[readonly] {

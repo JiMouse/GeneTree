@@ -890,27 +890,15 @@ $(document).ready(function() {
         };
 
         // index cancer
-        let cancerObj = hotCancer.getSourceData();
-        
-        for (let i = 0; i < cancerObj.length; i++) {
-            if(cancerObj[i]['Cancer'] != '' && cancerObj[i]['Cancer'] != null) {
-                indObj[indexRow]['Disease'+(i+1)]=cancerObj[i]['Cancer'];
-                indObj[indexRow]['Age'+(i+1)]=cancerObj[i]['Age'];
-            }
-        }
-        
-        //Add parents
-        let parentsObj = hotParents.getSourceData();
-        var famObj = indObj.concat(parentsObj);
+        $.extend(indObj[indexRow], patientCancers());
 
-        //Add grandfather and grand mother
-        let gppObj = hotGpp.getSourceData();
-        let gpmObj = hotGpm.getSourceData();
-        famObj = famObj.concat(gppObj).concat(gpmObj);
+        //Add parents and grandparents
+        var famObj = indObj.concat(patientRelatives('parents'))
+            .concat(patientRelatives('gpp')).concat(patientRelatives('gpm'));
         LastIndivID=7; //numbering start from last IndivID
 
         //children
-        let childrenObj = hotChildren.getSourceData();
+        let childrenObj = patientRelatives('children');
         if (childrenObj.length>0) {
             let ind;
 
@@ -933,45 +921,18 @@ $(document).ready(function() {
             }
         }
         famObj = famObj.concat(childrenObj);
-        
-        //Sibilings
-        let siblingsObj = hotSiblings.getSourceData();
-        if (siblingsObj.length>0) {
-            // add siblings
-            for (let i = 0; i < siblingsObj.length; i++) {
-                LastIndivID+=1
-                siblingsObj[i]["IndivID"]=LastIndivID;
-                siblingsObj[i]["FathID"]= "2";
-                siblingsObj[i]["MothID"]= "3";
-            }
-        }
-        famObj = famObj.concat(siblingsObj);
 
-        //Paternal familly
-        let fatherSiblingsObj = hotFatherSiblings.getSourceData();
-        if (fatherSiblingsObj.length>0) {
-            // add Fathersiblings
-            for (let i = 0; i < fatherSiblingsObj.length; i++) {
+        // siblings of the patient, of the father (grandparents 4 and 5), of the mother (6 and 7)
+        [['siblings', '2', '3'], ['fatherSiblings', '4', '5'], ['motherSiblings', '6', '7']].forEach(function (g) {
+            let rows = patientRelatives(g[0]);
+            for (let i = 0; i < rows.length; i++) {
                 LastIndivID+=1
-                fatherSiblingsObj[i]["IndivID"]=LastIndivID;
-                fatherSiblingsObj[i]["FathID"] = "4";
-                fatherSiblingsObj[i]["MothID"] = "5";
+                rows[i]["IndivID"]=LastIndivID;
+                rows[i]["FathID"]= g[1];
+                rows[i]["MothID"]= g[2];
             }
-        }
-        famObj = famObj.concat(fatherSiblingsObj);
-
-        //Maternal familly
-        let motherSiblingsObj = hotMotherSiblings.getSourceData();
-        if (motherSiblingsObj.length>0) {
-            // add motherSiblings
-            for (let i = 0; i < motherSiblingsObj.length; i++) {
-                LastIndivID+=1
-                motherSiblingsObj[i]["IndivID"]=LastIndivID;
-                motherSiblingsObj[i]["FathID"] = "6";
-                motherSiblingsObj[i]["MothID"] = "7";
-            }
-        }
-        famObj = famObj.concat(motherSiblingsObj);
+            famObj = famObj.concat(rows);
+        });
 
         return famObj
     };  
