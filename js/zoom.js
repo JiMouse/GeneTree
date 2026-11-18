@@ -46,12 +46,23 @@
         svg.transition().duration(50).call(zoom.scaleBy, scale);
     }
 
-    pzoom.scale_to_fit=function(opts, duration=700) {
+    // maxScale: never enlarge beyond it (a small family stays at its normal size)
+    pzoom.scale_to_fit=function(opts, duration=700, maxScale) {
         let d = get_dimensions(opts);
         let svg = d3.select("#"+opts.targetDiv).select("svg");
         let size = get_svg_size(svg);
         let f = (size.w-opts.symbol_size*2)/size.w;
         let k = (f / Math.max(d.wid/size.w, d.hgt/size.h));
+        if (maxScale !== undefined && k > maxScale) k = maxScale;
+        if (duration === 0) {   // at once, e.g. after each change of the patient's questionnaire
+            // room for the names beside the symbols and the lines of text below them
+            k = Math.min((size.w - opts.symbol_size*8)/Math.max(d.wid, 1), (size.h - opts.symbol_size*4)/Math.max(d.hgt, 1));
+            if (maxScale !== undefined && k > maxScale) k = maxScale;
+            if(k < opts.zoomIn) zoom.scaleExtent([k, opts.zoomOut]);
+            let c = get_pedigree_center(opts);
+            svg.call(zoom.transform, d3.zoomIdentity.translate(size.w/2, size.h/2).scale(k).translate(-c.x, -c.y));
+            return;
+        }
 
         if(k < opts.zoomIn) zoom.scaleExtent([k, opts.zoomOut]);
 

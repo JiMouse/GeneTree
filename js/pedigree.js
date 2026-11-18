@@ -819,8 +819,8 @@
 					}, 'indi_details');
 		}
 
-		//
-		widgets.addWidgets(opts, node);
+		// editing buttons around each person (none on a preview, e.g. the patient page)
+		if(!opts.preview) widgets.addWidgets(opts, node);
 
 		// links between partners
 		var clash_depth = {};

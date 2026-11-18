@@ -771,15 +771,17 @@ $(document).ready(function() {
     function loadFromHot(hotTable=hot) {
         loadFromObj(hotTable.getSourceData());
     }
-    function loadFromObj(hotData = hot.getSourceData()) {
+    // quiet: no alert when the family cannot be drawn (live drawing of the patient page)
+    function loadFromObj(hotData = hot.getSourceData(), quiet = false) {
+        const warn = quiet ? console.warn : alert;
         // load table and convert it
         let myDeepClone = JSON.stringify(hotData);
         var obj = JSON.parse(myDeepClone);
         try {
             obj = FormatToPedigreeJS(obj, true); //without
         } catch (error) { // inconsistent table (e.g. a parent's row deleted): say so, keep the drawing
-            alert(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
-            return;
+            warn(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
+            return false;
         }
         //TO DO: add clean level update as with Boadicea input.
 
@@ -823,14 +825,15 @@ $(document).ready(function() {
                     : (previousDataset ? JSON.parse(JSON.stringify(previousDataset, function (k, v) { return k === 'parent_node' ? undefined : v; })) : previousDataset);
                 if (opts.dataset) ptree.rebuild(opts);
             } catch (e2) { console.error(e2); }
-            alert(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
-            return;
+            warn(pedigreeErrorMessage(JSON.parse(myDeepClone), error));
+            return false;
         }
         lastDrawnDataset = cleanCopy;
 
         opts.diseases = new_diseases;
         sessionStorage.setItem('diseases', JSON.stringify(opts.diseases));
         update_diseases();
+        return true;
     }
 
     $('#loadFromHot').click(function() {
@@ -844,11 +847,14 @@ $(document).ready(function() {
         // $('#save-canrisk-dialog').modal('show');
 	});
 
-    //create pedigree in user interface
-    $( "#createPed" ).click(function() {
+    // patient page: draw the family from the questionnaire, sized to the pedigree column
+    window.drawPatientPedigree = function () {
+        let box = $('#pedigrees');
+        opts.width = Math.max(280, Math.floor(box.width()));
+        opts.height = $(window).width() >= 1200 ? Math.max(360, Math.min(700, window.innerHeight - 230)) : 420;
         finalFamObj = createPed();
-        loadFromObj(finalFamObj);
-    });
+        if (loadFromObj(finalFamObj, true)) pzoom.scale_to_fit(opts, 0, 1);
+    };
 
     function createPed() {//build pedigree object for user-interface
         //set variables
