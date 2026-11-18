@@ -1,0 +1,28 @@
+/* Patient page: the questionnaire on the left, the pedigree on the right. */
+@media (min-width: 1400px) { .container { width: 1360px; } }
+
+#live_pedigree { padding-top: 20px; }
+#live_pedigree .live-pedigree-help { padding: 0 6px; color: #3d5368; font-size: 13px; }
+#live_pedigree #pedigree svg { max-width: 100%; }
+.live-pedigree-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 20px; }
+.live-pedigree-buttons .btn { white-space: normal; }
+/* a preview: only "centre" and "full screen" are kept */
+#pedigree_history .fa-undo, #pedigree_history .fa-repeat, #pedigree_history .fa-refresh { display: none; }
+
+/* wide screens: the pedigree stays in view while the patient scrolls the questionnaire */
+@media (min-width: 1200px) {
+  /* columns as tall as the questionnaire, so the pedigree column has room to stay in view */
+  #patient_layout { display: flex; }
+  #patient_layout::before, #patient_layout::after { display: none; }
+  #live_pedigree { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; }
+  #show_pedigree { display: none; }
+}
+
+/* small screens: the pedigree is below; a button brings it into view */
+@media (max-width: 1199px) {
+  #show_pedigree {
+    position: fixed; right: 16px; bottom: 16px; z-index: 50;
+    border-radius: 22px; padding: 10px 16px; box-shadow: 0 2px 8px rgba(0, 46, 93, .35);
+  }
+  #show_pedigree.pedigree-in-view { display: none; }
+}

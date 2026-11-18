@@ -12,7 +12,7 @@ GeneTree is an integrated tool for clinical geneticists and genetic counsellors,
 - **A table that works like a spreadsheet:** keyboard editing, copy and paste with Excel, undo and redo, rows moved by dragging, lists for sex and options, a cancer or HPO picker for diseases.
 - **Automatic text:** the personal and family history is written from the table, in French or English.
 - **Exports:** GeneTree JSON, TSV, PED, BOADICEA, CanRisk, GEDCOM, pedigreejs JSON; the drawing as SVG, image or PDF (print).
-- **Patient interface** ([docs/patient.html](https://jimouse.github.io/GeneTree/docs/patient.html)): a form the patient fills in before the consultation, on a computer or a phone. It produces two files (GeneTree and CanRisk) that the patient sends to the practitioner.
+- **Patient interface** ([docs/patient.html](https://jimouse.github.io/GeneTree/docs/patient.html)): a form the patient fills in before the consultation, on a computer or a phone, with the pedigree drawn beside it as they answer. It produces two files (GeneTree and CanRisk) that the patient sends to the practitioner.
 - **Guide** ([docs/guide.html](https://jimouse.github.io/GeneTree/docs/guide.html)) and **About** ([docs/about.html](https://jimouse.github.io/GeneTree/docs/about.html)) pages.
 
 ## Privacy
@@ -48,7 +48,7 @@ GeneTree is a static site: everything runs in the browser.
 The tests drive the pages in a real browser (Playwright) with the mouse and keyboard, and check what the pages produce. See the README in each folder.
 
 - `tests/tool-page/`: the fixed bugs and the table's spreadsheet features.
-- `tests/patient-page/`: the fixed bugs and the questionnaire.
+- `tests/patient-page/`: the fixed bugs, the questionnaire and the live pedigree.
 - `tests/language/`: the language switch on every page.
 
 ```bash

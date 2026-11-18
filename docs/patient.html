@@ -72,6 +72,7 @@
 	<!-- patient tables: plain HTML form cards, see js/person-table.js -->
 	<script type="text/javascript" src="../js/person-table.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/person-table.css">
+	<link rel="stylesheet" type="text/css" href="../css/patient.css">
 
 	<!-- Display a loading icon until the page loads completely --> 
 	<script>
@@ -196,8 +197,10 @@
 			</p>
 		</div>
 
-		<!-- Interface -->
-		<div class="panel-group row" id="accordion" style="padding-top: 20px;">
+		<!-- Interface: the questionnaire on the left, the pedigree on the right (below on small screens) -->
+		<div class="row" id="patient_layout">
+		<div class="col-lg-7" id="questionnaire_col">
+		<div class="panel-group" id="accordion" style="padding-top: 20px;">
 			<div class="panel panel-default">
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">
@@ -500,36 +503,33 @@
 				</div>
 			</div>
 		</div>
+		</div>
 
-		<!-- Finalisation -->
-		<div class='row'  style="padding-top: 10px;">
-			<div class="panel">
-				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
-					<h3 class='h3-lightblue'><span id="ui_finalisation" class="lang"></span></h3>
+		<!-- the pedigree, redrawn as the patient answers -->
+		<div class="col-lg-5" id="pedigree_col">
+			<div id="live_pedigree">
+				<div class="panel" style="margin-bottom: 8px;">
+					<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
+						<h3 class='h3-lightblue'><span id="ui_finalisation" class="lang"></span></h3>
+					</div>
+				</div>
+				<p class="live-pedigree-help"><span class="lang" id="ui_click"></span></p>
+				<div class='text-center'>
+					<div id="pedigrees"></div>
+					<div id="node_properties" ></div>
+				</div>
+				<div class='text-center live-pedigree-buttons'>
+					<button id="exportPedigreejsCanRisk" class="btn btn-primary"><span class="lang" id="ui_dl"></span></button>
+					<button id="png_download" class="btn btn-primary"><span class="lang" id="ui_dl_png"></span></button>
 				</div>
 			</div>
-			<p>
-				<div style="padding:0px 20px;">
-					<span class="lang" id="ui_click"></span>
-				</div>
-			</p>
-			<div class='text-center' style="padding-bottom: 10px;">
-				<button id="createPed" class="btn btn-primary"><span class="lang" id="ui_build_pedigree"></span></button>
-			</div>
+		</div>
+		</div>
 
-			<!-- create pedigree -->
-			<div class='text-center' style="padding-bottom: 10px;"> 
-				<div id="pedigrees" style="padding-bottom: 10px;"></div>
-				<div id="node_properties" ></div>
-			</div>
+		<!-- small screens: the pedigree is below the questionnaire -->
+		<button id="show_pedigree" type="button" class="btn btn-primary"><i class="fa fa-sitemap"></i>&nbsp;<span class="lang" id="ui_show_pedigree"></span></button>
 
-			<div class='text-center' style="margin-bottom:20px">
-				<button id="exportPedigreejsCanRisk" class="btn btn-primary"><span class="lang" id="ui_dl"></span></button>
-				<div class="btnDivider"></div>
-				<button id="png_download" class="btn btn-primary"><span class="lang" id="ui_dl_png"></span></button>
-			</div>
-
-			<div id="save-canrisk-dialog">
+		<div id="save-canrisk-dialog">
 				<div class="row text-center" style="margin:10px 10px ;">
 					<input type="text" maxlength="13" class="form-control top10 lang" id="famid"
 					placeholder="">
@@ -546,7 +546,6 @@
 					</button>
 				</div>
 			</div>
-		</div>	
 	</div>
 
 	<!-- FOOTER -->

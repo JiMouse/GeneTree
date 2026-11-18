@@ -393,6 +393,33 @@ $(document).ready(function(){
         });
     });
 
+    /* ---------- live pedigree ---------- */
+
+    // The drawing is a preview of the answers: it cannot be edited (a person added on
+    // the drawing would vanish at the next change of the questionnaire).
+    opts.edit = false;
+    opts.preview = true;
+    var drawTimer = null;
+    function schedulePedigree() {
+        clearTimeout(drawTimer);
+        drawTimer = setTimeout(function () { if (window.drawPatientPedigree) drawPatientPedigree(); }, 300);
+    }
+    [hotCancer].concat(allRelatives()).forEach(function (t) { t.addHook('afterChange', schedulePedigree); });
+    $('#questionnaire_col').on('change input', 'input, textarea, select', schedulePedigree);
+    $(window).on('resize', schedulePedigree);
+    $(window).on('load', schedulePedigree);
+    schedulePedigree();
+
+    $('#show_pedigree').on('click', function () {
+        document.getElementById('live_pedigree').scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+    // the button is not needed (and would hide the download buttons) once the pedigree is in view
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+            $('#show_pedigree').toggleClass('pedigree-in-view', entries[0].isIntersecting);
+        }).observe(document.getElementById('live_pedigree'));
+    }
+
     /* ---------- language switch ---------- */
 
     // After a language switch: field labels of the cards, and default names nobody has changed
@@ -422,6 +449,7 @@ $(document).ready(function(){
         });
         defaultNames = fresh;
         dialogCancerList.dialog('option', 'title', L('ui_cancer_list'));
+        schedulePedigree();
     };
     defaultNames = currentDefaultNames();
 });

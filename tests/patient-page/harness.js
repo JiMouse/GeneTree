@@ -27,7 +27,7 @@ async function openPage(browser, url, lang='fr', viewport={width:1300,height:900
 async function runTests(tests, url) {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {
-    const { ctx, page, errors, answers } = await openPage(b, url, t.lang);
+    const { ctx, page, errors, answers } = await openPage(b, url, t.lang, t.viewport);
     try {
       await t.fn(page, answers, errors);
       const errs = errors.filter(e => !e.startsWith('alert'));
@@ -41,7 +41,7 @@ async function runTests(tests, url) {
 
 // The family the page sends to the pedigree (input of FormatToPedigreeJS)
 async function pedigree(page) {
-  await page.evaluate(() => $('#createPed').click()); await page.waitForTimeout(400);
+  await page.evaluate(() => drawPatientPedigree()); await page.waitForTimeout(200);
   return page.evaluate(() => window.__createPedOut[window.__createPedOut.length - 1]);
 }
 module.exports = { chromium, openPage, runTests, pedigree };

@@ -10,6 +10,10 @@ The tests drive the patient interface (`docs/patient.html`) in a real browser, t
 
 15 tests: the cards appear as soon as the number of relatives is given (no dialog), default names that follow the sex, fewer relatives (confirmation before removing filled cards), the cancer questions and the single "age or year of diagnosis" field, parents and grandparents, uncles and aunts with a second cancer, age and year of birth calculated from each other, the warnings (year of birth, diagnosis, date of birth), the patient's own cancers ("another cancer?"), a group answered "no", the comment at the end, the language switch, and what a whole family sends to the pedigree.
 
+## 3. Live pedigree (`live.js`)
+
+8 tests: the pedigree is drawn at load and follows the answers without any button, no alert while typing, it is a preview (no editing buttons), a whole family fits in the drawing, on a wide screen it is on the right and stays in view while scrolling, on a phone it is below with a "Voir l'arbre" button, and the two files are downloaded from it.
+
 ## Run
 
 ```bash
@@ -20,4 +24,5 @@ cd GeneTree/tests/patient-page
 
 node bugs.js http://localhost:8000/GeneTree/docs/patient.html
 node questionnaire.js http://localhost:8000/GeneTree/docs/patient.html
+node live.js http://localhost:8000/GeneTree/docs/patient.html
 ```
