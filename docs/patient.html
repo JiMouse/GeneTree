@@ -182,25 +182,22 @@
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid patient-page">
+		<!-- Interface: the questionnaire on the left, the pedigree on the right (below on small screens) -->
+		<div class="row" id="patient_layout">
+		<div class="col-lg-7" id="questionnaire_col">
 		<!-- Présentation -->
-		<div class='row'  style="padding-top: 20px;">
-			<div class="panel">
+		<div style="padding-top: 20px;">
+			<div class="panel" style="margin-bottom: 8px;">
 				<div class="panel-heading" style="background-color: #dbe9f5;margin: 0;">
 					<h3 class='h3-lightblue'>Introduction</h3>
 				</div>
 			</div>
-			<p>
-				<div style="padding:0px 20px;">
-					<span class="lang" id="ui_introduction_txt"></span>
-				</div>
-			</p>
+			<div class="patient-intro">
+				<span class="lang" id="ui_introduction_txt"></span>
+			</div>
 		</div>
-
-		<!-- Interface: the questionnaire on the left, the pedigree on the right (below on small screens) -->
-		<div class="row" id="patient_layout">
-		<div class="col-lg-7" id="questionnaire_col">
-		<div class="panel-group" id="accordion" style="padding-top: 20px;">
+		<div class="panel-group" id="accordion" style="padding-top: 10px;">
 			<div class="panel panel-default">
 				<div class="panel-heading header-lightblue">
 					<h3 class="panel-title h3-lightblue">

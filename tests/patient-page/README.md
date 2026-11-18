@@ -12,7 +12,7 @@ The tests drive the patient interface (`docs/patient.html`) in a real browser, t
 
 ## 3. Live pedigree (`live.js`)
 
-9 tests: the pedigree is drawn at load and follows the answers without any button, no alert while typing, it is a preview (no editing buttons), a whole family fits in the drawing, on a wide screen it is on the right and stays in view while scrolling, on a phone it is below with a "Voir l'arbre" button, and a single file, the GeneTree file, is downloaded, named after the patient (accents removed).
+10 tests: the pedigree is drawn at load and follows the answers without any button, no alert while typing, it is a preview (no editing buttons), a whole family fits in the drawing, on a wide screen the page takes the whole width and the pedigree column (with its buttons) fits the screen, at the top and while scrolling, on a phone it is below with a "Voir l'arbre" button, and a single file, the GeneTree file, is downloaded, named after the patient (accents removed).
 
 ## Run
 
