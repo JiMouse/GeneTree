@@ -1,26 +1,30 @@
-var save_canrisk_dialog;
 $(document).ready(function(){
-	// save CanRisk
-	save_canrisk_dialog = $('#save-canrisk-dialog').dialog({
-		autoOpen: false,
-		title: lang.canrisk_addInfo,
-        resizable: false,
-        height: "auto",
-        width: 350,
-        modal: true,
-        classes: {
-            "ui-dialog": "custom-background",
-            "ui-dialog-titlebar": "custom-theme",
-            "ui-dialog-title": "custom-theme text-center",
-            // "ui-dialog-titlebar-close":"custom-btn",
-            "ui-dialog-content": "custom-background",
-            "ui-dialog-buttonpane": "custom-background"
-        },
-	})
+	// The family is identified by the index case's name, "Nom Prénom" (field civil_name):
+	// "Lefèvre Hélène" -> "Lefevre_Helene". Accents and characters other than letters,
+	// digits, "-" and "_" are dropped, so that the file name works everywhere.
+	familyIdentifier = function(dataset) {
+		let proband = (dataset || []).find(function (p) { return p.proband; });
+		let name = proband && proband.civil_name ? String(proband.civil_name) : '';
+		return name.replace(/œ/g, 'oe').replace(/Œ/g, 'OE').replace(/æ/g, 'ae').replace(/Æ/g, 'AE').replace(/ß/g, 'ss')
+			.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9_\s-]+/g, ' ')
+			.trim().replace(/\s+/g, '_');
+	};
+	// FamID written in the CanRisk file: 13 characters at most
+	canriskFamId = function(identifier) {
+		return identifier.slice(0, 13);
+	};
+	// Save the CanRisk file at once: canrisk_Dupont_Anne.txt (canrisk.txt when there is no name)
+	saveCanRisk = function(dataset) {
+		dataset = dataset || pedcache.current(opts);
+		let text = get_non_anon_pedigree(dataset, get_meta(dataset));
+		let id = familyIdentifier(dataset), famid = canriskFamId(id);
+		if(famid) text = text.replace(/^XXXX/mg, famid);
+		io.save_file(opts, text, id ? "canrisk_" + id + ".txt" : "canrisk.txt");
+	};
 
 	$('#save_canrisk').on('click', function (e) {
 		if(!canrisk_check(pedcache.current(opts))) return;
-		save_canrisk_dialog.dialog('open');
+		saveCanRisk();
 	});
 
 	// Tool: the CanRisk download is blocked while a member with a cancer used by CanRisk
@@ -33,21 +37,6 @@ $(document).ready(function(){
 		}
 		return true;
 	};
-
-	// CanRisk file save dialog
-	$('#cr_file_save').on('click', function (e) {
-		var this_canrisk;
-		this_canrisk = get_non_anon_pedigree(pedcache.current(opts), get_meta(pedcache.current(opts)));
-
-		var famid = $('#famid').val().trim().replaceAll(" ", "_");
-		if(famid.length > 0) {
-			this_canrisk = this_canrisk.replace(/^XXXX/mg, famid);
-		}
-
-		var fname = ($( "#pid_fname").is(':checked') ? "canrisk_"+famid+".txt": "canrisk.txt");
-		io.save_file(opts, this_canrisk, fname);
-		save_canrisk_dialog.dialog('close');
-	})
 
 	// get surgical ops and PRS for canrisk header
 	get_meta=function(dataset) {

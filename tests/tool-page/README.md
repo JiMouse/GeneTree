@@ -4,7 +4,7 @@ Two sets of tests drive the tool (`index.html`) in a real browser with the mouse
 
 ## 1. Bug tests (`bugs.js`)
 
-20 tests, one per fixed bug: the summary text for a person of unknown sex, changing a sex (partners and children updated, Cancel restores), the session copy after a deletion, the index case and ancestors that cannot be deleted, deleting someone with children, rows pasted from Excel, the TSV header, and the BOADICEA / CanRisk downloads blocked while a member with a cancer used by CanRisk (breast, ovary, prostate, pancreas) has no valid age, and the personal information fields after a reset (not greyed out, no crash).
+22 tests, one per fixed bug: the summary text for a person of unknown sex, changing a sex (partners and children updated, Cancel restores), the session copy after a deletion, the index case and ancestors that cannot be deleted, deleting someone with children, rows pasted from Excel, the TSV header, and the BOADICEA / CanRisk downloads blocked while a member with a cancer used by CanRisk (breast, ovary, prostate, pancreas) has no valid age, and the personal information fields after a reset (not greyed out, no crash), and the CanRisk file saved without a dialog, named after the index case.
 
 ## 2. Table features (`grid_features.js`)
 

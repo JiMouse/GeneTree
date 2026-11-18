@@ -179,10 +179,6 @@ var lang = {
     "Le texte est ensuite modifiable, sélectionable et copiable.",
 
     // addInfo
-    canRiskDialog: "Ajouter un identifiant (Famid) dans le fichier",
-    pid_fnameTxt: "inclure dans le nom du fichier",
-    canrisk_save : "Sauvegarder",
-    canrisk_addInfo: "Sauvegarder : ajout d'un identifiant ?",
     addInfo: "Ajouter des informations à un individu",
     id: "Identifiant",
     save:"Enregistrer",
@@ -383,8 +379,6 @@ var lang = {
     ui_show_pedigree:"Voir l'arbre",
     ui_dl: "Télécharger les deux fichiers à envoyer à votre médecin",
     ui_dl_png: "Télécharger l'arbre généalogique (image)",
-    ui_add_id:"Ajouter un identifiant (Famid) dans le fichier",
-    ui_add_id_file:"inclure dans le nom du fichier",
     ui_dl:"Télécharger les deux fichiers à envoyer à votre médecin",
     ui_comment_title:"Commentaire",
     ui_comment_q:"Toute autre information utile pour votre médecin :",
@@ -462,8 +456,7 @@ var title = {
 
 var placeholder = {
     menarche: "(âge)",
-    menopause:"(âge)",
-    famid:"Ex. : Identifiant la généalogie"
+    menopause:"(âge)"
 }
 
 var boadicea = {

@@ -123,7 +123,6 @@ const setRows = (page, rows) => page.evaluate(r => {
 }, rows);
 const index = { Age: '46', Yob: '1980' };
 const downloads = (page) => { const d = []; page.on('download', x => d.push(x)); return d; };
-const canriskOpen = (page) => page.evaluate(() => $('#save-canrisk-dialog').is(':visible'));
 
 test('7. BOADICEA: blocked when a member with prostate cancer has no age', 'fr', async (page, alerts) => {
   await template(page, 'nuclear');
@@ -157,20 +156,20 @@ test('7d. BOADICEA: blocked when age and year of birth do not agree', 'fr', asyn
   expect(alerts.length === 1 && /Mère : l'âge \(50 ans\) et l'année de naissance \(1960\) ne concordent pas/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
 });
 
-test('7e. CanRisk: blocked (dialog not opened) when a member with breast cancer has no age', 'fr', async (page, alerts) => {
+test('7e. CanRisk: blocked (no file) when a member with breast cancer has no age', 'fr', async (page, alerts) => {
   await template(page, 'nuclear');
   await setRows(page, { 0: index, 2: { Disease1: 'cancer_sein', Age1: '45' } });
+  const dl = downloads(page);
   await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
-  expect(!(await canriskOpen(page)) && alerts.length === 1 && /CanRisk non conforme/.test(alerts[0]) && /Mère/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+  expect(dl.length === 0 && alerts.length === 1 && /CanRisk non conforme/.test(alerts[0]) && /Mère/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
 });
 
 test('7f. CanRisk: valid ages, unknown age at diagnosis: downloaded, written "AU"', 'fr', async (page, alerts) => {
   await template(page, 'nuclear');
   await setRows(page, { 0: index, 1: { Age: '76', Yob: '1950', Disease1: 'cancer_prostate', Age1: '' }, 2: { Disease1: 'cancer_colon' } });
-  await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
-  expect(await canriskOpen(page) && alerts.length === 0, 'dialog not opened, alerts ' + JSON.stringify(alerts));
   const dl = page.waitForEvent('download');
-  await page.evaluate(() => $('#cr_file_save').click());
+  await page.evaluate(() => $('#save_canrisk_fromHot').click());
+  expect(alerts.length === 0, 'alerts ' + JSON.stringify(alerts));
   const lines = require('fs').readFileSync(await (await dl).path(), 'utf8').split('\n');
   const head = lines.find(l => l.startsWith('##FamID')).split('\t'), father = lines.find(l => l.split('\t')[3] === '2').split('\t');
   expect(father[head.indexOf('PRO')] === 'AU', 'father row: ' + father.join(' | '));
@@ -180,7 +179,7 @@ test('7g. same check in English', 'eng', async (page, alerts) => {
   await template(page, 'nuclear');
   await setRows(page, { 0: index, 1: { Disease1: 'pancreatic_cancer', Age1: '70' } });
   await page.evaluate(() => $('#save_canrisk_fromHot').click()); await page.waitForTimeout(500);
-  expect(!(await canriskOpen(page)) && alerts.length === 1 && /CanRisk file not compliant/.test(alerts[0]) && /age or year of birth missing/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
+  expect(alerts.length === 1 && /CanRisk file not compliant/.test(alerts[0]) && /age or year of birth missing/.test(alerts[0]), 'alerts ' + JSON.stringify(alerts));
 });
 
 test('8. resetting the drawing does not grey out the personal information fields', 'fr', async (page) => {
@@ -198,6 +197,25 @@ test('8b. "Informations" after a table reset while a removed row was selected: n
   await page.evaluate(() => $('#supp_edit_info').click()); await page.waitForTimeout(400);
   const name = await page.evaluate(() => $('#form_id_name').val());
   expect(name === 'Index', 'name field: ' + name);
+});
+
+test('9. CanRisk: no dialog, file named after the index case ("Nom Prénom")', 'fr', async (page, alerts) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { ...index, civil_name: 'Martin Paul' } });
+  const dl = page.waitForEvent('download');
+  await page.evaluate(() => $('#save_canrisk_fromHot').click());
+  const d = await dl, text = require('fs').readFileSync(await d.path(), 'utf8');
+  const visible = await page.evaluate(() => $('.ui-dialog:visible').length);
+  expect(d.suggestedFilename() === 'canrisk_Martin_Paul.txt' && /\nMartin_Paul\t/.test(text) && visible === 0,
+    d.suggestedFilename() + ', dialogs ' + visible + ', FamID lines: ' + text.split('\n').filter(l => !l.startsWith('#')).map(l => l.split('\t')[0]).join(','));
+});
+
+test('9b. CanRisk without a name: canrisk.txt', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: index });
+  const dl = page.waitForEvent('download');
+  await page.evaluate(() => $('#save_canrisk_fromHot').click());
+  expect((await dl).suggestedFilename() === 'canrisk.txt', (await dl).suggestedFilename());
 });
 
 (async () => {

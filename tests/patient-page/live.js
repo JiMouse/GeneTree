@@ -79,14 +79,25 @@ test('phone: the drawing is below; "Voir l\'arbre" brings it into view, then hid
   expect(top >= 0 && top < 120 && !await page.isVisible('#show_pedigree'), 'after the click: top ' + top + ', button ' + await page.isVisible('#show_pedigree'));
 }, PHONE);
 
-test('the two files are downloaded from the drawing column', async (page) => {
+test('the two files are downloaded at once, named after the patient', async (page) => {
+  await page.fill('#civil_name', 'Lefèvre Hélène');
   await addRelatives(page, 'children', [{ sex: 'M', yob: '2005' }]);
   await settle(page);
   const files = [];
-  page.on('download', d => files.push(d.suggestedFilename()));
-  await page.click('#exportPedigreejsCanRisk'); await page.waitForTimeout(400);
-  await page.click('#cr_file_save'); await page.waitForTimeout(600);
-  expect(files.length === 2, 'downloads: ' + JSON.stringify(files));
+  page.on('download', d => files.push(d));
+  await page.click('#exportPedigreejsCanRisk'); await page.waitForTimeout(800);
+  const names = files.map(d => d.suggestedFilename());
+  const canrisk = files.find(d => d.suggestedFilename().startsWith('canrisk'));
+  const famids = canrisk ? require('fs').readFileSync(await canrisk.path(), 'utf8').split('\n').filter(l => l && !l.startsWith('#')).map(l => l.split('\t')[0]) : [];
+  expect(files.length === 2 && names.includes('canrisk_Lefevre_Helene.txt') && names.some(n => /^GeneTree_data_Lefevre_Helene_.*\.json$/.test(n)),
+    'downloads: ' + JSON.stringify(names));
+  expect(famids.length && famids.every(f => f === 'Lefevre_Helen'), 'FamID: ' + JSON.stringify([...new Set(famids)]));
+  expect(!await page.isVisible('.ui-dialog'), 'a dialog is open');
+}, WIDE);
+
+test('file names: accents and other letters', async (page) => {
+  const ids = await page.evaluate(() => ['Lefèvre Hélène', "Bœuf  D'Arc", 'Groß/Ève', '  '].map(n => familyIdentifier([{ proband: true, civil_name: n }])));
+  expect(JSON.stringify(ids) === JSON.stringify(['Lefevre_Helene', 'Boeuf_D_Arc', 'Gross_Eve', '']), JSON.stringify(ids));
 }, WIDE);
 
 runTests(tests, url);
