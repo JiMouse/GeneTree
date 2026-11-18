@@ -334,8 +334,8 @@ var lang = {
     + ' A chaque section, vous pouvez remplir les âges ou les dates de naissance et symétriquement les années ou dates de diagnostics'
     + ' des pathologies concernées.',
     ui_history: 'Votre histoire personnelle',
-    ui_name:'Nom Prénom :',
-    ui_dbirth:'Date de naissance :',
+    ui_name:'Nom Prénom',
+    ui_dbirth:'Date de naissance',
     ui_man:'Homme',
     ui_woman:'Femme',
     ui_comment:'Commentaire :',

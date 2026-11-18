@@ -212,45 +212,42 @@
 				<div id="collapse1" class="panel-collapse collapse in">
 					<div class="panel-body">
 						<fieldset>
-							<div class="row">
-								<div class="col-lg-2 text-right field_label">
-									<label for="civil_name"><span class="lang" id="ui_name"></span></label>
+							<!-- same layout as the relatives' cards: label above each field -->
+							<div class="pt-grid patient-identity">
+								<div class="pt-field">
+									<label class="pt-label" for="civil_name"><span class="lang" id="ui_name"></span></label>
+									<input type="text" name="display_name" class="form-control valid" maxlength="60"
+										id="civil_name" aria-invalid="false" autocomplete="name">
 								</div>
-								<div class="field col-lg-2">
-									<input type="text" name="display_name" size="17" class="form-control valid" maxlength="60"
-										id="civil_name" aria-invalid="false">
-								</div>
-								<div class="col-lg-2 text-right field_label">
-									<label for="dbirth"><span class="lang" id="ui_dbirth"></span></label>
-								</div>
-								<div class="field col-lg-2">
-									<input id="dbirth" class="form-control" type="text" im-insert="false">
+								<div class="pt-field">
+									<label class="pt-label" for="dbirth"><span class="lang" id="ui_dbirth"></span></label>
+									<input id="dbirth" class="form-control" type="text" im-insert="false" inputmode="numeric">
 									<div id="dbirth_msg" class="pt-msg" role="alert" style="display:none"></div>
 								</div>
-								<div class="col-lg-2 text-center">
-									<label for="index_id_sex_0">
-										<input type="radio" name="index_sex" value="M" required="" id="index_id_sex_0" class="valid">
-										<span class="lang" id="ui_man"></span>
-									</label>
+								<div class="pt-field pt-radio-field">
+									<span class="pt-label" id="index_sex_label"><span class="lang" id="ui_f_sex"></span></span>
+									<div class="pt-radios" role="radiogroup" aria-labelledby="index_sex_label">
+										<label class="pt-radio" for="index_id_sex_0">
+											<input type="radio" name="index_sex" value="M" required="" id="index_id_sex_0" class="valid">
+											<span class="lang" id="ui_man"></span>
+										</label>
+										<label class="pt-radio" for="index_id_sex_1">
+											<input type="radio" name="index_sex" value="F" required="" id="index_id_sex_1" class="valid" checked>
+											<span class="lang" id="ui_woman"></span>
+										</label>
+									</div>
 								</div>
-								<div class="col-lg-1 text-center">
-									<label for="index_id_sex_1">
-										<input type="radio" name="index_sex" value="F" required="" id="index_id_sex_1" class="valid" checked>
-										<span class="lang" id="ui_woman"></span>
-									</label>
-								</div>
-								<div class="col-lg-1 text-center"></div>	
 							</div>
 						</fieldset>
 						<hr>
 						<div id="acc_Cancer_div">
 							<div class="row" style="padding: 0px 20px;">
-                                <div class="col-lg-3">
-									<p class='question'><span class="lang" id="ui_cancer"></span></p>
+                                <div class="col-xs-12 patient-question">
+									<div class="pq-yesno"><p class='question'><span class="lang" id="ui_cancer"></span></p>
 									<label class="radio-inline" for="cancer_Yes"><input type="radio" name="cancer_radio" id="cancer_Yes" value="cancer_Yes"><span class="lang lang-yes"></span></label>
-									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked><span class="lang lang-no"></span></label>
+									<label class="radio-inline" for="cancer_No"><input type="radio" name="cancer_radio" id="cancer_No" value="cancer_No" checked><span class="lang lang-no"></span></label></div>
                                 </div>
-                                <div id="cancer_table_div" class="col-lg-9">
+                                <div id="cancer_table_div" class="col-xs-12">
 									<p class='question'><span class="lang" id="ui_cancer_type"></span></p>
 				
 									<div class="pt-container">
@@ -280,10 +277,10 @@
 					<div class="panel-body">
 						<div id="acc_Child_div">
                             <div class="row" style="padding: 0px 20px;">
-                                <div class="col-lg-3">
-									<p class='question'><span class="lang" id="ui_children_q"></span></p>
+                                <div class="col-xs-12 patient-question">
+									<div class="pq-yesno"><p class='question'><span class="lang" id="ui_children_q"></span></p>
 									<label class="radio-inline" for="children_Yes"><input type="radio" name="children_radio" id="children_Yes" value="children_Yes"><span class="lang lang-yes"></span></label>
-									<label class="radio-inline" for="children_No"><input type="radio" name="children_radio" id="children_No" value="children_No" checked><span class="lang lang-no"></span></label>
+									<label class="radio-inline" for="children_No"><input type="radio" name="children_radio" id="children_No" value="children_No" checked><span class="lang lang-no"></span></label></div>
 									<br><br>
 									<div id="children_div">
 										<p class='question'><span class="lang" id="ui_children_cb"></span></p>
@@ -294,7 +291,7 @@
 										</div>
 									</div>
                                 </div>
-                                <div id="children_table_div" class="col-lg-9">
+                                <div id="children_table_div" class="col-xs-12">
 									<p class='question'><span class="lang" id="ui_children_qd"></span></p>
 				
 									<div class="pt-container">
@@ -322,10 +319,10 @@
 					<div class="panel-body">
 						<div id="acc_siblings_div">
                             <div class="row" style="padding: 0px 20px;">
-                                <div class="col-lg-3">
-									<p class='question'><span class="lang" id="ui_siblings_q"></span></p>
+                                <div class="col-xs-12 patient-question">
+									<div class="pq-yesno"><p class='question'><span class="lang" id="ui_siblings_q"></span></p>
 									<label class="radio-inline" for="siblings_Yes"><input type="radio" name="siblings_radio" id="siblings_Yes" value="siblings_Yes"><span class="lang lang-yes"></span></label>
-									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked><span class="lang lang-no"></span></label>
+									<label class="radio-inline" for="siblings_No"><input type="radio" name="siblings_radio" id="siblings_No" value="siblings_No" checked><span class="lang lang-no"></span></label></div>
 									<br><br>
 									<div id="siblings_div">
 										<p class='question'><span class="lang" id="ui_siblings_cb"></span></p>
@@ -336,7 +333,7 @@
 										</div>
 									</div>
                                 </div>
-                                <div id="siblings_table_div" class="col-lg-9">
+                                <div id="siblings_table_div" class="col-xs-12">
 									<p class='question'><span class="lang" id="ui_siblings_qd"></span></p>
 				
 									<div class="pt-container">
@@ -404,10 +401,10 @@
                                 </div>
 							</div>
                             <div class="row" style="padding: 20px 20px;">
-                                <div class="col-lg-3">
-									<p class='question'><span class="lang" id="ui_sib"></span></p>
+                                <div class="col-xs-12 patient-question">
+									<div class="pq-yesno"><p class='question'><span class="lang" id="ui_sib"></span></p>
 									<label class="radio-inline" for="fatherSiblings_Yes"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_Yes" value="fatherSiblings_Yes"><span class="lang lang-yes"></span></label>
-									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked><span class="lang lang-no"></span></label>
+									<label class="radio-inline" for="fatherSiblings_No"><input type="radio" name="fatherSiblings_radio" id="fatherSiblings_No" value="fatherSiblings_No" checked><span class="lang lang-no"></span></label></div>
 									<br><br>
 									<div id="fatherSiblings_div">
 										<p class='question'><span class="lang" id="ui_sib_cb"></span></p>
@@ -418,7 +415,7 @@
 										</div>
 									</div>
                                 </div>
-                                <div id="fatherSiblings_table_div" class="col-lg-9">
+                                <div id="fatherSiblings_table_div" class="col-xs-12">
 									<p class='question'><span class="lang" id="ui_sib_cb_pm"></span></p>
 				
 									<div class="pt-container">
@@ -456,10 +453,10 @@
                                 </div>
 							</div>
                             <div class="row" style="padding: 20px 20px;">
-                                <div class="col-lg-3">
-									<p class='question'><span class="lang" id="ui_m_sib"></span></p>
+                                <div class="col-xs-12 patient-question">
+									<div class="pq-yesno"><p class='question'><span class="lang" id="ui_m_sib"></span></p>
 									<label class="radio-inline" for="motherSiblings_Yes"><input type="radio" name="motherSiblings_radio" id="motherSiblings_Yes" value="motherSiblings_Yes"><span class="lang lang-yes"></span></label>
-									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked><span class="lang lang-no"></span></label>
+									<label class="radio-inline" for="motherSiblings_No"><input type="radio" name="motherSiblings_radio" id="motherSiblings_No" value="motherSiblings_No" checked><span class="lang lang-no"></span></label></div>
 									<br><br>
 									<div id="motherSiblings_div">
 										<p class='question'><span class="lang" id="ui_m_sib_cb"></span></p>
@@ -470,7 +467,7 @@
 										</div>
 									</div>
                                 </div>
-                                <div id="motherSiblings_table_div" class="col-lg-9">
+                                <div id="motherSiblings_table_div" class="col-xs-12">
 									<p class='question'><span class="lang" id="ui_m_sib_cb_qd"></span></p>
 				
 									<div class="pt-container">
