@@ -329,8 +329,8 @@ var lang = {
     + ' In each section you can fill in the ages or dates of birth and symmetrically the years or dates of diagnosis'
     + ' of the relevant diseases',
     ui_history: 'Your personal story',
-    ui_name:'Name Firstname :',
-    ui_dbirth:'Birthday :',
+    ui_name:'Last name First name',
+    ui_dbirth:'Date of birth',
     ui_man:'Man',
     ui_woman:'Woman',
     ui_comment:'Comment :',
