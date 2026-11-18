@@ -466,13 +466,14 @@ function Formatboadicea(boadicea_lines) { //import Boadicea file
     return ped;
 }
 
-function ExportJSON(obj) {
+// identifier (optional): added to the file name, e.g. GeneTree_data_Dupont_Anne_<time>.json
+function ExportJSON(obj, identifier) {
     var data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
     var a = document.createElement("a");    
     a.href = 'data:' + data;
 
     a.style = "visibility:hidden";
-    a.download = 'GeneTree_data_'+ getFormattedTime() +'.json';
+    a.download = 'GeneTree_data_' + (identifier ? identifier + '_' : '') + getFormattedTime() + '.json';
 
     document.body.appendChild(a);
     a.click();

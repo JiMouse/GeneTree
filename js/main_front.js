@@ -488,14 +488,11 @@ $(document).ready(function() {
             rowHeaders: false
         });
     });
+    // patient page: the two files, named after the index case (no dialog)
     $( "#exportPedigreejsCanRisk" ).click(function() {
-        //1 export canRisk
-        // $('#save-canrisk-dialog').modal('show');
-        save_canrisk_dialog.dialog('open');
         let obj = pedcache.current(opts);
-
-        //export pedigreeJS
-        ExportJSON(obj);
+        ExportJSON(obj, familyIdentifier(obj));
+        saveCanRisk(obj);
     });
 
     $( "#loadStory" ).click(function() {
@@ -843,8 +840,7 @@ $(document).ready(function() {
     $('#save_canrisk_fromHot').on('click', function (e) {
         loadFromHot();
         if(!canrisk_check(pedcache.current(opts))) return;
-		save_canrisk_dialog.dialog('open');
-        // $('#save-canrisk-dialog').modal('show');
+        saveCanRisk();
 	});
 
     // patient page: draw the family from the questionnaire, sized to the pedigree column

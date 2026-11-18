@@ -176,10 +176,6 @@ var lang = {
     "The text can then be edited, selected and copied.",
 
     // addInfo
-    canRiskDialog: "Add an identifier (Famid) in the file",
-    pid_fnameTxt: "add in filename",
-    canrisk_save : "Sauvegarder",
-    canrisk_addInfo: "Sauvegarder : ajout d'un identifiant ?",
     addInfo: "Add informations to individual",
     id: "Identifier",
     save:"Save",
@@ -378,8 +374,6 @@ var lang = {
     ui_show_pedigree:"See the tree",
     ui_dl: "Download the two files to send to your doctor",
     ui_dl_png: "Download the pedigree (image)",
-    ui_add_id:"Add an identifier (Famid) to the file",
-    ui_add_id_file:"include in the file name",
     ui_comment_title:"Comment",
     ui_comment_q:"Any other information useful to your doctor:",
     ui_confirm_remove:"The last cards, already filled in, will be removed. Continue?",
@@ -456,8 +450,7 @@ var title = {
 
 var placeholder = {
     menarche: "(age)",
-    menopause:"(age)",
-    famid:"Ex. : pedigree identifier"
+    menopause:"(age)"
 }
 
 var boadicea = {
