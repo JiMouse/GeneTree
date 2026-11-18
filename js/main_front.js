@@ -843,10 +843,19 @@ $(document).ready(function() {
 	});
 
     // patient page: draw the family from the questionnaire, sized to the pedigree column
+    // On a wide screen the whole column (title, text, drawing, download buttons) fits the
+    // window, so the buttons are always visible: the drawing gets the height that is left.
     window.drawPatientPedigree = function () {
         let box = $('#pedigrees');
         opts.width = Math.max(280, Math.floor(box.width()));
-        opts.height = $(window).width() >= 1200 ? Math.max(360, Math.min(700, window.innerHeight - 230)) : 420;
+        if ($(window).width() >= 1200) {
+            let svg = $('#pedigree svg'), drawing = svg.length ? svg.outerHeight(true) : 0;
+            let others = $('#live_pedigree').outerHeight(true) - drawing;   // everything but the drawing
+            let below = $('#pedigree_col').offset().top;                    // the menu bar above the column
+            opts.height = Math.max(300, Math.floor(window.innerHeight - others - below - 16));
+        } else {
+            opts.height = 420;
+        }
         finalFamObj = createPed();
         if (loadFromObj(finalFamObj, true)) pzoom.scale_to_fit(opts, 0, 1);
     };

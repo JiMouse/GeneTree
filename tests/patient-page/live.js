@@ -100,4 +100,16 @@ test('file names: accents and other letters', async (page) => {
   expect(JSON.stringify(ids) === JSON.stringify(['Lefevre_Helene', 'Boeuf_D_Arc', 'Gross_Eve', '']), JSON.stringify(ids));
 }, WIDE);
 
+test('wide screen: whole width, and the whole drawing column (with its buttons) fits the screen, at the top and after scrolling', async (page) => {
+  await page.waitForTimeout(800);
+  const fit = () => page.evaluate(() => { const c = document.getElementById('live_pedigree'), r = c.getBoundingClientRect(), b = document.getElementById('png_download').getBoundingClientRect();
+    return { width: Math.round(document.querySelector('.patient-page').getBoundingClientRect().width), bottom: Math.round(b.bottom), inner: innerHeight, scrolls: c.scrollHeight > c.clientHeight, top: Math.round(r.top) }; });
+  let f = await fit();
+  expect(f.width === 1440 && f.bottom <= f.inner && !f.scrolls, 'at the top: ' + JSON.stringify(f));
+  await addRelatives(page, 'children', [{}, {}, {}, {}]);
+  await page.evaluate(() => window.scrollTo(0, 800)); await page.waitForTimeout(700);
+  f = await fit();
+  expect(f.top === 0 && f.bottom <= f.inner && !f.scrolls, 'after scrolling: ' + JSON.stringify(f));
+}, WIDE);
+
 runTests(tests, url);
