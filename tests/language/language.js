@@ -28,8 +28,8 @@ const WORD = { fr: 'Outil', eng: 'Tool' }, LABEL = { fr: 'Fr', eng: 'Eng' };
         expect(h.startsWith('Name|Id.|Father|Mother'), 'table headers: ' + h);
       }
       if (pg === 'docs/patient.html') {
-        const r = await p.evaluate(() => ({ labels: [...new Set([...document.querySelectorAll('#hotParents label')].map(l => l.textContent.trim()))].join('|'), names: [...document.querySelectorAll('#hotParents .pt-name input, #hotGpp .pt-name input')].map(i => i.value).join('|') }));
-        expect(r.labels === 'Name|Sex|Deceased|Age|Year of birth|Cancer site|Age at diagnosis|Year of diagnosis|Comment', 'card labels: ' + r.labels);
+        const r = await p.evaluate(() => ({ labels: [...new Set([...document.querySelectorAll('#hotParents [data-row="1"] .pt-label, #hotParents [data-row="1"] .pt-radio')].map(l => l.textContent.trim()))].join('|'), names: [...document.querySelectorAll('#hotParents .pt-name input, #hotGpp .pt-name input')].map(i => i.value).join('|') }));
+        expect(r.labels === 'Name|Sex|Man|Woman|Deceased|Age|Year of birth|Has your mother had cancer?|Yes|No|Cancer site|Age or year of diagnosis|Has she had another cancer?|Site of the other cancer|Comment', 'card labels: ' + r.labels);
         expect(r.names === 'Father|Mother|Paternal grandfather|Mamie Jeanne', 'names (a name typed by the patient must be kept): ' + r.names);
       }
       await p.reload({ waitUntil: 'networkidle' }); await p.waitForTimeout(1500);

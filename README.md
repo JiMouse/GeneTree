@@ -48,7 +48,7 @@ GeneTree is a static site: everything runs in the browser.
 The tests drive the pages in a real browser (Playwright) with the mouse and keyboard, and check what the pages produce. See the README in each folder.
 
 - `tests/tool-page/`: the fixed bugs and the table's spreadsheet features.
-- `tests/patient-page/`: the fixed bugs.
+- `tests/patient-page/`: the fixed bugs and the questionnaire.
 - `tests/language/`: the language switch on every page.
 
 ```bash

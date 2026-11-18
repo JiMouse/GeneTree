@@ -17,6 +17,16 @@
  *  - minSpareRows keeps that many empty rows at the end ({prop: null, ...}).
  *  - every edit fires afterChange([[row, prop, oldValue, newValue]], 'edit'),
  *    synchronously, including edits made by hooks themselves.
+ *
+ * Column options added for the questionnaire:
+ *  - type 'radio' with options [{value, label}]: a group of buttons (sex, yes / no);
+ *  - label: text or function(rowData, row), used instead of colHeaders;
+ *  - visible: function(rowData, row), the field is shown only when it returns true;
+ *  - validate: function(value, rowData, row), returns a message shown under the field
+ *    (the value is kept: the message only warns);
+ *  - wide: the field takes the whole width of the card.
+ * Labels, visibility and messages of a card are refreshed after each change of that
+ * card; refresh() does it for every card (e.g. when another field of the page changed).
  */
 (function (global) {
   'use strict';
@@ -59,7 +69,7 @@
     this.id = 'pt' + (++uid);
 
     // Handsontable methods are passed around unbound (e.g. hotChildren.loadData as a callback)
-    ['loadData', 'getSourceData', 'getSourceDataAtCell', 'getDataAtRowProp', 'setDataAtRowProp', 'addHook', 'render', 'updateHeaders']
+    ['loadData', 'getSourceData', 'getSourceDataAtCell', 'getDataAtRowProp', 'setDataAtRowProp', 'addHook', 'render', 'updateHeaders', 'refresh', 'countRows']
       .forEach(function (m) { this[m] = this[m].bind(this); }, this);
 
     this.container.classList.add('person-table', 'person-table-' + this.layout);
@@ -82,6 +92,8 @@
     this._renderAll();
     this._runHooks('afterChange', null, 'loadData');
   };
+
+  PersonTable.prototype.countRows = function () { return this.data.length; };
 
   PersonTable.prototype.getSourceData = function () {
     return JSON.parse(JSON.stringify(this.data));
@@ -157,9 +169,28 @@
     for (var r = shown; r < this.data.length; r++) this._appendRow(r);
     this._renderValue(row, prop);
     this._runHooks('afterChange', [[row, prop, oldValue, value]], source);
+    this._refreshRow(row);
   };
 
   PersonTable.prototype.render = function () { /* always up to date */ };
+
+  PersonTable.prototype.refresh = function () {
+    for (var r = 0; r < this.data.length; r++) this._refreshRow(r);
+  };
+
+  // labels that depend on the card (e.g. "Age at death"), fields shown on a yes, messages
+  PersonTable.prototype._refreshRow = function (row) {
+    var self = this, rowData = this.data[row];
+    if (!rowData) return;
+    this.columns.forEach(function (c) {
+      var id = self._fieldId(row, c.data), wrap = document.getElementById(id + '-field');
+      if (!wrap) return;
+      var label = wrap.querySelector('.pt-label');
+      if (label) label.textContent = self._label(c.data, row);
+      if (c.visible) wrap.style.display = c.visible(rowData, row) ? '' : 'none';
+      self._showMessage(wrap, c, rowData[c.data], row);
+    });
+  };
 
   PersonTable.prototype.updateHeaders = function (headers) {
     this.colHeaders = headers;
@@ -168,8 +199,14 @@
 
   /* ---------- rendering ---------- */
 
-  PersonTable.prototype._label = function (prop) {
-    for (var i = 0; i < this.columns.length; i++) if (this.columns[i].data === prop) return plainLabel(this.colHeaders[i]);
+  PersonTable.prototype._label = function (prop, row) {
+    for (var i = 0; i < this.columns.length; i++) {
+      var c = this.columns[i];
+      if (c.data !== prop) continue;
+      if (typeof c.label === 'function') return plainLabel(c.label(this.data[row] || {}, row));
+      if (c.label != null) return plainLabel(c.label);
+      return plainLabel(this.colHeaders[i]);
+    }
     return prop;
   };
 
@@ -186,6 +223,10 @@
     if (!input) return;
     var column = this._column(prop), v = this.data[row] ? this.data[row][prop] : null;
     if (column && column.type === 'checkbox') input.checked = String(v) === String(column.checkedTemplate);
+    else if (column && column.type === 'radio') {
+      Array.prototype.forEach.call(input.querySelectorAll('input'), function (b) { b.checked = v != null && b.value === String(v); });
+      return;
+    }
     else if (this.diseaseProps.indexOf(prop) >= 0) input.value = this._diseaseLabel(v);
     else input.value = this._displayValue(v);
     this._markValidity(input, column, v);
@@ -193,6 +234,7 @@
 
   // numeric field holding text (e.g. "environ 50"): kept as typed, shown in red like Handsontable did
   PersonTable.prototype._markValidity = function (input, column, v) {
+    if (column && column.validate) return; // shown by _showMessage
     var invalid = !!column && column.type === 'numeric' && !isEmptyValue(v) && typeof v !== 'number';
     input.classList.toggle('pt-invalid', invalid);
     if (invalid) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
@@ -206,10 +248,34 @@
     try { return global.capitaliseFirstLetter(global.cleanDiseaseText(text)); } catch (e) { return text; }
   };
 
+  // warning under a field (validate option); a hidden field shows none
+  PersonTable.prototype._showMessage = function (wrap, column, value, row) {
+    if (!column.validate) return;
+    var msg = wrap.style.display === 'none' ? null : column.validate(value, this.data[row], row);
+    var box = wrap.querySelector('.pt-msg'), input = wrap.querySelector('input.form-control, select');
+    if (!box) { box = el('div', { className: 'pt-msg', role: 'alert' }); wrap.appendChild(box); }
+    box.textContent = msg || '';
+    box.style.display = msg ? '' : 'none';
+    if (input) {
+      input.classList.toggle('pt-invalid', !!msg);
+      if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+    }
+  };
+
   PersonTable.prototype._renderField = function (row, column) {
+    var f = this._buildField(row, column), rowData = this.data[row];
+    f.id = this._fieldId(row, column.data) + '-field';
+    f.setAttribute('data-prop', column.data);
+    if (column.wide) f.className += ' pt-wide';
+    if (column.visible && !column.visible(rowData, row)) f.style.display = 'none';
+    this._showMessage(f, column, rowData[column.data], row);
+    return f;
+  };
+
+  PersonTable.prototype._buildField = function (row, column) {
     var self = this, prop = column.data, id = this._fieldId(row, prop), value = this.data[row][prop], input;
     var isDisease = this.diseaseProps.indexOf(prop) >= 0;
-    var label = el('label', { 'for': id, text: this._label(prop) });
+    var label = el('label', { 'for': id, className: 'pt-label', text: this._label(prop, row) });
 
     if (column.type === 'checkbox') {
       input = el('input', { type: 'checkbox', id: id });
@@ -218,6 +284,21 @@
         self.setDataAtRowProp(row, prop, input.checked ? column.checkedTemplate : column.uncheckedTemplate, 'edit');
       });
       return el('div', { className: 'pt-field pt-check' }, [input, label]);
+    }
+
+    if (column.type === 'radio') {
+      // a group of buttons: the whole word is clickable
+      var group = el('div', { id: id, className: 'pt-radios', role: 'radiogroup' });
+      (column.options || []).forEach(function (o, i) {
+        var b = el('input', { type: 'radio', name: id, id: id + '-' + i, value: String(o.value) });
+        b.checked = value != null && String(value) === String(o.value);
+        b.addEventListener('change', function () { if (b.checked) self.setDataAtRowProp(row, prop, o.value, 'edit'); });
+        var text = typeof o.label === 'function' ? o.label() : o.label;
+        group.appendChild(el('label', { 'for': id + '-' + i, className: 'pt-radio' }, [b, el('span', { text: text })]));
+      });
+      var legend = el('span', { className: 'pt-label', id: id + '-label', text: this._label(prop, row) });
+      group.setAttribute('aria-labelledby', id + '-label');
+      return el('div', { className: 'pt-field pt-radio-field' }, [legend, group]);
     }
 
     if (column.type === 'dropdown') {

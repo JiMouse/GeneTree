@@ -1,6 +1,8 @@
-// Index fields, panels, the cancer list and the step-by-step relative dialogs.
-const PANEL = { cancer: 'collapseCancer', children: 'collapseChildren', siblings: 'collapseSiblings', parents: 'collapseParents', gpp: 'collapseGpp', fatherSiblings: 'collapseGpp', gpm: 'collapseGpm', motherSiblings: 'collapseGpm' };
-const COLLAPSE = { collapseCancer: '#collapse1', collapseChildren: '#collapse2', collapseSiblings: '#collapse3', collapseParents: '#collapseP', collapseGpp: '#collapse4', collapseGpm: '#collapse5' };
+// Index fields, panels, the cancer list and the relatives' cards.
+const PANEL = { cancer: 'collapseCancer', children: 'collapseChildren', siblings: 'collapseSiblings', parents: 'collapseParents', gpp: 'collapseGpp', fatherSiblings: 'collapseGpp', gpm: 'collapseGpm', motherSiblings: 'collapseGpm', comment: 'collapseComment' };
+const COLLAPSE = { collapseCancer: '#collapse1', collapseChildren: '#collapse2', collapseSiblings: '#collapse3', collapseParents: '#collapseP', collapseGpp: '#collapse4', collapseGpm: '#collapse5', collapseComment: '#collapse6' };
+const BOX = { cancer: '#hotCancer', parents: '#hotParents', gpp: '#hotGpp', gpm: '#hotGpm', children: '#hotChildren', siblings: '#hotSiblings', fatherSiblings: '#hotFatherSiblings', motherSiblings: '#hotMotherSiblings' };
+const RADIOS = ['Sex', 'K1', 'K2', 'More'];
 
 async function openPanel(page, key) {
   const link = PANEL[key] || key;
@@ -18,39 +20,50 @@ async function pickCancer(page, value) {
   await page.waitForTimeout(250);
 }
 
-// Index fields + the step-by-step dialogs for children / siblings / aunts and uncles
+// One field of a card, the way a patient does it: click a button, pick from the list, or type then Tab.
+async function editField(page, table, row, prop, value) {
+  const box = `${BOX[table]} [data-row="${row}"]`;
+  if (RADIOS.includes(prop)) { await page.locator(`${box} [id$="-r${row}-${prop}"] input[value="${value}"]`).click(); await page.waitForTimeout(150); return; }
+  const field = page.locator(`${box} [id$="-r${row}-${prop}"]`);
+  await field.scrollIntoViewIfNeeded();
+  if (/^(Disease\d|Cancer)$/.test(prop)) { await field.click(); await pickCancer(page, value); return; }
+  if (prop === 'Deceased') { await field.click(); await page.waitForTimeout(150); return; }
+  await field.click(); await field.fill(value); await page.keyboard.press('Tab'); await page.waitForTimeout(150);
+}
+
 async function fillIndexFields(page, sc) {
   await page.fill('#civil_name', sc.index.name);
-  if (sc.index.dbirth) { await page.click('#dbirth'); await page.keyboard.type(sc.index.dbirth.replace(/\//g, '')); }
+  if (sc.index.dbirth) { await page.click('#dbirth'); await page.keyboard.type(sc.index.dbirth.replace(/\//g, '')); await page.keyboard.press('Tab'); }
   await page.evaluate(id => document.getElementById(id).click(), sc.index.sex === 'M' ? 'index_id_sex_0' : 'index_id_sex_1');
-  await page.fill('#form_id_comment', sc.index.comment);
+  if (sc.index.comment) { await openPanel(page, 'comment'); await page.fill('#form_id_comment', sc.index.comment); }
 }
 
+// Give the number of relatives, then fill their cards
 async function addRelatives(page, group, list) {
   if (!list.length) return;
-  const panel = { children: 'children', siblings: 'siblings', fatherSiblings: 'fatherSiblings', motherSiblings: 'motherSiblings' }[group];
   await openPanel(page, group);
-  await page.check(`#${panel}_Yes`);
-  await page.fill(`#${panel}_input`, String(list.length));
-  await page.locator(`#${panel}_input`).blur();
-  for (const p of list) {
-    const dlg = page.locator('.ui-dialog:has(#defineInd)');
-    await dlg.waitFor({ state: 'visible' });
-    await page.waitForTimeout(550);
-    await page.check(`#defineInd input[name=sex][value=${p.sex}]`);
-    await page.fill('#yobIndInput', p.yob);
-    if (p.dead) { await page.check('#defineInd input[name=deadStatus][value="1"]'); await page.fill('#deathyIndInput', p.deathAge); }
-    if (p.d1) {
-      await page.check('#defineInd input[name=diseaseStatus][value="1"]');
-      await page.click('#IndDisease1Input'); await pickCancer(page, p.d1);
-      await page.fill('#IndDisease1Age', p.a1 || '');
-      if (p.d2) { await page.click('#IndDisease2Input'); await pickCancer(page, p.d2); await page.fill('#IndDisease2Age', p.a2 || ''); }
-    }
-    if (p.comment) await page.fill('#IndCommentInput', p.comment);
-    await dlg.locator('.ui-dialog-buttonpane button').first().click(); // 'Sauvegarder' before the fix, 'Enregistrer' / 'Save' after
-    await page.waitForTimeout(450);
-  }
-  await page.waitForTimeout(400);
+  await page.check(`#${group}_Yes`);
+  await page.fill(`#${group}_input`, String(list.length));
+  await page.keyboard.press('Tab'); await page.waitForTimeout(300);
+  for (let i = 0; i < list.length; i++) await fillCard(page, group, i, list[i]);
 }
 
-module.exports = { openPanel, pickCancer, fillIndexFields, addRelatives };
+async function fillCard(page, group, i, p) {
+  if (p.sex) await editField(page, group, i, 'Sex', p.sex);
+  if (p.dead) await editField(page, group, i, 'Deceased');
+  if (p.yob) await editField(page, group, i, 'Yob', p.yob);
+  if (p.age) await editField(page, group, i, 'Age', p.age);
+  if (p.d1) {
+    await editField(page, group, i, 'K1', '1');
+    await editField(page, group, i, 'Disease1', p.d1);
+    if (p.a1) await editField(page, group, i, 'Dx1', p.a1);
+    if (p.d2) {
+      await editField(page, group, i, 'K2', '1');
+      await editField(page, group, i, 'Disease2', p.d2);
+      if (p.a2) await editField(page, group, i, 'Dx2', p.a2);
+    }
+  }
+  if (p.comment) await editField(page, group, i, 'comment', p.comment);
+}
+
+module.exports = { openPanel, pickCancer, editField, fillIndexFields, addRelatives, fillCard };
