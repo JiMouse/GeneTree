@@ -373,33 +373,52 @@ $(document).ready(function(){
         title: L('ui_cancer_list'),
     });
 
-    var html = "<form><fieldset>";
-    diseases = onco_full();
-    $.each(diseases, function (k) {
-        html += "<div class='form-check'><label class='form-check-label font-normal'>"
-            + "<input type='radio' class='form-check-input' name='cancerListradio' value='" + diseases[k] + "'> "
-            + capitaliseFirstLetter(cleanDiseaseText(diseases[k])) + "</label></div>";
-    });
-    html += "<div class='form-check'><label class='form-check-label font-normal'>"
-        + "<input type='radio' class='form-check-input' name='cancerListradio' value='Autre'> " + L('ui_other').trim() // value stays "Autre"
-        + "</label></div></fieldset></form>";
-    dialogCancerList.html(html);
+    // The list of cancers, then "Autre, précisez :" where the patient types the cancer
+    // (e.g. "lymphome"). The typed words are stored as the cancer, as in the tool.
+    function buildCancerList() {
+        var html = "<form><fieldset>";
+        diseases = onco_full();
+        $.each(diseases, function (k) {
+            html += "<div class='form-check'><label class='form-check-label font-normal'>"
+                + "<input type='radio' class='form-check-input' name='cancerListradio' value='" + diseases[k] + "'> "
+                + capitaliseFirstLetter(cleanDiseaseText(diseases[k])) + "</label></div>";
+        });
+        html += "<div class='other-cancer'>"
+            + "<label for='other_cancer_input' class='font-normal'>" + L('ui_other_specify') + "</label>"
+            + "<div class='other-cancer-row'>"
+            + "<input type='text' id='other_cancer_input' class='form-control' autocomplete='off' maxlength='60' placeholder='" + L('ui_other_example') + "'>"
+            + "<button type='button' id='other_cancer_ok' class='btn btn-primary'>OK</button>"
+            + "</div></div></fieldset></form>";
+        dialogCancerList.html(html);
+    }
+    buildCancerList();
 
     window.openDialogCancerList = function (SelectedSex) {
         var ovary = onco_full()[2], prostate = onco_full()[3], uterus = onco_full()[8];
         $('input[name=cancerListradio][value=' + ovary + ']').attr("disabled", SelectedSex == 'M');
         $('input[name=cancerListradio][value=' + uterus + ']').attr("disabled", SelectedSex == 'M');
         $('input[name=cancerListradio][value=' + prostate + ']').attr("disabled", SelectedSex == 'F');
+        // a cancer typed before is shown in the "Autre" field, ready to be corrected
+        var current = hotSelectedTable ? hotSelectedTable.getDataAtRowProp(selectedRow, selectedColumn) : null;
+        var typed = !isEmpty(current) && onco_full().indexOf(current) < 0 && current !== 'Autre';
+        $('#other_cancer_input').val(typed ? current : '');
         dialogCancerList.dialog( "open" );
     };
 
-    $('input[name="cancerListradio"]').on("click", function () {
-        var cancerType = $('input[name="cancerListradio"]:checked').val();
-        if (cancerType != undefined && hotSelectedTable) {
-            hotSelectedTable.setDataAtRowProp(selectedRow, selectedColumn, cancerType);
-            $('input[name="cancerListradio"]:checked').prop('checked', false);
-        }
+    function chooseCancer(cancerType) {
+        if (!isEmpty(cancerType) && hotSelectedTable) hotSelectedTable.setDataAtRowProp(selectedRow, selectedColumn, cancerType);
+        $('input[name="cancerListradio"]:checked').prop('checked', false);
         dialogCancerList.dialog( "close" );
+    }
+    dialogCancerList.on("click", 'input[name="cancerListradio"]', function () { chooseCancer($(this).val()); });
+    function chooseOther() {
+        var text = String($('#other_cancer_input').val() || '').replace(/\s+/g, ' ').trim();
+        if (!text) { $('#other_cancer_input').focus(); return; }   // nothing typed: the list stays open
+        chooseCancer(text);
+    }
+    dialogCancerList.on("click", '#other_cancer_ok', chooseOther);
+    dialogCancerList.on("keydown", '#other_cancer_input', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); chooseOther(); }
     });
 
     [hotCancer].concat(allRelatives()).forEach(function (t) {
@@ -463,6 +482,7 @@ $(document).ready(function(){
         });
         defaultNames = fresh;
         dialogCancerList.dialog('option', 'title', L('ui_cancer_list'));
+        buildCancerList();
         schedulePedigree();
     };
     defaultNames = currentDefaultNames();

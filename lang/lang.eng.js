@@ -349,6 +349,8 @@ var lang = {
     ui_melanome: " Melanoma",
     ui_cancer_orl: " Head cancer",
     ui_polypes: " Polyposis",
+    ui_other_specify: "Other, please specify:",
+    ui_other_example: "e.g. lymphoma",
     ui_other: " Other",
     ui_children: "Your children",
     ui_children_q: "Do you have children?",

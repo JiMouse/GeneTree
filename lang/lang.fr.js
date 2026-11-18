@@ -354,6 +354,8 @@ var lang = {
     ui_melanome: " Mélanome",
     ui_cancer_orl: " Cancer ORL",
     ui_polypes: " Polypes",
+    ui_other_specify: "Autre, précisez :",
+    ui_other_example: "ex. : lymphome",
     ui_other: " Autre",
     ui_children: "Vos enfants",
     ui_children_q: "Avez-vous des enfants ?",

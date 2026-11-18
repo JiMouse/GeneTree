@@ -194,4 +194,40 @@ test('language switch: default names and questions follow, typed names are kept'
   expect(JSON.stringify(names) === '["Daughter 1","Paul"]' && q === 'Has this child had cancer?', JSON.stringify([names, q]));
 });
 
+test('"Autre, précisez": the cancer typed by the patient is kept and sent', 'fr', async (page) => {
+  await addRelatives(page, 'siblings', [{ sex: 'M', yob: '1970' }]);
+  await editField(page, 'siblings', 0, 'K1', '1');
+  await page.locator('#hotSiblings [id$="-r0-Disease1"]').click();
+  await page.locator('#cancerList2').waitFor({ state: 'visible' });
+  await page.click('#other_cancer_ok');                                     // nothing typed: the list stays open
+  expect(await page.isVisible('#cancerList2'), 'list closed without a cancer');
+  await page.fill('#other_cancer_input', '  lymphome   hodgkinien ');
+  await page.keyboard.press('Enter'); await page.waitForTimeout(200);
+  expect(!await page.isVisible('#cancerList2'), 'list still open after Enter');
+  const shown = await page.locator('#hotSiblings [id$="-r0-Disease1"]').inputValue();
+  expect((await rows(page, 'hotSiblings'))[0].Disease1 === 'lymphome hodgkinien' && shown === 'Lymphome hodgkinien', JSON.stringify([(await rows(page, 'hotSiblings'))[0].Disease1, shown]));
+  await page.locator('#hotSiblings [id$="-r0-Disease1"]').click();         // reopened: the typed cancer is there to correct
+  expect(await page.inputValue('#other_cancer_input') === 'lymphome hodgkinien', 'not prefilled: ' + await page.inputValue('#other_cancer_input'));
+  await page.fill('#other_cancer_input', 'lymphome'); await page.click('#other_cancer_ok'); await page.waitForTimeout(200);
+  await editField(page, 'siblings', 0, 'Dx1', '40');
+  const b = (await pedigree(page)).find(r => r.Name === 'Frère 1');
+  expect(b.Disease1 === 'lymphome' && b.Age1 === 40, JSON.stringify(b));
+  await page.locator('#hotSiblings [id$="-r0-Disease1"]').click();         // a cancer of the list: the field is empty
+  expect(await page.inputValue('#other_cancer_input') === 'lymphome', 'typed cancer not shown');
+  await page.locator('#cancerList2 input[name=cancerListradio]').first().click(); await page.waitForTimeout(200);
+  await page.locator('#hotSiblings [id$="-r0-Disease1"]').click();
+  expect(await page.inputValue('#other_cancer_input') === '', 'field not emptied for a cancer of the list');
+});
+
+test('"Other, please specify" in English, and for the patient\'s own cancer', 'eng', async (page) => {
+  await page.check('#cancer_Yes');
+  await page.locator('#hotCancer [id$="-r0-Cancer"]').click();
+  await page.locator('#cancerList2').waitFor({ state: 'visible' });
+  const label = await page.locator('label[for=other_cancer_input]').innerText();
+  await page.fill('#other_cancer_input', 'thyroid cancer'); await page.click('#other_cancer_ok'); await page.waitForTimeout(200);
+  await editField(page, 'cancer', 0, 'Dx', '35');
+  const p = (await pedigree(page))[0];
+  expect(label === 'Other, please specify:' && p.Disease1 === 'thyroid cancer' && p.Age1 === 35, JSON.stringify([label, p.Disease1, p.Age1]));
+});
+
 runTests(tests, url);
