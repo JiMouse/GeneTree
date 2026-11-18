@@ -79,19 +79,19 @@ test('phone: the drawing is below; "Voir l\'arbre" brings it into view, then hid
   expect(top >= 0 && top < 120 && !await page.isVisible('#show_pedigree'), 'after the click: top ' + top + ', button ' + await page.isVisible('#show_pedigree'));
 }, PHONE);
 
-test('the two files are downloaded at once, named after the patient', async (page) => {
+test('one file, the GeneTree file, named after the patient', async (page) => {
   await page.fill('#civil_name', 'Lefèvre Hélène');
   await addRelatives(page, 'children', [{ sex: 'M', yob: '2005' }]);
   await settle(page);
   const files = [];
   page.on('download', d => files.push(d));
+  const label = (await page.locator('#ui_dl').innerText()).trim();
   await page.click('#exportPedigreejsCanRisk'); await page.waitForTimeout(800);
   const names = files.map(d => d.suggestedFilename());
-  const canrisk = files.find(d => d.suggestedFilename().startsWith('canrisk'));
-  const famids = canrisk ? require('fs').readFileSync(await canrisk.path(), 'utf8').split('\n').filter(l => l && !l.startsWith('#')).map(l => l.split('\t')[0]) : [];
-  expect(files.length === 2 && names.includes('canrisk_Lefevre_Helene.txt') && names.some(n => /^GeneTree_data_Lefevre_Helene_.*\.json$/.test(n)),
-    'downloads: ' + JSON.stringify(names));
-  expect(famids.length && famids.every(f => f === 'Lefevre_Helen'), 'FamID: ' + JSON.stringify([...new Set(famids)]));
+  expect(label === 'Télécharger le fichier à envoyer à votre médecin', 'button: ' + label);
+  expect(files.length === 1 && /^GeneTree_data_Lefevre_Helene_.*\.json$/.test(names[0]), 'downloads: ' + JSON.stringify(names));
+  const data = JSON.parse(require('fs').readFileSync(await files[0].path(), 'utf8'));
+  expect(data.some(p => p.proband && p.civil_name === 'Lefèvre Hélène') && data.some(p => p.display_name === 'Fils 1'), 'file content');
   expect(!await page.isVisible('.ui-dialog'), 'a dialog is open');
 }, WIDE);
 

@@ -488,11 +488,10 @@ $(document).ready(function() {
             rowHeaders: false
         });
     });
-    // patient page: the two files, named after the index case (no dialog)
+    // patient page: the GeneTree file for the doctor, named after the index case
     $( "#exportPedigreejsCanRisk" ).click(function() {
         let obj = pedcache.current(opts);
         ExportJSON(obj, familyIdentifier(obj));
-        saveCanRisk(obj);
     });
 
     $( "#loadStory" ).click(function() {
