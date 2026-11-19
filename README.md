@@ -10,6 +10,7 @@ GeneTree is an integrated tool for clinical geneticists and genetic counsellors,
 
 - **Family table and pedigree drawing, interconnected.** A family is loaded from a file (JSON, BOADICEA, CanRisk, PED), created from a standard or custom structure, then completed in a spreadsheet-like table or directly on the drawing.
 - **A table that works like a spreadsheet:** keyboard editing, copy and paste with Excel, undo and redo, rows moved by dragging, lists for sex and options, a cancer or HPO picker for diseases.
+- **Family history in free text:** in *New family*, a text such as "Elle a 2 sœurs dont une décédée d'un cancer du sein à 45 ans. Sa mère : K ovaire à 52 ans, DCD à 60 ans. Il a un demi-frère paternel." is turned into rows of the table: siblings, half-siblings, children, parents, grandparents, uncles and aunts (and the children of a named relative: nephews, cousins, grandchildren), with their diseases and ages at diagnosis (cancers mapped to the table's cancer list), death and age. *Analyser* shows what will be added or changed; *Ajouter à l'arbre* applies it. The text is read in the browser by `js/text-family.js`, with rules, without any model or server; what cannot be placed (a relative without a side, a cousin with no parent named…) is listed for entry in the table.
 - **Automatic text:** the personal and family history is written from the table, in French or English.
 - **Exports:** GeneTree JSON, TSV, PED, BOADICEA, CanRisk, GEDCOM, pedigreejs JSON; the drawing as SVG, image or PDF (print).
 - **Patient interface** ([docs/patient.html](https://jimouse.github.io/GeneTree/docs/patient.html)): a form the patient fills in before the consultation, on a computer or a phone, with the pedigree drawn beside it as they answer. It produces a GeneTree file that the patient sends to the practitioner, who opens it in the tool (and can export CanRisk from there).
@@ -38,6 +39,7 @@ GeneTree is a static site: everything runs in the browser.
 - `js/data-grid.js`: the tool's table (DataGrid), a dependency-free spreadsheet.
 - `js/person-table.js`: the patient interface's cards (PersonTable).
 - `js/main.js`, `js/main_front.js`, `js/hotTable.js`, `js/indexWidgets.js`: the tool's logic (families, table rules, exports).
+- `js/text-family.js`: reads a free-text family history (French or English): `parseFamilyText()` finds the relatives and what is said of them, `planFamilyText()` gives the new table and the preview.
 - `js/user-interface.js`: the patient interface's logic.
 - `js/pedigree.js`, `js/widgets.js`, `js/io.js`, `js/canrisk_file.js`…: pedigree drawing and file formats, from pedigreejs.
 - `lang/`: texts and text generation in French (`*.fr.js`) and English (`*.eng.js`).
@@ -47,7 +49,7 @@ GeneTree is a static site: everything runs in the browser.
 
 The tests drive the pages in a real browser (Playwright) with the mouse and keyboard, and check what the pages produce. See the README in each folder.
 
-- `tests/tool-page/`: the fixed bugs and the table's spreadsheet features.
+- `tests/tool-page/`: the fixed bugs, the table's spreadsheet features and the free-text family history.
 - `tests/patient-page/`: the fixed bugs, the questionnaire and the live pedigree.
 - `tests/language/`: the language switch on every page.
 
