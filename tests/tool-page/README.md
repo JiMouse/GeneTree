@@ -10,9 +10,9 @@ Two sets of tests drive the tool (`index.html`) in a real browser with the mouse
 
 10 tests of the table itself: keyboard navigation, Escape and F2, one Ctrl+Z undoing an age together with the year of birth it filled in, copy to and paste from Excel, deleting a row then undoing it, dragging rows, tick boxes, the single-click lists, red age cells, the message when a family cannot be drawn, and no external requests.
 
-## 3. Free-text family description (`free_text.js`)
+## 3. Free-text family history (`free_text.js`)
 
-15 sentences read by `js/text-family.js` without a browser (siblings and children of known or unknown sex, "dont 2 filles", uncles and aunts from "son père a…" or "côté maternel", older or younger brothers, half-siblings and grandchildren left aside, English), then 4 tests in the tool: the fields filled in with the menu kept open and nothing added yet, the relatives of unknown sex added to the selected person and drawn, the hint when nothing is recognised, and the English page.
+30 texts read by `js/text-family.js` without a browser, each checked against the exact preview it gives on the default family: siblings and children of known or unknown sex ("dont 2 filles", "2 enfants, un fils et une fille"), uncles and aunts ("son père a 2 frères", "côté maternel"), half-siblings on each side with one new partner of the parent, nephews and cousins through a named relative, cancers mapped to the table's keys (French and English, "K sein", bilateral breast cancer), other diseases kept as written, death and age, negations, a long anamnesis, what is listed for the user, and the table itself (disease columns, comment, year of birth, a brother or uncle already in the table reused, the same text applied twice). Then 6 tests in the tool: the preview with nothing changed yet, *Ajouter à l'arbre* (rows, drawing, text of the letter), half-siblings and grandparents drawn, the preview hidden when the text changes, the hint when nothing is recognised, and the English page.
 
 ## Run
 

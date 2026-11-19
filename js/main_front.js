@@ -243,31 +243,61 @@ $(document).ready(function() {
         });
         $('#freeText').val('');
         $('#freeTextResult').empty();
+        $('#freeTextApply').hide();
         e.stopPropagation();
     });
 
-    // Free text -> fields (js/text-family.js, in the browser: nothing is sent anywhere).
-    // The user checks the fields, then uses the usual buttons.
+    // Free text -> relatives, diseases, deaths and ages (js/text-family.js, in the
+    // browser: nothing is sent anywhere). "Analyser" shows what would change;
+    // "Ajouter à l'arbre" applies it to the current table.
+    function freeTextPlan() {
+        return planFamilyText(hot.getSourceData(), parseFamilyText($('#freeText').val()),
+                              {L: lang, cancerKeys: onco_full(), year: new Date().getFullYear()});
+    }
+    function freeTextUnhandled($out, unhandled) {
+        if (!unhandled.length) return;
+        var reasons = {side: lang.ft_reason_side, sex: lang.ft_reason_sex};
+        $out.append($('<div>').css({'color': '#a94442', 'padding-top': '3px'}).text(lang.freeTextUnhandled + unhandled.map(function (u) {
+            return u.text + (reasons[u.reason] ? ' (' + reasons[u.reason] + ')' : '');
+        }).join(' ; ')));
+    }
     $( "#freeTextAnalyse" ).click(function(e) {
         e.stopPropagation(); // keep the menu open
-        var result = parseFamilyText($('#freeText').val()),
-            keys = Object.keys(result.counts),
+        var plan = freeTextPlan(),
             $out = $('#freeTextResult').empty();
-
-        if (keys.length) {
-            $.each(fam, function(index, value) {
-                $('#'+value).val(result.counts[value] || '');
+        $('#freeTextApply').toggle(plan.lines.length > 0);
+        if (plan.lines.length) {
+            $out.append($('<div>').css('font-weight', 'bold').text(lang.freeTextPreview));
+            var $list = $('<ul>').css({'padding-left': '18px', 'margin': '2px 0'});
+            plan.lines.forEach(function (l) {
+                var $li = $('<li>').addClass('freeTextLine');
+                $li.append($('<span>').css('font-weight', l.isNew ? 'bold' : 'normal').text(l.name));
+                if (l.isNew) $li.append($('<span>').css('color', 'green').text(' (' + lang.freeTextNew + ')'));
+                if (l.details.length) $li.append(document.createTextNode(' : ' + l.details.join(', ')));
+                $list.append($li);
             });
-            $out.append($('<div>').css('color', 'green').text(lang.freeTextFilled));
-        } else if (!result.unhandled.length) {
+            $out.append($list);
+        } else if (!plan.unhandled.length) {
             $out.append($('<div>').css('color', 'grey').text(lang.freeTextNone));
         }
-        if (result.unhandled.length) {
-            $out.append($('<div>').css('color', '#a94442').text(lang.freeTextUnhandled + result.unhandled.join(', ')));
+        freeTextUnhandled($out, plan.unhandled);
+    });
+    $( "#freeTextApply" ).click(function(e) {
+        e.stopPropagation();
+        var plan = freeTextPlan();
+        if (plan.lines.length) {
+            hot.loadData(plan.rows);
+            loadFromHot();
         }
+        $(this).hide();
+        $('#freeTextResult').empty().append($('<div>').css('color', 'green').text(lang.freeTextDone));
+        freeTextUnhandled($('#freeTextResult'), plan.unhandled);
     });
     $( "#freeText" ).on('keydown', function(e) {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) $('#freeTextAnalyse').click();
+    }).on('input', function() { // the preview no longer matches the text
+        $('#freeTextApply').hide();
+        $('#freeTextResult').empty();
     });
 
     $( "#submitCustomFam" ).click(function() {
