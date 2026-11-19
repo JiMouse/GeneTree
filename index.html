@@ -74,6 +74,7 @@
 	<script type="text/javascript" src="js/user-interface.js"></script>
 	<script type="text/javascript" src="js/gedcom_parser.js"></script>
 	<script type="text/javascript" src="js/loadFiles.js"></script>
+	<script type="text/javascript" src="js/text-family.js"></script>
 
 	<!-- main css -->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
@@ -338,6 +339,15 @@
 								<div class="btnDivider"></div>
 								<i id="clearFam" class="fa fa-eraser lang" aria-hidden="true" style="color: grey;"></i>
 							</div>
+							<!-- free text: read in the browser by js/text-family.js, fills the fields below -->
+							<div id="freeTextBlock" style="padding: 5px 10px 0;">
+								<div style="font-style: italic; padding-bottom: 3px;"><span id="freeTextTitle" class="lang"></span></div>
+								<textarea id="freeText" class="lang form-control input-sm" rows="3" style="resize: vertical;"></textarea>
+								<div class="text-center" style="padding-top: 4px;">
+									<button id="freeTextAnalyse" type="button" class="btn btn-default btn-sm lang"></button>
+								</div>
+								<div id="freeTextResult" class="small" style="padding-top: 4px;" aria-live="polite"></div>
+							</div>
 							<p>
 							<div class="row" style='padding-bottom: 5px;'>
 								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="bro"
@@ -357,6 +367,16 @@
 								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="daugh"
 										class="lang"></label></label></div>
 								<div class="col-sm-2"><input type="number" id="daughter" min="0" max="20"></div>
+							</div>
+
+							<div class="row" style='padding-top: 5px;'>
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="sibU"
+										class="lang"></label></div>
+								<div class="col-sm-3"><input type="number" id="sibling" min="0" max="20"></div>
+
+								<div class="col-sm-2 text-right"><label style='font-weight: normal;' id="childU"
+										class="lang"></label></div>
+								<div class="col-sm-2"><input type="number" id="child" min="0" max="20"></div>
 							</div>
 							<p>
 							<div class="row text-center" style='padding-bottom: 5px;'><i><span id="patBranch"

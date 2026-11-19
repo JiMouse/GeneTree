@@ -33,6 +33,13 @@ var lang = {
     patBranch:"Branche paternelle",
     unc:"oncles",
     aunt:"tantes",
+    freeTextTitle:"Décrire en texte libre",
+    freeTextAnalyse:"Remplir les champs",
+    sibU:"fratrie",
+    childU:"enfants",
+    freeTextNone:"Aucun apparenté reconnu. Exemple : « il a 3 frères et sœurs, son père a 2 sœurs ».",
+    freeTextFilled:"Champs remplis : vérifiez-les, puis cliquez sur un des boutons ci-dessous.",
+    freeTextUnhandled:"Non ajoutés (à saisir dans le tableau) : ",
     matBranch:"Branche maternelle",
     unc2:"oncles",
     aunt2:"tantes",
@@ -264,6 +271,8 @@ var lang = {
     index:"Index",
     brother:"Frère",
     sister:"Sœur",
+    sibling:"Frère/sœur",
+    child:"Enfant",
     father:"Père",
     mother:"Mère",
     unclePat:"Oncle pat",
@@ -435,6 +444,9 @@ var title = {
     add_miscarriage:"Ajouter une fausse-couche",
     reset_dialog:"Confirmation de la réinitialisation des maladies",
     clearFam:"Vider les champs",
+    sibU:"Frères et sœurs dont le sexe n'est pas précisé",
+    childU:"Enfants dont le sexe n'est pas précisé",
+    freeTextAnalyse:"Analyse le texte sur cet ordinateur (rien n'est envoyé) et remplit les champs ci-dessous",
     undo:"Défaire",
     redo:"Refaire",
     exportJson:"Données brutes",
@@ -456,6 +468,7 @@ var title = {
 };
 
 var placeholder = {
+    freeText:"Ex. : il a 3 frères et sœurs et 2 enfants dont une fille. Son père a 2 sœurs, une tante maternelle.",
     menarche: "(âge)",
     menopause:"(âge)"
 }

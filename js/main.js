@@ -816,6 +816,16 @@ function getName(i, tableData, rowData) { //JSONData, table format
     );
     }
 
+    function isSibling(index) { // sex not known
+        return(
+            rowData.FathID != '0'
+            && rowData.MothID != '0'
+            && rowData.MothID == obj[getRow(obj, index)].MothID
+            && rowData.FathID == obj[getRow(obj, index)].FathID
+            && rowData.Sex == 'U'
+    );
+    }
+
     function isFather(index) {
         return(rowData.IndivID == obj[getRow(obj, index)].FathID);
     }
@@ -828,6 +838,7 @@ function getName(i, tableData, rowData) { //JSONData, table format
 
     else if (isBrother(indexID)){result = lang.brother}
     else if (isSister(indexID)){result = lang.sister}
+    else if (isSibling(indexID)){result = lang.sibling}
 
     else if(isFather(indexID)){result = lang.father}
     else if (isMother(indexID)){result = lang.mother}
@@ -965,7 +976,7 @@ function createFamily(famObj, hotObj){
         for (let step = 0; step < n; step++) {        
             let spouse = partner(obj,i),
                 spouseSex = (obj[i].Sex=='M' ? 'F' : 'M' );
-            var pre = (sex == 'M' ? lang.son : lang.daughter);
+            var pre = (sex == 'M' ? lang.son : sex == 'F' ? lang.daughter : lang.child);
             
             // if partner doesn't exist : create it
             if (typeof(spouse) == 'undefined' || forceCreation==true) {
@@ -1003,11 +1014,17 @@ function createFamily(famObj, hotObj){
             case 'sister':
                 newSiblings(obj, index, 'F', famObj[keys[j]]);
                 break;
+            case 'sibling': // sex not known
+                newSiblings(obj, index, 'U', famObj[keys[j]]);
+                break;
             case 'son':
                 newChild(obj,index,'M', famObj[keys[j]]);
                 break;
             case 'daughter':
                 newChild(obj,index,'F', famObj[keys[j]]);
+               break;
+            case 'child': // sex not known
+                newChild(obj,index,'U', famObj[keys[j]]);
                break;
             case 'uncleP':
                 newParents(obj,index);

@@ -236,12 +236,38 @@ $(document).ready(function() {
         loadFromHot();
     });
 
-    var fam = ['brother','sister','son','daughter','uncleP','auntP','uncleM','auntM'];
+    var fam = ['brother','sister','sibling','son','daughter','child','uncleP','auntP','uncleM','auntM'];
     $( "#clearFam" ).click(function(e) {
         $.each(fam, function(index, value) {
             $('#'+value).val("")
         });
+        $('#freeText').val('');
+        $('#freeTextResult').empty();
         e.stopPropagation();
+    });
+
+    // Free text -> fields (js/text-family.js, in the browser: nothing is sent anywhere).
+    // The user checks the fields, then uses the usual buttons.
+    $( "#freeTextAnalyse" ).click(function(e) {
+        e.stopPropagation(); // keep the menu open
+        var result = parseFamilyText($('#freeText').val()),
+            keys = Object.keys(result.counts),
+            $out = $('#freeTextResult').empty();
+
+        if (keys.length) {
+            $.each(fam, function(index, value) {
+                $('#'+value).val(result.counts[value] || '');
+            });
+            $out.append($('<div>').css('color', 'green').text(lang.freeTextFilled));
+        } else if (!result.unhandled.length) {
+            $out.append($('<div>').css('color', 'grey').text(lang.freeTextNone));
+        }
+        if (result.unhandled.length) {
+            $out.append($('<div>').css('color', '#a94442').text(lang.freeTextUnhandled + result.unhandled.join(', ')));
+        }
+    });
+    $( "#freeText" ).on('keydown', function(e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) $('#freeTextAnalyse').click();
     });
 
     $( "#submitCustomFam" ).click(function() {

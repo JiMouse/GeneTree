@@ -10,6 +10,10 @@ Two sets of tests drive the tool (`index.html`) in a real browser with the mouse
 
 10 tests of the table itself: keyboard navigation, Escape and F2, one Ctrl+Z undoing an age together with the year of birth it filled in, copy to and paste from Excel, deleting a row then undoing it, dragging rows, tick boxes, the single-click lists, red age cells, the message when a family cannot be drawn, and no external requests.
 
+## 3. Free-text family description (`free_text.js`)
+
+15 sentences read by `js/text-family.js` without a browser (siblings and children of known or unknown sex, "dont 2 filles", uncles and aunts from "son père a…" or "côté maternel", older or younger brothers, half-siblings and grandchildren left aside, English), then 4 tests in the tool: the fields filled in with the menu kept open and nothing added yet, the relatives of unknown sex added to the selected person and drawn, the hint when nothing is recognised, and the English page.
+
 ## Run
 
 ```bash
@@ -20,4 +24,5 @@ cd GeneTree/tests/tool-page
 
 node bugs.js http://localhost:8000/GeneTree/
 node grid_features.js http://localhost:8000/GeneTree/
+node free_text.js http://localhost:8000/GeneTree/
 ```

@@ -31,6 +31,13 @@ var lang = {
     patBranch:"Paternal branch",
     unc:"uncles",
     aunt:"aunts",
+    freeTextTitle:"Describe in free text",
+    freeTextAnalyse:"Fill in the fields",
+    sibU:"siblings",
+    childU:"children",
+    freeTextNone:"No relative recognised. Example: \"she has 3 siblings, her father has 2 sisters\".",
+    freeTextFilled:"Fields filled in: check them, then click one of the buttons below.",
+    freeTextUnhandled:"Not added (enter them in the table): ",
     matBranch:"Maternal branch",
     unc2:"uncles",
     aunt2:"tantes",
@@ -260,6 +267,8 @@ var lang = {
     index:"Index",
     brother:"Brother",
     sister:"Sister",
+    sibling:"Sibling",
+    child:"Child",
     father:"Father",
     mother:"Mother",
     unclePat:"Uncle pat",
@@ -430,6 +439,9 @@ var title = {
     add_miscarriage:"Add a miscarriage",
     reset_dialog:"Confirmation of disease reset",
     clearFam:"Clear the fields",
+    sibU:"Siblings whose sex is not given",
+    childU:"Children whose sex is not given",
+    freeTextAnalyse:"Reads the text on this computer (nothing is sent) and fills in the fields below",
     undo:"Undo",
     redo:"Redo",
     exportJson:"Raw data",
@@ -451,6 +463,7 @@ var title = {
 };
 
 var placeholder = {
+    freeText:"E.g.: she has 3 siblings and 2 children, one of them a daughter. Her father has 2 sisters, one maternal aunt.",
     menarche: "(age)",
     menopause:"(age)"
 }
