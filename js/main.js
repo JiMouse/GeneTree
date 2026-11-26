@@ -248,14 +248,36 @@ function UpdateLevels(obj) {
 }
 
 function UpdateDiseases(o,i){
+    // diseases already in the drawing's form: those that did not fit the three columns
+    // (kept by FormatToTable) come after the diseases of the columns. Any other one is a
+    // copy left by an earlier version (a disease removed from the table, or the same as a
+    // column): the columns are what counts.
+    var overflow = {}, inColumns = {}, full = true;
+    for (var c = 0; c < colsDiseases.length; c++) {
+        var v = o[i][colsDiseases[c]];
+        if (v != "" && v != null) inColumns[v + "_diagnosis_age"] = true; else full = false;
+    }
+    Object.keys(o[i]).forEach(function (k) {
+        if (!isDiagnosisKey(k)) return;
+        if (full && !inColumns[k]) overflow[k] = o[i][k];
+        delete o[i][k];
+    });
     for (var j = 0; j < colsDiseases.length; j++) {
         let col = colsDiseases[j],
             age = colsAges[j],
             content = o[i][col];
         
         if (content != "" && content != null){
-            var new_col = o[i][ col ];
-            o[i][new_col+"_diagnosis_age"] = (o[i][ age ]==null ? "" : o[i][ age ]);
+            var new_col = o[i][ col ],
+                key = new_col+"_diagnosis_age",
+                value = (o[i][ age ]==null ? "" : String(o[i][ age ]).trim());
+            // the same disease twice (two melanomas at 56 and 62): one key, both ages "56, 62";
+            // an unknown age is "?" so that the count is kept ("56, ?")
+            if (o[i].hasOwnProperty(key)) {
+                o[i][key] = splitDiagnosisAges(o[i][key]).concat([value]).map(function (a) { return a === '' ? '?' : a; }).join(', ');
+            } else {
+                o[i][key] = value;
+            }
             delete o[i][ col ];
             delete o[i][ age ];
         }
@@ -263,6 +285,14 @@ function UpdateDiseases(o,i){
         if(o[i].hasOwnProperty(col)) delete o[i][ col ];
         if(o[i].hasOwnProperty(age)) delete o[i][ age ];
     };
+    Object.keys(overflow).forEach(function (k) {
+        o[i][k] = (o[i].hasOwnProperty(k) ? o[i][k] + ', ' + overflow[k] : overflow[k]);
+    });
+}
+
+// "cancer_sein_diagnosis_age", not "approx_diagnosis_age"
+function isDiagnosisKey(k) {
+    return /_diagnosis_age$/.test(k) && k !== 'approx_diagnosis_age';
 }
 
 function UpdateOptions(o,i) {
@@ -320,8 +350,11 @@ function FormatToTable(JSONData) {
         for (var j = 0; j < keys.length; j++) {
             if (keys[j].indexOf("_diagnosis_age") !== -1) {
                 var out = keys[j].substring(0, keys[j].length - 14);
-                patho.push(out);
-                age.push(obj[i][keys[j]]);
+                // "56, 62": the same disease twice, one line each
+                splitDiagnosisAges(obj[i][keys[j]]).forEach(function (a) {
+                    patho.push(out);
+                    age.push(a);
+                });
             }
         }
 
@@ -329,11 +362,17 @@ function FormatToTable(JSONData) {
         const toRemove = new Set(['famid','display_name','name','father','mother','sex', 'affected', 'status','yob','age'
                                     ,'proband','top_level','noparents','miscarriage','termination','adopted_in','mztwin','dztwin'
                                     , 'Option', 'level']);
-        const otherKeys = keys.filter( x => !toRemove.has(x) );
+        let otherKeys = keys.filter( x => !toRemove.has(x) && !isDiagnosisKey(x) );
         let otherObj = {};
+        // more diseases than the table's columns: the others stay in the drawing's form
+        for (let c = colsDiseases.length; c < patho.length; c++) {
+            let k = patho[c] + '_diagnosis_age', a = (age[c] === '' || age[c] == null ? '?' : age[c]);
+            if (otherKeys.indexOf(k) < 0) otherKeys.push(k);
+            otherObj[k] = (otherObj.hasOwnProperty(k) ? otherObj[k] + ', ' + a : String(age[c] == null ? '' : age[c]));
+        }
         if (otherKeys != '') {
             for (var j = 0; j < otherKeys.length; j++) {
-                if (obj[i][otherKeys[j]] !== '') {
+                if (!isDiagnosisKey(otherKeys[j]) && obj[i][otherKeys[j]] !== '') {
                     otherObj[otherKeys[j]]=obj[i][otherKeys[j]];
                 }
             }
@@ -613,7 +652,7 @@ function canriskAgeErrors(dataset) {
             return;
         }
         affected.forEach(function(cancer) {
-            let diag = String(p[cancers_canrisk[cancer]]).trim();
+            let diag = String(firstDiagnosisAge(p[cancers_canrisk[cancer]])).trim();
             if (diag === '' || diag.toUpperCase() === 'AU') return;
             if (!isInt(diag) || parseInt(diag) < 1 || parseInt(diag) > age)
                 errors.push(fill(boadicea.diag_age, {name: name, cancer: labels[cancer] || cancer, diag: diag, age: age}));
@@ -670,8 +709,9 @@ function ExportBOADICEv4(JSONData) {
 
         //Boadicea diseases
         function BoadiceaDisease(i,nb) {
-            let col = onco()[nb]+'_diagnosis_age';
-            return KeyStatus(i,col,arrData[i][col] !=0 ? arrData[i][col] : 'AU');
+            let col = onco()[nb]+'_diagnosis_age',
+                first = firstDiagnosisAge(arrData[i][col]);
+            return KeyStatus(i,col,first !== '' && first != 0 ? first : 'AU');
         }
 
         let rowDiseases=[];
@@ -1266,4 +1306,56 @@ function lowerFirstLetter(string) {
 
 function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+// Is the Name of a row still the one GeneTree gave it ("Index", "Père", "Oncle pat2",
+// "Grand-père paternel", the person's Id....), not a name typed by the user?
+// Checked against the labels of the current language and the names of the templates.
+var DEFAULT_NAME_KEYS = ['index', 'brother', 'sister', 'sibling', 'child', 'son', 'daughter',
+    'halfBrotherPat', 'halfSisterPat', 'halfSiblingPat', 'halfBrotherMat', 'halfSisterMat', 'halfSiblingMat',
+    'parentSiblingPat', 'parentSiblingMat', 'nephew', 'niece', 'nephewNiece', 'grandson', 'granddaughter', 'grandchild',
+    'cousinM', 'cousinF', 'cousinU', 'ft_partner', 'ft_otherPartnerP', 'ft_otherPartnerM',
+    'father', 'mother', 'unclePat', 'uncleMat', 'auntPat', 'auntMat', 'gpp', 'gmp', 'gpm', 'gmm',
+    'ui_name_father', 'ui_name_mother', 'ui_rel_children', 'ui_rel_children_M', 'ui_rel_children_F',
+    'ui_rel_siblings', 'ui_rel_siblings_M', 'ui_rel_siblings_F',
+    'ui_rel_fatherSiblings', 'ui_rel_fatherSiblings_M', 'ui_rel_fatherSiblings_F',
+    'ui_rel_motherSiblings', 'ui_rel_motherSiblings_M', 'ui_rel_motherSiblings_F'];
+
+function isDefaultName(name, row) {
+    var norm = function (s) {
+        return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
+    };
+    var n = norm(name);
+    if (n === '') return true;
+    if (row && (n === norm(row.IndivID) || n === norm(row.name))) return true;   // drawn without a name: its Id.
+    var labels = ['Conjoint', 'FCS'], L = (typeof lang !== 'undefined' ? lang : {});
+    DEFAULT_NAME_KEYS.forEach(function (k) { if (typeof L[k] === 'string') labels.push(L[k]); });
+    ['myData', 'myDataExtended1', 'myDataExtended2'].forEach(function (v) {
+        var rows = (typeof window !== 'undefined' ? window[v] : undefined);
+        if (Array.isArray(rows)) rows.forEach(function (r) { if (r && r.Name) labels.push(r.Name); });
+    });
+    var bare = n.replace(/\s*\d+$/, '');                                         // "Oncle pat2", "Frère 3"
+    if (labels.some(function (l) { var x = norm(l); return x !== '' && (x === n || x === bare); })) return true;
+    // "Conjoint(e) de Frère"
+    if (typeof L.ft_partnerOf === 'string') {
+        var parts = norm(L.ft_partnerOf).split('{name}');
+        if (parts.length === 2 && n.indexOf(parts[0]) === 0 && n.length > parts[0].length) return true;
+    }
+    return false;
+}
+
+// Ages at diagnosis of one disease in the drawing's data: "62" or, for the same disease
+// several times, "56, 62" ("?" = age not known). Returns ['56', '62'] (unknown -> '').
+function splitDiagnosisAges(value) {
+    if (value === undefined || value === null) return [''];
+    var s = String(value);
+    if (s.indexOf(',') < 0) return [s.trim() === '?' ? '' : s.trim()];
+    return s.split(',').map(function (a) { a = a.trim(); return a === '?' ? '' : a; });
+}
+
+// The earliest known age at diagnosis, for BOADICEA / CanRisk ('' if none is known).
+function firstDiagnosisAge(value) {
+    var ages = splitDiagnosisAges(value);
+    if (ages.length === 1) return ages[0];
+    var known = ages.filter(function (a) { return /^\d+$/.test(a); }).map(Number);
+    return known.length ? String(Math.min.apply(null, known)) : '';
 }

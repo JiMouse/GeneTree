@@ -273,6 +273,11 @@ $(document).ready(function(){
 		//civil_name
 		addKeyToObject(obj, index, 'civil_name')
 
+		//"Nom Prénom" also becomes the name in the table and on the drawing,
+		//unless the name is one the user typed
+		let civil = $.trim($( "#civil_name" ).val() || '');
+		if (civil !== '' && isDefaultName(obj[index]['Name'], obj[index])) obj[index]['Name'] = civil;
+
 		//date of birth
 		addKeyToObject(obj, index, 'dbirth')
 

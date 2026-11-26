@@ -252,6 +252,146 @@ test('10b. disease list: no "Supprimer la maladie" on an empty disease cell; but
   expect(!(await data(page))[1].Disease1, 'HPO disease not removed');
 });
 
+// "Nom Prénom" of "Ajouter des informations à un individu" also fills the Name column,
+// but only while the name is still the default one ("Index", "Père", "Oncle pat2"...)
+const infoSave = async (page, row, civil, name) => {
+  await g.click(page, row, 0); await g.closeCancerList(page);
+  await page.evaluate(() => $('#supp_edit_info').click()); await page.waitForTimeout(400);
+  await page.evaluate(([c, n]) => { $('#civil_name').val(c); if (n != null) $('#form_id_name').val(n); }, [civil, name]);
+  await page.locator('.ui-dialog:visible .ui-dialog-buttonpane button', { hasText: 'Sauvegarder' }).click(); await page.waitForTimeout(500);
+};
+
+test('11. Informations: "Nom Prénom" filled, default name "Index": the name becomes "DUPONT Marie"', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await infoSave(page, 0, 'DUPONT Marie');
+  const d = (await data(page))[0];
+  await page.evaluate(() => $('#loadFromHot').click()); await page.waitForTimeout(500);
+  const drawn = await page.evaluate(() => $('#pedigree').text());
+  expect(d.Name === 'DUPONT Marie' && d.civil_name === 'DUPONT Marie' && d.proband, JSON.stringify([d.Name, d.civil_name, d.proband]));
+  expect((drawn.match(/DUPONT Marie/g) || []).length === 1, 'on the drawing: ' + (drawn.match(/DUPONT Marie/g) || []).length + ' times');
+});
+
+test('11b. same with a numbered default name ("Oncle pat2") and the Id. of a person drawn without a name', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 1: { Name: 'Oncle pat2' }, 2: { Name: String((await data(page))[2].IndivID) } });
+  await infoSave(page, 1, 'Martin Paul');
+  await infoSave(page, 2, 'Durand Anne');
+  const d = await data(page);
+  expect(d[1].Name === 'Martin Paul' && d[2].Name === 'Durand Anne', JSON.stringify([d[1].Name, d[2].Name]));
+});
+
+test('11c. a name typed by the user is kept; an empty "Nom Prénom" changes nothing', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await infoSave(page, 0, 'DUPONT Marie', 'Véro');
+  await infoSave(page, 1, '');
+  const d = await data(page);
+  expect(d[0].Name === 'Véro' && d[0].civil_name === 'DUPONT Marie' && d[1].Name === 'Père', JSON.stringify([d[0].Name, d[0].civil_name, d[1].Name]));
+});
+
+// summary text of a deceased relative: "Sa grand-mère paternelle est décédée à 49 ans",
+// not "était (décédée à 49 ans)"; a death without an age is written too
+const courrier = require('./fixtures/courrier-oncogenetique.json');
+const story = async (page, rows) => {
+  await page.evaluate(r => hot.loadData(JSON.parse(JSON.stringify(r))), rows); await page.waitForTimeout(300);
+  await page.evaluate(() => $('#loadStory').click()); await page.waitForTimeout(300);
+  return page.evaluate(() => document.getElementById('story').innerHTML.replace(/<br>/g, '\n'));
+};
+
+test('12. text: deceased relatives ("est décédée à 49 ans", "Son père est décédé.", "un frère (décédé)"), "d\'une tumeur"', 'fr', async (page) => {
+  const s = await story(page, courrier);
+  for (const want of ['Sa grand-mère paternelle est décédée à 49 ans. Elle était suivie pour un cancer de l\'estomac.',
+                      'Son père est décédé. Il était suivi pour un lymphome.',
+                      'un frère (décédé) suivi pour un cancer de l\'estomac',
+                      'Sa mère est suivie pour un cancer du côlon et d\'une tumeur cérébrale.'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+  expect(!/était \(|\(\s*\)|undefined/.test(s), s);
+});
+
+test('12b. text: deceased relative with a year of birth or a "Nom Prénom"; living relatives unchanged', 'fr', async (page) => {
+  const rows = JSON.parse(JSON.stringify(courrier));
+  Object.assign(rows[4], { Deceased: '1', Yob: '1930', Age: '80' });
+  Object.assign(rows[1], { civil_name: 'DUPONT Jean' });
+  Object.assign(rows[2], { Yob: '1935', Age: '91' });
+  const s = await story(page, rows);
+  for (const want of ['Son grand-père paternel, né en 1930, est décédé à 80 ans. Il ne présentait pas de pathologie cancéreuse.',
+                      'Son père, Monsieur DUPONT Jean, est décédé.',
+                      'Sa mère est née en 1935 (91 ans). Elle est suivie pour un cancer du côlon'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+});
+
+test('12c. same in English: "Her paternal grandmother died at the age of 49.", "Her father died."', 'eng', async (page) => {
+  const s = await story(page, courrier);
+  for (const want of ['Her paternal grandmother died at the age of 49.', 'Her father died.', 'a brother (deceased)'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+});
+
+// the same disease twice with two ages (two melanomas at 56 and 62): both kept on the
+// drawing ("mélanome: 56, 62"), in the text and back in the table
+const labels = (page) => page.evaluate(() => $('#pedigree .indi_details').map((i, e) => e.textContent).get().filter(x => x));
+const draw = async (page, rows) => {
+  if (rows) await page.evaluate(r => hot.loadData(JSON.parse(JSON.stringify(r))), rows);
+  await page.evaluate(() => $('#loadFromHot').click()); await page.waitForTimeout(600);
+};
+
+test('13. same disease twice: "mélanome: 56, 62" on the drawing, "deux mélanomes diagnostiqués en 2016 et 2022 à l\'âge de 56 et 62 ans"', 'fr', async (page) => {
+  await draw(page, courrier);
+  const l = await labels(page);
+  expect(l.includes('mélanome: 56, 62'), 'labels: ' + l.join(' | '));
+  const s = await story(page, courrier);
+  expect(s.includes("dans le cadre de deux mélanomes diagnostiqués en 2016 et 2022 à l'âge de 56 et 62 ans et d'un carcinome basocellulaire de l'épaule."), s.split('\n')[0]);
+});
+
+test('13b. same disease twice: edited on the drawing then loaded back, two lines in the table; removed from the table, gone from the drawing', 'fr', async (page) => {
+  await draw(page, courrier);
+  // person editor of the index case: the ages are a text field, saved as they are
+  await page.evaluate(() => d3.selectAll('#pedigree .settings').filter(d => d.data.proband).dispatch('click'));
+  await page.locator('#node_properties').waitFor({ state: 'visible' });
+  const field = await page.evaluate(() => { const f = document.getElementById('id_mélanome_diagnosis_age_0'); return [f.type, f.value]; });
+  expect(field[0] === 'text' && field[1] === '56, 62', 'editor field: ' + field);
+  await page.evaluate(() => { $('#id_age').val('65').change(); $('#node_properties').dialog('close'); }); await page.waitForTimeout(400);
+  await page.evaluate(() => $('#loadFromPedigree').click()); await page.waitForTimeout(400);
+  let d = (await data(page))[0];
+  expect(d.Disease1 === 'mélanome' && String(d.Age1) === '56' && d.Disease2 === 'mélanome' && String(d.Age2) === '62' && /basocellulaire/.test(d.Disease3),
+    JSON.stringify([d.Disease1, d.Age1, d.Disease2, d.Age2, d.Disease3]));
+  expect(!Object.keys(d).some(k => /_diagnosis_age$/.test(k)), 'diagnosis keys kept in the table: ' + Object.keys(d).join(','));
+  await page.evaluate(() => { hot.setDataAtRowProp(0, 'Disease2', '', 'test'); hot.setDataAtRowProp(0, 'Age2', '', 'test'); });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.includes('mélanome: 56') && !l.some(x => /62/.test(x)), 'labels: ' + l.join(' | '));
+});
+
+test('13e. a file saved by an earlier version (hidden copies of the diseases): each disease drawn once, a removed one not drawn; a fourth disease kept', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { ...index, Disease1: 'cancer_colon', Age1: '50', cancer_colon_diagnosis_age: '50', cancer_sein_diagnosis_age: '40' },
+                        1: { Disease1: 'cancer_colon', Disease2: 'mélanome', Disease3: 'cancer_rein', Age3: '70', cancer_prostate_diagnosis_age: '65' } });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.filter(x => /colon/.test(x)).sort().join('|') === 'ca. colon: |ca. colon: 50' && !l.some(x => /sein/.test(x)) && l.includes('ca. prostate: 65'), 'labels: ' + l.join(' | '));
+  await page.evaluate(() => $('#loadFromPedigree').click()); await page.waitForTimeout(400);
+  const p = (await data(page))[1];
+  expect(p.cancer_prostate_diagnosis_age === '65' && p.Disease3 === 'cancer_rein', 'father: ' + JSON.stringify(p));
+});
+
+test('13c. same cancer twice, one age unknown: "56, ?"; CanRisk gets the first age', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { ...index, Disease1: 'cancer_ovaire', Age1: '44', Disease2: 'cancer_ovaire', Age2: '' } });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.some(x => /ovaire: 44, \?/.test(x)), 'labels: ' + l.join(' | '));
+  const s = await story(page, await data(page));
+  expect(s.includes("dans le cadre de deux cancers de l'ovaire diagnostiqués à l'âge de 44 ans et à un âge inconnu."), s.split('\n')[0]);
+  const dl = page.waitForEvent('download');
+  await page.evaluate(() => $('#save_canrisk_fromHot').click());
+  const text = require('fs').readFileSync(await (await dl).path(), 'utf8');
+  const line = text.split('\n').find(x => x.split('\t')[2] === '1') || '';
+  expect(line.includes('\t44\t') && !/44, /.test(text), 'CanRisk index line: ' + line);
+});
+
+test('13d. same in English: "2 mélanomes diagnosed at the age of 56 and 62"', 'eng', async (page) => {
+  const s = await story(page, courrier);
+  expect(s.includes('2 mélanomes diagnosed at the age of 56 and 62 year old'), s.split('\n')[0]);
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

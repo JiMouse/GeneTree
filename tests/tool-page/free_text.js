@@ -16,7 +16,7 @@ function language(code) {
   return c;
 }
 const fr = language('fr'), eng = language('eng');
-function plan(text, l = fr, rows = l.D) { return planFamilyText(rows, parseFamilyText(text), { L: l.L, cancerKeys: l.K, year: 2026 }); }
+function plan(text, l = fr, rows = l.D) { return planFamilyText(rows, parseFamilyText(text), { L: l.L, cancerKeys: l.K, year: 2026, today: new Date('2026-11-11T10:00:00') }); }
 // "+Sœur: cancer sein (45 ans), décédé(e) / ~Mère: …" ; unhandled after " ! "
 function summary(p) {
   const lines = p.lines.map(l => (l.isNew ? '+' : '~') + l.name + (l.details.length ? ': ' + l.details.join(', ') : '')).join(' / ');
@@ -26,7 +26,8 @@ const row = (p, name) => p.rows.find(r => r.Name === name);
 
 const units = [];
 const unit = (name, fn) => units.push({ name, fn });
-const same = (text, expected, l) => unit(text, () => { const s = summary(plan(text, l)); expect(s === expected, '\n       got      ' + s + '\n       expected ' + expected); });
+const short = (text) => { const t = text.replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 107) + '…' : t; };
+const same = (text, expected, l) => unit(short(text), () => { const s = summary(plan(text, l)); expect(s === expected, '\n       got      ' + s + '\n       expected ' + expected); });
 
 // relatives
 same('il a 3 frères et soeurs', '+Frère/sœur / +Frère/sœur2 / +Frère/sœur3');
@@ -105,6 +106,81 @@ unit('existing half-brother and uncle are reused', () => {
   expect(row(p, 'Demi-frère pat').Disease1 === 'cancer_rein' && row(p, 'Oncle pat').Deceased === '1', summary(p));
 });
 
+// a letter pasted from a PDF (fixtures/courrier-oncogenetique.txt, invented identity): lines cut
+// in the middle of a sentence, "Il est décédé." after "son père…", "pour l'un… pour l'autre…",
+// "deux mélanomes, le premier… le second en 2022"
+const COURRIER = fs.readFileSync(path.join(__dirname, 'fixtures/courrier-oncogenetique.txt'), 'utf8');
+same(COURRIER, '~Index: DUPONT Marie, né(e) le 21/11/1960 (65 ans), mélanome (56 ans), mélanome (62 ans), carcinome basocellulaire de l\'épaule / '
+  + '+Frère: cancer colon (45 ans) / +Grand-Père pat / +Grand-Mère pat: cancer estomac, décédé(e) (49 ans) / +Oncle pat: cancer estomac, décédé(e) / '
+  + '+Oncle pat2: cancer pancréas, décédé(e) / ~Père: lymphome, décédé(e) / ~Mère: cancer colon, tumeur cérébrale');
+unit('the letter gives exactly the family of fixtures/courrier-oncogenetique.json', () => {
+  const want = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/courrier-oncogenetique.json'), 'utf8'));
+  const got = plan(COURRIER).rows;
+  const clean = (rows) => rows.map(r => JSON.stringify(Object.keys(r).sort().filter(k => r[k] !== '' && r[k] != null).map(k => [k, String(r[k])])));
+  const a = clean(got), b = clean(want);
+  const diff = a.filter((x, i) => x !== b[i]).map((x, i) => x + '\n         want ' + b[a.indexOf(x)]);
+  expect(a.length === b.length && !diff.length, '\n         ' + (a.length !== b.length ? a.length + ' rows for ' + b.length : diff.join('\n         ')));
+});
+unit('the same letter copied double spaced (a blank line after each line) gives the same family', () => {
+  const spaced = fs.readFileSync(path.join(__dirname, 'fixtures/courrier-oncogenetique-interligne.txt'), 'utf8');
+  expect(summary(plan(spaced)) === summary(plan(COURRIER)), '\n         ' + summary(plan(spaced)));
+});
+same('Père : cancer du côlon\n\nmère : cancer du sein', '~Père: cancer colon / ~Mère: cancer sein');
+same('Son frère a eu un\ncancer du côlon à 50 ans.', '+Frère: cancer colon (50 ans)');
+same('Père : cancer du côlon\nMère : cancer du sein', '~Père: cancer colon / ~Mère: cancer sein');
+same('Madame X. Son père a eu un lymphome. Il est décédé.', '~Père: lymphome, décédé(e)');
+same('Monsieur Y. Son père a eu un cancer du côlon. Il est décédé à 70 ans.', '~Père: cancer colon, décédé(e) (70 ans)');
+same('Deux de ses oncles paternels ont eu pour l’un un cancer de l’estomac et pour l’autre un cancer du pancréas, également décédés.',
+  '+Grand-Père pat / +Grand-Mère pat / +Oncle pat: cancer estomac, décédé(e) / +Oncle pat2: cancer pancréas, décédé(e)');
+same('Il a deux frères, l\'un a eu un mélanome, l\'autre un cancer du rein.', '+Frère: mélanome / +Frère2: cancer rein');
+same('Elle a eu deux cancers du sein à 40 et 55 ans.', '~Index: cancer sein (40 ans), cancer sein2 (55 ans)');
+same('Elle a 60 ans. Elle a eu deux mélanomes, le premier en 2016 à l\'âge de 50 ans et le second en 2022.', '~Index: mélanome (50 ans), mélanome (56 ans), 60 ans');
+same('Elle a 50 ans. Elle a eu un cancer du sein en 2016.', '~Index: cancer sein (40 ans), 50 ans');
+same('Sa mère a eu deux mélanomes.', '~Mère: mélanome, mélanome');
+same('Her father had two melanomas, the first at 50 and the second at 61.', '~Father: melanoma (50 y), melanoma (61 y)', eng);
+// the index case's identity: "Nom Prénom" (surname in capitals first), date of birth, age today
+same('Monsieur Jean MARTIN, né le 3 mars 1955, consulte.', '~Index: MARTIN Jean, né(e) le 03/03/1955 (71 ans)');
+same('Madame LE GALL Anne-Sophie, née le 1er janvier 1980.', '~Index: LE GALL Anne-Sophie, né(e) le 01/01/1980 (46 ans)');
+same('Je vois Madame DUPONT Marie (née le 21.11.1960) pour un cancer du sein à 50 ans.', '~Index: DUPONT Marie, né(e) le 21/11/1960 (65 ans), cancer sein (50 ans)');
+same('Mme DURAND, 42 ans, consulte.', '~Index: DURAND, 42 ans');
+same('Madame Martin consulte pour un cancer du sein.', '~Index: cancer sein');
+same('Son père, Monsieur DUPONT Jean, est décédé.', '~Père: décédé(e)');
+same('Mrs Jane SMITH, born on 02/05/1970, has a brother.', '~Index: SMITH Jane, born 02/05/1970 (56 y) / +Brother', eng);
+unit('identity: a "Nom Prénom" or a date of birth already in the table is kept', () => {
+  const rows = JSON.parse(JSON.stringify(fr.D));
+  Object.assign(rows[0], { civil_name: 'DUPONT Marie-Claire', dbirth: '01/02/1961', Yob: '1961', Age: '65' });
+  const i = row(plan('Madame DUPONT Marie, née le 21/11/1960.', fr, rows), 'Index');
+  expect(i.civil_name === 'DUPONT Marie-Claire' && i.dbirth === '01/02/1961' && i.Yob === '1961', JSON.stringify(i));
+});
+// twins: the Option column, dizygotic unless said otherwise; identical twins have the same sex
+same('Elle a une sœur jumelle.', '+Sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle a une sœur jumelle monozygote, décédée à 40 ans.', '+Sœur: décédé(e) (40 ans), jumeau/jumelle monozygote / ~Index: jumeau/jumelle monozygote');
+same('Elle a une sœur jumelle, de vraies jumelles.', '+Sœur: jumeau/jumelle monozygote / ~Index: jumeau/jumelle monozygote');
+same('Sa sœur a une jumelle.', '+Sœur: jumeau/jumelle dizygote / +Sœur2: jumeau/jumelle dizygote');
+same('Elle et sa sœur sont jumelles.', '+Sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle est jumelle.', '+Frère/sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle a deux frères jumeaux et une sœur.', '+Frère: jumeau/jumelle dizygote / +Frère2: jumeau/jumelle dizygote / +Sœur');
+same('Il a deux frères, de vrais jumeaux.', '+Frère: jumeau/jumelle monozygote / +Frère2: jumeau/jumelle monozygote');
+same('Elle a des jumeaux de 5 ans.', '+Conjoint(e) / +Enfant: 5 ans, jumeau/jumelle dizygote / +Enfant2: 5 ans, jumeau/jumelle dizygote');
+same('Ses deux fils sont jumeaux monozygotes.', '+Conjoint(e) / +Fils: jumeau/jumelle monozygote / +Fils2: jumeau/jumelle monozygote');
+same('Elle a un fils et une fille jumeaux.', '+Conjoint(e) / +Fils: jumeau/jumelle dizygote / +Fille: jumeau/jumelle dizygote');
+same('Son père a un frère jumeau.', '+Grand-Père pat / +Grand-Mère pat / +Oncle pat: jumeau/jumelle dizygote / ~Père: jumeau/jumelle dizygote');
+same('Elle a un frère jumeau monozygote.', '+Frère: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('She has an identical twin sister.', '+Sister: identical twin / ~Index: identical twin', eng);
+same('She has twin daughters.', '+Partner / +Daughter: fraternal twin / +Daughter2: fraternal twin', eng);
+unit('twins: "JumDZ" / "JumMZ" in the Option column', () => {
+  const p = plan('Elle a une sœur jumelle. Elle a deux fils, de vrais jumeaux.');
+  expect(row(p, 'Index').Option === 'JumDZ' && row(p, 'Sœur').Option === 'JumDZ' && row(p, 'Fils').Option === 'JumMZ' && row(p, 'Fils2').Option === 'JumMZ',
+    JSON.stringify(p.rows.map(r => [r.Name, r.Option])));
+});
+
+unit('the same text twice: the two melanomas are not added again', () => {
+  const t = 'Elle a 60 ans. Elle a eu deux mélanomes, le premier à 50 ans et le second à 56 ans. Sa mère a eu deux mélanomes.';
+  const once = plan(t), twice = plan(t, fr, once.rows), i = row(twice, 'Index'), m = row(twice, 'Mère');
+  expect(i.Disease1 === 'mélanome' && i.Age1 === '50' && i.Disease2 === 'mélanome' && i.Age2 === '56' && i.Disease3 === '', JSON.stringify(i));
+  expect(m.Disease1 === 'mélanome' && m.Disease2 === 'mélanome' && m.Disease3 === '', JSON.stringify(m));
+});
+
 let unitFailed = 0;
 for (const u of units) {
   try { u.fn(); console.log('PASS text: ' + u.name); }
@@ -150,6 +226,36 @@ test('Ajouter à l\'arbre: rows, disease, death; drawn; story written', 'fr', as
   await page.evaluate(() => $('#loadStory').click());
   const story = await page.evaluate(() => document.getElementById('story').innerHTML);
   expect(/sein/.test(story) && !/undefined/.test(story), 'story: ' + story.slice(0, 300));
+});
+
+test('the oncogenetics letter pasted in: table, drawing ("mélanome: 56, 62") and text of the letter', 'fr', async (page) => {
+  await page.evaluate(() => $('#nuclear').click()); await page.waitForTimeout(400);
+  await openMenu(page);
+  await page.fill('#freeText', COURRIER);
+  await page.click('#freeTextAnalyse');
+  const preview = await page.textContent('#freeTextResult');
+  expect(/DUPONT Marie/.test(preview) && !/Non ajoutés/.test(preview), 'preview: ' + preview);
+  await page.click('#freeTextApply'); await page.waitForTimeout(700);
+  const i = (await data(page))[0];
+  expect(i.civil_name === 'DUPONT Marie' && i.dbirth === '21/11/1960' && i.Yob === '1960' && i.Disease2 === 'mélanome' && i.Age2 === '62', JSON.stringify(i));
+  const labels = await page.evaluate(() => $('#pedigree .indi_details').map((k, e) => e.textContent).get());
+  expect(labels.includes('mélanome: 56, 62'), 'labels: ' + labels.filter(x => x).join(' | '));
+  await page.evaluate(() => $('#loadStory').click());
+  const story = (await page.evaluate(() => document.getElementById('story').innerHTML)).replace(/<br>/g, '\n');
+  for (const want of ['Madame DUPONT Marie est née le 21/11/1960 (65 ans)', 'dans le cadre de deux mélanomes diagnostiqués en 2016 et 2022 à l\'âge de 56 et 62 ans',
+                      'Son père est décédé.', 'Sa grand-mère paternelle est décédée à 49 ans.', 'un frère (décédé) suivi pour un cancer du pancréas'])
+    expect(story.includes(want), 'missing: ' + want + '\n' + story);
+});
+
+test('twins in the text: Option column, drawn as twins', 'fr', async (page) => {
+  await page.evaluate(() => $('#nuclear').click()); await page.waitForTimeout(400);
+  await openMenu(page);
+  await page.fill('#freeText', 'Elle a une sœur jumelle. Elle a deux fils, de vrais jumeaux.');
+  await page.click('#freeTextAnalyse'); await page.click('#freeTextApply'); await page.waitForTimeout(700);
+  const d = await data(page);
+  expect(d[0].Option === 'JumDZ' && d.find(r => r.Name === 'Sœur').Option === 'JumDZ' && d.filter(r => r.Option === 'JumMZ').length === 2, JSON.stringify(d.map(r => [r.Name, r.Option])));
+  const ped = await page.evaluate(() => window.__ped[window.__ped.length - 1]);
+  expect(ped.filter(p => p.dztwin).length === 2 && ped.filter(p => p.mztwin).length === 2, JSON.stringify(ped.map(p => [p.display_name, p.mztwin, p.dztwin])));
 });
 
 test('half-siblings and a grandparent drawn in the pedigree', 'fr', async (page) => {

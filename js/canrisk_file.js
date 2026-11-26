@@ -276,9 +276,11 @@ $(document).ready(function(){
 
 			$.each(cancers, function(cancer, diagnosis_age) {
 				// Age at 1st cancer or 0 = unaffected, AU = unknown age at diagnosis (affected unknown)
-				if(diagnosis_age in p)
-					msg += (p[diagnosis_age] !== '' && p[diagnosis_age] != null ? p[diagnosis_age] : 'AU')+'\t';
-				else
+				if(diagnosis_age in p) {
+					// the same cancer twice ("56, 62"): the first
+					let a = (typeof firstDiagnosisAge === 'function' ? firstDiagnosisAge(p[diagnosis_age]) : p[diagnosis_age]);
+					msg += (a !== '' && a != null ? a : 'AU')+'\t';
+				} else
 					msg += '0\t';
 			});
 
