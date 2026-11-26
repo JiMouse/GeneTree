@@ -26,7 +26,8 @@ const row = (p, name) => p.rows.find(r => r.Name === name);
 
 const units = [];
 const unit = (name, fn) => units.push({ name, fn });
-const same = (text, expected, l) => unit(text, () => { const s = summary(plan(text, l)); expect(s === expected, '\n       got      ' + s + '\n       expected ' + expected); });
+const short = (text) => { const t = text.replace(/\s+/g, ' ').trim(); return t.length > 110 ? t.slice(0, 107) + '…' : t; };
+const same = (text, expected, l) => unit(short(text), () => { const s = summary(plan(text, l)); expect(s === expected, '\n       got      ' + s + '\n       expected ' + expected); });
 
 // relatives
 same('il a 3 frères et soeurs', '+Frère/sœur / +Frère/sœur2 / +Frère/sœur3');
@@ -103,6 +104,32 @@ unit('existing half-brother and uncle are reused', () => {
   const p = plan('Son demi-frère paternel a eu un cancer du rein. Son oncle paternel est décédé.', fr, first.rows);
   expect(p.rows.length === first.rows.length, 'rows ' + first.rows.length + ' -> ' + p.rows.length);
   expect(row(p, 'Demi-frère pat').Disease1 === 'cancer_rein' && row(p, 'Oncle pat').Deceased === '1', summary(p));
+});
+
+// a letter pasted from a PDF (fixtures/courrier-oncogenetique.txt, invented identity): lines cut
+// in the middle of a sentence, "Il est décédé." after "son père…", "pour l'un… pour l'autre…",
+// "deux mélanomes, le premier… le second en 2022"
+const COURRIER = fs.readFileSync(path.join(__dirname, 'fixtures/courrier-oncogenetique.txt'), 'utf8');
+same(COURRIER, '+Frère: cancer colon (45 ans) / +Grand-Père pat / +Grand-Mère pat: cancer estomac, décédé(e) (49 ans) / +Oncle pat: cancer estomac, décédé(e) / '
+  + '+Oncle pat2: cancer pancréas, décédé(e) / ~Index: mélanome (56 ans), mélanome (61 ans), carcinome basocellulaire de l\'épaule, 65 ans / ~Père: lymphome, décédé(e) / '
+  + '~Mère: cancer colon, tumeur cérébrale');
+same('Son frère a eu un\ncancer du côlon à 50 ans.', '+Frère: cancer colon (50 ans)');
+same('Père : cancer du côlon\nMère : cancer du sein', '~Père: cancer colon / ~Mère: cancer sein');
+same('Madame X. Son père a eu un lymphome. Il est décédé.', '~Père: lymphome, décédé(e)');
+same('Monsieur Y. Son père a eu un cancer du côlon. Il est décédé à 70 ans.', '~Père: cancer colon, décédé(e) (70 ans)');
+same('Deux de ses oncles paternels ont eu pour l’un un cancer de l’estomac et pour l’autre un cancer du pancréas, également décédés.',
+  '+Grand-Père pat / +Grand-Mère pat / +Oncle pat: cancer estomac, décédé(e) / +Oncle pat2: cancer pancréas, décédé(e)');
+same('Il a deux frères, l\'un a eu un mélanome, l\'autre un cancer du rein.', '+Frère: mélanome / +Frère2: cancer rein');
+same('Elle a eu deux cancers du sein à 40 et 55 ans.', '~Index: cancer sein (40 ans), cancer sein2 (55 ans)');
+same('Elle a 60 ans. Elle a eu deux mélanomes, le premier en 2016 à l\'âge de 50 ans et le second en 2022.', '~Index: mélanome (50 ans), mélanome (56 ans), 60 ans');
+same('Elle a 50 ans. Elle a eu un cancer du sein en 2016.', '~Index: cancer sein (40 ans), 50 ans');
+same('Sa mère a eu deux mélanomes.', '~Mère: mélanome, mélanome');
+same('Her father had two melanomas, the first at 50 and the second at 61.', '~Father: melanoma (50 y), melanoma (61 y)', eng);
+unit('the same text twice: the two melanomas are not added again', () => {
+  const t = 'Elle a 60 ans. Elle a eu deux mélanomes, le premier à 50 ans et le second à 56 ans. Sa mère a eu deux mélanomes.';
+  const once = plan(t), twice = plan(t, fr, once.rows), i = row(twice, 'Index'), m = row(twice, 'Mère');
+  expect(i.Disease1 === 'mélanome' && i.Age1 === '50' && i.Disease2 === 'mélanome' && i.Age2 === '56' && i.Disease3 === '', JSON.stringify(i));
+  expect(m.Disease1 === 'mélanome' && m.Disease2 === 'mélanome' && m.Disease3 === '', JSON.stringify(m));
 });
 
 let unitFailed = 0;

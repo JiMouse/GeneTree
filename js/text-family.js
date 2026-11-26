@@ -25,12 +25,23 @@
             var c = src[i].toLowerCase();
             c = c === 'œ' ? 'oe' : c === 'æ' ? 'ae' : c.normalize('NFD').replace(/[̀-ͯ]/g, '');
             if (/[’`´]/.test(c)) c = "'";
+            // a line break inside a sentence (text pasted from a letter or a PDF: "a eu un
+            // \ncancer du côlon") is a space; before a capital, a dash or a bullet it ends the line
+            if (c === '\n' && softBreak(src, i)) c = ' ';
             if (/\s/.test(c) && c !== '\n') { if (out.slice(-1) === ' ') continue; c = ' '; }
             for (var j = 0; j < c.length; j++) { out += c[j]; map.push(i); }
         }
         out = out.replace(/\b([jdlnsc]|qu)'/g, function (m, a) { return a + ' '; }); // same length
         map.push(src.length);
         return { text: out, map: map, src: src };
+    }
+
+    function softBreak(src, i) {
+        var j = i + 1;
+        while (j < src.length && /[ \t\r\u00a0]/.test(src[j])) j++;
+        var next = src[j] || '';
+        if (next === '\n' || next === '') return false;                     // blank line: a new paragraph
+        return /\d/.test(next) || (next !== next.toUpperCase() && next === next.toLowerCase());
     }
 
     // A piece of normalised text, possibly made of several ranges (see "chez" below).
@@ -48,7 +59,7 @@
         while (b > a && this.text[b - 1] === ' ') b--;
         if (b <= a) return '';
         var s = this.norm.map[this.offs[a]], e = this.norm.map[this.offs[b - 1]] + 1;
-        return this.norm.src.slice(s, e).trim();
+        return this.norm.src.slice(s, e).replace(/\s+/g, ' ').trim();
     };
 
     function originalOf(norm, a, b) { return new View(norm, [[a, b]]).original(0, b - a); }
@@ -89,6 +100,8 @@
     var PREFIX = '(demi[- ]?|half[- ]?|step[- ]?|beaux?-|belles?-|petite?s?-|grande?s?-|great[- ]|arriere-)?';
     var DET = '(?:(?:de |chez |pour |a |et )?(?:son|sa|ses|le|la|les|l|du|des|leur|leurs|his|her|the|their|its)\\s+)?';
     var NOT_IN_WORD = '(?<![\\w-])';
+    // "deux de ses oncles", "two of her brothers"
+    var OF_HIS = '(?:(?:de|d) (?:ses|leurs|ces|nos|vos)\\s+|of (?:his|her|their|the)\\s+)?';
 
     var SIDE_AFTER = {
         P: /^\s*,?\s*(?:paternel(?:le)?s?\b|pat\b\.?|(?:du )?cote (?:paternel|du pere|de (?:son|leur) pere)\b|par (?:son |le |leur )?pere\b|(?:de|du) meme pere\b|(?:on (?:the|his|her) )?father'?s side\b|paternal(?:ly)?\b)/,
@@ -131,7 +144,7 @@
         };
 
         // "3 frères", "un demi-frère paternel", "2 autres enfants"
-        scan('\\b' + NUM + '\\s+' + ADJ + PREFIX + '(?:' + KIN_RE + ')\\b', function (m) {
+        scan('\\b' + NUM + '\\s+' + OF_HIS + ADJ + PREFIX + '(?:' + KIN_RE + ')\\b', function (m) {
             var kin = kinOf(m, 4), prefix = (m[3] || '').replace(/[- ]$/, '');
             var t = { type: 'group', n: toNumber(m[1]), kind: kin.kind, sex: kin.sex, other: !!m[2] };
             if (/^(demi|half)$/.test(prefix)) t.half = true;
@@ -144,6 +157,9 @@
             return { type: 'subset', n: toNumber(m[1]), sex: kin ? kin.sex : 'U' };
         });
         scan('\\b(?:l )?(?:une|un) d (?:entre )?(?:elles|eux)\\b|\\bone of them\\b', function () { return { type: 'subset', n: 1, sex: 'U' }; });
+        scan('\\b(?:pour|chez|dont)\\s*,?\\s*l (un|une|autre)\\b|\\bl (autre)\\b|\\bthe other\\b|\\bfor (?:the )?one\\b', function () {
+            return { type: 'subset', n: 1, sex: 'U' };
+        });
         scan(',\\s*(?:l )?(une|un)\\b(?=\\s+(?:a|est|avait|etait|ayant|decede|atteinte?|morte?|souffr))', function (m) {
             return { type: 'subset', n: 1, sex: 'U', start: m.index + m[0].indexOf(m[1]) };
         });
@@ -258,6 +274,8 @@
     var AGE_AFTER = /^\s*,?\s*(\()?\s*(?:(a|at|vers|aged?|diagnostiquee?s?\s+a|dx\s+a)\s+)?(?:l age de\s+|age\s+|the age of\s+)?(\d{1,3})\s*(ans|an|a|years?|y|yo)?\b/;
     var AGE_ALONE = /\b(?:(?:agee?s?|age|aged)\s+(?:de\s+|of\s+)?)?(\d{1,3})\s*(?:ans|years?(?:[- ]old)?|yo)\b/g;
 
+    var YEAR_AFTER = /^\s*,?\s*(?:en|in)\s+((?:19|20)\d\d)\b/;
+
     function ageAfter(text, from) {
         var m = text.slice(from).match(AGE_AFTER);
         if (!m || !(m[1] || m[2] || m[4])) return null;
@@ -283,8 +301,27 @@
             var d = { label: view.original(start, end), cancer: organ ? organ.id : null, age: null, at: start };
             if (!d.label) return null;
             used.push([start, end]);
+            // "deux mélanomes, le premier en 2016 à 56 ans et le second en 2022": one disease each
+            var count = s.slice(Math.max(0, start - 12), start).match(/(?:^|\s)(\d|deux|trois|quatre|two|three|four)\s+$/);
+            var n = count ? toNumber(count[1]) : 1;
+            if (n > 1 && n < 6) {
+                var many = occurrences(end, n);
+                many.items.forEach(function (it) {
+                    a.diseases.push({ label: d.label, cancer: d.cancer, age: it.age, year: it.year, at: start });
+                });
+                return many.end;
+            }
             var age = ageAfter(s, end);
             if (age) { d.age = age.age; used.push([end, age.end]); end = age.end; }
+            else {
+                // "cancer du sein en 2010": the year, turned into an age with the year of birth
+                var y = s.slice(end).match(YEAR_AFTER);
+                if (y) {
+                    d.year = parseInt(y[1], 10); used.push([end, end + y[0].length]); end += y[0].length;
+                    var age2 = ageAfter(s, end);
+                    if (age2) { d.age = age2.age; used.push([end, age2.end]); end = age2.end; }
+                }
+            }
             if (d.cancer === 'breast' && /bilateral|controlateral|both breasts/.test(s.slice(start, end))) {
                 var second = s.slice(end).match(/^\s*(?:,|et|and|puis)\s*(?:a\s+)?(\d{1,3})\s*(?:ans|years?)?\b/);
                 var d2 = { label: d.label, cancer: 'breast2', age: second ? parseInt(second[1], 10) : d.age, at: start };
@@ -294,6 +331,36 @@
             return end;
         }
 
+        // n times the same disease: the ages and years that follow, one per occurrence
+        //   "à 56 et 62 ans", "le premier en 2016 à l'âge de 56 ans … et le second en 2022"
+        function occurrences(from, n) {
+            var items = [], i, rest = s.slice(from), stop = from;
+            var list = rest.match(/^\s*,?\s*(?:(?:diagnostique\w*|survenu\w*)\s+)?(?:a|at|aux|at the ages? of)\s+(?:l age de\s+|ages? de\s+)?((?:\d{1,3}\s*(?:ans\s*)?(?:,|et|and)\s*)+\d{1,3})\s*(?:ans|years?)?\b/);
+            if (list) {
+                var ages = list[1].match(/\d{1,3}/g).map(Number);
+                for (i = 0; i < n; i++) items.push({ age: ages[i] != null ? ages[i] : null, year: null });
+                used.push([from, from + list[0].length]);
+                return { items: items, end: from + list[0].length };
+            }
+            var ORD = /(?:^|[\s,])(?:et\s+|puis\s+|and\s+)?(?:le|la|l|the)\s+(premier|premiere|1er|1ere|second|seconde|deuxieme|2e|2eme|2nd|troisieme|3e|3eme|3rd|first|second|third)\b/g, m, marks = [];
+            while ((m = ORD.exec(rest)) !== null) marks.push({ at: m.index, end: m.index + m[0].length });
+            if (marks.length && /^\s*,?\s*$/.test(rest.slice(0, marks[0].at))) {
+                marks.slice(0, n).forEach(function (mk, k) {
+                    var next = marks[k + 1] && k + 1 < n ? marks[k + 1].at : rest.length;
+                    var seg = rest.slice(mk.end, next);
+                    var yr = seg.match(/\b(?:en|in)\s+((?:19|20)\d\d)\b/);
+                    var ag = seg.match(/\b(?:a|at)\s+(?:l age de\s+|the age of\s+|age\s+)?(\d{1,3})\s*(?:ans|years?|y|yo)?\b/);
+                    items.push({ age: ag ? parseInt(ag[1], 10) : null, year: yr ? parseInt(yr[1], 10) : null });
+                    stop = from + next;
+                });
+                used.push([from, stop]);
+                while (items.length < n) items.push({ age: null, year: null });
+                return { items: items, end: stop };
+            }
+            for (i = 0; i < n; i++) items.push({ age: null, year: null });
+            return { items: items, end: from };
+        }
+
         // death first: "décédé à 60 ans", "DCD 70 ans"
         var m;
         DEATH.lastIndex = 0;
@@ -301,6 +368,7 @@
             var after = m.index + m[0].length;
             if (NEGATION.test(s.slice(Math.max(0, m.index - 6), m.index)) || /^-?ne\b/.test(s.slice(after, after + 3))) continue;
             a.deceased = true;
+            if (/^(?:decedes|decedees|morts|mortes)$/.test(m[0])) a.deathPlural = true;   // "également décédés": all of them
             used.push([m.index, after]);
             var age = ageAfter(s, after);
             if (age) { a.deathAge = age.age; used.push([after, age.end]); }
@@ -367,6 +435,7 @@
     function parseFamilyText(text) {
         var norm = normalise(text);
         var persons = [], unhandled = [], groups = [], indexSex = '', branch = '';
+        var lastBySex = {}, prevSubject = null, subject = null;   // the last man / woman named, for "Il est décédé." after "Son père a eu un lymphome."
         var roles = {};
 
         function person(p) {
@@ -389,12 +458,15 @@
             return person({ role: roleName, sex: sex, side: side, match: true, claimed: true });
         }
         function skip(t, reason) { if (t) unhandled.push({ text: t, reason: reason }); }
+        function remember(p) { if (p && p.role !== 'index' && (p.sex === 'M' || p.sex === 'F')) lastBySex[p.sex] = p; }
 
         var splitter = /[^.;!?\n]+/g, sm;
         while ((sm = splitter.exec(norm.text)) !== null) {
             var sentence = sm[0], base = sm.index;
             var toks = tokens(sentence);
             var lastSingle = null, lastGroup = null, prev = null, prevOwner = null, lastSingleSince = false;
+            prevSubject = subject; subject = null;
+            var namesKin = toks.some(function (x) { return /^(person|group|groupRef|subset|absorb)$/.test(x.type); });
             var raw = function (t) { return originalOf(norm, base + t.start, base + t.end); };
 
             toks.forEach(function (t, k) {
@@ -423,15 +495,23 @@
                         else t.targets = [claim(t.role, t.sex, sd)];
                     }
                     if (t.sexHint && !indexSex) indexSex = t.sexHint;
-                    if (t.targets.length === 1) lastSingle = t.targets[0];
+                    if (t.targets.length === 1) { lastSingle = t.targets[0]; remember(lastSingle); }
                     lastSingleSince = true;
                 } else if (t.type === 'pronoun') {
                     lastSingleSince = true;
                     if (t.plural) t.targets = lastGroup ? lastGroup.members : [];
                     else {
                         var same = lastSingle && lastSingle.role !== 'index' && (lastSingle.sex === t.sex || lastSingle.sex === 'U');
-                        t.targets = [same ? lastSingle : role('index')];
-                        if (!same && !indexSex) indexSex = t.sex;
+                        var target = same ? lastSingle : null;
+                        // "Son père a eu un lymphome. Il est décédé.": at the start of a sentence, the
+                        // relative the previous sentence was about, when the sex agrees
+                        // (not when the sentence names other relatives: "She has a brother." is the patient)
+                        if (!target && !lastSingle && !namesKin && prevSubject && prevSubject.role !== 'index' && prevSubject.sex === t.sex) target = prevSubject;
+                        // "Il" in a new sentence, when the index case is a woman: the last man named
+                        var idxSex = indexSex || (roles.index && roles.index.sex) || '';
+                        if (!target && idxSex && idxSex !== t.sex && lastBySex[t.sex]) target = lastBySex[t.sex];
+                        t.targets = [target || role('index')];
+                        if (!target && !indexSex) indexSex = t.sex;
                         lastSingle = t.targets[0];
                     }
                 } else if (t.type === 'groupRef') {
@@ -446,6 +526,7 @@
                             if (t.sex !== 'U' && p.sex === 'U') p.sex = t.sex;
                         });
                         t.targets = pick;
+                        t.group = lastGroup;
                     }
                 } else if (t.type === 'group') {
                     // Whose relatives? "son père a 2 frères" -> the father's.
@@ -494,6 +575,7 @@
                     groups.push(lastGroup);
                     t.targets = members;
                 }
+                if (!subject && (t.type === 'person' || t.type === 'pronoun') && t.targets.length === 1) subject = t.targets[0];
                 prev = t;
             });
 
@@ -513,6 +595,8 @@
                 }
                 var a = attributes(new View(norm, ranges));
                 if (hasAttributes(a)) t.targets.forEach(function (p) { merge(p.attrs, a); });
+                // "pour l'un…, pour l'autre…, également décédés": the death is said of the whole group
+                if (a.deathPlural && t.type === 'subset' && t.group) t.group.members.forEach(function (p) { p.attrs.deceased = true; });
             });
             if (!toks.length || !toks[0].chez) orphan.push([[base, base + (toks.length ? toks[0].start : sentence.length)]]);
             orphan.forEach(function (ranges) {
@@ -662,13 +746,20 @@
             var r = rowOf[p.id], a = p.attrs;
             if (!r) return;
             var hasBreast = [1, 2, 3].some(function (i) { return /^(cancer_sein|breast_cancer)$/.test(r['Disease' + i] || ''); });
+            // diseases already in the table: the same text applied twice adds nothing
+            var before = [1, 2, 3].filter(function (i) { return r['Disease' + i]; }).map(function (i) { return { value: r['Disease' + i], age: String(r['Age' + i] == null ? '' : r['Age' + i]) }; });
+            // year of birth, to turn "en 2022" into an age
+            var yob = parseInt(r.Yob, 10);
+            if (isNaN(yob) && a.age != null && !a.deceased) yob = year - a.age;
             a.diseases.forEach(function (d) {
                 var id = d.cancer === 'breast' && hasBreast ? 'breast2' : d.cancer;
                 if (id === 'breast') hasBreast = true;
                 var value = id ? cancerKey(id) : d.label;
-                var age = d.age != null ? String(d.age) : '';
+                var age = d.age != null ? String(d.age) : (d.year && !isNaN(yob) && d.year > yob ? String(d.year - yob) : '');
                 var label = (id ? show(value) : d.label) + (age ? ' (' + ageText(age) + ')' : '');
-                for (var i = 1; i <= 3; i++) if (r['Disease' + i] === value) return;
+                for (var i = 0; i < before.length; i++) {
+                    if (before[i].value === value && (before[i].age === age || before[i].age === '' || age === '')) { before.splice(i, 1); return; }
+                }
                 for (var j = 1; j <= 3; j++) {
                     if (!r['Disease' + j]) { r['Disease' + j] = value; r['Age' + j] = age; note(r, label); return; }
                 }
