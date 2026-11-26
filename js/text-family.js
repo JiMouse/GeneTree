@@ -32,6 +32,7 @@
             for (var j = 0; j < c.length; j++) { out += c[j]; map.push(i); }
         }
         out = out.replace(/\b([jdlnsc]|qu)'/g, function (m, a) { return a + ' '; }); // same length
+        out = out.replace(/(\d)\.(?=\d)/g, '$1/');                                       // "21.11.1960", same length
         map.push(src.length);
         return { text: out, map: map, src: src };
     }
@@ -205,7 +206,7 @@
             return { type: 'person', roles: ['index'], sexHint: /e$/.test(m[1]) ? 'F' : (/^(patient|consultant|proband)$/.test(m[1]) ? 'M' : '') };
         });
         scan(NOT_IN_WORD + '(monsieur|madame|mme|mr|mrs|ms)\\b', function (m) {
-            return { type: 'person', roles: ['index'], sexHint: /^(monsieur|mr)$/.test(m[1]) ? 'M' : 'F' };
+            return { type: 'person', roles: ['index'], civil: true, sexHint: /^(monsieur|mr)$/.test(m[1]) ? 'M' : 'F' };
         });
         scan(NOT_IN_WORD + '(?:je|j)\\b(?= )', function () { return { type: 'person', roles: ['index'] }; });
         // pronouns
@@ -432,10 +433,45 @@
     var AND = /^\s*(?:,|et|and|ainsi que)?\s*$/;
     var UNION = /\b(?:autres?|other|d une autre union|d un (?:premier|autre|precedent|second|deuxieme) (?:mariage|lit|union|conjoint|compagnon)|d une (?:premiere|autre|precedente|seconde|deuxieme) (?:union|compagne|conjointe)|from (?:another|a previous|an earlier) (?:marriage|relationship|partner))\b/;
 
+    // ------------------------------------------------------------------ identity
+    // "Madame DUPONT Marie, née MARTIN le 21/11/1960 (65 ans)": the index case's
+    // "Nom Prénom" (surname in capitals first, as in the table's field) and date of birth.
+
+    var MONTHS = { janvier: 1, fevrier: 2, mars: 3, avril: 4, mai: 5, juin: 6, juillet: 7, aout: 8, septembre: 9, octobre: 10, novembre: 11, decembre: 12,
+                   january: 1, february: 2, march: 3, april: 4, may: 5, june: 6, july: 7, august: 8, september: 9, october: 10, november: 11, december: 12 };
+    var UP = "A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒÆ", LOW = "a-zàâäçéèêëîïôöùûüÿœæ";
+    var CIVIL = new RegExp('(?:^|[^\\w])(Madame|Mademoiselle|Monsieur|Mme|Mlle|M\\.|Mr\\.?|Mrs\\.?|Ms\\.?|Miss)\\s+'
+        + '(' + NAME_WORD() + '(?:[ \\t]+' + NAME_WORD() + '){0,3})');
+    // "DUPONT", "LE-GALL", "Marie", "Anne-Sophie", "O'Neil"
+    function NAME_WORD() { return '(?:[' + UP + '][' + UP + "'’-]+(?![" + LOW + '])|[' + UP + '][' + LOW + "'’]+(?:-[" + UP + '][' + LOW + "'’]+)*)"; }
+    var BIRTH = /^[^.;\n]{0,80}?(?:^|[^\wéè])(?:n[ée]{1,2}e?|born)(?=[\s,(:])(?:\s+(?:on\s+)?[^\d.;\n]{0,40}?)?\s*(?:le\s+|on\s+)?(\d{1,2})(?:er)?\s*(?:[\/.-]\s*(\d{1,2})\s*[\/.-]|\s+([a-zéû]+)\s+)\s*(\d{4})\b/i;
+
+    function identity(src) {
+        var m = CIVIL.exec(src);
+        if (!m) return null;
+        var title = m[1].toLowerCase().replace(/\./g, '');
+        var sex = /^(monsieur|m|mr)$/.test(title) ? 'M' : 'F';
+        var words = m[2].trim().split(/\s+/);
+        // stop at a word that starts a sentence ("Madame Dupont Consulte"): names only
+        var isUpper = function (w) { return w === w.toUpperCase() && w !== w.toLowerCase(); };
+        var upper = words.filter(isUpper), other = words.filter(function (w) { return !isUpper(w); });
+        if (!upper.length) return { sex: sex };                     // "Madame Martin": not sure which is the surname
+        var out = { sex: sex, civilName: upper.join(' ') + (other.length ? ' ' + other.join(' ') : '') };
+        var b = src.slice(m.index + m[0].length).match(BIRTH);
+        if (b) {
+            var day = parseInt(b[1], 10), month = b[2] ? parseInt(b[2], 10) : MONTHS[String(b[3] || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')], yr = parseInt(b[4], 10);
+            if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && yr >= 1900 && yr <= 2100) {
+                out.dbirth = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + yr;
+                out.yob = yr; out.month = month; out.day = day;
+            }
+        }
+        return out;
+    }
+
     function parseFamilyText(text) {
         var norm = normalise(text);
         var persons = [], unhandled = [], groups = [], indexSex = '', branch = '';
-        var lastBySex = {}, prevSubject = null, subject = null;   // the last man / woman named, for "Il est décédé." after "Son père a eu un lymphome."
+        var lastBySex = {}, prevSubject = null, subject = null, civilOfIndex = null;   // the last man / woman named, for "Il est décédé." after "Son père a eu un lymphome."
         var roles = {};
 
         function person(p) {
@@ -475,8 +511,12 @@
                 t.chez = /^(?:chez|in)\b/.test(sentence.slice(t.start, t.end)) || /\b(?:chez|in)\s*$/.test(gapBefore);
                 if (t.type === 'branch') { branch = t.side; }
                 else if (t.type === 'absorb') { skip(raw(t), 'relative'); t.skipped = unhandled[unhandled.length - 1]; }
-                else if (t.type === 'person') {
+                else if (t.type === 'person' && t.civil && prev && prev.type === 'person' && prev.targets.length === 1 && /^\s*,?\s*$/.test(gapBefore)) {
+                    // "Son père, Monsieur DUPONT Jean, …": the father, not the index case
+                    t.targets = prev.targets.slice();
+                } else if (t.type === 'person') {
                     var list = t.roles;
+                    if (t.civil && !civilOfIndex) civilOfIndex = { at: norm.map[base + t.start] };
                     if (t.role === 'grandparent' || t.role === 'grandparents') {
                         var side = t.side || branch;
                         if (!side && t.role === 'grandparent') { // "sa grand-mère" after "sa grand-mère paternelle"
@@ -604,7 +644,9 @@
                 if (a.diseases.length) skip(v.original(0, v.text.length), 'orphan');
             });
         }
-        return { persons: persons, unhandled: unhandled, indexSex: indexSex };
+        var id = civilOfIndex ? identity(norm.src.slice(civilOfIndex.at)) : null;
+        if (id && !indexSex) indexSex = id.sex;
+        return { persons: persons, unhandled: unhandled, indexSex: indexSex, identity: id };
     }
 
     // ------------------------------------------------------------------ plan
@@ -741,6 +783,19 @@
         function note(r, text) { (details[r.IndivID] = details[r.IndivID] || []).push(text); touch(r); }
         function ageText(n) { return String(t('ft_age', '{n} ans')).replace('{n}', n); }
 
+        // "Madame DUPONT Marie, née le 21/11/1960": Nom Prénom, date and year of birth, age today
+        var ident = parsed.identity, today = ctx.today || new Date(), born = false;
+        if (ident && ident.civilName && !index.civil_name) { index.civil_name = ident.civilName; note(index, ident.civilName); }
+        if (ident && ident.dbirth && !index.dbirth) {
+            index.dbirth = ident.dbirth;
+            index.Yob = String(ident.yob);
+            var age = today.getFullYear() - ident.yob;
+            if (today.getMonth() + 1 < ident.month || (today.getMonth() + 1 === ident.month && today.getDate() < ident.day)) age--;
+            index.Age = String(age);
+            born = true;
+            note(index, String(t('ft_born', 'né(e) le {date}')).replace('{date}', ident.dbirth) + ' (' + ageText(age) + ')');
+        }
+
         parsed.persons.forEach(resolve);
         parsed.persons.forEach(function (p) {
             var r = rowOf[p.id], a = p.attrs;
@@ -770,7 +825,7 @@
                 r.Deceased = '1';
                 if (a.deathAge != null) r.Age = String(a.deathAge);
                 note(r, t('ft_deceased', 'décédé(e)') + (a.deathAge != null ? ' (' + ageText(a.deathAge) + ')' : ''));
-            } else if (a.age != null) {
+            } else if (a.age != null && !(born && r === index)) {   // the date of birth gives the age
                 r.Age = String(a.age);
                 r.Yob = String(year - a.age);
                 note(r, ageText(a.age));

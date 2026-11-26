@@ -297,6 +297,7 @@ var lang = {
     ft_otherPartnerM:"Mother's other partner",
     ft_deceased:"deceased",
     ft_age:"{n} y",
+    ft_born:"born {date}",
     father:"Father",
     mother:"Mother",
     unclePat:"Uncle pat",
