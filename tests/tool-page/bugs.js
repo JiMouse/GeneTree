@@ -252,6 +252,42 @@ test('10b. disease list: no "Supprimer la maladie" on an empty disease cell; but
   expect(!(await data(page))[1].Disease1, 'HPO disease not removed');
 });
 
+// "Nom Prénom" of "Ajouter des informations à un individu" also fills the Name column,
+// but only while the name is still the default one ("Index", "Père", "Oncle pat2"...)
+const infoSave = async (page, row, civil, name) => {
+  await g.click(page, row, 0); await g.closeCancerList(page);
+  await page.evaluate(() => $('#supp_edit_info').click()); await page.waitForTimeout(400);
+  await page.evaluate(([c, n]) => { $('#civil_name').val(c); if (n != null) $('#form_id_name').val(n); }, [civil, name]);
+  await page.locator('.ui-dialog:visible .ui-dialog-buttonpane button', { hasText: 'Sauvegarder' }).click(); await page.waitForTimeout(500);
+};
+
+test('11. Informations: "Nom Prénom" filled, default name "Index": the name becomes "DUPONT Marie"', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await infoSave(page, 0, 'DUPONT Marie');
+  const d = (await data(page))[0];
+  await page.evaluate(() => $('#loadFromHot').click()); await page.waitForTimeout(500);
+  const drawn = await page.evaluate(() => $('#pedigree').text());
+  expect(d.Name === 'DUPONT Marie' && d.civil_name === 'DUPONT Marie' && d.proband, JSON.stringify([d.Name, d.civil_name, d.proband]));
+  expect((drawn.match(/DUPONT Marie/g) || []).length === 1, 'on the drawing: ' + (drawn.match(/DUPONT Marie/g) || []).length + ' times');
+});
+
+test('11b. same with a numbered default name ("Oncle pat2") and the Id. of a person drawn without a name', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 1: { Name: 'Oncle pat2' }, 2: { Name: String((await data(page))[2].IndivID) } });
+  await infoSave(page, 1, 'Martin Paul');
+  await infoSave(page, 2, 'Durand Anne');
+  const d = await data(page);
+  expect(d[1].Name === 'Martin Paul' && d[2].Name === 'Durand Anne', JSON.stringify([d[1].Name, d[2].Name]));
+});
+
+test('11c. a name typed by the user is kept; an empty "Nom Prénom" changes nothing', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await infoSave(page, 0, 'DUPONT Marie', 'Véro');
+  await infoSave(page, 1, '');
+  const d = await data(page);
+  expect(d[0].Name === 'Véro' && d[0].civil_name === 'DUPONT Marie' && d[1].Name === 'Père', JSON.stringify([d[0].Name, d[0].civil_name, d[1].Name]));
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

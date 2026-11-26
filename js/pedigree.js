@@ -773,6 +773,7 @@
 				function(d) {
 					if(!d.data[label] || (label === 'yob' && d.data.hasOwnProperty('dbirth'))) // not return year if full year is specified
 						return;
+					if(label === 'civil_name' && d.data.civil_name === d.data.display_name) return; // already shown as the name
 					d.y_offset = (ilab === 0 || !d.y_offset ? font_size*2.25 : d.y_offset+font_size);
 					return d.y_offset;
 				},
@@ -790,6 +791,8 @@
 						} else if(label === 'stillbirth') {
 							return "SB";
 						} else if(label === 'yob' && d.data.hasOwnProperty('dbirth')) { // not return year if full year is specified
+							return
+						} else if(label === 'civil_name' && d.data.civil_name === d.data.display_name) { // already shown as the name
 							return
 						// } else if(label === 'comment')
 						// 	return d.data[label] //short : max. 10 char. ?

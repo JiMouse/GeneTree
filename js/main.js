@@ -1267,3 +1267,38 @@ function lowerFirstLetter(string) {
 function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+// Is the Name of a row still the one GeneTree gave it ("Index", "Père", "Oncle pat2",
+// "Grand-père paternel", the person's Id....), not a name typed by the user?
+// Checked against the labels of the current language and the names of the templates.
+var DEFAULT_NAME_KEYS = ['index', 'brother', 'sister', 'sibling', 'child', 'son', 'daughter',
+    'halfBrotherPat', 'halfSisterPat', 'halfSiblingPat', 'halfBrotherMat', 'halfSisterMat', 'halfSiblingMat',
+    'parentSiblingPat', 'parentSiblingMat', 'nephew', 'niece', 'nephewNiece', 'grandson', 'granddaughter', 'grandchild',
+    'cousinM', 'cousinF', 'cousinU', 'ft_partner', 'ft_otherPartnerP', 'ft_otherPartnerM',
+    'father', 'mother', 'unclePat', 'uncleMat', 'auntPat', 'auntMat', 'gpp', 'gmp', 'gpm', 'gmm',
+    'ui_name_father', 'ui_name_mother', 'ui_rel_children', 'ui_rel_children_M', 'ui_rel_children_F',
+    'ui_rel_siblings', 'ui_rel_siblings_M', 'ui_rel_siblings_F',
+    'ui_rel_fatherSiblings', 'ui_rel_fatherSiblings_M', 'ui_rel_fatherSiblings_F',
+    'ui_rel_motherSiblings', 'ui_rel_motherSiblings_M', 'ui_rel_motherSiblings_F'];
+
+function isDefaultName(name, row) {
+    var norm = function (s) {
+        return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
+    };
+    var n = norm(name);
+    if (n === '') return true;
+    if (row && (n === norm(row.IndivID) || n === norm(row.name))) return true;   // drawn without a name: its Id.
+    var labels = ['Conjoint', 'FCS'], L = (typeof lang !== 'undefined' ? lang : {});
+    DEFAULT_NAME_KEYS.forEach(function (k) { if (typeof L[k] === 'string') labels.push(L[k]); });
+    ['myData', 'myDataExtended1', 'myDataExtended2'].forEach(function (v) {
+        var rows = (typeof window !== 'undefined' ? window[v] : undefined);
+        if (Array.isArray(rows)) rows.forEach(function (r) { if (r && r.Name) labels.push(r.Name); });
+    });
+    var bare = n.replace(/\s*\d+$/, '');                                         // "Oncle pat2", "Frère 3"
+    if (labels.some(function (l) { var x = norm(l); return x !== '' && (x === n || x === bare); })) return true;
+    // "Conjoint(e) de Frère"
+    if (typeof L.ft_partnerOf === 'string') {
+        var parts = norm(L.ft_partnerOf).split('{name}');
+        if (parts.length === 2 && n.indexOf(parts[0]) === 0 && n.length > parts[0].length) return true;
+    }
+    return false;
+}
