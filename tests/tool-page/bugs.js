@@ -218,6 +218,40 @@ test('9b. CanRisk without a name: canrisk.txt', 'fr', async (page) => {
   expect((await dl).suggestedFilename() === 'canrisk.txt', (await dl).suggestedFilename());
 });
 
+// a disease could not be removed: clicking a disease cell always opens the list of cancers
+const colOf = (page, prop) => page.evaluate(p => hot._colIndex(p), prop);
+
+test('10. disease list: "Supprimer la maladie" empties the disease and its age, one Ctrl+Z restores both', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { Disease1: 'cancer_sein', Age1: '40', Disease2: 'cancer_colon', Age2: '50' } });
+  await g.click(page, 0, await colOf(page, 'Disease2'));
+  await page.locator('#cancerList #removeDisease').waitFor({ state: 'visible' });
+  expect(/Supprimer la maladie/.test(await page.locator('#removeDisease').innerText()), 'button text');
+  await page.locator('#removeDisease').click(); await page.waitForTimeout(300);
+  let d = (await data(page))[0];
+  const open = await page.evaluate(() => $('#cancerList').dialog('isOpen'));
+  expect(!d.Disease2 && !d.Age2 && d.Disease1 === 'cancer_sein' && String(d.Age1) === '40' && !open, JSON.stringify([d.Disease1, d.Age1, d.Disease2, d.Age2, open]));
+  await page.keyboard.press('Control+Z'); await page.waitForTimeout(300);
+  d = (await data(page))[0];
+  expect(d.Disease2 === 'cancer_colon' && String(d.Age2) === '50', 'after undo: ' + JSON.stringify([d.Disease2, d.Age2]));
+});
+
+test('10b. disease list: no "Supprimer la maladie" on an empty disease cell; button in English and in HPO mode', 'eng', async (page) => {
+  await template(page, 'nuclear');
+  await g.click(page, 0, await colOf(page, 'Disease3'));
+  await page.locator('#cancerList').waitFor({ state: 'visible' });
+  expect(await page.locator('#removeDisease').count() === 0, 'button shown on an empty cell');
+  await g.closeCancerList(page);
+  await setRows(page, { 1: { Disease1: 'Abnormality of the eye', Age1: '' } });
+  await page.evaluate(() => { const c = document.getElementById('myCheckHPO'); if (!c.checked) c.click(); });
+  await page.waitForTimeout(300);
+  await g.click(page, 1, await colOf(page, 'Disease1'));
+  await page.locator('#cancerList #removeDisease').waitFor({ state: 'visible' });
+  expect(/Remove the disease/.test(await page.locator('#removeDisease').innerText()), 'button text');
+  await page.locator('#removeDisease').click(); await page.waitForTimeout(300);
+  expect(!(await data(page))[1].Disease1, 'HPO disease not removed');
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

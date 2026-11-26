@@ -353,6 +353,16 @@ $(document).ready(function(){
     });
 
 
+    //remove the disease of the selected cell, with its age at diagnosis (one undo step)
+    $(document).on("click","#removeDisease", function(e) {
+        e.preventDefault();
+        let age = selectedColumn.replace('Disease', 'Age');
+        hotSelectedTable.setDataAtRowProp([[selectedRow, selectedColumn, ''], [selectedRow, age, '']], 'edit');
+        $('input[name="cancerListradio"]:checked').prop('checked', false);
+        hotSelectedTable.selectCell(selectedRow, selectedColumn); // reopens the list: close it after
+        dialogCancerList.dialog( "close" );
+    });
+
     function updateDiseasecol(hotSelectedTable, row, column, cancerType) {
         if(cancerType != undefined) {
             hotSelectedTable.setDataAtRowProp(row, column, cancerType);
@@ -408,6 +418,14 @@ $(document).ready(function(){
             selectedColumn = column
             if(selectedColumn == "Disease1" || selectedColumn == "Disease2" || selectedColumn == "Disease3") {
                 hotSelectedTable =  this;
+                let current = this.getDataAtRowProp(row, column);
+                let removeButton = (current != '' && current != null)
+                    ? "<div class='text-center' style='margin-bottom: 8px'>"
+                    +     "<button type='button' id='removeDisease' class='btn btn-default btn-sm'>"
+                    +         "<span class='fa fa-trash'></span> " + lang.removeDisease
+                    +     "</button>"
+                    + "</div>"
+                    : '';
                 if (checkBoxHPO.checked == true) { //if HPO mode
                     // alert(HPOArr);
 
@@ -474,7 +492,7 @@ $(document).ready(function(){
                 }
                 );
         
-                dialogCancerList.html(html_cancerListDialog);
+                dialogCancerList.html(removeButton + html_cancerListDialog);
                 dialogCancerList.dialog('open');
             }
             preventScrolling.value = true;
