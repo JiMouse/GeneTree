@@ -37,11 +37,15 @@
         return { text: out, map: map, src: src };
     }
 
+    // A line break (or several, with blank lines: text copied from a PDF is often double
+    // spaced) inside a sentence: the line before does not end a sentence and the next one
+    // goes on in lower case or with a number.
     function softBreak(src, i) {
-        var j = i + 1;
-        while (j < src.length && /[ \t\r\u00a0]/.test(src[j])) j++;
-        var next = src[j] || '';
-        if (next === '\n' || next === '') return false;                     // blank line: a new paragraph
+        var j = i + 1, b = i - 1;
+        while (j < src.length && /\s/.test(src[j])) j++;
+        while (b >= 0 && /\s/.test(src[b])) b--;
+        var next = src[j] || '', last = b >= 0 ? src[b] : '';
+        if (next === '' || last === '' || /[.!?;:]/.test(last)) return false;
         return /\d/.test(next) || (next !== next.toUpperCase() && next === next.toLowerCase());
     }
 

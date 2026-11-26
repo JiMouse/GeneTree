@@ -121,6 +121,11 @@ unit('the letter gives exactly the family of fixtures/courrier-oncogenetique.jso
   const diff = a.filter((x, i) => x !== b[i]).map((x, i) => x + '\n         want ' + b[a.indexOf(x)]);
   expect(a.length === b.length && !diff.length, '\n         ' + (a.length !== b.length ? a.length + ' rows for ' + b.length : diff.join('\n         ')));
 });
+unit('the same letter copied double spaced (a blank line after each line) gives the same family', () => {
+  const spaced = fs.readFileSync(path.join(__dirname, 'fixtures/courrier-oncogenetique-interligne.txt'), 'utf8');
+  expect(summary(plan(spaced)) === summary(plan(COURRIER)), '\n         ' + summary(plan(spaced)));
+});
+same('Père : cancer du côlon\n\nmère : cancer du sein', '~Père: cancer colon / ~Mère: cancer sein');
 same('Son frère a eu un\ncancer du côlon à 50 ans.', '+Frère: cancer colon (50 ans)');
 same('Père : cancer du côlon\nMère : cancer du sein', '~Père: cancer colon / ~Mère: cancer sein');
 same('Madame X. Son père a eu un lymphome. Il est décédé.', '~Père: lymphome, décédé(e)');
