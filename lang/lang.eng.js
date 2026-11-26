@@ -345,6 +345,7 @@ var lang = {
     addParents:"Add parents",
     add_miscarriage:"Add miscarriage",
     delete:"Delete",
+    removeDisease:"Remove the disease",
     parameters:"Settings",
     addConsang:"extend to create a consanguineous spouse",
     id:"User ID",

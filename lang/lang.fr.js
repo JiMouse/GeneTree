@@ -350,6 +350,7 @@ var lang = {
     addParents:"Ajouter parents",
     // add_miscarriage:"Ajouter Fausses couches",
     delete:"Supprimer",
+    removeDisease:"Supprimer la maladie",
     parameters:"Paramètres",
     addConsang:"étendre pour créer un conjoint consanguin",
     id:"Identifiant",
