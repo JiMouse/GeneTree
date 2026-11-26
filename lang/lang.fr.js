@@ -302,6 +302,8 @@ var lang = {
     ft_deceased:"décédé(e)",
     ft_age:"{n} ans",
     ft_born:"né(e) le {date}",
+    ft_mztwin:"jumeau/jumelle monozygote",
+    ft_dztwin:"jumeau/jumelle dizygote",
     father:"Père",
     mother:"Mère",
     unclePat:"Oncle pat",

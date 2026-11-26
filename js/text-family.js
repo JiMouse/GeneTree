@@ -120,6 +120,17 @@
         return { side: '', start: start, end: end };
     }
 
+    // ------------------------------------------------------------------ twins
+    // "vrais jumeaux", "jumeaux monozygotes" -> MZ; "faux jumeaux", "dizygotes", nothing said -> DZ
+    var ZYG = '(?:vraie?s?|fausse?s?|identical|fraternal|monozygotes?|homozygotes?|univitellin\\w*|identiques?|mz|dizygotes?|bivitellin\\w*|dz)';
+    var TWIN_ZYG_BEFORE = '((?:vraie?s?|fausse?s?|identical|fraternal)\\s+)?';
+    var TWIN_AFTER = new RegExp('^\\s+((?:vraie?s?|fausse?s?)\\s+)?(jumea(?:u|ux)|jumelles?|twins?)\\b(?:\\s+(' + ZYG + ')\\b)?');
+    function zygosity(words) {
+        if (/vrai|identi|monozyg|homozyg|univitell|\bmz\b/.test(words || '')) return 'MZ';
+        if (/faux|fausse|fratern|dizyg|bivitell|\bdz\b/.test(words || '')) return 'DZ';
+        return '?';                                                   // not said: dizygotic in the table
+    }
+
     // ------------------------------------------------------------------ tokens
     // A sentence is cut into tokens (the relatives it names); the text between two
     // tokens describes the first one (diseases, death, age).
@@ -228,11 +239,40 @@
             return { type: 'absorb' };
         });
 
+        // twins named alone: "des jumeaux", "deux jumelles", "sa jumelle", "son jumeau", "twins"
+        scan(NOT_IN_WORD + '(?:(' + NUM.slice(1, -1) + '|des|de|ses|les|his|her|their|the)\\s+)?' + TWIN_ZYG_BEFORE + '(jumeaux|jumelles|twins)\\b(?:\\s+(' + ZYG + ')\\b)?', function (m) {
+            var n = toNumber(m[1] || '') || 2;
+            return { type: 'group', n: n > 1 ? n : 2, kind: 'child', sex: m[3] === 'jumelles' ? 'F' : 'U', twin: zygosity((m[2] || '') + ' ' + (m[4] || '')), twinsOnly: true };
+        });
+        scan(NOT_IN_WORD + DET + '(?:(?:un|une|a)\\s+)?' + TWIN_ZYG_BEFORE + '(jumeau|jumelle|twin)\\b(?!s| (?:brother|sister|son|daughter|boy|girl)s?\\b)(?:\\s+(' + ZYG + ')\\b)?', function (m) {
+            // "elle est jumelle": a twin of unknown sex; "sa jumelle": a sister
+            var is = /(?:^|\s)(?:est|etait|is|was)\s+$/.test(sentence.slice(0, m.index + (m[0].match(/^\s*/)[0].length)));
+            return { type: 'person', role: 'sibling', sex: is ? 'U' : m[2] === 'jumelle' ? 'F' : m[2] === 'jumeau' ? 'M' : 'U', twin: zygosity((m[1] || '') + ' ' + (m[3] || '')), twinWithOwner: true };
+        });
+        scan(NOT_IN_WORD + '(?:(?:his|her|their|the)\\s+)?(?:(' + NUM.slice(1, -1) + ')\\s+)?(identical\\s+|fraternal\\s+)?twin (sons|daughters|boys|girls|brothers|sisters|children)\\b', function (m) {
+            var w = m[3], n = toNumber(m[1] || '') || 2;
+            return { type: 'group', n: n > 1 ? n : 2, kind: /brothers|sisters/.test(w) ? 'sibling' : 'child', sex: /sons|boys|brothers/.test(w) ? 'M' : /daughters|girls|sisters/.test(w) ? 'F' : 'U', twin: zygosity(m[2]) };
+        });
+        scan(NOT_IN_WORD + DET + '(?:(?:a|an)\\s+)?(identical\\s+|fraternal\\s+)?twin (brother|sister)\\b', function (m) {
+            return { type: 'person', role: 'sibling', sex: m[2] === 'brother' ? 'M' : 'F', twin: zygosity(m[1]), twinWithOwner: true };
+        });
+
         // Keep the earliest, then the longest; drop overlaps.
         out.sort(function (a, b) { return a.start - b.start || (b.end - b.start) - (a.end - a.start); });
         var kept = [], end = -1;
         out.forEach(function (t) { if (t.start >= end) { kept.push(t); end = t.end; } });
-        return kept;
+        // "deux frères jumeaux", "sa sœur jumelle", "un frère jumeau monozygote"
+        kept.forEach(function (t) {
+            if (t.twin || !((t.type === 'person' && /^(sibling|child)$/.test(t.role)) || (t.type === 'group' && /^(sibling|child)$/.test(t.kind)))) return;
+            var m = sentence.slice(t.end).match(TWIN_AFTER);
+            if (!m) return;
+            t.twin = zygosity((m[1] || '') + ' ' + (m[3] || ''));
+            // "un fils et une fille jumeaux": the two named; "sa sœur jumelle": the sister and the one who has her
+            if ((t.type === 'person' || t.n === 1) && /^(jumeaux|jumelles|twins)$/.test(m[2])) t.twinWithPrev = true;
+            else t.twinWithOwner = (t.type === 'person' || t.n === 1);
+            t.end += m[0].length;
+        });
+        return kept.filter(function (t, k) { return !k || t.start >= kept[k - 1].end; });
     }
 
     // ------------------------------------------------------------------ diseases, death, age
@@ -471,7 +511,10 @@
     function parseFamilyText(text) {
         var norm = normalise(text);
         var persons = [], unhandled = [], groups = [], indexSex = '', branch = '';
-        var lastBySex = {}, prevSubject = null, subject = null, civilOfIndex = null;   // the last man / woman named, for "Il est décédé." after "Son père a eu un lymphome."
+        // the last man / woman named and the person the previous sentence was about, for
+        // "Il est décédé." after "Son père a eu un lymphome."
+        var lastBySex = {}, prevSubject = null, subject = null;
+        var civilOfIndex = null, twins = 0;
         var roles = {};
 
         function person(p) {
@@ -527,8 +570,18 @@
                         else if (t.role === 'grandparents') list = side === 'P' ? ['gpp', 'gmp'] : ['gpm', 'gmm'];
                         else list = [(t.sex === 'M' ? 'gp' : 'gm') + (side === 'P' ? 'p' : 'm')];
                     }
+                    var holder = (t.twinWithOwner && prev && (prev.type === 'person' || prev.type === 'pronoun') && prev.targets.length === 1 && POSSESS.test(gapBefore)) ? prev.targets[0] : null;
                     if (list) t.targets = list.map(role);
-                    else if (t.role === 'sibling' || t.role === 'child') t.targets = [claim(t.role, t.sex, '')];
+                    else if (t.twinWithOwner && holder && (holder.role === 'father' || holder.role === 'mother')) {
+                        // "son père a un frère jumeau": an uncle, twin of the father
+                        t.targets = [claim('parentSibling', t.sex, holder.role === 'father' ? 'P' : 'M')];
+                        t.twinOwner = holder;
+                    }
+                    else if (t.role === 'sibling' || t.role === 'child') {
+                        t.targets = [claim(t.role, t.sex, '')];
+                        // "sa sœur a une jumelle": the twin of the sister
+                        if (holder && (holder.role === 'index' || holder.role === 'sibling')) t.twinOwner = holder;
+                    }
                     else {
                         var sd = t.side || branch;
                         if (!sd) { skip(raw(t), 'side'); t.skipped = unhandled[unhandled.length - 1]; }
@@ -568,6 +621,19 @@
                         t.targets = pick;
                         t.group = lastGroup;
                     }
+                } else if (t.type === 'group' && t.twinsOnly && prev && prev.targets && prev.targets.length
+                           && /^\s*(?:,|:)?\s*(?:(?:qui|ils|elles|they|who)\s+)?(?:sont|etaient|are|were)?\s*$/.test(gapBefore)) {
+                    // "deux frères, de vrais jumeaux", "ses deux fils sont jumeaux", "elle et sa sœur sont jumelles",
+                    // "une sœur jumelle, de vraies jumelles": the people just named
+                    var named = prev.targets.slice(), j = k - 1;
+                    while (j > 0 && toks[j - 1].targets && toks[j - 1].targets.length && AND.test(sentence.slice(toks[j - 1].end, toks[j].start))) {
+                        toks[j - 1].targets.forEach(function (p) { if (named.indexOf(p) < 0) named.unshift(p); });
+                        j--;
+                    }
+                    if (named.length === 1 && named[0].twin) {
+                        if (t.twin !== '?') persons.forEach(function (p) { if (p.twin && p.twin.id === named[0].twin.id) p.twin.zyg = t.twin; });
+                        t.targets = named; t.twin = null;   // what follows still describes them
+                    } else t.targets = named;
                 } else if (t.type === 'group') {
                     // Whose relatives? "son père a 2 frères" -> the father's.
                     var owner = null;
@@ -606,6 +672,7 @@
                         spec = { role: 'childOf', ownerId: owner.id };
                     }
                     if (!spec) { skip(raw(t), why); t.skipped = unhandled[unhandled.length - 1]; prev = t; return; }
+                    if (t.twinWithOwner) t.twinOwner = owner;
                     var members = [];
                     for (var i = 0; i < t.n; i++) {
                         members.push(person({ role: spec.role, sex: t.sex, side: spec.side, ownerId: spec.ownerId, match: false }));
@@ -614,6 +681,19 @@
                     lastSingleSince = false;
                     groups.push(lastGroup);
                     t.targets = members;
+                }
+                // twins: the members of the group, or the relative and whoever "has" him or her
+                if (t.twin && t.targets.length) {
+                    var pair = t.targets.slice();
+                    if (t.twinWithPrev && prev && prev.targets) prev.targets.forEach(function (p) { if (pair.indexOf(p) < 0) pair.unshift(p); });
+                    if (t.twinWithOwner) {
+                        var with_ = t.twinOwner || role('index');
+                        if (pair.indexOf(with_) < 0) pair.push(with_);
+                    }
+                    if (pair.length > 1) {
+                        twins++;
+                        pair.forEach(function (p) { p.twin = { zyg: t.twin, id: twins }; });
+                    }
                 }
                 if (!subject && (t.type === 'person' || t.type === 'pronoun') && t.targets.length === 1) subject = t.targets[0];
                 prev = t;
@@ -830,6 +910,28 @@
                 r.Yob = String(year - a.age);
                 note(r, ageText(a.age));
             }
+        });
+
+        // twins: the Option column ("JumMZ" / "JumDZ"); identical twins have the same sex
+        var twinRows = {};
+        parsed.persons.forEach(function (p) {
+            var r = rowOf[p.id];
+            if (!r || !p.twin) return;
+            (twinRows[p.twin.id] = twinRows[p.twin.id] || { zyg: p.twin.zyg, rows: [] });
+            if (twinRows[p.twin.id].rows.indexOf(r) < 0) twinRows[p.twin.id].rows.push(r);
+        });
+        Object.keys(twinRows).forEach(function (k) {
+            var g = twinRows[k];
+            if (g.rows.length < 2) return;
+            var sexes = g.rows.map(function (r) { return r.Sex; }).filter(function (x) { return x === 'M' || x === 'F'; });
+            var zyg = (g.zyg === 'MZ' && sexes.every(function (x) { return x === sexes[0]; })) ? 'MZ' : 'DZ';   // "?" (not said): DZ
+            if (zyg === 'MZ' && sexes.length) g.rows.forEach(function (r) { if (r.Sex !== 'M' && r.Sex !== 'F') r.Sex = sexes[0]; });
+            var label = zyg === 'MZ' ? t('mztwin', 'JumMZ') : t('dztwin', 'JumDZ');
+            g.rows.forEach(function (r) {
+                if (r.Option) return;
+                r.Option = label;
+                note(r, String(t(zyg === 'MZ' ? 'ft_mztwin' : 'ft_dztwin', zyg === 'MZ' ? 'jumeau/jumelle monozygote' : 'jumeau/jumelle dizygote')));
+            });
         });
 
         var lines = touched.map(function (r) {

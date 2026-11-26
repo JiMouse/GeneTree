@@ -298,6 +298,8 @@ var lang = {
     ft_deceased:"deceased",
     ft_age:"{n} y",
     ft_born:"born {date}",
+    ft_mztwin:"identical twin",
+    ft_dztwin:"fraternal twin",
     father:"Father",
     mother:"Mother",
     unclePat:"Uncle pat",

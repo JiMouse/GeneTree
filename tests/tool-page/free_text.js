@@ -147,6 +147,28 @@ unit('identity: a "Nom Prénom" or a date of birth already in the table is kept'
   const i = row(plan('Madame DUPONT Marie, née le 21/11/1960.', fr, rows), 'Index');
   expect(i.civil_name === 'DUPONT Marie-Claire' && i.dbirth === '01/02/1961' && i.Yob === '1961', JSON.stringify(i));
 });
+// twins: the Option column, dizygotic unless said otherwise; identical twins have the same sex
+same('Elle a une sœur jumelle.', '+Sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle a une sœur jumelle monozygote, décédée à 40 ans.', '+Sœur: décédé(e) (40 ans), jumeau/jumelle monozygote / ~Index: jumeau/jumelle monozygote');
+same('Elle a une sœur jumelle, de vraies jumelles.', '+Sœur: jumeau/jumelle monozygote / ~Index: jumeau/jumelle monozygote');
+same('Sa sœur a une jumelle.', '+Sœur: jumeau/jumelle dizygote / +Sœur2: jumeau/jumelle dizygote');
+same('Elle et sa sœur sont jumelles.', '+Sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle est jumelle.', '+Frère/sœur: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('Elle a deux frères jumeaux et une sœur.', '+Frère: jumeau/jumelle dizygote / +Frère2: jumeau/jumelle dizygote / +Sœur');
+same('Il a deux frères, de vrais jumeaux.', '+Frère: jumeau/jumelle monozygote / +Frère2: jumeau/jumelle monozygote');
+same('Elle a des jumeaux de 5 ans.', '+Conjoint(e) / +Enfant: 5 ans, jumeau/jumelle dizygote / +Enfant2: 5 ans, jumeau/jumelle dizygote');
+same('Ses deux fils sont jumeaux monozygotes.', '+Conjoint(e) / +Fils: jumeau/jumelle monozygote / +Fils2: jumeau/jumelle monozygote');
+same('Elle a un fils et une fille jumeaux.', '+Conjoint(e) / +Fils: jumeau/jumelle dizygote / +Fille: jumeau/jumelle dizygote');
+same('Son père a un frère jumeau.', '+Grand-Père pat / +Grand-Mère pat / +Oncle pat: jumeau/jumelle dizygote / ~Père: jumeau/jumelle dizygote');
+same('Elle a un frère jumeau monozygote.', '+Frère: jumeau/jumelle dizygote / ~Index: jumeau/jumelle dizygote');
+same('She has an identical twin sister.', '+Sister: identical twin / ~Index: identical twin', eng);
+same('She has twin daughters.', '+Partner / +Daughter: fraternal twin / +Daughter2: fraternal twin', eng);
+unit('twins: "JumDZ" / "JumMZ" in the Option column', () => {
+  const p = plan('Elle a une sœur jumelle. Elle a deux fils, de vrais jumeaux.');
+  expect(row(p, 'Index').Option === 'JumDZ' && row(p, 'Sœur').Option === 'JumDZ' && row(p, 'Fils').Option === 'JumMZ' && row(p, 'Fils2').Option === 'JumMZ',
+    JSON.stringify(p.rows.map(r => [r.Name, r.Option])));
+});
+
 unit('the same text twice: the two melanomas are not added again', () => {
   const t = 'Elle a 60 ans. Elle a eu deux mélanomes, le premier à 50 ans et le second à 56 ans. Sa mère a eu deux mélanomes.';
   const once = plan(t), twice = plan(t, fr, once.rows), i = row(twice, 'Index'), m = row(twice, 'Mère');
@@ -218,6 +240,17 @@ test('the oncogenetics letter pasted in: table, drawing ("mélanome: 56, 62") an
   for (const want of ['Madame DUPONT Marie est née le 21/11/1960 (65 ans)', 'dans le cadre de deux mélanomes diagnostiqués en 2016 et 2022 à l\'âge de 56 et 62 ans',
                       'Son père est décédé.', 'Sa grand-mère paternelle est décédée à 49 ans.', 'un frère (décédé) suivi pour un cancer du pancréas'])
     expect(story.includes(want), 'missing: ' + want + '\n' + story);
+});
+
+test('twins in the text: Option column, drawn as twins', 'fr', async (page) => {
+  await page.evaluate(() => $('#nuclear').click()); await page.waitForTimeout(400);
+  await openMenu(page);
+  await page.fill('#freeText', 'Elle a une sœur jumelle. Elle a deux fils, de vrais jumeaux.');
+  await page.click('#freeTextAnalyse'); await page.click('#freeTextApply'); await page.waitForTimeout(700);
+  const d = await data(page);
+  expect(d[0].Option === 'JumDZ' && d.find(r => r.Name === 'Sœur').Option === 'JumDZ' && d.filter(r => r.Option === 'JumMZ').length === 2, JSON.stringify(d.map(r => [r.Name, r.Option])));
+  const ped = await page.evaluate(() => window.__ped[window.__ped.length - 1]);
+  expect(ped.filter(p => p.dztwin).length === 2 && ped.filter(p => p.mztwin).length === 2, JSON.stringify(ped.map(p => [p.display_name, p.mztwin, p.dztwin])));
 });
 
 test('half-siblings and a grandparent drawn in the pedigree', 'fr', async (page) => {
