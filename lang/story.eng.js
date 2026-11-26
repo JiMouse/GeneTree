@@ -83,8 +83,14 @@ function getPatho(obj, i,text_neg, text_pos) {
         status = (obj[i].hasOwnProperty('status') ? 'décés' : 'vie');
   
     //civil
-    result.civil = textCivil(obj,i)
-    if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
+    if (status == 'décés') {
+      // "His paternal grandmother, born in 1930, died at the age of 49." / "His father died."
+      let born = (obj[i].yob != '' && obj[i].yob != null ? ', ' + dico.naissance[sex] + ' in ' + obj[i].yob + ',' : '');
+      result.civil = born + ' died' + (obj[i].age != '' && obj[i].age != null ? ' at the age of ' + obj[i].age : '');
+    } else {
+      result.civil = textCivil(obj,i)
+      if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
+    }
   
     //patho
     let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex]:'')  + ' do not '+ dico.presenter[status] + ' any cancer pathology',
@@ -108,6 +114,7 @@ function getPatho(obj, i,text_neg, text_pos) {
               : '');
     out += (obj[i].yob != '' && obj[i].yob != null  ? ' ' + dico.naissance[sex] + ' in ' + obj[i].yob : '');
     if (obj[i].age != '' && obj[i].age != null) out += ' (' + (status == 'décés' ? dico.décés[sex] + " at " : "") + obj[i].age +' year old)';
+    else if (status == 'décés') out += ' (' + dico.décés[sex] + ')';
     if(obj[i].proband == true && obj[i].yob != '') out += ' and '
     
     return out

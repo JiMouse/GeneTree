@@ -288,6 +288,43 @@ test('11c. a name typed by the user is kept; an empty "Nom Prénom" changes noth
   expect(d[0].Name === 'Véro' && d[0].civil_name === 'DUPONT Marie' && d[1].Name === 'Père', JSON.stringify([d[0].Name, d[0].civil_name, d[1].Name]));
 });
 
+// summary text of a deceased relative: "Sa grand-mère paternelle est décédée à 49 ans",
+// not "était (décédée à 49 ans)"; a death without an age is written too
+const courrier = require('./fixtures/courrier-oncogenetique.json');
+const story = async (page, rows) => {
+  await page.evaluate(r => hot.loadData(JSON.parse(JSON.stringify(r))), rows); await page.waitForTimeout(300);
+  await page.evaluate(() => $('#loadStory').click()); await page.waitForTimeout(300);
+  return page.evaluate(() => document.getElementById('story').innerHTML.replace(/<br>/g, '\n'));
+};
+
+test('12. text: deceased relatives ("est décédée à 49 ans", "Son père est décédé.", "un frère (décédé)"), "d\'une tumeur"', 'fr', async (page) => {
+  const s = await story(page, courrier);
+  for (const want of ['Sa grand-mère paternelle est décédée à 49 ans. Elle était suivie pour un cancer de l\'estomac.',
+                      'Son père est décédé. Il était suivi pour un lymphome.',
+                      'un frère (décédé) suivi pour un cancer de l\'estomac',
+                      'Sa mère est suivie pour un cancer du côlon et d\'une tumeur cérébrale.'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+  expect(!/était \(|\(\s*\)|undefined/.test(s), s);
+});
+
+test('12b. text: deceased relative with a year of birth or a "Nom Prénom"; living relatives unchanged', 'fr', async (page) => {
+  const rows = JSON.parse(JSON.stringify(courrier));
+  Object.assign(rows[4], { Deceased: '1', Yob: '1930', Age: '80' });
+  Object.assign(rows[1], { civil_name: 'DUPONT Jean' });
+  Object.assign(rows[2], { Yob: '1935', Age: '91' });
+  const s = await story(page, rows);
+  for (const want of ['Son grand-père paternel, né en 1930, est décédé à 80 ans. Il ne présentait pas de pathologie cancéreuse.',
+                      'Son père, Monsieur DUPONT Jean, est décédé.',
+                      'Sa mère est née en 1935 (91 ans). Elle est suivie pour un cancer du côlon'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+});
+
+test('12c. same in English: "Her paternal grandmother died at the age of 49.", "Her father died."', 'eng', async (page) => {
+  const s = await story(page, courrier);
+  for (const want of ['Her paternal grandmother died at the age of 49.', 'Her father died.', 'a brother (deceased)'])
+    expect(s.includes(want), 'missing: ' + want + '\n' + s);
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

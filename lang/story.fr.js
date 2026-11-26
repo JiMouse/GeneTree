@@ -11,8 +11,13 @@ function getPatho(obj, i,text_neg, text_pos) {
       let out = keys[j].substring(0, keys[j].length - tag.length),
           a = obj[i][keys[j]],
           y = Number(obj[i].yob) + Number(a);
-      result = (result != '' ? result + " et d'un " : text_pos);
-      result += cleanDiseaseText(out);
+      let label = cleanDiseaseText(out), art = articleOf(label);
+      if (result != '') {
+        result += (art == 'des' ? ' et de ' : " et d'" + art + ' ');
+      } else {
+        result = (art != 'un' && / un $/.test(text_pos) ? text_pos.replace(/ un $/, ' ' + art + ' ') : text_pos);
+      }
+      result += label;
       if(a != "" && a != null) {
         result += " diagnostiqué";
         if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y; 
@@ -20,6 +25,14 @@ function getPatho(obj, i,text_neg, text_pos) {
       }
     };
   }; return result + comment
+}
+
+// "un cancer", "une tumeur cérébrale", "des polypes"
+function articleOf(label) {
+  let first = String(label).toLowerCase().split(/[ _]/)[0];
+  if (/^(polypes|tumeurs|lésions)$/.test(first)) return 'des';
+  if (/^(tumeur|leucémie|leucemie|maladie|polypose|néoplasie|neoplasie|hémopathie|hemopathie|dysplasie|myélodysplasie|mastopathie|lésion|lesion|neurofibromatose|sclérose|sclerose)$/.test(first)) return 'une';
+  return 'un';
 }
 
 function buildStoryText(obj) { //Meta function to build story
@@ -176,8 +189,19 @@ function textline(obj, i){
   let name = (keyExist(obj[i],'civil_name') ? ', ' + dico.civil[sex] + ' ' + obj[i].civil_name + ',' :'')
   
   //civil
-  result.civil = textCivil(obj,i)
-  if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
+  if (status == 'décés') {
+    // "Sa grand-mère paternelle, née en 1930, est décédée à 49 ans." / "Son père est décédé."
+    let born = (keyExist(obj[i],'dbirth') ? dico.naissance[sex] + ' le ' + obj[i].dbirth
+              : (obj[i].yob != '' && obj[i].yob != null ? dico.naissance[sex] + ' en ' + obj[i].yob : '')),
+        parts = [];
+    if (name != '') parts.push(name.replace(/^, /, '').replace(/,$/, ''));
+    if (born != '') parts.push(born);
+    name = (parts.length ? ', ' + parts.join(', ') + ',' : '');
+    result.civil = ' est ' + dico.décés[sex] + (obj[i].age != '' && obj[i].age != null ? ' à ' + obj[i].age + ' ans' : '');
+  } else {
+    result.civil = textCivil(obj,i)
+    if(result.civil!='') {result.civil = ' ' + dico.etre[status] + ' ' + result.civil}
+  }
   
   //patho
   let text_neg = (result.civil!='' ? '. ' + dico.pronom[sex] : '')  + ' ne '+ dico.presenter[status] + ' pas de pathologie cancéreuse',
@@ -208,6 +232,7 @@ function textCivil(obj,i){  //extra space at the end
     out += (obj[i].yob != '' && obj[i].yob != null ? ' ' + dico.naissance[sex] + ' en ' + obj[i].yob : '');
   }
   if (obj[i].age != '' && obj[i].age != null) out += ' (' + (status == 'décés' ? dico.décés[sex] + " à " : "") + obj[i].age +' ans)';
+  else if (status == 'décés') out += ' (' + dico.décés[sex] + ')';
   if(obj[i].proband == true && obj[i].yob != '') out += ' et '
   
   return out
