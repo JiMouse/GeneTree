@@ -1,30 +1,52 @@
 function getPatho(obj, i,text_neg, text_pos) {
-  let keys = Object.keys(obj[i]),
+  let keys = Object.keys(obj[i]).filter(function (k) { return /_diagnosis_age$/.test(k) && k !== 'approx_diagnosis_age'; }),
       tag = '_diagnosis_age',
       result = '';
   
   let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '')
-  if (!keys.join().includes(tag)) return text_neg + comment
+  if (!keys.length) return text_neg + comment
 
-  for (var j = 0; j < keys.length; j++) {  
-    if (keys[j].indexOf(tag) !== -1) {
-      let out = keys[j].substring(0, keys[j].length - tag.length),
-          a = obj[i][keys[j]],
-          y = Number(obj[i].yob) + Number(a);
-      let label = cleanDiseaseText(out), art = articleOf(label);
-      if (result != '') {
-        result += (art == 'des' ? ' et de ' : " et d'" + art + ' ');
-      } else {
-        result = (art != 'un' && / un $/.test(text_pos) ? text_pos.replace(/ un $/, ' ' + art + ' ') : text_pos);
-      }
-      result += label;
-      if(a != "" && a != null) {
-        result += " diagnostiqué";
-        if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y; 
-        result += " à l'âge de " + a + " ans";
-      }
-    };
-  }; return result + comment
+  for (var j = 0; j < keys.length; j++) {
+    let out = keys[j].substring(0, keys[j].length - tag.length),
+        ages = splitDiagnosisAges(obj[i][keys[j]]),            // the same disease twice: "56, 62"
+        n = ages.length,
+        label = cleanDiseaseText(out), art = articleOf(label),
+        fem = (art == 'une'),
+        det = (n > 1 ? inWords(n) : art);
+    if (n > 1) label = pluralDisease(label);
+    if (result != '') {
+      result += (det == 'des' ? ' et de ' : (n > 1 ? ' et de ' : " et d'") + det + ' ');
+    } else {
+      // "suivie pour un" -> "pour une tumeur", "pour deux mélanomes"; "dans le cadre d'un" -> "de deux mélanomes"
+      if (det != 'un' && / un $/.test(text_pos)) result = text_pos.replace(/ un $/, ' ' + det + ' ');
+      else if (det != 'un' && / d'un $/.test(text_pos)) result = text_pos.replace(/ d'un $/, (det == 'une' ? " d'une " : ' de ' + (det == 'des' ? '' : det + ' ')));
+      else result = text_pos;
+    }
+    result += label;
+    let known = ages.filter(function (a) { return a !== '' && a != null; });
+    if (known.length) {
+      result += " diagnostiqué" + (fem ? 'e' : '') + (n > 1 ? 's' : '');
+      let hasYob = (obj[i].yob != "" && obj[i].yob != null);
+      if (hasYob && known.length == n) result += " en " + joinEt(known.map(function (a) { return Number(obj[i].yob) + Number(a); }));
+      result += " à l'âge de " + joinEt(known) + " ans";
+      if (known.length < n) result += (n - known.length > 1 ? ' et à des âges inconnus' : ' et à un âge inconnu');
+    }
+  }
+  return result + comment
+}
+
+// "56", "56 et 62", "45, 56 et 62"
+function joinEt(list) {
+  return list.length < 2 ? String(list[0]) : list.slice(0, -1).join(', ') + ' et ' + list[list.length - 1];
+}
+
+// "mélanome" -> "mélanomes", "cancer du côlon" -> "cancers du côlon", "tumeur cérébrale" -> "tumeurs cérébrales"
+function pluralDisease(label) {
+  let words = String(label).split(' '), stop = false;
+  return words.map(function (w) {
+    if (stop || /^(de|du|des|d'.*|l'.*|à|au|aux|et|ou|en)$/i.test(w)) { stop = true; return w; }
+    return /[sxz]$/i.test(w) ? w : w + 's';
+  }).join(' ');
 }
 
 // "un cancer", "une tumeur cérébrale", "des polypes"

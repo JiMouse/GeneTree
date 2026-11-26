@@ -325,6 +325,73 @@ test('12c. same in English: "Her paternal grandmother died at the age of 49.", "
     expect(s.includes(want), 'missing: ' + want + '\n' + s);
 });
 
+// the same disease twice with two ages (two melanomas at 56 and 62): both kept on the
+// drawing ("mélanome: 56, 62"), in the text and back in the table
+const labels = (page) => page.evaluate(() => $('#pedigree .indi_details').map((i, e) => e.textContent).get().filter(x => x));
+const draw = async (page, rows) => {
+  if (rows) await page.evaluate(r => hot.loadData(JSON.parse(JSON.stringify(r))), rows);
+  await page.evaluate(() => $('#loadFromHot').click()); await page.waitForTimeout(600);
+};
+
+test('13. same disease twice: "mélanome: 56, 62" on the drawing, "deux mélanomes diagnostiqués en 2016 et 2022 à l\'âge de 56 et 62 ans"', 'fr', async (page) => {
+  await draw(page, courrier);
+  const l = await labels(page);
+  expect(l.includes('mélanome: 56, 62'), 'labels: ' + l.join(' | '));
+  const s = await story(page, courrier);
+  expect(s.includes("dans le cadre de deux mélanomes diagnostiqués en 2016 et 2022 à l'âge de 56 et 62 ans et d'un carcinome basocellulaire de l'épaule."), s.split('\n')[0]);
+});
+
+test('13b. same disease twice: edited on the drawing then loaded back, two lines in the table; removed from the table, gone from the drawing', 'fr', async (page) => {
+  await draw(page, courrier);
+  // person editor of the index case: the ages are a text field, saved as they are
+  await page.evaluate(() => d3.selectAll('#pedigree .settings').filter(d => d.data.proband).dispatch('click'));
+  await page.locator('#node_properties').waitFor({ state: 'visible' });
+  const field = await page.evaluate(() => { const f = document.getElementById('id_mélanome_diagnosis_age_0'); return [f.type, f.value]; });
+  expect(field[0] === 'text' && field[1] === '56, 62', 'editor field: ' + field);
+  await page.evaluate(() => { $('#id_age').val('65').change(); $('#node_properties').dialog('close'); }); await page.waitForTimeout(400);
+  await page.evaluate(() => $('#loadFromPedigree').click()); await page.waitForTimeout(400);
+  let d = (await data(page))[0];
+  expect(d.Disease1 === 'mélanome' && String(d.Age1) === '56' && d.Disease2 === 'mélanome' && String(d.Age2) === '62' && /basocellulaire/.test(d.Disease3),
+    JSON.stringify([d.Disease1, d.Age1, d.Disease2, d.Age2, d.Disease3]));
+  expect(!Object.keys(d).some(k => /_diagnosis_age$/.test(k)), 'diagnosis keys kept in the table: ' + Object.keys(d).join(','));
+  await page.evaluate(() => { hot.setDataAtRowProp(0, 'Disease2', '', 'test'); hot.setDataAtRowProp(0, 'Age2', '', 'test'); });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.includes('mélanome: 56') && !l.some(x => /62/.test(x)), 'labels: ' + l.join(' | '));
+});
+
+test('13e. a file saved by an earlier version (hidden copies of the diseases): each disease drawn once, a removed one not drawn; a fourth disease kept', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { ...index, Disease1: 'cancer_colon', Age1: '50', cancer_colon_diagnosis_age: '50', cancer_sein_diagnosis_age: '40' },
+                        1: { Disease1: 'cancer_colon', Disease2: 'mélanome', Disease3: 'cancer_rein', Age3: '70', cancer_prostate_diagnosis_age: '65' } });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.filter(x => /colon/.test(x)).sort().join('|') === 'ca. colon: |ca. colon: 50' && !l.some(x => /sein/.test(x)) && l.includes('ca. prostate: 65'), 'labels: ' + l.join(' | '));
+  await page.evaluate(() => $('#loadFromPedigree').click()); await page.waitForTimeout(400);
+  const p = (await data(page))[1];
+  expect(p.cancer_prostate_diagnosis_age === '65' && p.Disease3 === 'cancer_rein', 'father: ' + JSON.stringify(p));
+});
+
+test('13c. same cancer twice, one age unknown: "56, ?"; CanRisk gets the first age', 'fr', async (page) => {
+  await template(page, 'nuclear');
+  await setRows(page, { 0: { ...index, Disease1: 'cancer_ovaire', Age1: '44', Disease2: 'cancer_ovaire', Age2: '' } });
+  await draw(page);
+  const l = await labels(page);
+  expect(l.some(x => /ovaire: 44, \?/.test(x)), 'labels: ' + l.join(' | '));
+  const s = await story(page, await data(page));
+  expect(s.includes("dans le cadre de deux cancers de l'ovaire diagnostiqués à l'âge de 44 ans et à un âge inconnu."), s.split('\n')[0]);
+  const dl = page.waitForEvent('download');
+  await page.evaluate(() => $('#save_canrisk_fromHot').click());
+  const text = require('fs').readFileSync(await (await dl).path(), 'utf8');
+  const line = text.split('\n').find(x => x.split('\t')[2] === '1') || '';
+  expect(line.includes('\t44\t') && !/44, /.test(text), 'CanRisk index line: ' + line);
+});
+
+test('13d. same in English: "2 mélanomes diagnosed at the age of 56 and 62"', 'eng', async (page) => {
+  const s = await story(page, courrier);
+  expect(s.includes('2 mélanomes diagnosed at the age of 56 and 62 year old'), s.split('\n')[0]);
+});
+
 (async () => {
   const b = await chromium.launch(); let failed = 0;
   for (const t of tests) {

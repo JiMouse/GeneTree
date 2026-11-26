@@ -1,24 +1,23 @@
 function getPatho(obj, i,text_neg, text_pos) {
-    let keys = Object.keys(obj[i]),
+    let keys = Object.keys(obj[i]).filter(function (k) { return /_diagnosis_age$/.test(k) && k !== 'approx_diagnosis_age'; }),
         tag = '_diagnosis_age',
         result = '';
     
     let comment = (obj[i].hasOwnProperty('comment') ? ' ('+obj[i].comment+')' : '')
-    if (!keys.join().includes(tag)) return text_neg + comment
+    if (!keys.length) return text_neg + comment
   
     for (var j = 0; j < keys.length; j++) {  
-      if (keys[j].indexOf(tag) !== -1) {
         let out = keys[j].substring(0, keys[j].length - tag.length),
-            a = obj[i][keys[j]],
-            y = obj[i].yob + a;
-        result = (result != '' ? result + " et d'un " : text_pos);
-        result += cleanDiseaseText(out);
-        if(a != "" && a != null) {
+            ages = splitDiagnosisAges(obj[i][keys[j]]),            // the same disease twice: "56, 62"
+            known = ages.filter(function (a) { return a !== '' && a != null; }),
+            n = ages.length;
+        result = (result != '' ? result + (n > 1 ? " and " : " and a ") : (n > 1 ? text_pos.replace(/ a $/, ' ') : text_pos));
+        if (n > 1) result += n + ' ';
+        result += cleanDiseaseText(out) + (n > 1 ? 's' : '');
+        if(known.length) {
           result += " diagnosed";
-          if(obj[i].yob != "" && obj[i].yob != null) result += " en " + y;
-          result += " at the age of " + a + " year old";
+          result += " at the age of " + known.join(' and ') + " year old";
         }
-      };
     }; return result + comment
   }
   

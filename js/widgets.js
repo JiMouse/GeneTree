@@ -463,7 +463,9 @@
 						disease_colour+"&nbsp;</td><td>" +
 						"<input class='form-control input-sm' id='id_" +
 						v.type + "_diagnosis_age_0' max='110' min='0' name='" +
-						v.type + "_diagnosis_age_0' style='width:5em' type='number' value='" +
+						v.type + "_diagnosis_age_0' style='width:5em' type='" +
+						// the same disease twice ("56, 62") does not fit a number field
+						(diagnosis_age !== undefined && String(diagnosis_age).indexOf(',') >= 0 ? "text" : "number") + "' value='" +
 						(diagnosis_age !== undefined ? diagnosis_age : "") +"'></td></tr>";
 		});
 
